@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_list_view_background"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtCustomerFullName"
+            style="@style/TextView.Value.Normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="5dp"
+            android:text="นายสมชาย เจริญวงศ" />
+
+        <TextView
+            android:id="@+id/txtCONTNO"
+            style="@style/TextView.Value.Normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="5dp"
+            android:text="1AAA0200AAA033" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtPaymentPeriodNumber"
+        style="@style/TextView.Value.Normal"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.15"
+        android:gravity="center"
+        android:text="1" />
+
+    <TextView
+        android:id="@+id/txtOutStandingAmount"
+        style="@style/TextView.Value.Normal"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.2"
+        android:gravity="right|center_vertical"
+        android:paddingRight="10dp"
+        android:text="3,000.00" />
+
+    <TextView
+        android:id="@+id/txtRequestNextPaymentStatus"
+        style="@style/TextView.Value.Normal"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.15"
+        android:gravity="center"
+        android:text="" />
+</LinearLayout>

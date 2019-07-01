@@ -1,0 +1,234 @@
+﻿<resources>
+
+    <array name="main_menu_titles">
+        <!-- [START] :: Fixed - [BHPROJ-0016-855] :: Revise Menu Report tobe SubMenu -->
+        <!-- <item>@string/main_menu_default</item> -->
+        <item>@string/main_menu_report_daily_summary</item>
+        <item>@string/main_menu_report_emp_team</item>
+        <item>@string/main_menu_report_product</item>
+        <item>@string/main_menu_report_install_payment</item>
+        <item>@string/main_menu_report_change_product</item>
+        <item>@string/main_menu_report_impound_product</item>
+        <item>@string/main_menu_report_change_contract</item>
+        <item>@string/main_menu_report_payment_appointment</item>
+        <item>@string/main_menu_report_writeoff_npl</item>
+        <item>@string/main_menu_report_approved</item>
+        <item>@string/main_menu_report_complain</item>
+        <item>@string/main_menu_report_trade_product</item>
+        <item>@string/main_menu_report_payment_sendmoney</item>
+        <item>@string/main_menu_report_zone</item>
+        <item>@string/main_menu_report_re_print</item>
+        <item>@string/main_menu_report_credit_saleaudit</item>
+        <item>@string/main_menu_report_credit_next_payment</item>
+        <item>@string/main_menu_report_credit_sendmoney</item>
+        <item>@string/main_menu_report_credit_contract_close_account</item>
+        <!-- [END] :: Fixed - [BHPROJ-0016-855] :: Revise Menu Report tobe SubMenu -->
+        <item>@string/main_menu_team</item>
+        <item>@string/main_menu_checkstock</item>
+        <item>@string/main_menu_sales</item>
+        <item>@string/main_menu_money</item>
+        <item>@string/main_menu_remove</item>
+        <item>@string/main_menu_change</item>
+        <item>@string/main_menu_document</item>
+        <item>@string/main_menu_loss</item>
+        <item>@string/main_menu_first</item>
+        <item>@string/main_menu_next_period</item>
+        <item>@string/main_menu_refresh</item>
+        <item>@string/main_menu_total</item>
+        <item>@string/main_menu_brochure</item>
+        <item>@string/main_menu_detail</item>
+        <item>@string/main_menu_complain</item>
+        <item>@string/main_menu_logout</item>
+    </array>
+    <array name="main_menu_icons">
+        <item>@drawable/ic_tsr_logo</item>
+        <item>@drawable/ic_menu_team</item>
+        <item>@drawable/ic_menu_checkstock</item>
+        <item>@drawable/ic_menu_sales</item>
+        <item>@drawable/ic_menu_money</item>
+        <item>@drawable/ic_menu_remove</item>
+        <item>@drawable/ic_menu_change</item>
+        <item>@drawable/ic_menu_document</item>
+        <item>@drawable/ic_menu_loss</item>
+        <item>@drawable/ic_menu_first</item>
+        <item>@drawable/ic_menu_next_period</item>
+        <item>@drawable/ic_menu_refresh</item>
+        <item>@drawable/ic_menu_total</item>
+        <item>@drawable/ic_menu_brochure</item>
+        <item>@drawable/ic_menu_detail</item>
+        <item>@drawable/ic_menu_detail</item>
+        <item>@drawable/ic_menu_logout</item>
+    </array>
+
+    <string-array name="pay_change">
+        <item>ไม่มีเครื่องแสดง</item>
+        <item>มีเครื่องแสดง</item>
+    </string-array>
+    <string-array name="pay_brand">
+        <item>Brand  A</item>
+        <item>Brand  B</item>
+        <item>Brand  C</item>
+        <item>Brand  D</item>
+        <item>Brand  Other</item>
+    </string-array>
+    <string-array name="type_Address">
+        <item>คอนโด</item>
+        <item>แฟลต</item>
+        <item>อพาร์เม้นท์</item>
+        <item>ทาวเฮ้าท์</item>
+        <item>ตึกแถว</item>
+        <item>อาคารพาณิชย์</item>
+        <item>อาคารสำนักงาน</item>
+        <item>บ้านเดี่ยว</item>
+        <item>ห้องแบ่งเช่า</item>
+        <item>อื่นๆ</item>
+    </string-array>
+    <string-array name="type_Professional">
+        <item>ช้าราชการ</item>
+        <item>พนง.รัฐวิสาหกิจ</item>
+        <item>พนง.บริษัท</item>
+        <item>ธุรกิจส่วนตัว</item>
+        <item>พ่อค้าแม่ค้า</item>
+        <item>แม่บ้าน</item>
+        <item>อื่นๆ</item>
+    </string-array>
+    <string-array name="type_Hobby">
+        <item>เล่นกีฬา</item>
+        <item>ดูหนัง</item>
+        <item>ฟังเพลง</item>
+        <item>ท่องเที่ยว</item>
+        <item>ปลูกต้นไม้</item>
+        <item>ช้อปปิ้ง</item>
+        <item>อื่นๆ</item>
+    </string-array>
+    <string-array name="type_Comments">
+        <item>ผลิตภัณฑ์</item>
+        <item>การบรการ</item>
+        <item>อื่นๆ</item>
+    </string-array>
+    <string-array name="type_Status">
+        <item></item>
+        <item>เจ้าของ</item>
+        <item>ผู้อยู่อาศัย</item>
+        <item>ผู้เช่า</item>
+    </string-array>
+    <string-array name="Bank">
+        <item>ธนาคารกรุงไทย</item>
+        <item>ธนาคารทหารไทย</item>
+        <item>ธนาคารกรุงเทพ</item>
+        <item>ธนาคารกรุงศรีอยุธยา</item>
+        <item>ธนาคารกสิกรไทย</item>
+        <item>ธนาคารทิสโก้</item>
+        <item>ธนาคารไทยพาณิชย์</item>
+        <item>ธนาคารนครหลวงไทย</item>
+        <item>ธนาคารออมสิน</item>
+        <item>ธนาคารธนชาต</item>
+    </string-array>
+    <string-array name="first_payment_employee_arrays">
+        <item>ลำใย มูลชะนาม เขตบางนา, สมุทรปราการ</item>
+        <item>ประยงค์ ทิพย์ชาติ เขตดอนเมือง, สายไหม, หลักสี่</item>
+        <item>ภูริตา บำรุงไร่ เขตบางพลัด</item>
+        <item>วราพล จุลเสวก เขตหนองจอก, มีนบุรี</item>
+    </string-array>
+    <string-array name="first_payment_menu_titles">
+        <item>@string/first_payment_menu_customer_detail</item>
+        <item>@string/first_payment_menu_summary</item>
+    </string-array>
+    <string-array name="first_payment_menu_icon">
+        <item>@drawable/ic_tsr_logo</item>
+        <item>@drawable/ic_menu_team</item>
+    </string-array>
+    <string-array name="impound_product_cause">
+        <item>ตกงาน</item>
+        <item>ไม่มีเงินจ่าย</item>
+        <item>ไม่พอใจบริการ</item>
+        <item>สินค้าราคาแพง</item>
+        <item>ไม่พอใจสิน้คา</item>
+        <item>ย้ายที่อยู่</item>
+        <item>อื่นๆ</item>
+    </string-array>
+    <string-array name="HeadOfficeBranch">
+        <item>สำนักงานใหญ่</item>
+        <item>สาขา บางนา</item>
+        <item>สาขา บางกะปิ</item>
+        <item>สาขา เซียร์รังสิต</item>
+        <item>สาขา ดอนเมือง</item>
+    </string-array>
+
+    <array name="synchronize_master_table">
+        <item>@string/sync_team_related</item>
+        <item>@string/sync_product_related</item>
+        <item>@string/sync_customer_related</item>
+        <item>@string/sync_payment_related</item>
+        <item>@string/sync_contract_related</item>
+        <item>@string/sync_sendmoney_related</item>
+        <item>@string/sync_masterdata_related</item>
+    </array>
+    <array name="sale_unfinished_menu">
+        <item>@string/sale_unfinished_scan_product</item>
+        <item>@string/sale_unfinished_employee</item>
+        <item>@string/sale_unfinished_customer</item>
+        <item>@string/sale_unfinished_package</item>
+        <item>@string/sale_unfinished_discount</item>
+        <item>@string/sale_unfinished_detail_contract</item>
+        <item>@string/sale_unfinished_contract</item>
+        <item>@string/sale_unfinished_payment</item>
+        <item>@string/sale_unfinished_receipt</item>
+        <item>@string/sale_unfinished_photo</item>
+        <item>@string/sale_unfinished_more</item>
+    </array>
+    <array name="sale_photo">
+        <item>@string/sale_photo_home</item>
+        <item>@string/sale_photo_id</item>
+        <item>@string/sale_photo_gps</item>
+        <item>@string/sale_photo_gps_payment</item>
+        <item>@string/sale_photo_product</item>
+        <item>@string/sale_photo_payment_card</item>
+    </array>
+
+    <array name="report_sale_menu">
+        <item>@string/menu_report_daily_summary</item>                  <!-- รายงานสรุปยอดขาย - ReportDashboard (SALE)-->
+        <item>@string/menu_report_emp_team</item>                       <!-- รายงานโครงสร้างพนักงาน - ReportSaleAndDriver (SALE + CREDIT) -->
+        <item>@string/menu_report_product</item>                        <!-- รายงานยอดสินค้าคงเหลือ - ReportInventory (SALE) -->
+        <item>@string/menu_report_install_payment</item>                <!-- รายงานยอดติดตั้ง/ขายสินค้า - ReportInstallAndPayment (SALE) -->
+        <item>@string/menu_report_change_product</item>                 <!-- รายงานเปลี่ยนเครื่อง - ReportChangeProduct (SALE + CREDIT) -->
+        <item>@string/menu_report_impound_product</item>                <!-- รายงานถอดเครื่อง - ReportImpoundProduct (SALE + CREDIT) -->
+        <item>@string/menu_report_change_contract</item>                <!-- รายงานเปลี่ยนสัญญา - ReportChangeContract (SALE + CREDIT) -->
+        <item>@string/menu_report_payment_appointment</item>            <!-- รายงานนัดเก็บเงินงวดแรก - ReportPaymentAppointment (SALE) -->
+        <item>@string/menu_report_writeoff_npl</item>                   <!-- รายงานตัดสัญญาค้าง - ReportWriteOffNPL (SALE) -->
+        <item>@string/menu_report_approved</item>                       <!-- รายงานขออนุมัติ - ReportApproved  (SALE + CREDIT) -->
+        <item>@string/menu_report_complain</item>                       <!-- รายงานสรุปการแจ้งปัญหา - ReportComplain (SALE + CREDIT) -->
+        <item>@string/menu_report_trade_product</item>                  <!-- รายงานเครื่องเทิร์น - ReportTradeInProduct (SALE) -->
+        <item>@string/menu_report_payment_sendmoney</item>              <!-- รายงานเก็บเงินงวดแรก/ถัดไป - ReportPaymentAndSendMoney (SALE) -->
+        <item>@string/menu_report_zone</item>                           <!-- รายงานพื้นที่ขาย - ReportSaleArea (SALE) -->
+        <item>@string/menu_report_re_print</item>                       <!-- รายงานการพิมพ์เอกสารที่มีการ Re-Print ReportRePrintDocument (SALE + CREDIT) -->
+        <!--<item>@string/menu_report_document</item>-->
+        <!--<item>@string/menu_report_credit_saleaudit</item>               &lt;!&ndash; รายงานการตรวจสอบการ์ดงวดแรก - ReportSaleAudit (CREDIT) &ndash;&gt;-->
+        <!--<item>@string/menu_report_credit_next_payment</item>            &lt;!&ndash; รายงานการเก็บเงินค่างวด - ReportNextPayment (CREDIT) &ndash;&gt;-->
+        <!--<item>@string/menu_report_credit_sendmoney</item>               &lt;!&ndash; รายงานสรุปการส่งเงิน - ReportSendMoney (CREDIT) &ndash;&gt;-->
+        <!--<item>@string/menu_report_credit_contract_close_account</item>  &lt;!&ndash; รายงานตัดสด - ReportContractCloseAccount (CREDIT) &ndash;&gt;-->
+    </array>
+
+    <array name="report_credit_menu">
+        <!--<item>@string/menu_report_daily_summary</item>                  &lt;!&ndash; รายงานสรุปยอดขาย - ReportDashboard (SALE)&ndash;&gt;-->
+        <item>@string/menu_report_emp_team</item>                       <!-- รายงานโครงสร้างพนักงาน - ReportSaleAndDriver (SALE + CREDIT) -->
+        <!--<item>@string/menu_report_product</item>                        &lt;!&ndash; รายงานยอดสินค้าคงเหลือ - ReportInventory (SALE) &ndash;&gt;-->
+        <!--<item>@string/menu_report_install_payment</item>                &lt;!&ndash; รายงานยอดติดตั้ง/ขายสินค้า - ReportInstallAndPayment (SALE) &ndash;&gt;-->
+        <item>@string/menu_report_change_product</item>                 <!-- รายงานเปลี่ยนเครื่อง - ReportChangeProduct (SALE + CREDIT) -->
+        <item>@string/menu_report_impound_product</item>                <!-- รายงานถอดเครื่อง - ReportImpoundProduct (SALE + CREDIT) -->
+        <item>@string/menu_report_change_contract</item>                <!-- รายงานเปลี่ยนสัญญา - ReportChangeContract (SALE + CREDIT) -->
+        <!--<item>@string/menu_report_payment_appointment</item>            &lt;!&ndash; รายงานนัดเก็บเงินงวดแรก - ReportPaymentAppointment (SALE) &ndash;&gt;-->
+        <!--<item>@string/menu_report_writeoff_npl</item>                   &lt;!&ndash; รายงานตัดสัญญาค้าง - ReportWriteOffNPL (SALE) &ndash;&gt;-->
+        <item>@string/menu_report_approved</item>                       <!-- รายงานขออนุมัติ - ReportApproved  (SALE + CREDIT) -->
+        <item>@string/menu_report_complain</item>                       <!-- รายงานสรุปการแจ้งปัญหา - ReportComplain (SALE + CREDIT) -->
+        <!--<item>@string/menu_report_trade_product</item>                  &lt;!&ndash; รายงานเครื่องเทิร์น - ReportTradeInProduct (SALE) &ndash;&gt;-->
+        <!--<item>@string/menu_report_payment_sendmoney</item>              &lt;!&ndash; รายงานเก็บเงินงวดแรก/ถัดไป - ReportPaymentAndSendMoney (SALE) &ndash;&gt;-->
+        <!--<item>@string/menu_report_zone</item>                           &lt;!&ndash; รายงานพื้นที่ขาย - ReportSaleArea (SALE) &ndash;&gt;-->
+        <item>@string/menu_report_credit_saleaudit</item>               <!-- รายงานการตรวจสอบการ์ดงวดแรก - ReportSaleAudit (CREDIT) -->
+        <item>@string/menu_report_credit_next_payment</item>            <!-- รายงานการเก็บเงินค่างวด - ReportNextPayment (CREDIT) -->
+        <item>@string/menu_report_credit_sendmoney</item>               <!-- รายงานสรุปการส่งเงิน - ReportSendMoney (CREDIT) -->
+        <item>@string/menu_report_credit_contract_close_account</item>  <!-- รายงานตัดสด - ReportContractCloseAccount (CREDIT) -->
+        <item>@string/menu_report_re_print</item>                       <!-- รายงานการพิมพ์เอกสารที่มีการ Re-Print ReportRePrintDocument (SALE + CREDIT) -->
+    </array>
+
+</resources>

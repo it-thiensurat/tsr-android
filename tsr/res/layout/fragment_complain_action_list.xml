@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <th.co.thiensurat.views.ViewTitle
+        style="@style/ViewTitle"
+        app:text="@string/caption_complain_action_search" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingBottom="@dimen/padding_small"
+        android:paddingTop="@dimen/padding_small"
+        android:weightSum="5" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:layout_weight="0.7"
+            android:gravity="right"
+            android:text="@string/next_payment_customer_search"
+            style="@style/TextView.Value" />
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3.6"
+            android:maxLines="1"
+            android:textSize="@dimen/normal_font_size" >
+        </EditText>
+
+        <Button
+            android:id="@+id/btnSearch"
+            style="@style/ButtonTop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:layout_weight="0.7"
+            android:text="@string/button_search" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="รายชื่อลูกค้าที่จะทำการแจ้งปัญหา"
+        style="@style/TextView.Value"/>
+
+    <ListView
+        android:id="@+id/lvCustomerList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/padding_normal"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/padding_small"
+        android:choiceMode="singleChoice"
+        android:dividerHeight="0dp"
+        android:listSelector="@drawable/selector_list_view_default" >
+    </ListView>
+
+</LinearLayout>

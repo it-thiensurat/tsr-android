@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragments.stocks.CheckStockMainFragment" >
+
+    <LinearLayout
+        style="@style/ViewTitle"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_normal" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75"
+            android:gravity="center"
+            android:text="รายการสินค้ารอตรวจสอบ"
+            android:textColor="@color/font_color_white"
+             style="@style/TextView.Value" />
+
+        <TextView
+            android:id="@+id/txtProduct"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/font_color_white"
+             style="@style/TextView.Value" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="รายการ"
+            android:textColor="@color/font_color_white"
+            style="@style/TextView.Value" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/check_stock_height"
+        android:layout_marginTop="@dimen/check_stock_top" >
+
+        <TextView
+            android:id="@+id/txtDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="รายละเอียดสินค้าที่เบิกจากคลัง"
+            style="@style/TextView.Value"/>
+
+        <TextView
+            android:id="@+id/txtImport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/check_stock_marginLeft"
+            android:text="(0)"
+            style="@style/TextView.Value" />
+
+        <Button
+            android:id="@+id/btnRefresh"
+            style="@style/ButtonTop"
+            android:layout_width="@dimen/check_stock_button_refresh"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/check_stock_left_refresh"
+            android:text="Refresh"
+            android:textSize="@dimen/normal_font_size" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/ListProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/check_stock_top" >
+    </ListView>
+
+    <ListView
+        android:id="@+id/List"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/check_stock_top" >
+    </ListView>
+
+</LinearLayout>

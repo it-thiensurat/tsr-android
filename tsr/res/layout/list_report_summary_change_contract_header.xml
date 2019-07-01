@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#000000" >
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="@dimen/employee_image_size"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="วันที่เปลี่ยน" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="@dimen/employee_image_size"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="วันที่ติดตั้ง" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="@dimen/employee_image_size"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="เลขเครื่อง" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="@dimen/impound_detail_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="เลขสัญญา" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="@dimen/employee_image_size"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ชื่อลูกค้า" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="@dimen/employee_image_size"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ราคา" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="@dimen/employee_image_size"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="รหัสเปลี่ยน" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="@dimen/employee_image_size"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="พนักงาน" />
+
+</LinearLayout>

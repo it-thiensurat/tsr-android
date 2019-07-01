@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_view_header_height"
+    android:background="@color/bg_table_main_header"
+    android:weightSum="4" >
+
+    <TextView
+        android:id="@+id/txtCONTNO"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1.5"
+        android:gravity="center"
+        android:text="เลขที่สัญญา" />
+
+    <TextView
+        android:id="@+id/txtSerialNo"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="หมายเลขเครื่อง" />
+
+    <TextView
+        android:id="@+id/txtTeamRequest"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:text="ทีม" />
+
+    <TextView
+        android:id="@+id/txtEmpName"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="ชื่อพนักงาน" />
+
+</LinearLayout>

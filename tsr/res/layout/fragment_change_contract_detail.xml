@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <th.co.thiensurat.views.ViewTitle
+        style="@style/ViewTitle"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:text="@string/caption_change_contract" />
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/change_product_detail_top" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/change_contract_effective_date" />
+
+                <TextView
+                    android:id="@+id/txtEFFDate"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/change_contract_contno" />
+
+                <TextView
+                    android:id="@+id/txtContNo"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutDisplayCustomer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/lblCustomerFullName"
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="@string/change_contract_customer_fullname" />
+
+                    <TextView
+                        android:id="@+id/txtCustomerFullName"
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="@string/change_contract_customer_idcard" />
+
+                    <TextView
+                        android:id="@+id/txtIDCard"
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="match_parent"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/label_customer_address" />
+
+                <TextView
+                    android:id="@+id/txtAddressIDCard"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:layout_weight="@dimen/next_payment_customer_detail_value_weight" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="match_parent"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/label_install_address" />
+
+                <TextView
+                    android:id="@+id/txtAddressInstall"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:layout_weight="@dimen/next_payment_customer_detail_value_weight" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="match_parent"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/label_product_name" />
+
+                <TextView
+                    android:id="@+id/txtProduct"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:gravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/change_contract_serialno" />
+
+                <TextView
+                    android:id="@+id/txtSerialNo"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutDisplayAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutSaleAmount"
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/change_product_detail_width2"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="@string/change_contract_sale_amount" />
+
+                    <TextView
+                        android:id="@+id/txtSaleAmount"
+                        style="@style/TextView.Value"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/padding_large"
+                        android:gravity="right" />
+
+                    <TextView
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/label_baht"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutSaleDiscount"
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/change_product_detail_width2"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="@string/change_contract_sale_discount" />
+
+                    <TextView
+                        android:id="@+id/txtSaleDiscount"
+                        style="@style/TextView.Value"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/padding_large"
+                        android:gravity="right"
+                        android:text="" />
+
+                    <TextView
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/label_baht"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutSaleNetAmount"
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/change_product_detail_width2"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="@string/change_contract_sale_netamount" />
+
+                    <TextView
+                        android:id="@+id/txtSaleNetAmount"
+                        style="@style/TextView.Value"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/padding_large"
+                        android:gravity="right"
+                        android:text="" />
+
+                    <TextView
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/label_baht"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutFirstPaymentAmount"
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/change_product_detail_width2"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="@string/change_contract_first_payment_amount" />
+
+                    <TextView
+                        android:id="@+id/txtFirstPaymentAmount"
+                        style="@style/TextView.Value"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/padding_large"
+                        android:gravity="right"
+                        android:text="" />
+
+                    <TextView
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/label_baht"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutTwoPaymentAmount"
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/change_product_detail_width2"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="@string/change_contract_two_payment_amount" />
+
+                    <TextView
+                        android:id="@+id/txtTwoPaymentAmount"
+                        style="@style/TextView.Value"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/padding_large"
+                        android:gravity="right"
+                        android:text="" />
+
+                    <TextView
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/label_baht"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutNextPaymentAmount"
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/txtNextPaymentAmountLabel"
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/change_product_detail_width2"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="@string/change_contract_next_payment_amount" />
+
+                    <TextView
+                        android:id="@+id/txtNextPaymentAmountValue"
+                        style="@style/TextView.Value"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/padding_large"
+                        android:gravity="right"
+                        android:text="" />
+
+                    <TextView
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/label_baht"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutDisplayCCPackage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <!--<ListView
+                    android:id="@+id/lvPackageList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_small"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:layout_marginRight="@dimen/padding_normal"
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:choiceMode="singleChoice"
+                    android:divider="@color/transparent" >
+                </ListView>-->
+                <ListView
+                    android:id="@+id/lvPackageList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_small"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:layout_marginRight="@dimen/padding_normal"
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:choiceMode="singleChoice">
+                </ListView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCCCause"
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/change_product_detail_width2"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/change_contract_cause" />
+
+                <Spinner
+                    android:id="@+id/spnProblem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCCDate"
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/change_product_detail_width2"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/change_contract_date" />
+
+                <EditText
+                    android:id="@+id/etCCDate"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:layout_weight="1"
+                    android:ems="12"
+                    android:inputType="date" >
+                </EditText>
+
+                <ImageButton
+                    android:id="@+id/imgbtnCCDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_today"
+                    android:visibility="gone"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

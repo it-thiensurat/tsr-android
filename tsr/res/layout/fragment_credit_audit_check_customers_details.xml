@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical" >
+    <th.co.thiensurat.views.ViewTitle
+        style="@style/ViewTitle"
+        android:padding="@dimen/padding_normal"
+        app:text="@string/title_detail_customers" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:weightSum="1">
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_contract_no"
+                android:layout_weight="0.3"/>
+
+            <TextView
+                android:id="@+id/textViewContractNo"
+                style="@style/TextView.Value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:layout_weight="0.7"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:weightSum="1">
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_firstname_lastname"
+                android:layout_weight="0.3"/>
+
+            <TextView
+                android:id="@+id/textViewName"
+                style="@style/TextView.Value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:layout_weight="0.7"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:weightSum="1">
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_install_address"
+                android:layout_weight="0.3"/>
+
+            <TextView
+                android:id="@+id/textViewAddress"
+                style="@style/TextView.Value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:layout_weight="0.7"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <th.co.thiensurat.views.ViewTitle
+        style="@style/ViewTitle"
+        android:padding="@dimen/padding_normal"
+        app:text="@string/title_check_photo" />
+
+    <ListView
+        android:id="@+id/lvMenuPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:choiceMode="none"
+        android:divider="@color/main_menu_divider"
+        android:dividerHeight="1dp" />
+
+</LinearLayout>

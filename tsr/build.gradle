@@ -1,0 +1,170 @@
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+android {
+    useLibrary 'org.apache.http.legacy'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+
+    def versionCodes = { ->
+        return 133   // 132
+    }
+
+    def tsrAppVersion = { ->
+        def appVersion = "v. " + defaultConfig.versionName + "(" + versionCodes().toString() + ")"
+        return appVersion
+    }
+
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId 'th.co.thiensurat'
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode   versionCodes()//41
+        versionName "1.0.0.44" //versionNames() ldo 43
+        resValue 'string', 'tsr_app_version', tsrAppVersion()
+    }
+
+    signingConfigs {
+        config {
+            storeFile file('../tsr.keystore')
+            storePassword '123456'
+            keyAlias 'tsr'
+            keyPassword '123456'
+            //v2SigningEnabled false
+        }
+    }
+
+    buildTypes {
+        debug{
+            minifyEnabled false // Enables code shrinking for the release build type.
+            signingConfig signingConfigs.config
+        }
+        release{
+            /*minifyEnabled true // Enables code shrinking for the release build type.
+            signingConfig signingConfigs.config
+            shrinkResources true
+            proguardFile '../tsr/proguard-project.txt'*/
+
+            minifyEnabled false // Enables code shrinking for the release build type.
+            signingConfig signingConfigs.config
+        }
+    }
+
+    flavorDimensions "default"
+    productFlavors {
+        uat {
+            applicationIdSuffix '.uat'
+            resValue "string", "tsr_app_name", 'TSR Mobile App UAT'
+            buildConfigField 'String', 'SERVICE_MODE', '"UAT"'
+            buildConfigField "boolean", "ID_CARD_MODE", "true"
+        }
+        production {
+            applicationIdSuffix ''
+            resValue "string", "tsr_app_name", 'TSR Mobile App Production'
+            buildConfigField 'String', 'SERVICE_MODE', '"PRODUCTION"'
+            buildConfigField "boolean", "ID_CARD_MODE", "true"
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            /*if (variant.name == "productionRelease") {
+                outputFileName = "tsr-production-${variant.versionName}(${variant.versionCode}).apk"
+            } else if (variant.name == "uatRelease") {
+                outputFileName = "tsr-uat-${variant.versionName}(${variant.versionCode}).apk"
+            } else {
+                outputFileName = "tsr-${variant.versionName}(${variant.versionCode}).apk"
+            }*/
+
+            def release = "Release"
+            def debug = "Debug"
+            if (variant.name.endsWith(release)) {
+                def appName = variant.name.replace(release, "")
+                outputFileName = "tsr-${appName}-${variant.versionName}(${variant.versionCode}).apk"
+            } else if (variant.name.endsWith(debug)){
+                def appName = variant.name.replace(debug, "")
+                outputFileName = "tsr-${appName}-${variant.versionName}(${variant.versionCode}).debug.apk"
+            } else {
+                outputFileName = "tsr-${variant.versionName}(${variant.versionCode}).apk"
+            }
+        }
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+
+        /*// Move the tests to tests/java, tests/res, etc...
+        androidTest.setRoot('tests')
+
+        // Move the build types to build-types/<type>
+        // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
+        // This moves them out of them default location under src/<type>/... which would
+        // conflict with src/ being used by the main source set.
+        // Adding new build types or product flavors should be accompanied
+        // by a similar customization.
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')*/
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+}
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+dependencies {
+    //implementation project(':pager-sliding-tab-libs')
+    //implementation project(':zxing-android')
+    //compile 'com.google.maps.android:android-maps-utils:0.3+'
+    //implementation project(':maps-utils-master-library')
+    //compile 'com.google.android.gms:play-services:6.5.87'
+    implementation project(':drag-sort-listview-jayh5')
+    implementation project(':floating-group-expandable-list-view')
+    implementation project(':pinned-section-listview')
+    implementation project(':sliding-menu-libs')
+    implementation project(':sqlite-asset-helper')
+    implementation project(':viewpager-indicator-library')
+    //implementation files('libs/com.datecs.api.jar')
+    //implementation files('libs/btsdk.jar')
+    //implementation files('libs/jsoup-1.9.2.jar')
+    implementation 'com.android.support:support-v13:21.0.3'
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-iid:17.0.4'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.6@aar') {
+        transitive = true;
+    }
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':zj_bluetooth_printer_version3')
+
+
+}
+
+// ADD THIS AT THE BOTTOM
+apply plugin: 'com.google.gms.google-services'
+
+

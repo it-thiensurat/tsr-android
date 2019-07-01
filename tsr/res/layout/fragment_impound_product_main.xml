@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnTeamOwn"
+            style="@style/ButtonTop"
+            android:layout_width="@dimen/impound_width"
+            android:layout_height="@dimen/impound_height"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/impound_top"
+            android:text="ถอดเครื่องทีมตัวเอง"
+            android:textSize="@dimen/normal_font_size" />
+
+        <Button
+            android:id="@+id/btnTeamOther"
+            style="@style/ButtonTop"
+            android:layout_width="@dimen/impound_width"
+            android:layout_height="@dimen/impound_height"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/impound_top"
+            android:text="ถอดเครื่องทีมอื่น"
+            android:textSize="@dimen/normal_font_size" />
+
+        <Button
+            android:id="@+id/btnRequestApprove"
+            style="@style/ButtonTop"
+            android:layout_width="@dimen/impound_width"
+            android:layout_height="@dimen/impound_height"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/impound_top"
+            android:text="ตรวจสอบคำร้องขอถอดเครื่อง"
+            android:textSize="@dimen/normal_font_size" />
+    </LinearLayout>
+
+</LinearLayout>

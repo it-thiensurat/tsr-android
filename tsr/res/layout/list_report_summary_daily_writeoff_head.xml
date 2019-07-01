@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_view_header_height"
+    android:background="#000000"
+    android:weightSum="18">
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="รหัสสินค้า" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="รุ่นสินค้า" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ชื่อสินค้า" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="160dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="เลขที่สัญญา" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ชื่อลูกค้า" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="หมายเลขบัตร" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ที่อย่ติดตั้ง" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="เบอร์โทรศัพท์\nบ้าน" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="เบอร์โทรศัพท์\nมือถือ" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="เบอร์โทรศัพท์\nที่ทำงาน" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="วันที่ติดตั้ง" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ปักที่" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="สาเหตุการตัดสัญญาค้าง" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="อื่นๆ" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="วันที่ตัดสัญญาค้าง" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ผู้ที่ทำการอนุมัติ" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="วันที่ทำการอนุมัติ" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="สาเหตุการอนุมันติ" />
+
+
+</LinearLayout>

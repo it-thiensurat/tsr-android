@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/th.co.thiensurat"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="ใบเปลี่ยนเครื่อง/รับเครื่อง"
+                    android:textSize="@dimen/large_font_size"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="0.6">
+
+                    <TextView
+                        style="@style/TextView.Label.bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="เลขที่ "/>
+
+                    <TextView
+                        android:id="@+id/txtNo"
+                        style="@style/TextView.Value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="0.4">
+
+                    <TextView
+                        style="@style/TextView.Label.bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/impound_left"
+                        android:text="วันที่ "/>
+
+                    <TextView
+                        android:id="@+id/txtEffDate"
+                        style="@style/TextView.Value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top" >
+
+                <TextView
+                    android:id="@+id/txtProduct"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="เครื่องกรองน้ำ " />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top" >
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="หมายเลขเครืองเก่า"
+                    android:layout_weight="0.4"/>
+
+                <TextView
+                    android:id="@+id/txtOldSerialNo"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top" >
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="หมายเลขเครืองใหม่"
+                    android:layout_weight="0.4"/>
+
+                <TextView
+                    android:id="@+id/txtNewSerialNo"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top" >
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_contract_no"
+                    android:layout_weight="0.4"/>
+
+                <TextView
+                    android:id="@+id/txtContractNo"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top" >
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="ผู้ซื้อ"
+                    android:layout_weight="0.4"/>
+
+                <TextView
+                    android:id="@+id/txtCustomerName"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top" >
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="ที่อยู่"
+                    android:layout_weight="0.4"/>
+
+                <TextView
+                    android:id="@+id/txtAddress"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top" >
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="เบอร์โทร"
+                    android:layout_weight="0.4"/>
+
+                <TextView
+                    android:id="@+id/txtTel"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top" >
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="วันที่ติดตั้ง"
+                    android:layout_weight="0.4"/>
+
+                <TextView
+                    android:id="@+id/txtInstallDate"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutPayment"
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp" >
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="บริษัทได้เปลี่ยนเครื่องใหม่และรับคืนเครื่องเก่าเรียบร้อยแล้ว" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_print_top"
+                android:weightSum="2" >
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/change_product_print_top"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        style="@style/TextView.Value"
+                        android:layout_width="@dimen/change_contract_width"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="____________________" />
+
+                    <TextView
+                        style="@style/TextView.Value"
+                        android:layout_width="@dimen/change_contract_width"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="ผู้รับเปลี่ยนเครื่อง" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/change_product_print_top"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        style="@style/TextView.Value"
+                        android:layout_width="@dimen/change_contract_width"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="_____________________" />
+
+                    <TextView
+                        style="@style/TextView.Value"
+                        android:layout_width="@dimen/change_contract_width"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="ลูกค้าผู้เปลี่ยนเครื่อง" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_print_top" >
+
+                <TextView
+                    android:id="@+id/txtCodeEmp"
+                    style="@style/TextView.Value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/change_product_print_top"
+                    android:text="" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/txtTeamCode"
+                    style="@style/TextView.Value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/change_product_print_top"
+                    android:text="" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!--<fragment
+        android:id="@+id/mapPhoto"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        &lt;!&ndash;<ImageView
+            android:id="@+id/mapMarker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:src="@drawable/marker_red"
+            android:paddingBottom="64px" />&ndash;&gt;
+
+    </fragment>-->
+    <FrameLayout
+        android:id="@+id/mapPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+
+    <!--<ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/marker_red"
+        android:paddingBottom="64px"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />-->
+</RelativeLayout>

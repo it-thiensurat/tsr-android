@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/th.co.thiensurat"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        style="@style/ViewTitle"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_normal" >
+
+        <TextView
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75"
+            android:gravity="center"
+            android:text="จำนวนสินค้ารอส่งคืนเข้าระบบ"
+            android:textColor="@color/font_color_white" />
+
+        <TextView
+            android:id="@+id/txtWaitProductCount"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/font_color_white" />
+
+        <TextView
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="รายการ"
+            android:textColor="@color/font_color_white" />
+    </LinearLayout>
+    
+    <com.hb.views.PinnedSectionListView
+        android:id="@+id/lvProduct"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:listSelector="@android:color/transparent" >
+    </com.hb.views.PinnedSectionListView>
+
+</LinearLayout>

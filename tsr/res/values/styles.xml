@@ -1,0 +1,182 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
+
+    -->
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="@android:style/Theme.Holo.Light.NoActionBar">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="MainActivityTheme" parent="@android:style/Theme.Holo.Light">
+
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="vpiTabPageIndicatorStyle">@style/TabPageIndicator</item>
+
+        <item name="android:windowBackground">@color/status_bar_black</item>
+    </style>
+
+    <style name="BHDialog" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="ButtonProcess">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">#2c2c2c</item>
+        <item name="android:shadowRadius">5</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:background">@drawable/button_styles</item>
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">50dp</item>
+    </style>
+
+    <style name="ButtonStyleSeagull" parent="@android:style/Widget.Holo.Light.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/button_style_seagull</item>
+    </style>
+
+    <style name="ViewTitle">
+        <item name="android:background">@drawable/view_title</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:gravity">center</item>
+        <item name="textColor">@color/font_color_white</item>
+        <item name="textSize">@dimen/normal_font_size</item>
+    </style>
+
+    <style name="PagerIndicator">
+        <item name="fillColor">#FF888888</item>
+        <item name="android:paddingBottom">@dimen/padding_small</item>
+    </style>
+
+    <style name="TabPageIndicator" parent="Widget.TabPageIndicator">
+        <item name="android:textColor">@color/font_color_style1</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:divider">@null</item>
+    </style>
+
+    <style name="Imagebarcode">
+        <item name="android:src">@drawable/barcode</item>
+    </style>
+
+    <style name="SubTitleCheck">
+        <item name="android:background">#a8dad7</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="ButtonTop">
+        <item name="android:textSize">@dimen/normal_font_size</item>
+        <item name="android:textColor">#2c2c2c</item>
+        <item name="android:gravity">center</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">0.6</item>
+        <item name="android:background">@drawable/button_style_blue</item>
+    </style>
+
+    <style name="ButtonRemove">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">#2c2c2c</item>
+        <item name="android:shadowRadius">5</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:background">@drawable/button_styles</item>
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">50dp</item>
+    </style>
+
+    <style name="ItemLine">
+        <item name="android:layout_marginBottom">@dimen/normal_bottom</item>
+    </style>
+
+    <style name="TextView.Value" parent="@android:style/Widget.Holo.Light.TextView">
+        <item name="android:textSize">@dimen/normal_font_size</item>
+    </style>
+
+    <style name="TextView.Value2" parent="@android:style/Widget.Holo.Light.TextView">
+        <item name="android:textSize">@dimen/normal2_font_size</item>
+    </style>
+
+    <style name="TextView.Value.Normal" parent="@android:style/Widget.Holo.Light.TextView">
+        <item name="android:textSize">@dimen/text_size_for_item_list_view</item>
+    </style>
+
+    <style name="TextView.Value.2" parent="@android:style/Widget.Holo.Light.TextView">
+        <item name="android:textSize">@dimen/normal_font_size</item>
+        <item name="android:layout_marginBottom">@dimen/change_product_detail_top</item>
+        <item name="android:layout_marginTop">@dimen/change_product_detail_top</item>
+    </style>
+
+    <style name="TextView.Label" parent="TextView.Value">
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">#e2e2e2</item>
+        <item name="android:gravity">right|center_vertical</item>
+    </style>
+
+    <style name="TextView.Label.bold" parent="TextView.Value">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextView.Label.bold.Normal" parent="TextView.Value.Normal">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextView.Label.bold.2" parent="TextView.Value">
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginBottom">@dimen/change_product_detail_top</item>
+        <item name="android:layout_marginTop">@dimen/change_product_detail_top</item>
+    </style>
+
+    <style name="TextView.Value.Red" parent="TextView.Value">
+        <item name="android:textColor">@android:color/holo_red_dark</item>
+    </style>
+
+    <style name="TextView.Label.Red" parent="TextView.Label.bold">
+        <item name="android:textColor">@android:color/holo_red_dark</item>
+    </style>
+
+    <style name="ButtonBig">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/button_big_style_blue</item>
+    </style>
+
+    <style name="TextView.Label.Expandable.LayoutParams" parent="@android:style/Widget.TextView">
+        <item name="layoutMarginTop">10dp</item>
+        <item name="layoutMarginBottom">10dp</item>
+        <item name="layoutMarginLeft">0dp</item>
+        <item name="layoutMarginRight">0dp</item>
+    </style>
+
+    <style name="TextView.Label.Expandable.first" parent="TextView.Label.Expandable.LayoutParams">
+        <item name="layoutMarginLeft">5dp</item>
+    </style>
+
+    <style name="TextView.Label.Expandable.last" parent="TextView.Label.Expandable.LayoutParams">
+        <item name="layoutMarginRight">10dp</item>
+    </style>
+
+    <style name="TextView.Label.Expandable" parent="TextView.Label.Expandable.LayoutParams">
+        <item name="layoutMarginLeft">5dp</item>
+        <item name="layoutMarginRight">10dp</item>
+    </style>
+
+</resources>

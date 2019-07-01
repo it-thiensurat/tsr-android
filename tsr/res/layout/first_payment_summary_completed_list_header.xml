@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#A9F5A9"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/viewGroupIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lblListHeader"
+            style="@style/TextView.Label.bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp" />
+
+        <ImageView
+            android:id="@+id/imgGroupIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/plus" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/viewHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_table_main_header"
+        android:clickable="false"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/lblPayDate"
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.33"
+            android:gravity="center"
+            android:text="วันที่เก็บเงิน" />
+
+        <TextView
+            android:id="@+id/lblCountRefNo"
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.33"
+            android:gravity="center"
+            android:text="จำนวนราย" />
+
+        <TextView
+            android:id="@+id/lblSumFirstPaymentAmount"
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.34"
+            android:gravity="center"
+            android:text="จำนวนเงิน" />
+
+    </LinearLayout>
+
+</LinearLayout>

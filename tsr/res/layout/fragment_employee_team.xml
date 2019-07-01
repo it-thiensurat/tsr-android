@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/th.co.thiensurat"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ViewTitle"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_normal"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/txtTeamCode"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.25"
+            android:gravity="left"
+            android:text="ทีม HAAC-02"
+            android:textColor="@color/font_color_white" />
+
+        <TextView
+            android:id="@+id/txtFortnightNumber"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.3"
+            android:gravity="left"
+            android:text=" ปักษ์ที่ 10/57"
+            android:textColor="@color/font_color_white"/>
+
+        <TextView
+            android:id="@+id/txtFortnightDate"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.45"
+            android:gravity="right"
+            android:text="05/06/2557-20/06/2557"
+            android:textColor="@color/font_color_white" />
+    </LinearLayout>
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ViewTitle"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_normal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtFortnightNumber"
+                style="@style/TextView.Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="left"
+                android:text="ทริปที่ 12/2561"
+                android:textColor="@color/font_color_white"/>
+
+            <TextView
+                android:id="@+id/txtFortnightDate"
+                style="@style/TextView.Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="right"
+                android:text="21/01/2561 - 20/02/2561"
+                android:textColor="@color/font_color_white"
+                android:paddingLeft="10dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/txtTeamCode"
+                style="@style/TextView.Value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="left"
+                android:text="ทีม 10102"
+                android:textColor="@color/font_color_white" />
+        </LinearLayout>
+    </LinearLayout>-->
+
+    <LinearLayout
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:layout_marginTop="@dimen/normal_margin_top"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/saleleaderview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/imgEmployee"
+                    android:layout_width="@dimen/employee_image_size"
+                    android:layout_height="@dimen/employee_image_size"
+                    android:background="@color/bg_active"
+                    android:src="@drawable/ic_avatar" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.6"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/txtSaleLeaderTeamCode"
+                        style="@style/TextView.Value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:text="หัวหน้าทีมขาย PAK23"
+                        android:textSize="@dimen/large_font_size" />
+
+                    <TextView
+                        android:id="@+id/txtSaleLeaderName"
+                        style="@style/TextView.Value"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:text="ชื่อ "
+                        android:textSize="@dimen/large_font_size" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/normal_bottom"
+                android:layout_marginTop="@dimen/normal_bottom" >
+
+                <TextView
+                    android:id="@+id/txtSupervisorTitle"
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/employee_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:background="@color/bg_sub_title"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="ซุปฯ :"
+                    android:textColor="#2c2c2c" />
+
+                <TextView
+                    android:id="@+id/txtSupervisorName"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:text="TextView" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/normal_bottom" >
+
+                <TextView
+                    android:id="@+id/txtLineManagerTitle"
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/employee_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:background="@color/bg_sub_title"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="ผู้จัดการสาย :"
+                    android:textColor="#2c2c2c" />
+
+                <TextView
+                    android:id="@+id/txtLineManagerName"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:text="TextView" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/txtManagerTitle"
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/employee_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:background="@color/bg_sub_title"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="ผู้จัดการฝ่าย :"
+                    android:textColor="#2c2c2c" />
+
+                <TextView
+                    android:id="@+id/txtManagerName"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:text="TextView" />
+            </LinearLayout>
+
+            <!-- <HorizontalScrollView -->
+            <!-- android:id="@+id/horizontalScrollView1" -->
+            <!-- android:layout_width="match_parent" -->
+            <!-- android:layout_height="wrap_content" > -->
+
+
+            <!-- <LinearLayout -->
+            <!-- android:id="@+id/mainLinear" -->
+            <!-- android:layout_width="wrap_content" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:orientation="horizontal" > -->
+
+
+            <!-- <LinearLayout -->
+            <!-- android:id="@+id/llSubTeamEmployeeList" -->
+            <!-- android:layout_width="match_parent" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:layout_marginBottom="@dimen/padding_normal" -->
+            <!-- android:layout_marginTop="@dimen/padding_normal" -->
+            <!-- android:orientation="horizontal" > -->
+            <!-- </LinearLayout> -->
+            <!-- </LinearLayout> -->
+            <!-- </HorizontalScrollView> -->
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+        </android.support.v4.view.ViewPager>
+
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:id="@+id/viewPagerCountDots"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal" >
+        </LinearLayout>
+
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/viewPagerIndicator"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="25dp"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:gravity="center_horizontal" >-->
+
+            <!--<LinearLayout-->
+                <!--android:id="@+id/viewPagerCountDots"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:gravity="center"-->
+                <!--android:orientation="horizontal" >-->
+            <!--</LinearLayout>-->
+        <!--</RelativeLayout>-->
+    </LinearLayout>
+
+</LinearLayout>

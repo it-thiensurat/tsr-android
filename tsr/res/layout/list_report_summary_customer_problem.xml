@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/padding_large"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+  <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         android:layout_marginBottom="@dimen/padding_large"
+         android:background="#000000"
+           android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="@dimen/employee_list_height"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.5dp"
+            android:background="@color/bg_active"
+            android:text="วันที่ติดตั้ง" />
+
+        <TextView
+            android:id="@+id/txtDateInstall"
+            style="@style/TextView.Value"
+            android:layout_width="@dimen/employee_saleleader_image_width"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.5dp"
+            android:background="#FFFFFF"
+            android:text="09/06/2557" />
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="@dimen/employee_list_height"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.5dp"
+            android:background="@color/bg_active"
+            android:text="วันที่แจ้ง" />
+
+        <TextView
+            android:id="@+id/txtDateNotify"
+            style="@style/TextView.Value"
+            android:layout_width="@dimen/employee_saleleader_image_width"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.5dp"
+            android:background="#FFFFFF"
+            android:text="09/06/2557" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="@dimen/employee_list_height"
+            android:layout_height="match_parent"
+            android:layout_margin="0.5dp"
+            android:background="@color/bg_active"
+            android:gravity="center_vertical"
+            android:text="ปักษ์" />
+
+        <TextView
+            android:id="@+id/txtFortnight"
+            style="@style/TextView.Value"
+            android:layout_width="@dimen/employee_saleleader_image_width"
+            android:layout_height="match_parent"
+            android:layout_margin="0.5dp"
+            android:background="#FFFFFF"
+            android:gravity="center_vertical"
+            android:text="09/06/2557" />
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="@dimen/employee_list_height"
+            android:layout_height="match_parent"
+            android:layout_margin="0.5dp"
+            android:background="@color/bg_active"
+            android:gravity="center_vertical"
+            android:text="พนง.ขาย" />
+
+        <TextView
+            android:id="@+id/txtEmp"
+            style="@style/TextView.Value"
+            android:layout_width="@dimen/employee_saleleader_image_width"
+            android:layout_height="match_parent"
+            android:layout_margin="0.5dp"
+            android:background="#FFFFFF"
+            android:gravity="center_vertical"
+            android:text="นางดอกไม้  สีสวยงาม" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="@dimen/employee_list_height"
+            android:layout_height="match_parent"
+            android:layout_margin="0.5dp"
+            android:background="@color/bg_active"
+            android:gravity="center_vertical"
+            android:text="ชื่อลูกค้า" />
+
+        <TextView
+            android:id="@+id/txtCus"
+            style="@style/TextView.Value"
+            android:layout_width="@dimen/employee_saleleader_image_width"
+            android:layout_height="match_parent"
+            android:layout_margin="0.5dp"
+            android:background="#FFFFFF"
+            android:gravity="center_vertical"
+            android:text="นายสันติ  วิภาวดี... " />
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="@dimen/employee_list_height"
+            android:layout_height="match_parent"
+            android:layout_margin="0.5dp"
+            android:background="@color/bg_active"
+            android:gravity="center_vertical"
+            android:text="วันที่เคลียร์" />
+
+        <TextView
+            android:id="@+id/txtDateClear"
+            style="@style/TextView.Value"
+            android:layout_width="@dimen/employee_saleleader_image_width"
+            android:layout_height="match_parent"
+            android:layout_margin="0.5dp"
+            android:background="#FFFFFF"
+            android:gravity="center_vertical"
+            android:text="09/06/2557" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="@dimen/employee_list_height"
+            android:layout_height="match_parent"
+            android:layout_margin="0.5dp"
+            android:background="@color/bg_active"
+            android:gravity="center_vertical"
+            android:text="สาเหตุ" />
+
+        <TextView
+            android:id="@+id/txtProblem"
+            style="@style/TextView.Value"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0.5dp"
+            android:background="#FFFFFF"
+            android:gravity="center_vertical"
+            android:text="09/06/2557" />
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

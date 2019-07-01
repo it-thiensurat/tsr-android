@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#000000"
+    android:weightSum="35">
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ฝ่ายขาย" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="สาย" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="SuperVisor" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ทีม" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="หน่วย" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="พนักงานขาย" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="909dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="0.5dp"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="จำนวนขายสด" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="รวม (จำนวน)" />
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+
+                android:text="รวม (จำนวนเงิน)" />
+
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="เก็บ" />
+
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="จำนวนเงิน" />
+
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="ค้าง" />
+
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="จำนวนเงิน" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="909dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="0.5dp"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="จำนวนขายผ่อน" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="รวม (จำนวน)" />
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+
+                android:text="รวม (จำนวนเงิน)" />
+
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="เก็บ" />
+
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="จำนวนเงิน" />
+
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="ค้าง" />
+
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="จำนวนเงิน" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="รวมขาย" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="รวมเงินที่เก็บได้" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="จำนวน\nสินค้าเทิร์น" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="302dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="0.5dp"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="ส่งเงิน" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="ส่งแล้ว" />
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="ค้างส่ง" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="302dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="0.5dp"
+
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="ถอดเครื่อง" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="ถอดเครื่อง\nทีมตัวเอง" />
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="ถอดเครื่อง\nทีมอื่น" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="เปลี่ยนเครื่อง" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="402dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="0.5dp"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="เปลี่ยนสัญญา" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="เปลี่ยนสัญญาโดย\nพนักงานขาย" />
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="เปลี่ยนสัญญาโดย\nหัวหน้าทีมขาย" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ตัดสัญญาค้าง" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="907dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="0.5dp"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="ส่งเอกสาร" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="สัญญา" />
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="ใบเสร็จ" />
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="ใบถอดเครื่อง" />
+
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="ใบเปลี่ยนเครื่อง" />
+
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="ใบเปลี่ยน\nสัญญา" />
+
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="0.5dp"
+                android:layout_weight="1"
+                android:background="@color/bg_table_main_header"
+                android:gravity="center"
+                android:text="ใบนำส่งเงิน" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

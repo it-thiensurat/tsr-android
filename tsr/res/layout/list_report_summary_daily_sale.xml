@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#000000"
+    android:orientation="horizontal"
+    android:weightSum="28">
+
+    <TextView
+        android:id="@+id/txtEffDate"
+        style="@style/TextView.Value"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtProductSerialNumber"
+        style="@style/TextView.Value"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtSale"
+        style="@style/TextView.Value"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtProductID"
+        style="@style/TextView.Value"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtProductName"
+        style="@style/TextView.Value"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtIntroduceEmpName"
+        style="@style/TextView.Value"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtCustomerID"
+        style="@style/TextView.Value"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtCustomerType"
+        style="@style/TextView.Value"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtIDCard"
+        style="@style/TextView.Value"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtPrefix"
+        style="@style/TextView.Value"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtCustomerName"
+        style="@style/TextView.Value"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtAddressIDCard"
+        style="@style/TextView.Value"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtAddressInstall"
+        style="@style/TextView.Value"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtAddressPayment"
+        style="@style/TextView.Value"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtSALES"
+        style="@style/TextView.Value"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtMODE"
+        style="@style/TextView.Value"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtPackageModelDesc"
+        style="@style/TextView.Value"
+        android:layout_width="350dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtTradeInDiscount"
+        style="@style/TextView.Value"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtTotalPrice"
+        style="@style/TextView.Value"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtInstallEmpName"
+        style="@style/TextView.Value"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtFirstPaymentAmount"
+        style="@style/TextView.Value"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtPaymentDate"
+        style="@style/TextView.Value"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtPaymentType"
+        style="@style/TextView.Value"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtBankSeries"
+        style="@style/TextView.Value"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtChequeNumber"
+        style="@style/TextView.Value"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtCreditNumber"
+        style="@style/TextView.Value"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtManualReceipt"
+        style="@style/TextView.Value"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtPaymentAppointmentDate"
+        style="@style/TextView.Value"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+</LinearLayout>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        style="@style/ViewTitle"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_normal">
+
+        <TextView
+            android:id="@+id/txtCountSaleAudit"
+            style="@style/TextView.Value"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="ลูกค้าที่ต้องตรวจสอบจำนวน 18 คน"
+            android:textColor="@color/font_color_white" />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingBottom="@dimen/padding_small"
+        android:paddingTop="@dimen/padding_small"
+        android:weightSum="5">
+
+        <TextView
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:gravity="right"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:text="@string/label_name" />
+
+        <EditText
+            android:id="@+id/txtSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:layout_weight="3.4"
+            android:textSize="@dimen/normal_font_size">
+        </EditText>
+
+        <Button
+            android:id="@+id/btnSearch"
+            style="@style/ButtonTop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:text="@string/button_search" />
+    </LinearLayout>
+
+    <com.mobeta.android.dslv.DragSortListView xmlns:android="http://schemas.android.com/apk/res/android"
+                                              xmlns:dslv="http://schemas.android.com/apk/res-auto"
+                                              android:id="@+id/lvCustomerList"
+                                              android:layout_width="fill_parent"
+                                              android:layout_height="fill_parent"
+                                              android:dividerHeight="1dp"
+                                              dslv:collapsed_height="2dp"
+                                              dslv:drag_enabled="true"
+                                              dslv:drag_scroll_start="0.33"
+                                              dslv:float_alpha="0.6"
+                                              dslv:max_drag_scroll_speed="0.5"
+                                              dslv:slide_shuffle_speed="0.3"
+                                              dslv:track_drag_sort="false"
+                                              dslv:use_default_controller="false" />
+
+</LinearLayout>

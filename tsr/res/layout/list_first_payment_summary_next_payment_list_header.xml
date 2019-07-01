@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_view_header_height"
+    android:background="@color/bg_table_main_header"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:text="วันนัดชำระ"
+        android:textColor="#2c2c2c"
+        android:textSize="@dimen/first_payment_textsize_normal"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.23"
+        android:gravity="center"
+        android:text="จำนวนราย"
+        android:textColor="#2c2c2c"
+        android:textSize="@dimen/first_payment_textsize_normal"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:text="จำนวนเงิน"
+        android:textColor="#2c2c2c"
+        android:textSize="@dimen/first_payment_textsize_normal"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.27"
+        android:gravity="center"
+        android:text="วัน-เวลา ส่งเงิน"
+        android:textColor="#2c2c2c"
+        android:textSize="@dimen/first_payment_textsize_normal"
+        android:textStyle="bold" />
+
+</LinearLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <th.co.thiensurat.views.ViewTitle
+        style="@style/ViewTitle"
+        app:text="@string/caption_customer_detail" />
+    
+    <ListView 
+        android:id="@+id/lvDeviceList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:choiceMode="singleChoice" >
+    </ListView>
+
+</LinearLayout>

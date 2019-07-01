@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="main_menu_selected">#2f383d</color>
+    <color name="main_menu_pressed">#495258</color>
+    <color name="main_menu_default">#626a6f</color>
+    <color name="main_menu_divider">#777d80</color>
+    <color name="bg_body_default">#e8e7e3</color>
+    <color name="bg_body_white">#ffffff</color>
+    <color name="bg_body_red">#FF0000</color>
+    <color name="bg_sub_header">#0089d3</color>
+    <color name="bg_table_main_header">#bfbbb2</color>
+    <color name="bg_table_sub_header">#ecf0f1</color>
+    <color name="bg_show_detail">#72cef5</color>
+    <color name="bg_alert">#fc7675</color>
+    <color name="bg_active">#bec3c7</color>
+    <color name="bg_border">#4dd1e0</color>
+    <color name="font_color_style1">#2c2c2c</color>
+    <color name="font_color_style2">#ff0000</color>
+    <color name="font_color_style3">#7e8c8c</color>
+    <color name="font_color_style4">#0000ff</color>
+    <color name="font_color_white">#ffffff</color>
+    <color name="employee_selector">#BFBBB2</color>
+    <color name="employee_default">#FFFFFF</color>
+    <color name="employee_pressed">#ECF0F1</color>
+    <color name="product_over">#FFFF00</color>
+    <color name="bg_sub_title">#e2e2e2</color>
+    <color name="bg_sub_title_red">#ff6666</color>
+    <color name="sale_main_unfinsh_menu_selected">#bec3c7</color>
+    <color name="sale_main_unfinsh_main_menu_pressed">#bec3c7</color>
+    <color name="sale_main_unfinsh_main_menu_default">#FFFFFF</color>
+    <color name="bg_list_view_pressed">#909aa3</color>
+    <color name="bg_list_view_selected">#bec3c7</color>
+    <color name="bg_loss_payment_status_1">#B3E46B</color>
+    <color name="bg_loss_payment_status_2">#E4D56B</color>
+    <color name="bg_loss_payment_status_3">#FB9E12</color>
+    <color name="bg_loss_payment_status_4">#FC7675</color>
+    <color name="bg_line_status_number">#fc7675</color>
+    <color name="text_red">#0000FF</color>
+    <color name="text_green">#00FF00</color>
+
+    <color name="app_green">#21BBA6</color>
+    <color name="dot_gray">#EEEEEE</color>
+    <color name="dot_gray_dark">#848484</color>
+    <color name="dot_red">#FF0000</color>
+
+    <!--<color name="hold_payment_0">#82FA58</color>
+    <color name="hold_payment_1">#F2F5A9</color>
+    <color name="hold_payment_2">#FAAC58</color>
+    <color name="hold_payment_3">#FA5858</color>-->
+
+    <color name="hold_payment_0">#00EE00</color>
+    <color name="hold_payment_1">#FFD600</color>
+    <color name="hold_payment_2">#FF6D00</color>
+    <color name="hold_payment_3">#FF0000</color>
+    <color name="holo_dark">#313131</color>
+
+    <color name="status_bar_black">#000000</color>
+</resources>

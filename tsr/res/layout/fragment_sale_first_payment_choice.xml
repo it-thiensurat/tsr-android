@@ -1,0 +1,664 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/linearLayoutHeadNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtNumber1"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_number_sale_color_gray"
+            android:gravity="center"
+            android:shadowRadius="10.0"
+            android:text="1"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/layout_underline"
+            android:layout_width="15dp"
+            android:layout_height="5dip"
+            android:layout_gravity="center_vertical"
+            android:background="@color/bg_line_status_number" />
+
+        <TextView
+            android:id="@+id/txtNumber2"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_number_sale_color_gray"
+            android:gravity="center"
+            android:shadowRadius="10.0"
+            android:text="2"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/layout_underline"
+            android:layout_width="15dp"
+            android:layout_height="5dip"
+            android:layout_gravity="center_vertical"
+            android:background="@color/bg_line_status_number" />
+
+        <TextView
+            android:id="@+id/txtNumber3"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_number_sale_color_gray"
+            android:gravity="center"
+            android:shadowRadius="10.0"
+            android:text="3"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/layout_underline"
+            android:layout_width="15dp"
+            android:layout_height="5dip"
+            android:layout_gravity="center_vertical"
+            android:background="@color/bg_line_status_number" />
+
+        <TextView
+            android:id="@+id/txtNumber4"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_number_sale_color_gray"
+            android:gravity="center"
+            android:shadowRadius="10.0"
+            android:text="4"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/layout_underline"
+            android:layout_width="15dp"
+            android:layout_height="5dip"
+            android:layout_gravity="center_vertical"
+            android:background="@color/bg_line_status_number" />
+
+        <TextView
+            android:id="@+id/txtNumber5"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_number_sale_color_gray"
+            android:gravity="center"
+            android:shadowRadius="10.0"
+            android:text="..."
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <th.co.thiensurat.views.ViewTitle
+        android:id="@+id/lblTitle"
+        style="@style/ViewTitle"
+        android:padding="@dimen/padding_normal"
+        app:text="@string/caption_payment_first" />
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:background="@color/bg_body_white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/sale_choice_height"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/bg_table_main_header">
+
+                    <TextView
+                        style="@style/TextView.Value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:layout_weight="0.9"
+                        android:text="ชำระเงินทันที" />
+
+                    <CheckBox
+                        android:id="@+id/checkBoxPayment"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_weight="0.1"
+                        android:paddingRight="@dimen/padding_normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutShowDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/layoutForCredit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            style="@style/ItemLine"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp">
+
+                            <TextView
+                                style="@style/TextView.Label.bold"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:text="ค่างวดที่ต้องชำระ"
+                                android:textColor="@color/bg_body_red" />
+
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:id="@+id/listView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/listViewContractCloseAccount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/viewContractCloseAccountDiscount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <TextView
+                                style="@style/TextView.Label.bold"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="0.5"
+                                android:text="ส่วนลดตัดสด" />
+
+                            <TextView
+                                android:id="@+id/txtContractCloseAccountDiscount"
+                                style="@style/TextView.Value"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="0.3"
+                                android:gravity="right"
+                                android:text="" />
+
+                            <TextView
+                                style="@style/TextView.Label.bold"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="20dp"
+                                android:layout_weight="0.2"
+                                android:gravity="left"
+                                android:text="@string/label_baht" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                style="@style/TextView.Label.bold"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="0.5"
+                                android:text="รวม" />
+
+                            <TextView
+                                android:id="@+id/txtTotalOutStanding"
+                                style="@style/TextView.Value"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="0.3"
+                                android:gravity="right"
+                                android:text="" />
+
+                            <TextView
+                                style="@style/TextView.Label.bold"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="20dp"
+                                android:layout_weight="0.2"
+                                android:gravity="left"
+                                android:text="@string/label_baht" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextView.Value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_normal"
+                            android:text="จำนวนเงินที่ชำระ" />
+
+                        <EditText
+                            android:id="@+id/editTextPrice"
+                            style="@style/TextView.Value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_weight="1"
+                            android:digits="0123456789.,"
+                            android:ems="7"
+                            android:inputType="numberDecimal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp">
+
+                        <CheckBox
+                            android:id="@+id/checkBoxFullPaid"
+                            style="@style/TextView.Value"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:text="ชำระเต็ม" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxPartlyPaid"
+                            style="@style/TextView.Value"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:text="ชำระบางส่วน/เกินจำนวน" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp">
+
+                        <CheckBox
+                            android:id="@+id/checkBoxContractCloseAccount"
+                            style="@style/TextView.Value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="ตัดสด"
+                            android:enabled="false"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llAppointmentsForPartlyPaid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/TextView.Value"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.4"
+                            android:gravity="center_vertical"
+                            android:text="นัดชำระบางส่วน" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.6">
+
+                            <TableRow
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:gravity="center_vertical">
+
+                                <EditText
+                                    android:id="@+id/editTextAppointmentsForPartlyPaid"
+                                    style="@style/TextView.Value"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:enabled="false"
+                                    android:ems="9" />
+
+                                <ImageButton
+                                    android:id="@+id/imageButtonAppointmentsForPartlyPaid"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@android:drawable/ic_menu_today" />
+                            </TableRow>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:background="#ECF0F1"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TextView.Value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_large"
+                            android:layout_weight="0.8"
+                            android:text="เงินสด" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxCash"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.2" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:background="#ECF0F1">
+
+                        <TextView
+                            style="@style/TextView.Value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_large"
+                            android:layout_weight="0.8"
+                            android:text="บัตรเครดิต" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxCredit"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.2" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:background="#ECF0F1">
+
+                        <TextView
+                            style="@style/TextView.Value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_large"
+                            android:layout_weight="0.8"
+                            android:text="เช็ค" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxCheque"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.2" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutBank"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp">
+
+                        <TextView
+                            style="@style/TextView.Value"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="ธนาคาร" />
+
+                        <Spinner
+                            android:id="@+id/spinnerBank"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutCredit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <TextView
+                                style="@style/TextView.Value"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:text="เลขที่บัตร" />
+
+                            <EditText
+                                android:id="@+id/editTextBankSeries"
+                                style="@style/TextView.Value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:inputType="number"
+                                android:maxLength="16" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <TextView
+                                style="@style/TextView.Value"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:text="รหัสอนุมัติ" />
+
+                            <EditText
+                                android:id="@+id/editTextAuthorizationCode"
+                                style="@style/TextView.Value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:inputType="number" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutCheque"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <TextView
+                                style="@style/TextView.Value"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:text="สาขา" />
+
+                            <EditText
+                                android:id="@+id/editTextBranch"
+                                style="@style/TextView.Value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <TextView
+                                style="@style/TextView.Value"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:text="เลขที่เช็ค" />
+
+                            <EditText
+                                android:id="@+id/editTextChequeNumber"
+                                style="@style/TextView.Value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:inputType="number"
+                                android:maxLength="7" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <TextView
+                                style="@style/TextView.Value"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:text="ลงวันที่" />
+
+                            <EditText
+                                android:id="@+id/editTextDate"
+                                style="@style/TextView.Value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10" />
+
+                            <ImageButton
+                                android:id="@+id/btnChequeDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@android:drawable/ic_menu_today" />
+
+                            <!--<ImageButton
+                                android:id="@+id/imageButtonDateCheque"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@android:drawable/ic_menu_today" />-->
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/sale_choice_height"
+                    android:layout_marginTop="3dp"
+                    android:background="@color/bg_table_main_header">
+
+                    <TextView
+                        style="@style/TextView.Value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:layout_weight="0.9"
+                        android:text="นัดชำระ" />
+
+                    <CheckBox
+                        android:id="@+id/checkBoxAppointments"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_weight="0.1"
+                        android:paddingRight="@dimen/padding_normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp"
+                    android:orientation="vertical">
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center">
+
+                        <EditText
+                            android:id="@+id/editTextappointment"
+                            style="@style/TextView.Value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="7" />
+
+                        <ImageButton
+                            android:id="@+id/imageButtonappointment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@android:drawable/ic_menu_today" />
+                    </TableRow>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

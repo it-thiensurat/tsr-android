@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">-->
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal">
+
+
+
+            <TextView
+                style="@style/TextView.Label.bold"
+                android:id="@+id/txtReceiptHeadTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/label_receipt"
+                android:textSize="@dimen/large_font_size"
+                android:layout_marginBottom="@dimen/padding_normal"
+                android:layout_marginTop="@dimen/padding_normal"
+                android:textColor="#2C2C2C"/>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_print_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_receipt_date"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/tvReceiptDate"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="01/01/2558"
+                    android:textColor="#2C2C2C"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_print_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_receipt_no"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/tvReceiptNo"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2AAA0105809001"
+                    android:textColor="#2C2C2C"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llReferenceNo"
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_print_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_reference_no"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/tvReferenceNo"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="56/3"
+                    android:textColor="#2C2C2C"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_print_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_contract_no"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/tvContractNo"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1AAA0105809001"
+                    android:textColor="#2C2C2C"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_print_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_contract_date"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/tvContractDate"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="01/01/2558"
+                    android:textColor="#2C2C2C"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_print_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_customer_name"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/tvCustomerName"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="นายTest 5555"
+                    android:textColor="#2C2C2C"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_print_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_credit_no"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/tvCitizenNo"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1-1111-11111-11-9"
+                    android:textColor="#2C2C2C"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_print_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_install_address"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/tvCustomerAddress"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="123 ม.1 ซ.2 ถ.3 อ.เมือง จ.ภูเก็ต 83000"
+                    android:textColor="#2C2C2C"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_print_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_product_name"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/tvProductName"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="เครื่องกรอกน้ำ TSR"
+                    android:textColor="#2C2C2C"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_print_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_contract_model"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/textViewModel"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A003"
+                    android:textColor="#2C2C2C"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_print_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_product_no"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/tvProductNo"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SA0123456"
+                    android:textColor="#2C2C2C"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llDiscount"
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/change_product_detail_top">
+                    <TextView
+                        android:id="@+id/tvCloseAccountOutstandingAmountLabel"
+                        style="@style/TextView.Label.bold"
+                        android:layout_width="@dimen/change_product_print_width"
+                        android:layout_height="wrap_content"
+                        android:text="ชำระงวดที่ 2-n"
+                        android:textColor="#2C2C2C"/>
+
+                    <TextView
+                        android:id="@+id/tvCloseAccountOutstandingAmount"
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5000.00 บาท"
+                        android:textColor="#2C2C2C"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/change_product_detail_top">
+
+                    <TextView
+                        style="@style/TextView.Label.bold"
+                        android:layout_width="@dimen/change_product_print_width"
+                        android:layout_height="wrap_content"
+                        android:text="ส่วนลดตัดสด"
+                        android:textColor="#2C2C2C"/>
+
+                    <TextView
+                        android:id="@+id/tvDiscountAmount"
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="500.00 บาท"
+                        android:textColor="#2C2C2C"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    android:id="@+id/tvPeriodAmountLabel"
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_print_width"
+                    android:layout_height="wrap_content"
+                    android:text="ค่างวดเงินสด หรือ \nค่างวดที่ 1/n\n(ชำระบางส่วน)"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/tvPeriodAmount"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3,000.00 บาท"
+                    android:textColor="#2C2C2C"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_print_width"
+                    android:layout_height="wrap_content"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/txtThaiBaht"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="สามพันบาทถ้วน"
+                    android:textColor="#2C2C2C"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llBalancesOfPeriod"
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    android:id="@+id/tvBalancesOfPeriodLabel"
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_print_width"
+                    android:layout_height="wrap_content"
+                    android:text="คงเหลืองวดที่ n"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/tvBalancesOfPeriod"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6,000.00 บาท"
+                    android:textColor="#2C2C2C"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llBalanceAmount"
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    android:id="@+id/tvBalanceAmountLabel"
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_print_width"
+                    android:layout_height="wrap_content"
+                    android:text="คงเหลือเงินสด หรือ \nคงเหลืองวดที่ 1 - n \nคงเหลืองวดที่ n"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/tvBalanceAmount"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6,000.00 บาท"
+                    android:textColor="#2C2C2C"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llCreditAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/change_product_detail_top">
+
+                    <TextView
+                        style="@style/TextView.Label.bold"
+                        android:layout_width="@dimen/change_product_print_width"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_credit_name"
+                        android:textColor="#2C2C2C"/>
+
+                    <TextView
+                        android:id="@+id/tvCreditName"
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ธนาคากรุงศรี"
+                        android:textColor="#2C2C2C"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/change_product_detail_top">
+
+                    <TextView
+                        style="@style/TextView.Label.bold"
+                        android:layout_width="@dimen/change_product_print_width"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_credit_no"
+                        android:textColor="#2C2C2C"/>
+
+                    <TextView
+                        android:id="@+id/tvCreditNumber"
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1234567890123"
+                        android:textColor="#2C2C2C"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llChequeAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/change_product_detail_top">
+
+                    <TextView
+                        style="@style/TextView.Label.bold"
+                        android:layout_width="@dimen/change_product_print_width"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_cheque_name"
+                        android:textColor="#2C2C2C"/>
+
+                    <TextView
+                        android:id="@+id/tvChequeName"
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ธนาคากรุงศรี"
+                        android:textColor="#2C2C2C"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/change_product_detail_top">
+
+                    <TextView
+                        style="@style/TextView.Label.bold"
+                        android:layout_width="@dimen/change_product_print_width"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_cheque_brach"
+                        android:textColor="#2C2C2C"/>
+
+                    <TextView
+                        android:id="@+id/tvChequeBrach"
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="รังสิต"
+                        android:textColor="#2C2C2C"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/change_product_detail_top">
+
+                    <TextView
+                        style="@style/TextView.Label.bold"
+                        android:layout_width="@dimen/change_product_print_width"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_cheque_no"
+                        android:textColor="#2C2C2C"/>
+
+                    <TextView
+                        android:id="@+id/tvChequeNo"
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1234567890123"
+                        android:textColor="#2C2C2C"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/change_product_detail_top">
+
+                    <TextView
+                        style="@style/TextView.Label.bold"
+                        android:layout_width="@dimen/change_product_print_width"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_cheque_date"
+                        android:textColor="#2C2C2C"/>
+
+                    <TextView
+                        android:id="@+id/tvChequeDate"
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="01/01/2558"
+                        android:textColor="#2C2C2C"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/sale_check_photo_height"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/lblReceiptTitle"
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text=".................. ผู้รับเงิน"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/txtSaleEmpName"
+                    style="@style/TextView.Value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="(ภคิน ล้อสุพรรณ)"
+                    android:textColor="#2C2C2C"/>
+
+                <TextView
+                    android:id="@+id/txtSaleTeamName"
+                    style="@style/TextView.Value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="ทีม PAK023"
+                    android:textColor="#2C2C2C"/>
+                <Button
+                    android:id="@+id/btnVoidReceipt"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="ยกเลิกใบเสร็จ"/>
+                <Button
+                    android:id="@+id/btnPrintImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="พิมพ์"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!--
+    </RelativeLayout>-->

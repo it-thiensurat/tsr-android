@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="th.co.thiensurat">
+
+    <!--Normal permissions-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+
+    <!--Signature permissions-->
+    <!--เป็นฟีเจอร์ที่ช่วยให้แอพพลิเคชันสามารถซ้อนทับ (Overlay) หน้าจอของอุปกรณ์และแอพพลิเคชันอื่นๆ ได้-->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+
+    <!--Permission groups-->
+    <!--CAMERA-->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!--STORAGE-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--LOCATION-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+
+    <!--GCM-->
+    <!--<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />-->
+    <!--<permission
+        android:name="th.co.thiensurat.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="th.co.thiensurat.permission.C2D_MESSAGE" />-->
+
+    <!--ไม่รู็เอาไปใช้ตรงไหน-->
+    <!--<uses-permission android:name="android.permission.GET_ACCOUNTS" />-->
+
+    <!--This constant was deprecated in API level 21.
+    เวอร์ชั่นที่ต่ำกว่า API level 21 ยังใช้งานการทำ timeout login เมื่อมีการเรียก getRunningTasks-->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+
+
+    <!-- Android Maps API V2 -->
+    <!--<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />-->
+
+    <!--<uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="true" />-->
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <application
+        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="true"
+        android:name="th.co.bighead.utilities.BHApplication"
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/tsr_app_name"
+        android:largeHeap="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
+        <activity
+            android:name=".activities.SplashActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/MainActivityTheme"
+            android:windowSoftInputMode="adjustPan" >
+
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" />
+            </intent-filter>
+            <meta-data android:name="android.hardware.usb.action.USB_DEVICE_DETACHED"
+                android:resource="@xml/device_filter" />
+        </activity>
+
+        <!--<activity
+            android:name="com.google.zxing.client.android.CaptureActivity"
+            android:clearTaskOnLaunch="true"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>-->
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:clearTaskOnLaunch="true"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            tools:replace="screenOrientation, theme" />
+
+        <activity
+            android:name=".activities.DeviceListActivity2"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Dialog" />
+
+        <receiver android:name=".service.TransactionService$TransactionReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name=".service.TRANSACTION_SCHEDULE" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".service.TimeOutLoginService$TimeOutLoginReceiver">
+            <intent-filter>
+                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".service.TimeOutLoginService$SuspendServiceNoticeReceiver" />
+
+        <service android:name=".service.TransactionService" />
+        <service android:name=".service.SynchronizeService" />
+        <service android:name=".service.TimeOutLoginService" />
+
+
+        <!--<receiver android:name="th.co.thiensurat.activities.MainActivity$MyBroadcastReceiver"></receiver>-->
+
+        <!--/*** [START] :: FCM ***/-->
+        <!--<receiver
+            android:name="th.co.thiensurat.service.GCMService$GCMReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="th.co.thiensurat" />
+            </intent-filter>
+        </receiver>-->
+
+        <!--<service android:name="th.co.thiensurat.service.GCMService"></service>-->
+
+
+        <service android:name=".service.FCM.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.FCM.MyJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+        <!--/*** [END] :: FCM ***/-->
+
+
+
+
+        <!--/*** [START] :: Map SDK ***/-->
+        <!--<meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyBkXWAoz2O5mJ4m6t9c46nvA1jyq_aOM8E" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"
+            tools:replace="android:value" />-->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+
+        <!--
+             The API key for Google Maps-based APIs.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAaAipXLku1soFbRMZkVKnu018zc9bAR5w" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+        <!--/*** [END] :: Map SDK ***/-->
+
+
+        <!--/*** [START] :: FileProvider ***/-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+        <!--/*** [END] :: FileProvider ***/-->
+
+        <!--/*** [START] :: Fabric ***/-->
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="45df8d7f15badfe2047a9857bdbf22a3b9227b75" />
+        <!--/*** [END] :: Fabric ***/-->
+    </application>
+</manifest>

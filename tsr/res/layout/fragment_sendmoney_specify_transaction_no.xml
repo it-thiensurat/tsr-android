@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <th.co.thiensurat.views.ViewTitle
+        style="@style/ViewTitle"
+        app:text="ระบุเลข Transaction No." />
+    
+    <LinearLayout
+        android:id="@+id/sendmoneydateheaderview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_view_header_height"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.4"
+            android:gravity="left"
+            android:paddingLeft="@dimen/padding_normal"
+            android:text="Transaction No. :"
+            android:textColor="#2c2c2c"
+            android:textSize="@dimen/normal_font_size"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtTransactionNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.6"
+            android:gravity="left"
+            android:paddingRight="@dimen/padding_large"
+            android:text=""
+            android:textSize="@dimen/normal_font_size"
+            android:singleLine="true"/>
+    </LinearLayout>
+    
+     <LinearLayout
+        android:id="@+id/sendmoneydateheaderview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_view_header_height"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.4"
+            android:gravity="left"
+            android:paddingLeft="@dimen/padding_normal"
+            android:text="วันที่ :"
+            android:textColor="#2c2c2c"
+            android:textSize="@dimen/normal_font_size"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtSendDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.6"
+            android:gravity="left"
+            android:paddingRight="@dimen/padding_large"
+            android:text=""
+            android:textSize="@dimen/normal_font_size"
+            android:editable="false"/>
+        <!--<ImageButton
+            android:id="@+id/btnSendDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_today" />-->
+    </LinearLayout>
+    
+     <LinearLayout
+        android:id="@+id/sendmoneydateheaderview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_view_header_height"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.4"
+            android:gravity="left"
+            android:paddingLeft="@dimen/padding_normal"
+            android:text="เวลา :"
+            android:textColor="#2c2c2c"
+            android:textSize="@dimen/normal_font_size"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtSendTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.6"
+            android:gravity="left"
+            android:paddingRight="@dimen/padding_large"
+            android:text=""
+            android:textSize="@dimen/normal_font_size"
+            android:editable="false"/>
+    </LinearLayout>
+    
+
+</LinearLayout>

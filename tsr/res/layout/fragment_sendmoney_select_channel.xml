@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/headerlayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/view_title" >
+
+        <TextView
+            android:id="@+id/txtCaption"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="จำนวนเงินที่ต้องนำส่งเข้าบริษัท"
+            android:textColor="@color/font_color_white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.5"
+            android:gravity="left"
+            android:text="จำนวนเงินที่นำส่ง"
+            android:textColor="#2c2c2c"
+            android:textSize="@dimen/normal_font_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtSendAmount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.5"
+            android:gravity="right"
+            android:text=""
+            android:textColor="#2c2c2c"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_view_header_height"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:background="@color/bg_table_main_header"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.7"
+            android:gravity="left"
+            android:text="แผนกการเงิน สนญ./สาขา"
+            android:textColor="#2c2c2c"
+            android:textSize="@dimen/normal_font_size"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/chkHeadOfficeOrBranch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.3"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/headofficeorbranchview"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.4"
+                android:gravity="left"
+                android:text="สนญ./สาขา"
+                android:textColor="#2c2c2c"
+                android:textSize="@dimen/normal_font_size"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spnHeadOffice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.6"
+                android:gravity="left" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.4"
+                android:gravity="left"
+                android:text="ชื่อผู้รับเงิน"
+                android:textColor="#2c2c2c"
+                android:textSize="@dimen/normal_font_size"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtPayeeName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.6"
+                android:gravity="left"
+                android:text=""
+                android:textColor="#2c2c2c"
+                android:textSize="@dimen/normal_font_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.4"
+                android:gravity="left"
+                android:text="เลขที่อ้างอิง"
+                android:textColor="#2c2c2c"
+                android:textSize="@dimen/normal_font_size"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtHeadOfficeOrBranchRefNo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.6"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="left"
+                android:text=""
+                android:textColor="#2c2c2c"
+                android:textSize="@dimen/normal_font_size" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bankheaderview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_view_header_height"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:background="@color/bg_table_main_header"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.7"
+            android:gravity="left"
+            android:text="ธนาคาร"
+            android:textColor="#2c2c2c"
+            android:textSize="@dimen/normal_font_size"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/chkBank"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.3"
+            android:gravity="center"
+            android:textSize="@dimen/normal_font_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bankview"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.4"
+                android:gravity="left"
+                android:text="ธนาคาร"
+                android:textColor="#2c2c2c"
+                android:textSize="@dimen/normal_font_size"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spnBank"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.6"
+                android:gravity="left" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.4"
+                android:gravity="left"
+                android:text="สาขา"
+                android:textColor="#2c2c2c"
+                android:textSize="@dimen/normal_font_size"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtBranch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.6"
+                android:gravity="left"
+                android:text=""
+                android:textColor="#2c2c2c"
+                android:textSize="@dimen/normal_font_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.4"
+                android:gravity="left"
+                android:text="เลขที่อ้างอิง"
+                android:textColor="#2c2c2c"
+                android:textSize="@dimen/normal_font_size"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtBankRefNo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.6"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="left"
+                android:text=""
+                android:textColor="#2c2c2c"
+                android:textSize="@dimen/normal_font_size" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/counterserviceheaderview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_view_header_height"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:background="@color/bg_table_main_header"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.7"
+            android:gravity="left"
+            android:text="เคาน์เตอร์เซอร์วิส"
+            android:textColor="#2c2c2c"
+            android:textSize="@dimen/normal_font_size"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/chkCounterService"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.3"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/counterserviceview"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.4"
+                android:gravity="left"
+                android:text="ชื่อ"
+                android:textColor="#2c2c2c"
+                android:textSize="@dimen/normal_font_size"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spnCounterService"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.6"
+                android:gravity="left" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.4"
+                android:gravity="left"
+                android:text="สาขา"
+                android:textColor="#2c2c2c"
+                android:textSize="@dimen/normal_font_size"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtCounterServiceBranch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.6"
+                android:gravity="left"
+                android:text=""
+                android:textColor="#2c2c2c"
+                android:textSize="@dimen/normal_font_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.4"
+                android:gravity="left"
+                android:text="เลขที่อ้างอิง"
+                android:textColor="#2c2c2c"
+                android:textSize="@dimen/normal_font_size"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtCounterServiceRefNo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.6"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="left"
+                android:text=""
+                android:textColor="#2c2c2c"
+                android:textSize="@dimen/normal_font_size" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

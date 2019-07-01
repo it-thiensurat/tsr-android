@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#000000"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/txtTitle"
+        style="@style/TextView.Value"
+        android:layout_width="@dimen/change_product_print"
+        android:layout_height="wrap_content"
+        android:layout_margin="0.5dp"
+        android:background="#FFFFFF"
+         />
+
+  
+    <TextView
+        android:id="@+id/txtSumCash"
+        style="@style/TextView.Value"
+        android:layout_width="@dimen/employee_header_height"
+        android:layout_height="wrap_content"
+        android:layout_margin="0.5dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/txtCash"
+        style="@style/TextView.Value"
+        android:layout_width="@dimen/employee_header_height"
+        android:layout_height="wrap_content"
+        android:layout_margin="0.5dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+         />
+
+    <TextView
+        android:id="@+id/txtNotCash"
+        style="@style/TextView.Value"
+        android:layout_width="@dimen/employee_header_height"
+        android:layout_height="wrap_content"
+        android:layout_margin="0.5dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+         />
+
+    <TextView
+        android:id="@+id/txtSumCredit"
+        style="@style/TextView.Value"
+        android:layout_width="@dimen/employee_header_height"
+        android:layout_height="wrap_content"
+        android:layout_margin="0.5dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+         />
+
+    <TextView
+        android:id="@+id/txtCredit"
+        style="@style/TextView.Value"
+        android:layout_width="@dimen/employee_header_height"
+        android:layout_height="wrap_content"
+        android:layout_margin="0.5dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:text="1" />
+
+    <TextView
+        android:id="@+id/txtNotCredit"
+        style="@style/TextView.Value"
+        android:layout_width="@dimen/employee_header_height"
+        android:layout_height="wrap_content"
+        android:layout_margin="0.5dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:text="1" />
+
+</LinearLayout>

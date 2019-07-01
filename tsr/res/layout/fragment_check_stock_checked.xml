@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/th.co.thiensurat"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+ 
+
+    <LinearLayout
+        style="@style/ViewTitle"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_normal" >
+
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75"
+            android:gravity="center"
+            android:text="รายการสินค้ารอตรวจสอบ"
+            android:textColor="@color/font_color_white" />
+
+        <TextView
+            android:id="@+id/txtProduct"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/font_color_white" />
+
+        <TextView
+            android:id="@+id/textView2"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="รายการ"
+            android:textColor="@color/font_color_white" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/ViewTitle"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_normal" >
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/check_stock_scan"
+            android:textColor="@color/font_color_white" />
+    </LinearLayout>
+
+    <TableRow
+        android:id="@+id/tableRow3"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/check_stock_barcode"
+        android:background="@color/bg_body_white" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageButton
+                android:id="@+id/imgbuttonSacnBarcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/barcode" />
+        </RelativeLayout>
+    </TableRow>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/check_stock_top" >
+
+        <TextView
+            android:id="@+id/TextView02"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="จำนวน" />
+
+        <TextView
+            android:id="@+id/txtNum"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:text="0" />
+
+        <TextView
+            android:id="@+id/TextView03"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/" />
+
+        <TextView
+            android:id="@+id/txtSum"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/check_stock_top"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/TextView05"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="ระบุรหัสสินค้า" />
+
+        <EditText
+            android:id="@+id/showTextScan"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10" >
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/check_stock_top" >
+
+        <TextView
+            android:id="@+id/TextView1"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/check_stock_marginLeft"
+            android:text="สินค้าถูกต้อง" />
+
+        <TextView
+            android:id="@+id/txtTrue"
+            style="@style/TextView.Value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/check_stock_marginRight"
+            android:gravity="right"
+            android:text="0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/check_stock_top" >
+
+        <TextView
+            android:id="@+id/TextView2"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/check_stock_marginLeft"
+            android:text="สินค้าไม่ถูกต้อง" />
+
+        <TextView
+            android:id="@+id/txtFalse"
+            style="@style/TextView.Value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/check_stock_marginRight"
+            android:gravity="right"
+            android:text="0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/check_stock_top" >
+
+        <Button
+            android:id="@+id/btnOK"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="OK" />
+    </LinearLayout>
+
+</LinearLayout>

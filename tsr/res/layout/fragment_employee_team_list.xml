@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        style="@style/ViewTitle"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_normal" >
+
+        <TextView
+            android:id="@+id/txtTeamCode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.25"
+            android:gravity="left"
+            android:text="ทีม PAK23"
+            android:textColor="@color/font_color_white"
+            android:textSize="@dimen/normal_font_size" />
+
+        <TextView
+            android:id="@+id/txtFortnightNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.3"
+            android:gravity="left"
+            android:text="ปักษ์ที่ 10/57"
+            android:textColor="@color/font_color_white"
+            android:textSize="@dimen/normal_font_size" />
+
+        <TextView
+            android:id="@+id/txtFortnightDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.45"
+            android:gravity="right"
+            android:text="05/06/57-20/06/57"
+            android:textColor="@color/font_color_white"
+            android:textSize="@dimen/normal_font_size" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lvEmployee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:background="#ffffff"
+        android:dividerHeight="0dp"
+        android:drawSelectorOnTop="false"
+        android:listSelector="@drawable/selector_list_view_default" />
+
+</LinearLayout>

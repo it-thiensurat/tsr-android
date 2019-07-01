@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+    
+    <LinearLayout
+        android:id="@+id/linearLayoutHeadNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/txtNumber1"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_number_sale_color_gray"
+            android:gravity="center"
+            android:shadowRadius="10.0"
+            android:text="1"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/layout_underline"
+            android:layout_width="15dp"
+            android:layout_height="5dip"
+            android:layout_gravity="center_vertical"
+            android:background="@color/bg_line_status_number" />
+
+        <TextView
+            android:id="@+id/txtNumber2"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_number_sale_color_gray"
+            android:gravity="center"
+            android:shadowRadius="10.0"
+            android:text="2"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/layout_underline"
+            android:layout_width="15dp"
+            android:layout_height="5dip"
+            android:layout_gravity="center_vertical"
+            android:background="@color/bg_line_status_number" />
+
+        <TextView
+            android:id="@+id/txtNumber3"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_number_sale_color_gray"
+            android:gravity="center"
+            android:shadowRadius="10.0"
+            android:text="3"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/layout_underline"
+            android:layout_width="15dp"
+            android:layout_height="5dip"
+            android:layout_gravity="center_vertical"
+            android:background="@color/bg_line_status_number" />
+
+        <TextView
+            android:id="@+id/txtNumber4"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_number_sale_color_gray"
+            android:gravity="center"
+            android:shadowRadius="10.0"
+            android:text="4"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/layout_underline"
+            android:layout_width="15dp"
+            android:layout_height="5dip"
+            android:layout_gravity="center_vertical"
+            android:background="@color/bg_line_status_number" />
+
+        <TextView
+            android:id="@+id/txtNumber5"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_number_sale_color_gray"
+            android:gravity="center"
+            android:shadowRadius="10.0"
+            android:text="..."
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+    
+    
+
+    <th.co.thiensurat.views.ViewTitle
+        style="@style/ViewTitle"
+        android:padding="@dimen/padding_normal"
+        app:text="@string/caption_payment_type_select" >
+    </th.co.thiensurat.views.ViewTitle>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="ราคาขาย" />
+
+                <EditText
+                    android:id="@+id/editTextPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:layout_marginRight="@dimen/padding_small"
+                    android:ems="8"
+                    android:inputType="number" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="บาท" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="เครื่องแสดง" />
+
+                <Spinner
+                    android:id="@+id/spinnerChange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:entries="@array/pay_change" />
+            </LinearLayout>
+
+            <LinearLayout
+                 android:id="@+id/linearLayoutDistCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                 <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="ส่วนลด" />
+
+                <EditText
+                    android:id="@+id/editTextDiscountChange"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:inputType="number" >
+                </EditText>
+
+                <TextView
+                    android:id="@+id/textView3"
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="บาท" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutProductChange"
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_normal"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/textDetail"
+                        style="@style/TextView.Label.bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_large"
+                        android:text="รายละเอียดเครื่องแสดง"
+                        android:textColor="#FF0000" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/textBrand"
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="ยี่ห้อ" />
+
+                    <Spinner
+                        android:id="@+id/spinnerBrand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:entries="@array/pay_brand" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/textModel"
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="รุ่น" />
+
+                    <EditText
+                        android:id="@+id/editTextBrand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:ems="10" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/textNumber"
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="หมายเลขเครื่อง"
+                        android:textSize="@dimen/small_font_size" />
+
+                    <EditText
+                        android:id="@+id/editTextBrandNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:ems="10" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/textView4"
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="ราคาสุทธิ" />
+
+                <EditText
+                    android:id="@+id/editTextSumPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:layout_marginRight="@dimen/padding_small"
+                    android:ems="8"
+                    android:inputType="number" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="บาท" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

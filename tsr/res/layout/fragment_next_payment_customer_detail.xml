@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <th.co.thiensurat.views.ViewTitle
+        style="@style/ViewTitle"
+        app:text="@string/caption_customer_detail" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/padding_small"
+        android:paddingTop="@dimen/padding_small" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/label_contract_date" />
+
+                <TextView
+                    android:id="@+id/tvContractDate"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/label_contract_no" />
+
+                <TextView
+                    android:id="@+id/tvContractNo"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/label_customer_name" />
+
+                <TextView
+                    android:id="@+id/tvCustomerName"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/change_product_detail_width2"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/label_citizen_no" />
+
+                <TextView
+                    android:id="@+id/tvCitizenNo"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="match_parent"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/label_customer_address" />
+
+                <TextView
+                    android:id="@+id/tvCustomerAddress"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:layout_weight="@dimen/next_payment_customer_detail_value_weight" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="match_parent"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/label_install_address" />
+
+                <TextView
+                    android:id="@+id/tvInstallAddress"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:layout_weight="@dimen/next_payment_customer_detail_value_weight" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/label_product_name" />
+
+                <TextView
+                    android:id="@+id/tvProductName"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/change_product_detail_width2"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/label_product_no" />
+
+                <TextView
+                    android:id="@+id/tvProductSerial"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/change_product_detail_width2"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/label_product_price" />
+
+                <TextView
+                    android:id="@+id/tvProductPrice"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/change_product_detail_width2"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/label_product_discount" />
+
+                <TextView
+                    android:id="@+id/tvProductDiscount"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/change_product_detail_width2"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="@string/label_product_price_net" />
+
+                <TextView
+                    android:id="@+id/tvProductPriceNet"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llOutstandingDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_large"
+                android:layout_marginTop="@dimen/padding_large"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <LinearLayout
+                    android:id="@+id/llOutstandingList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/rlBalance"
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:id="@+id/tvBalancePeriod"
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/change_product_detail_width2"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal" />
+
+                    <TextView
+                        android:id="@+id/tvBalanceAmount"
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llPaymentDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_large"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/change_product_detail_width2"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="@string/label_balance_amount" />
+
+                    <TextView
+                        android:id="@+id/tvRemainingAmount"
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llOutstandingAmount"
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:id="@+id/tvOutstandingAmountLabel"
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/change_product_detail_width2"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal" />
+
+                    <TextView
+                        android:id="@+id/tvOutstandingAmount"
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llPaymentAmount"
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:id="@+id/tvCurrentPayAmountLabel"
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/change_product_detail_width2"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal" />
+
+                    <TextView
+                        android:id="@+id/tvCurrentPayAmount"
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/change_product_detail_width2"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="@string/label_payment_amount" />
+
+                    <EditText
+                        android:id="@+id/etPaymentAmount"
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:inputType="number" />
+
+                    <TextView
+                        style="@style/TextView.Value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="@string/label_baht" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

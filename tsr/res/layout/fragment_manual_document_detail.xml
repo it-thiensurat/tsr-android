@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <th.co.thiensurat.views.ViewTitle
+        android:id="@+id/lblTitle"
+        style="@style/ViewTitle"
+        app:text="@string/manual_document_detail_title"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding_normal"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/lblDocNo"
+                style="@style/TextView.Label"
+                android:layout_weight="0.4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/manual_document_detail_doc_no" />
+
+            <TextView
+                android:id="@+id/txtDocNo"
+                style="@style/TextView.Value"
+                android:layout_weight="0.6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:padding="@dimen/padding_normal"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/lblManualBookNo"
+                style="@style/TextView.Label"
+                android:layout_weight="0.4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/manual_document_detail_manual_book_no" />
+
+            <EditText
+                android:id="@+id/etManualBookNo"
+                android:layout_weight="0.6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:padding="@dimen/padding_normal"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:textSize="@dimen/normal_font_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/lblManualRunningNo"
+                style="@style/TextView.Label"
+                android:layout_weight="0.4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/manual_document_detail_manual_running_no" />
+
+            <EditText
+                android:id="@+id/etManualRunningNo"
+                android:layout_weight="0.6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:padding="@dimen/padding_normal"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:textSize="@dimen/normal_font_size"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/lblNote"
+                style="@style/TextView.Label"
+                android:layout_weight="0.4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/manual_document_detail_note" />
+
+            <EditText
+                android:id="@+id/etNote"
+                android:layout_weight="0.6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:padding="@dimen/padding_normal"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:textSize="@dimen/normal_font_size" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lvManualDocumentList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/padding_normal"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:layout_marginTop="@dimen/padding_small"
+            android:choiceMode="singleChoice"
+            android:dividerHeight="0dp"
+            android:listSelector="@drawable/selector_list_view_default" >
+        </ListView>
+    </LinearLayout>
+
+</LinearLayout>

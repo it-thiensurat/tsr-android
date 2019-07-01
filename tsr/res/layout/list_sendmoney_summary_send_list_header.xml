@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_table_main_header"
+    android:orientation="horizontal"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp">
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:text="วันที่เก็บเงิน\nเลขอ้างอิง(Ref.2)"/>
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:text="Transaction No.\n(เลขที่รับเงิน)"
+         />
+    <!--Fixed - [BHPROJ-0026-950]-->
+    <!--android:text="Transaction No."-->
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_weight="0.2"
+        android:gravity="right"
+        android:text="เงินที่ส่ง"
+         />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.2"
+        android:gravity="center"
+        android:text="วันที่/เวลา\nที่บันทึก"
+          />
+
+</LinearLayout>

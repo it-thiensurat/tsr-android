@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/selector_list_view_background"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:weightSum="4" >
+
+    <TextView
+        android:id="@+id/txtDocumentNo"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1.5"
+        android:gravity="center"
+        android:text="ใบขอเบิกอะไหล่" />
+
+    <TextView
+        android:id="@+id/txtEffDate"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="วันที่" />
+
+    <TextView
+        android:id="@+id/txtTime"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="เวลา" />
+
+    <TextView
+        android:id="@+id/txtAuthorization"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:text="ผล"/>
+
+</LinearLayout>

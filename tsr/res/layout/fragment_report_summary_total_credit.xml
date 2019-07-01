@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/txtPayment"
+            style="@style/TextView.Label.bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:text="เก็บเงินได้" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:fillViewport="true" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <com.hb.views.PinnedSectionListView
+                    android:id="@+id/lvTotalCredit"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/employee_detail_width"
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:choiceMode="singleChoice"
+                    android:dividerHeight="0dp"
+                    android:listSelector="@drawable/selector_list_view_default" >
+                </com.hb.views.PinnedSectionListView>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/txtNotPayment"
+            style="@style/TextView.Label.bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginTop="@dimen/padding_normal"
+            android:text="เก็บเงินไม่ได้" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:fillViewport="true" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <com.hb.views.PinnedSectionListView
+                    android:id="@+id/lvTotalNotCredit"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/employee_detail_width"
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:choiceMode="singleChoice"
+                    android:dividerHeight="0dp"
+                    android:listSelector="@drawable/selector_list_view_default" >
+                </com.hb.views.PinnedSectionListView>
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+
+</ScrollView>

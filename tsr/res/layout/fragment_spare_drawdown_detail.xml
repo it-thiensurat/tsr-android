@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:text="@string/label_spare_drawdown"
+        android:textColor="#2C2C2C"
+        android:textSize="@dimen/large_font_size" />
+
+    <LinearLayout
+        style="@style/ItemLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="วันที่ขอเบิก"
+            android:textColor="#2C2C2C" />
+
+        <TextView
+            android:id="@+id/tvDrawdownDate"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="01/01/2558"
+            android:textColor="#2C2C2C" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llDrawdownNo"
+        style="@style/ItemLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="เลขที่ใบขอเบิก"
+            android:textColor="#2C2C2C" />
+
+        <TextView
+            android:id="@+id/tvDrawdownNo"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="8AAA0105809001"
+            android:textColor="#2C2C2C" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/ItemLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="สรุปรายการขอเบิกเครื่อง/อะไหล่"
+            android:textColor="#2C2C2C" />
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/lvSummaryDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

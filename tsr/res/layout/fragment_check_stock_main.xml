@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragments.stocks.CheckStockMainFragment" >
+
+    <LinearLayout
+        style="@style/ViewTitle"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_normal" >
+
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75"
+            android:gravity="center"
+            android:text="รายการสินค้ารอตรวจสอบ"
+            android:textColor="@color/font_color_white" />
+
+        <TextView
+            android:id="@+id/txtProduct"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/font_color_white" />
+
+        <TextView
+            android:id="@+id/textView2"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="รายการ"
+            android:textColor="@color/font_color_white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2" >
+
+        <Button
+            android:id="@+id/btnImport"
+            style="@style/ButtonTop"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/check_stock_height"
+            android:layout_margin="@dimen/padding_normal"
+            android:layout_marginTop="@dimen/check_stock_top"
+            android:layout_weight="1"
+            android:text="@string/button_import" />
+
+        <!--
+             <Button
+            android:id="@+id/btnCheck"
+            style="@style/ButtonTop"
+            android:layout_width="@dimen/check_stock_width"
+            android:layout_height="@dimen/check_stock_height"
+            android:layout_marginLeft="@dimen/check_stock_left"
+            android:layout_marginTop="@dimen/check_stock_top"
+            android:text="@string/button_check"
+             />
+        -->
+
+        <Button
+            android:id="@+id/btnRefresh"
+            style="@style/ButtonTop"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/check_stock_height"
+            android:layout_margin="@dimen/padding_normal"
+            android:layout_marginTop="@dimen/check_stock_top"
+            android:layout_weight="1"
+            android:text="Refresh" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/check_stock_height"
+        android:layout_marginTop="@dimen/check_stock_top" >
+
+        <TextView
+            android:id="@+id/txtDetail"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="รายละเอียดสินค้าที่เบิกจากคลัง"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/txtImport"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="50dp"
+            android:text="(0)"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lvProductStock"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal" >
+    </ListView>
+
+    <TextView
+        android:id="@+id/txtShow"
+        style="@style/TextView.Value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:text="ไม่มีสินค้ารอการตรวจสอบ  กดปุ่มนำเข้าสินค้าเพื่อรายการอ่านข้อมูลสินค้าเข้าระบบ "
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</LinearLayout>

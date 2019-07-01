@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_view_header_height"
+    android:background="#000000"
+    android:weightSum="8">
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="วันที่นำส่งเงิน" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="จำนวนเงินที่นำส่ง" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ช่องทางใน\nการนำส่งเงิน" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="สถานที่นำส่งเงิน" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ชื่อผู้รับเงิน" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="เลขที่อ้างอิง1" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="เลขที่อ้างอิง2\n(ส่งเงินแล้ว)" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="วันที่/เวลา" />
+</LinearLayout>

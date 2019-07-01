@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/layoutEmp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/normal_margin_top"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutEmployee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imgEmployee"
+                android:layout_width="@dimen/employee_image_size"
+                android:layout_height="@dimen/employee_image_size"
+                android:src="@drawable/ic_avatar" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.6"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtEmployeeFullName"
+                    style="@style/TextView.Value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:text="นาย"
+                    android:textSize="@dimen/large_font_size" />
+
+                <TextView
+                    android:id="@+id/txtPositionName"
+                    style="@style/TextView.Value"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:text="พนักงาน"
+                    android:textSize="@dimen/large_font_size" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/normal_bottom"
+            android:layout_marginTop="@dimen/normal_bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtSaleLeaderTeamCode"
+                style="@style/TextView.Label.bold"
+                android:layout_width="@dimen/employee_detail_width"
+                android:layout_height="@dimen/impound_detail_height2"
+                android:layout_gravity="center_vertical"
+                android:background="@color/bg_sub_title"
+                android:gravity="right|center_vertical"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="หัวหน้าทีม :"
+                android:textColor="#2c2c2c" />
+
+            <TextView
+                android:id="@+id/txtSaleLeaderName"
+                style="@style/TextView.Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:gravity="center_vertical"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/normal_bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtSupervisorTitle"
+                style="@style/TextView.Label.bold"
+                android:layout_width="@dimen/employee_detail_width"
+                android:layout_height="@dimen/impound_detail_height2"
+                android:layout_gravity="center_vertical"
+                android:background="@color/bg_sub_title"
+                android:gravity="right|center_vertical"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="ซุปฯ :"
+                android:textColor="#2c2c2c" />
+
+            <TextView
+                android:id="@+id/txtSupervisorName"
+                style="@style/TextView.Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:gravity="center_vertical"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/normal_bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtLineManagerTitle"
+                style="@style/TextView.Label.bold"
+                android:layout_width="@dimen/employee_detail_width"
+                android:layout_height="@dimen/impound_detail_height2"
+                android:layout_gravity="center_vertical"
+                android:background="@color/bg_sub_title"
+                android:gravity="right|center_vertical"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="ผู้จัดการสาย :"
+                android:textColor="#2c2c2c" />
+
+            <TextView
+                android:id="@+id/txtLineManagerName"
+                style="@style/TextView.Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:gravity="center_vertical"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/normal_bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtManagerTitle"
+                style="@style/TextView.Label.bold"
+                android:layout_width="@dimen/employee_detail_width"
+                android:layout_height="@dimen/impound_detail_height2"
+                android:layout_gravity="center_vertical"
+                android:background="@color/bg_sub_title"
+                android:gravity="right|center_vertical"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="ผู้จัดการฝ่าย :"
+                android:textColor="#2c2c2c" />
+
+            <TextView
+                android:id="@+id/txtManagerName"
+                style="@style/TextView.Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:gravity="center_vertical"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextView.Value"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="วันที่"
+                    android:background="#e2e2e2"
+                    android:textColor="#2c2c2c"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"/>
+
+                <TextView
+                    style="@style/TextView.Value"
+                    android:layout_weight="0.3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="จำนวนเครื่อง"
+                    android:background="#e2e2e2"
+                    android:textColor="#2c2c2c"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"/>
+
+                <TextView
+                    style="@style/TextView.Value"
+                    android:layout_weight="0.2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="เงิน"
+                    android:background="#e2e2e2"
+                    android:textColor="#2c2c2c"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtDate"
+                    style="@style/TextView.Value"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="ยอดขาย ณ 02/06/2559"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"/>
+
+                <TextView
+                    android:id="@+id/txtSaleSumTotal"
+                    style="@style/TextView.Value"
+                    android:layout_weight="0.3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="1"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"/>
+
+                <TextView
+                    android:id="@+id/txtSaleSumMoney"
+                    style="@style/TextView.Value"
+                    android:layout_weight="0.2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="950,000.00"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</merge>

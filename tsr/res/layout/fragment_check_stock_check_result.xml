@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/th.co.thiensurat"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+
+    <LinearLayout
+        style="@style/ViewTitle"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_normal" >
+
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75"
+            android:gravity="center"
+            android:text="รายการสินค้ารอตรวจสอบ"
+            android:textColor="@color/font_color_white" />
+
+        <TextView
+            android:id="@+id/txtProduct"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/font_color_white" />
+
+        <TextView
+            android:id="@+id/textView2"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="รายการ"
+            android:textColor="@color/font_color_white" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/ViewTitle"
+        android:background="@color/bg_active"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_normal" >
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/check_stock_end" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/check_stock_top" >
+
+        <TextView
+            android:id="@+id/TextView02"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="จำนวน" />
+
+        <TextView
+            android:id="@+id/txtNumResult"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:text="0" />
+
+        <TextView
+            android:id="@+id/TextView03"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/" />
+
+        <TextView
+            android:id="@+id/txtSumResult"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LayoutTure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/check_stock_top" >
+
+        <TextView
+            android:id="@+id/txtTrue"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/check_stock_marginLeft"
+            android:text="สินค้าถูกต้อง"
+            android:textColor="#32CD32" />
+
+        <TextView
+            android:id="@+id/txtCheckedCount"
+            style="@style/TextView.Value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/check_stock_marginRight"
+            android:gravity="right"
+            android:text="0"
+            android:textColor="#32CD32" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutDisplayOver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/check_stock_top" >
+
+        <TextView
+            android:id="@+id/txtFalse"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/check_stock_marginLeft"
+            android:text="สินค้าไม่ถูกต้อง    (เกิน)"
+            android:textColor="#FF0000" />
+
+        <TextView
+            android:id="@+id/txtOverCount"
+            style="@style/TextView.Value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/check_stock_marginRight"
+            android:gravity="right"
+            android:text="0"
+            android:textColor="#FF0000" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/change_product_product_height"
+        android:layout_marginRight="@dimen/change_product_product_height"
+        android:layout_marginTop="10dp" >
+
+        <ListView
+            android:id="@+id/lvProductOver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal" >
+        </ListView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutDisplayMiss"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/check_stock_height"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/check_stock_top"
+        android:background="@color/bg_alert" >
+
+        <TextView
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/check_stock_marginLeft"
+            android:gravity="center_vertical"
+            android:text="สินค้าขาด" />
+
+        <TextView
+            android:id="@+id/txtWaitCount"
+            style="@style/TextView.Value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/check_stock_marginRight"
+            android:gravity="right"
+            android:text="0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/change_product_product_height"
+        android:layout_marginRight="@dimen/change_product_product_height"
+        android:layout_marginTop="10dp" >
+
+        <ListView
+            android:id="@+id/lvProductWait"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal" >
+        </ListView>
+    </LinearLayout>
+
+</LinearLayout>

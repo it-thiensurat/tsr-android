@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <th.co.thiensurat.views.ViewTitle
+        style="@style/ViewTitle"
+        app:text="จำนวนเงินที่ต้องนำส่งเข้าบริษัท" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_view_header_height"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:background="@color/bg_table_main_header"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/txtPayDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_weight="0.5"
+            android:gravity="left"
+            android:text="9/06/2557"
+            android:textColor="#2c2c2c"
+            android:textSize="@dimen/normal_font_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtPAYAMTTotal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:layout_weight="0.5"
+            android:gravity="right"
+            android:text="39,400"
+            android:textColor="#2c2c2c"
+            android:textSize="@dimen/normal_font_size"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!--<ListView
+        android:id="@+id/lvSumPaymentType"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginBottom="@dimen/padding_normal"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:background="#ffffff"
+        android:choiceMode="singleChoice"
+        android:divider="@color/transparent"
+        android:dividerHeight="0dp"
+        android:listSelector="@drawable/selector_list_view_default" />-->
+    <ListView
+        android:id="@+id/lvSumPaymentType"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginBottom="@dimen/padding_normal"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:background="#ffffff"
+        android:choiceMode="singleChoice"
+        android:dividerHeight="0dp"
+        android:listSelector="@drawable/selector_list_view_default" />
+
+    <LinearLayout
+        android:id="@+id/sendmoneydateheaderview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_view_header_height"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:background="@color/bg_table_main_header"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_vertical"
+            android:paddingLeft="@dimen/padding_large"
+            android:layout_weight="1"
+            android:text="วันที่ส่งเงิน"
+            android:textColor="#2c2c2c"
+            android:textSize="@dimen/normal_font_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:paddingRight="@dimen/padding_large"
+            android:text="จำนวนเงิน"
+            android:textColor="#2c2c2c"
+            android:textSize="@dimen/normal_font_size"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sendmoneydateview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/edtSendDate"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#2c2c2c"
+            android:editable="false"
+            android:textSize="@dimen/normal_font_size" >
+        </EditText>
+
+        <ImageButton
+            android:id="@+id/btnSendDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_today" />
+
+        <EditText
+            android:id="@+id/edtSendAmount"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="right"
+            android:inputType="numberDecimal"
+            android:text="12,400"
+            android:textColor="#2c2c2c"
+            android:textSize="@dimen/normal_font_size" >
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_view_header_height"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:background="#fc7675"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_weight="1"
+            android:text="คงเหลือ"
+            android:textColor="#2c2c2c"
+            android:textSize="@dimen/normal_font_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtRemain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:gravity="right"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:text="39,400"
+            android:textColor="#2c2c2c"
+            android:textSize="@dimen/normal_font_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:paddingRight="@dimen/padding_normal"
+            android:text="บาท"
+            android:textColor="#2c2c2c"
+            android:textSize="@dimen/normal_font_size"
+            android:textStyle="bold" >
+        </TextView>
+    </LinearLayout>
+
+</LinearLayout>

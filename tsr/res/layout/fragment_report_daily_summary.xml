@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/th.co.thiensurat"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--<th.co.thiensurat.views.ViewTitle-->
+        <!--style="@style/ViewTitle"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:padding="@dimen/normal_bottom"-->
+        <!--app:text="@string/caption_report_daily_summary" />-->
+
+    <!--<HorizontalScrollView android:id="@+id/horizontalScrollView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_margin="@dimen/padding_normal"-->
+        <!--android:fillViewport="true"-->
+        <!--android:visibility="gone">-->
+
+        <!--<ListView-->
+            <!--android:id="@+id/lvDailySummary"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_margin="5dp"-->
+            <!--android:choiceMode="singleChoice"-->
+            <!--android:dividerHeight="0dp"-->
+            <!--android:listSelector="@drawable/selector_list_view_default" >-->
+        <!--</ListView>-->
+    <!--</HorizontalScrollView>-->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/padding_normal"
+        android:orientation="vertical" >
+
+        <WebView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/webView" />
+    </LinearLayout>
+
+
+
+</LinearLayout>

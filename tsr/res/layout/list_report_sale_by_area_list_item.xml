@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_view_height"
+    android:background="@drawable/selector_list_view_background" >
+
+    <TextView
+        android:id="@+id/tvAreaName"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.4"
+        android:gravity="left" />
+
+    <TextView
+        android:id="@+id/tvTotalSummary"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.2"
+        android:paddingLeft="@dimen/padding_small" />
+
+    <TextView
+        android:id="@+id/tvCashSummary"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.2"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tvCreditSummary"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.2"
+        android:gravity="center" />
+
+</LinearLayout>

@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+
+    <th.co.thiensurat.views.ViewTitle
+        style="@style/ViewTitle"
+        android:padding="@dimen/padding_normal"
+        app:text="@string/caption_complain_action_detail" />
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/padding_normal">
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_detail_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_date_problem" />
+
+                <TextView
+                    android:id="@+id/textRequestDate"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_detail_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_no_problem" />
+
+                <TextView
+                    android:id="@+id/textComplainPaperID"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_detail_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/complain_request_cause" />
+
+                <TextView
+                    android:id="@+id/textRequestProblemName"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_detail_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/complain_request_note" />
+
+                <TextView
+                    android:id="@+id/textRequestDetail"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutContractNumber"
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_detail_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_contract_no" />
+
+                <TextView
+                    android:id="@+id/textViewContractNumber"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_detail_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_customer_name" />
+
+                <TextView
+                    android:id="@+id/textViewName"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_detail_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_credit_no" />
+
+                <TextView
+                    android:id="@+id/textViewIDcard"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_detail_width"
+                    android:layout_height="wrap_content"
+                    android:text="วันที่ทำสัญญา" />
+
+                <TextView
+                    android:id="@+id/textContractDate"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:layout_weight="@dimen/next_payment_customer_detail_value_weight" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_detail_width"
+                    android:layout_height="wrap_content"
+                    android:text="พนักงานขาย" />
+
+                <TextView
+                    android:id="@+id/textViewEmpName"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:layout_weight="@dimen/next_payment_customer_detail_value_weight" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_detail_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_sale_leader" />
+
+                <TextView
+                    android:id="@+id/textViewLeaderName"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:layout_weight="@dimen/next_payment_customer_detail_value_weight" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_detail_width"
+                    android:layout_height="wrap_content"
+                    android:text="รหัสสินค้า" />
+
+                <TextView
+                    android:id="@+id/textViewProductSerialNumber"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:layout_weight="@dimen/next_payment_customer_detail_value_weight" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_detail_width"
+                    android:layout_height="wrap_content"
+                    android:text="ชื่อสินค้า" />
+
+                <TextView
+                    android:id="@+id/textViewProductName"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/layout_underline"
+                android:layout_width="match_parent"
+                android:layout_height="3dip"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/bg_show_detail"
+                android:visibility="gone" />
+
+            <!-- Fixed - [BHPROJ-0026-841] :: Remove DDL Effective Problem -->
+            <!--<LinearLayout-->
+            <!--style="@style/ItemLine"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="@dimen/change_product_detail_top">-->
+
+            <!--<TextView-->
+            <!--style="@style/TextView.Label.bold"-->
+            <!--android:layout_width="@dimen/change_product_detail_width"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="ปัญหาที่พบ" />-->
+
+            <!--<Spinner-->
+            <!--android:id="@+id/spinnerProblem"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:spinnerMode="dialog"-->
+            <!--android:layout_marginLeft="@dimen/padding_normal" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/textViewProblem"-->
+            <!--style="@style/TextView.Value"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="@dimen/padding_normal" />-->
+            <!--</LinearLayout>-->
+
+            <LinearLayout
+                android:id="@+id/layoutApproved"
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/change_product_detail_top"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_detail_width"
+                    android:layout_height="wrap_content"
+                    android:text="หมายเหตุการอนุมัติ" />
+
+                <TextView
+                    android:id="@+id/txtApproveDetail"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutResolve"
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
+                android:layout_marginTop="@dimen/change_product_detail_top"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/change_product_detail_width"
+                    android:layout_height="wrap_content"
+                    android:text="วิธีการแก้ไขปัญหา" />
+
+                <EditText
+                    android:id="@+id/editTextNote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"></EditText>
+
+                <TextView
+                    android:id="@+id/textViewNote"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

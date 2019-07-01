@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtDetail"
+            style="@style/TextView.Value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+        <TextView
+            style="@style/TextView.Value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="สาเหตุการขอถอดเครื่อง" />
+
+
+        <Spinner
+            android:id="@+id/spinnerProblem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/TextView.Value"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="หมายเหตุ" />
+
+        <EditText
+            android:id="@+id/edtNote"
+            style="@style/TextView.Value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|left"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical" />
+    </LinearLayout>
+
+</LinearLayout>

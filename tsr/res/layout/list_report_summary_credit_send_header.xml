@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#000000"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="@dimen/change_product_detail_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="0.5dp"
+            android:background="@color/bg_table_main_header"
+            android:gravity="center"
+            android:text="วันที่" />
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="@dimen/employee_list_height"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="0.5dp"
+            android:background="@color/bg_table_main_header"
+            android:gravity="center"
+            android:text="เลขที่อ้างอิง" />
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="@dimen/employee_list_height"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="0.5dp"
+            android:background="@color/bg_table_main_header"
+            android:gravity="center"
+            android:text="เงินที่ส่ง" />
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="@dimen/change_product_detail_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="0.5dp"
+            android:background="@color/bg_table_main_header"
+            android:gravity="center"
+            android:text="วัน / เวลา ส่งเงิน" />
+    </LinearLayout>
+
+</LinearLayout>

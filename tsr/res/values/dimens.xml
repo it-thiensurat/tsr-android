@@ -1,0 +1,213 @@
+<resources>
+
+    <!--
+         Per the design guidelines, navigation drawers should be between 240dp and 320dp:
+         https://developer.android.com/design/patterns/navigation-drawer.html
+
+
+    -->
+
+    <dimen name="title_bar_font_size">20dp</dimen>
+
+    <dimen name="slidingmenu_offset">60dp</dimen>
+    <dimen name="shadow_width">15dp</dimen>
+    <dimen name="login_logo_margin_top">67dp</dimen>
+    <dimen name="login_input_margin_top">80dp</dimen>
+    <dimen name="login_input_width">250dp</dimen>
+    <dimen name="match_parent">440dp</dimen>
+    <dimen name="normal_bottom">1.5dp</dimen>
+    <dimen name="list_menu_unfinished_height">25dp</dimen>
+
+    <item name="wrap_content" format="integer" type="dimen">-2</item>
+
+    <dimen name="padding_small">5dp</dimen>
+    <dimen name="padding_normal">10dp</dimen>
+    <dimen name="padding_large">20dp</dimen>
+    <dimen name="list_view_header_height">50dp</dimen>
+    <dimen name="list_view_item_height">40dp</dimen>
+    <dimen name="list_view_footer_height">50dp</dimen>
+    <dimen name="list_view_height">40dp</dimen>
+    <dimen name="item_line_height">10dp</dimen>
+    <dimen name="large_font_size">20dp</dimen>
+    <dimen name="normal_font_size">15dp</dimen>
+    <dimen name="normal2_font_size">16dp</dimen>
+    <dimen name="small_font_size">12dp</dimen>
+    <dimen name="normal_margin_bottom">10dp</dimen>
+    <dimen name="normal_margin_top">10dp</dimen>
+
+    <!-- Sale -->
+    <dimen name="sale_layout_left">3dp</dimen>
+    <dimen name="sale_text">12dp</dimen>
+    <dimen name="sale_detail_check_paddingLeft">40dp</dimen>
+    <dimen name="sale_detail_check_paddingRight">40dp</dimen>
+    <dimen name="sale_detail_check_paddingTop">10dp</dimen>
+    <dimen name="sale_list_customer_header">40dp</dimen>
+    <dimen name="sale_list_customer_layout_marginLeft">40dp</dimen>
+    <dimen name="sale_list_customer_layout_marginLeft2">55dp</dimen>
+    <dimen name="sale_list_customer_layout_marginLeft3">70dp</dimen>
+    <dimen name="sale_detail_customer_width">150dp</dimen>
+    <dimen name="sale_list_employees_layout_marginLeft">20dp</dimen>
+    <dimen name="sale_scan_employees_layout_marginLeft">40dp</dimen>
+    <dimen name="sale_scan_employees_layout_marginRight">40dp</dimen>
+    <dimen name="sale_detail_check_table_layout_height">10dp</dimen>
+    <dimen name="sale_detail_check_linear_layout_height">25dp</dimen>
+    <dimen name="sale_detail_check_textview_layout_margin">2dp</dimen>
+    <dimen name="list_detail_check_textview_margin_left">100dp</dimen>
+    <dimen name="sale_delail_check_textview_layout_right">10dp</dimen>
+    <dimen name="sale_delail_check_textview_width">160dp</dimen>
+    <dimen name="sale_top">10dp</dimen>
+    <dimen name="sale_left">20dp</dimen>
+    <dimen name="list_main_linearlayout_width">200dp</dimen>
+    <dimen name="sale_scan_emp_margin_bottom">3dp</dimen>
+    <dimen name="sale_scan_emp_listview_height">80dp</dimen>
+    <dimen name="sale_scan_emp__textview_margin">20dp</dimen>
+    <dimen name="sale_choice_height">35dp</dimen>
+    <dimen name="sale_check_photo_width">250dp</dimen>
+    <dimen name="sale_check_photo_height">50dp</dimen>
+	<dimen name="sale_button_width">100dp</dimen>
+    
+    <!-- CheckStock -->
+    <dimen name="check_stock_width">100dp</dimen>
+    <dimen name="check_stock_height">40dp</dimen>
+    <dimen name="check_stock_left">15dp</dimen>
+    <dimen name="check_stock_top">5dp</dimen>
+    <dimen name="check_stock_text">12dp</dimen>
+    <dimen name="check_stock_barcode">200dp</dimen>
+    <dimen name="check_stock_marginRight">60dp</dimen>
+    <dimen name="check_stock_marginLeft">50dp</dimen>
+    <dimen name="check_stock_width_refresh">30dp</dimen>
+    <dimen name="check_stock_height_refresh">30dp</dimen>
+    <dimen name="check_stock_left_refresh">25dp</dimen>
+    <dimen name="check_stock_button_refresh">60dp</dimen>
+
+    <!-- Impound -->
+    <dimen name="impound_width">300dp</dimen>
+    <dimen name="impound_height">65dp</dimen>
+    <dimen name="impound_top">10dp</dimen>
+    <dimen name="impound_text">12dp</dimen>
+    <dimen name="impound_left">20dp</dimen>
+    <dimen name="impound_right">60dp</dimen>
+    <dimen name="impound_product_height">40dp</dimen>
+    <dimen name="impound_detail_width">110dp</dimen>
+    <dimen name="impound_detail_height">60dp</dimen>
+    <dimen name="impound_detail_top">5dp</dimen>
+    <dimen name="impound_detail_left">60dp</dimen>
+    <dimen name="impound_date_left">1dp</dimen>
+    <dimen name="impound_name_right">100dp</dimen>
+    <dimen name="impound_no_left">10dp</dimen>
+    <dimen name="impound_print">150dp</dimen>
+    <dimen name="impound_print_top">20dp</dimen>
+    <dimen name="impound_detail_height2">35dp</dimen>
+    <dimen name="impound_detail_width2">50dp</dimen>
+    <dimen name="impound_button_width">50dp</dimen>
+    <dimen name="impound_button_height">30dp</dimen>
+    <dimen name="impound_button">0dp</dimen>
+
+    <!-- ChangeProduct -->
+    <dimen name="change_product_width">300dp</dimen>
+    <dimen name="change_product_height">65dp</dimen>
+    <dimen name="change_product_top">10dp</dimen>
+    <dimen name="change_product_text">12dp</dimen>
+    <dimen name="change_product_left">20dp</dimen>
+    <dimen name="change_product_right">60dp</dimen>
+    <dimen name="change_product_product_height">40dp</dimen>
+    <dimen name="change_product_detail_width">100dp</dimen>
+    <dimen name="change_product_detail_width2">170dp</dimen>
+    <dimen name="change_product_detail_height">40dp</dimen>
+    <dimen name="change_product_detail_top">5dp</dimen>
+    <dimen name="change_product_detail_left">60dp</dimen>
+    <dimen name="change_product_date_left">1dp</dimen>
+    <dimen name="change_product_name_right">100dp</dimen>
+    <dimen name="change_product_no_left">10dp</dimen>
+    <dimen name="change_product_print">150dp</dimen>
+    <dimen name="change_product_print_width">160dp</dimen>
+    <dimen name="change_product_print_top">20dp</dimen>
+    <dimen name="change_product_print_left">50dp</dimen>
+
+    <!-- Employee -->
+    <dimen name="employee_textsize">15dp</dimen>
+    <dimen name="employee_header_height">50dp</dimen>
+    <dimen name="employee_saleleader_image_width">100dp</dimen>
+    <dimen name="employee_saleleader_image_height">100dp</dimen>
+    <dimen name="employee_fieldname_width">130dp</dimen>
+    <dimen name="employee_driver_textsize">19dp</dimen>
+    <dimen name="employee_margin_top">30dp</dimen>
+    <dimen name="employee_margin_bottom">10dp</dimen>
+    <dimen name="employee_image_item_height">40dp</dimen>
+    <dimen name="employee_subteam_height">20dp</dimen> 
+    <dimen name="employee_image_size">100dp</dimen>
+    <dimen name="employee_detail_width">150dp</dimen>
+    <dimen name="employee_list_width">320dp</dimen>
+    <dimen name="employee_list_height">70dp</dimen>
+
+    <!-- SendMoney -->
+    <dimen name="sendmoney_textsize">15dp</dimen>
+    <dimen name="sendmoney_header_height">50dp</dimen>
+
+    <!-- Next Payment -->
+    <item name="next_payment_customer_detail_caption_weight" format="float" type="dimen">0.45</item>
+    <item name="next_payment_customer_detail_value_weight" format="float" type="dimen">0.55</item>
+    <item name="next_payment_customer_detail_value_editbox_weight" format="float" type="dimen">0.40</item>
+    <item name="next_payment_customer_detail_value_textview_weight" format="float" type="dimen">0.15</item>
+
+    <!-- Loss -->
+    <dimen name="loss_width">300dp</dimen>
+    <dimen name="loss_height">65dp</dimen>
+    <dimen name="loss_top">10dp</dimen>
+    <dimen name="loss_text">12dp</dimen>
+    <dimen name="loss_left">20dp</dimen>
+    <dimen name="loss_right">60dp</dimen>
+    <dimen name="loss_product_height">40dp</dimen>
+    <dimen name="loss_detail_width">100dp</dimen>
+    <dimen name="loss_detail_height">40dp</dimen>
+    <dimen name="loss_detail_top">5dp</dimen>
+    <dimen name="loss_detail_left">60dp</dimen>
+    <dimen name="loss_date_left">1dp</dimen>
+    <dimen name="loss_detail_other_height">60dp</dimen>
+    <dimen name="loss_name_right">100dp</dimen>
+    <dimen name="loss_no_left">10dp</dimen>
+    <dimen name="loss_print">150dp</dimen>
+    <dimen name="loss_print_top">20dp</dimen>
+
+    <!-- Change Contract -->
+    <dimen name="change_contract_text_width">110dp</dimen>
+    <dimen name="change_contract_data_width">60dp</dimen>
+    <dimen name="change_contract_text_baht">40dp</dimen>
+    <dimen name="change_contract_width">150dp</dimen>
+    <dimen name="change_contract_height_package">250dp</dimen>
+
+    <!-- First Payment -->
+    <item name="first_payment_customer_detail_caption_weight" format="float" type="dimen">0.45</item>
+    <item name="first_payment_customer_detail_value_weight" format="float" type="dimen">0.55</item>
+
+    <dimen name="first_payment_textsize_small">12dp</dimen>
+    <dimen name="first_payment_textsize_normal">15dp</dimen>
+    <dimen name="first_payment_list_view_item_height">40dp</dimen>
+    <dimen name="first_payment_list_view_header_height">50dp</dimen>
+    <dimen name="first_payment_customer_list_listview_width">400dp</dimen>
+    <dimen name="first_payment_summary_listview_height">100dp</dimen>
+    <dimen name="first_payment_amount_width">95dp</dimen>
+
+    <!-- Manual Document -->
+    <dimen name="manual_document_text_width">110dp</dimen>
+    <dimen name="manual_document_data_width">60dp</dimen>
+    <!--<dimen name="manual_document_width">140dp</dimen>-->
+    <dimen name="manual_document_height">35dp</dimen>
+
+    <!-- Pic -->
+    <dimen name="pic_width">80dp</dimen>
+    <dimen name="pic_height">100dp</dimen>
+
+    <!-- Credit Button Menu -->
+    <dimen name="credit_button_width">300dp</dimen>
+    <dimen name="credit_button_height">65dp</dimen>
+    <dimen name="credit_button_top">10dp</dimen>
+
+    <!-- Credit Import Credit Data-->
+    <dimen name="list_row_height">35dp</dimen>
+    <dimen name="list_view_header_height_two_row">80dp</dimen>
+
+    <!-- -->
+    <dimen name="text_size_for_header_list_view">12dp</dimen>
+    <dimen name="text_size_for_item_list_view">12dp</dimen>
+</resources>

@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--<string name="tsr_app_name">TSR Mobile App UAT</string>-->
+    <!--<string name="tsr_app_name">TSR Mobile App Migrate</string>-->
+    <!--<string name="tsr_app_name">TSR Mobile App Demo</string>-->
+    <!--<string name="tsr_app_name">TSR Mobile App Production</string>-->
+    <!--<string name="tsr_app_name">TSR CR_T</string>-->
+    <!--<string name="tsr_app_name">TSR DEV</string>-->
+    <!--<string name="tsr_app_name">TSR DEV Migrate</string>-->
+    <!--<string name="tsr_app_version">v. 00.10.05.10441</string>-->
+
+    <!--Permissions-->
+    <string name="permission_message_title">แจ้งเตือน</string>
+    <string name="permission_message_button">ตกลง</string>
+    <string name="permission_message_msg">กรุณาให้สิทธิ์ก่อนเข้าใช้งาน TSR Mobile App</string>
+    <string name="permission_message_camera">อนุญาตให้ TSR Mobile App ถ่ายภาพและบันทึกวิดีโอก่อนเข้าใช้งาน</string>
+    <string name="permission_message_storage">อนุญาตให้ TSR Mobile App เข้าถึงรูปภาพ สื่อ และไฟล์บนอุปกรณ์ก่อนเข้าใช้งาน</string>
+    <string name="permission_message_location">อนุญาตให้ TSR Mobile App เข้าถึงตำแหน่งของอุปกรณ์ก่อนเข้าใช้งาน</string>
+    <string name="permission_message_camera_and_storage">อนุญาตให้ TSR Mobile App ถ่ายภาพ บันทึกวิดีโอ เข้าถึงรูปภาพ สื่อ และไฟล์บนอุปกรณ์ก่อนเข้าใช้งาน</string>
+    <!--Permissions-->
+
+    <!--FCM-->
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel_thiensurat</string>
+    <string name="default_notification_channel_name" translatable="true">thiensurat</string>
+    <!--FCM-->
+
+
+    <!-- Buttons -->
+    <string name="button_add_customer">เพิ่มลูกค้าใหม่</string>
+    <string name="button_add">จัดเก็บข้อมูล</string>
+    <string name="button_back">ย้อนกลับ</string>
+    <string name="button_credit_choose_date">เลือกวันเก็บเงิน</string>
+    <string name="button_ok">ตกลง</string>
+    <string name="button_check">ตรวจสอบสินค้า</string>
+    <string name="button_import">นำเข้าสินค้า</string>
+    <string name="button_close">ปิดการตรวจสอบ</string>
+    <string name="button_login">LOGIN</string>
+    <string name="button_showlist">แสดงรายการ</string>
+    <string name="button_group">จัดกลุ่ม</string>
+    <string name="button_appointment_date">จัดวันนัด</string>
+    <string name="button_print">พิมพ์</string>
+    <string name="button_void">ยกเลิกใบเสร็จ</string>
+    <string name="button_scanemployee">สแกนรหัสพนักงาน</string>
+    <string name="button_next">ถัดไป</string>
+    <string name="button_more_address">ข้อมูลเพิ่มเติม</string>
+    <string name="button_end">จบการทำงาน</string>
+    <string name="button_search">ค้นหา</string>
+    <string name="button_change_contract">เปลี่ยนสัญญา</string>
+    <string name="button_payment">รับชำระ</string>
+    <string name="button_save_emp">พนักงานขาย</string>
+    <string name="button_save_customer">บันทึกข้อมูลลูกค้า</string>
+    <string name="button_save_employee">บันทึกข้อมูลพนักงานขาย</string>
+    <string name="button_choice_payment">เลือกประเภทการชำระเงิน</string>
+    <string name="button_detail_payment">แสดงรายละเอียดการซื้อ</string>
+    <string name="button_detail_contract">แสดงรายละเอียดสัญญา</string>
+    <string name="button_pay">ดำเนินการชำระเงิน</string>
+    <string name="button_camera">ถ่ายรูป</string>
+    <string name="button_more">ข้อมูลลูกค้าเพิ่มเติม</string>
+    <string name="button_receipt">ข้อมูลใบเสร็จรับเงิน</string>
+    <string name="button_update_list">ปรับปรุงรายการ</string>
+    <string name="button_save">บันทึก</string>
+    <string name="button_confirm">ยืนยัน</string>
+    <string name="button_confirm_print">ยืนยัน/พิมพ์</string>
+    <string name="button_contract_confirm">ยืนยันการออกสัญญา</string>
+    <string name="button_conclude">สรุป</string>
+    <string name="button_save_manual_receipt">บันทึกใบเสร็จมือ</string>
+    <string name="button_save_manual_contract">บันทึกใบสัญญามือ</string>
+    <string name="button_save_manual_impound_product">บันทึกใบถอดเครื่องมือ</string>
+    <string name="button_save_manual_change_product">บันทึกใบเปลี่ยนเครื่องมือ</string>
+    <string name="button_synchronize_database">ปรับปรุงฐานข้อมูล</string>
+    <string name="button_delete_image">ลบภาพถ่าย</string>
+    <string name="button_import_image">เพิ่มภาพถ่าย</string>
+    <string name="button_add_return_product">เพิ่มรายการส่งคืน</string>
+    <string name="button_save_return_product">บันทึกรายการส่งคืน</string>
+    <string name="button_cheak_photo">ตรวจสอบภาพถ่าย</string>
+    <string name="button_add_map">บันทึกรูปแผนที่</string>
+    <string name="button_use_information">ใช้ข้อมูล</string>
+    <string name="button_cancel">ยกเลิก</string>
+    <string name="button_return">ทำคืน</string>
+    <string name="button_display_map">แสดงพื้นที่</string>
+    <string name="button_import_data">นำเข้าข้อมูล</string>
+    <string name="button_check_audit">ตรวจสอบ</string>
+    <string name="button_complain">แจ้งปัญหา</string>
+    <string name="button_payment_credit">เก็บเงิน</string>
+    <string name="button_request_next_payment">ขออนุมัติเก็บเงิน</string>
+    <string name="button_request_drawdown">ขอเบิก</string>
+
+    <string name="button_type_normal">NORMAL</string>
+    <string name="button_type_satellite">SATELLITE</string>
+    <string name="button_type_terrain">TERRAIN</string>
+    <string name="button_type_hybrid">HYBRID</string>
+
+    <!-- Main Menu -->
+    <string name="main_menu_profile">ข้อมูลผู้ใช้งาน</string>
+    <string name="main_menu_detail">รายละเอียดลูกค้า</string>
+
+    <!-- [START] :: Fixed - [BHPROJ-0016-855] :: Revise Menu Report tobe SubMenu -->
+    <string name="main_menu_default">D3CC378BE6FE4E11B983522CAB716918</string>
+    <!-- ข้อมูลหลัก -->
+    <string name="main_menu_admin">ADMIN</string>
+    <string name="main_menu_report_daily_summary">9617724BB2D04EB39FEE6679C8D69A63</string>
+    <string name="main_menu_report_emp_team">9CDF665BC9414C919BBF17CE37C75A78</string>
+    <string name="main_menu_report_product">49A1CA386B8F41709FEFE91C34C932B2</string>
+    <string name="main_menu_report_install_payment">8F7FD9CE22B54EE080DFA7F0876AE29C</string>
+    <string name="main_menu_report_change_product">2C8C1ADDBF0A4753ABEE2E020BD7E5F4</string>
+    <string name="main_menu_report_impound_product">63483E14C2B8440A85A8479270452777</string>
+    <string name="main_menu_report_change_contract">303880FB8FB04787A0CB15C9F87875E4</string>
+    <string name="main_menu_report_payment_appointment">D87F63CBBD4741F7AEF98D6CD1591E95</string>
+    <string name="main_menu_report_writeoff_npl">4717B6999D3A47BCAD42B0201DB10B52</string>
+    <string name="main_menu_report_approved">1F146D42AA064A008712EAC9C259C286</string>
+    <string name="main_menu_report_complain">560D8AAB6632419BA91740EECA99F3D2</string>
+    <string name="main_menu_report_trade_product">4D5967B657A540048396833FC25E52AD</string>
+    <string name="main_menu_report_payment_sendmoney">42993D68EE7644AC89BEA7FBC206A3A7</string>
+    <string name="main_menu_report_zone">98834998E58044C6BA104E1C6F58D0B2</string>
+    <string name="main_menu_report_re_print">167841852CC246A9B0C8B75F461893A5</string>
+    <string name="main_menu_report_credit_saleaudit">1329C09262004CE1A97C2671D9336B3D</string>
+    <string name="main_menu_report_credit_next_payment">3117DEED82F14F5192BEDBCA65FD0E39</string>
+    <string name="main_menu_report_credit_sendmoney">05B89C725A324DD4BC178E1CD7EDCEC7</string>
+    <string name="main_menu_report_credit_contract_close_account">7DD266E717B74201A33B793345B94594</string>
+    <!-- [START] :: Fixed - [BHPROJ-0016-855] :: Revise Menu Report tobe SubMenu -->
+
+    <string name="main_menu_team">E9328B14D4CA4B18AB36E0FA8FA2A1F3</string>
+    <string name="main_menu_checkstock">CBCEA1E500E841E190C3E7A06C85963B</string>
+    <string name="main_menu_sales">907350148A5641D2B88DA7B55C6D1ED9</string>
+    <string name="main_menu_money">EFE8B972F4AF46298FA41251F982C49A</string>
+    <string name="main_menu_first">034354E0BF0740778069B60257E6457B</string>
+    <string name="main_menu_other">CB7C5E824A8840E9975991784B7EFA99</string>
+    <string name="main_menu_logout">598A4947B7B2469382A8E6CF4A9B820F</string>
+
+    <string name="main_menu_remove">CED6F46DEF4849E096094CF0465BACCC</string>
+    <string name="main_menu_change">EFB9F32B8ABF48FE82DF2151EF820D44</string>
+    <string name="main_menu_document">BA37885C0724482DAFA57B3847186484</string>
+    <string name="main_menu_loss">F35052770BE447D3A83C36B2092E8ED7</string>
+    <string name="main_menu_next_period">76C9B156947D45F18E1FFE142433E21C</string>
+    <string name="main_menu_total">BA494EC65C514D5181D87924A8A37374</string>
+    <string name="main_menu_report_daily_summary_sale_by_product_online">6BB71DD0E2D7466EA868A9B7484DDAE0</string>
+    <string name="main_menu_brochure">AB4B77B138304CE6BD8C0C0847700CCC</string>
+    <string name="main_menu_complain">CB0DB21EA949475C9497149CE6501F50</string>
+    <string name="main_menu_return_product">DFF73DF3B3C74B8EA1DEA34CC30B71BF</string>
+    <string name="main_menu_refresh">726E3943D86F444E9B248AF764070C67</string>
+    <string name="main_menu_edit_contracts">81C18DDE57924C7A9B0F59E8713F8237</string>
+
+    <!-- Main Menu Credit-->
+    <string name="main_menu_credit_employee_detail">CF093F8084634F989805F5A0E438C901</string>
+    <string name="main_menu_credit_import_credit_data">81275750A3314169ADD0F9B3B9EE0E98</string>
+    <string name="main_menu_credit_import_audit_data">E981C77F58AC4257BE530FB5D81C1FD9</string>
+    <string name="main_menu_credit_audit_check_customers">6C18CAD5E7D345379E6E15720FFEE317</string>
+    <string name="main_menu_credit_salepaymentperiod_credit_customers">C07FCC694E284F469B9AC4C99C96DDCE</string>
+    <string name="main_menu_credit_cut_off_contract">78392D3B37274B2AA7045F9E591CAE4C</string>
+    <string name="main_menu_credit_cut_divisor_contract">F1EE3F9849EE4397A2B2911BD6321AAC</string>
+    <string name="main_menu_credit_contract_details">5BCF23E3AB344FCBBDFC4E0B26D2F87F</string>
+    <string name="main_menu_credit_sort_order_default_audit">B1587E19527D4FD980425A4727C310D4</string>
+    <string name="main_menu_credit_sort_order_default_credit">E487C8A68DC84F0C80BD0A3A1C87ACF4</string>
+
+    <!-- Fixed - [BHPROJ-0026-3265] [Backend+Frontend] เพิ่มเมนูสำหรับทำการ ย้ายเข้า/ย้ายออก ข้อมูล Assign การเก็บเงิน -->
+    <string name="main_menu_credit_assign_push_pull">42340AAEECA6495082198378374B8706</string>
+
+    <!-- Fixed - [BHPROJ-0026-3266][LINE@20/09/2016][Android-เพิ่มเมนูใหม่] คุณหนุ๋ยแจ้งขอเพิ่มเมนูระบบ TSSM เพื่อ Link ไปยัง URL ข้างนอกโดยส่งค่า EmpID ออกไปให้ -->
+    <string name="main_menu_goto_tssm">9C8A3CEB21C14AA38CABB655F472B0C0</string>
+
+    <!-- First Payment Menu -->
+    <string name="first_payment_menu_customer_detail">รายละเอียดลูกค้า</string>
+    <string name="first_payment_menu_summary">สรุปเก็บเงินประจำวัน</string>
+    <string name="first_payment_menu_exit">ออกจากระบบ</string>
+
+    <!-- Title -->
+    <!--<string name="title_main">ข้อมูลหลัก</string>-->
+    <string name="title_sales">ขายสินค้า</string>
+    <string name="title_check_stock">ตรวจสอบสินค้า</string>
+    <string name="title_remove">ถอดเครื่อง</string>
+    <string name="title_team">ทีมขาย</string>
+    <string name="title_change_product">เปลี่ยนเครื่อง</string>
+    <string name="title_change_contract">เปลี่ยนสัญญา</string>
+    <string name="title_scan_old_product">สแกนเครื่องเก่า</string>
+    <string name="title_scan_new_product">สแกนเครื่องใหม่</string>
+    <string name="title_scan_product_serial">สแกนบาร์โค้ตที่เครื่อง</string>
+    <string name="title_payment_first">ระบบเก็บเงินงวดแรก</string>
+
+    <!-- [START] - Fixed - [BHPROJ-0026-3276][Android-เมนู] เปลี่ยนชื่อเมนู ระบบเก็บเงินค่างวดที่คาดว่าจะสูญ เป็น ระบบเก็บเงินค่างวดกรณีอื่นๆ-->
+    <!--<string name="title_payment_next">ขอเก็บเงินค่างวดที่คาดว่าจะสูญ</string>-->
+    <string name="title_payment_next">ระบบเก็บเงินค่างวดกรณีอื่น ๆ</string>
+    <!-- [END] - Fixed - [BHPROJ-0026-3276][Android-เมนู] เปลี่ยนชื่อเมนู ระบบเก็บเงินค่างวดที่คาดว่าจะสูญ เป็น ระบบเก็บเงินค่างวดกรณีอื่นๆ-->
+
+    <string name="title_payment_send">ระบบส่งเงิน</string>
+    <string name="title_loss">ตัดสัญญาค้าง</string>
+    <string name="title_synchronize">ระบบปรับปรุงฐานข้อมูล</string>
+    <string name="title_document_main">ส่งเอกสาร</string>
+    <string name="title_complain">แจ้งปัญหา</string>
+    <string name="title_manual_document">บันทึกเอกสารด้วยมือ</string>
+    <string name="title_document_print">สรุปส่งเอกสาร</string>
+    <string name="title_check_photo">ตรวจสอบภาพถ่าย</string>
+    <string name="title_return_product">ส่งคืนสินค้าเข้าระบบ</string>
+    <string name="title_edit_contracts">แก้ไขสัญญาซื้อขาย</string>
+    <string name="title_edit_customer_details">แก้ไขรายละเอียดลูกค้า</string>
+    <!-- Title Credit-->
+    <string name="title_team_credit">ทีมเก็บเงิน</string>
+    <string name="title_import_credit_data">ระบบนำเข้าข้อมูล</string>
+    <string name="title_check_customers">ระบบตรวจสอบลูกค้า</string>
+    <string name="title_detail_customers">รายละเอียดลูกค้า</string>
+    <string name="title_cut_off_contract">ระบบตัดสัญญาออกจากฟอร์ม</string>
+    <string name="title_next_payment_credit">การรับชำระเงินค่างวด</string>
+    <string name="title_request_next_payment">การชำระเงินงวดต่อไป</string>
+    <string name="title_main_credit">ระบบเก็บเงินค่างวด</string>
+    <string name="title_cut_divisor_contract">ระบบตัดตัวหาร</string>
+    <string name="title_spare_drawdown">ระบบอะไหล่</string>
+    <string name="title_request_spare_drawdown">ขอเบิกเครื่อง/อะไหล่</string>
+    <string name="title_import_data_spare">นำเข้าข้อมูลเบิกเครื่อง/อะไหล่</string>
+    <string name="title_detail_data_spare">รายละเอียดข้อมูลเบิกเครื่อง/อะไหล่</string>
+    <string name="title_contract_details">รายละเอียดสัญญา</string>
+
+    <!-- Caption -->
+    <string name="caption_customer_list">ข้อมูลลูกค้า</string>
+    <string name="caption_customer_detail">รายละเอียดข้อมูลลูกค้า</string>
+    <string name="caption_customer_detail_card">รายละเอียดข้อมูลลูกค้า (ที่อยู่ตามบัตร)</string>
+    <string name="caption_customer_detail_install">รายละเอียดข้อมูลลูกค้า (ที่อยู่ติดตั้ง)</string>
+    <string name="caption_customer_detail_payment">รายละเอียดข้อมูลลูกค้า (ที่อยู่เก็บเงิน)</string>
+    <string name="caption_customer_detail_1">ข้อมูลรายละเอียดลูกค้า</string>
+    <string name="caption_customer_detail_more">รายละเอียดเพิ่มเติมลูกค้า</string>
+    <string name="caption_product_add">บันทึกข้อมูลสินค้า</string>
+    <string name="caption_employee_add">บันทึกข้อมูลพนักงานขาย</string>
+    <string name="caption_payment_type_select">เลือกประเภทชำระเงิน</string>
+    <string name="caption_payment_detail">รายละเอียดการซื้อ</string>
+    <string name="caption_payment_first">การรับชำระเงินงวดแรก</string>
+    <string name="caption_customer_detail_impound">ข้อมูลรายละเอียดลูกค้าค้างชำระ</string>
+    <string name="caption_payment_appointment">นัดชำระ</string>
+    <string name="caption_contract_print">สัญญาเช่าซื้อ</string>
+    <string name="caption_synchronize_type">ประเภทฐานข้อมูล</string>
+    <string name="caption_complain_search">ค้นหาลูกค้าที่จะแจ้งปัญหา</string>
+    <string name="caption_complain_detail">รายละเอียดลูกค้าแจ้งปัญหา</string>
+    <string name="caption_photo">ถ่ายรูป</string>
+    <string name="caption_return_product_list">ประวัติการส่งคืนสินค้า</string>
+    <string name="caption_return_product_detail">รายละเอียดการส่งคืนสินค้า</string>
+    <string name="caption_sale_detail">รายละเอียดลูกค้าเพิ่มเติม</string>
+    <string name="caption_detail_request_impound">ข้อมูลรายละเอียดร้องขอถอดเครื่อง</string>
+    <string name="caption_detail_request_nextpayment">ข้อมูลรายละเอียดร้องขอเก็บเงินงวดต่อไป</string>
+    <string name="caption_report_daily_summary">รายงานสรุปยอดขายรายวัน</string>
+    <string name="caption_return_product_system">แจ้งคืนเครื่องกรองน้ำเข้าระบบ</string>
+    <string name="caption_change_contract">เลือกประเภทการเปลี่ยนสัญญา</string>
+    <string name="caption_complain_action_search">ค้นหาลูกค้าที่จะแก้ไขปัญหา</string>
+    <string name="caption_complain_action_detail">รายละเอียดลูกค้าที่จะแก้ไขปัญหา</string>
+    <string name="caption_first_payment_summary">รายละเอียดการเก็บเงิน</string>
+    <!-- Label -->
+    <string name="label_contract_date">วันที่ทำสัญญา</string>
+    <string name="label_contract_no">เลขที่สัญญา</string>
+    <string name="label_customer_name">ชื่อลูกค้า</string>
+    <string name="label_firstname_lastname">ชื่อ-สกุล</string>
+    <string name="label_citizen_no">เลขที่บัตรประชาชน</string>
+    <string name="label_customer_address">ที่อยู่บัตร</string>
+    <string name="label_install_address">ที่อยู่ติดตั้ง</string>
+    <string name="label_payment_address">ที่อยู่เก็บเงิน</string>
+    <string name="label_product">สินค้า</string>
+    <string name="label_product_name">ชื่อสินค้า</string>
+    <string name="label_contract_model">รุ่น</string>
+    <string name="label_product_no">รหัสสินค้า</string>
+    <string name="label_product_price">ราคาขาย</string>
+    <string name="label_product_discount">ส่วนลด/เครื่องแสดง</string>
+    <string name="label_product_price_net">ราคาสุทธิ</string>
+    <string name="label_outstanding_amount">ค่างวดที่ต้องชำระ</string>
+    <string name="label_paid_amount">ชำระแล้ว</string>
+    <string name="label_total_amount">รวม</string>
+    <string name="label_install">ติดตั้ง</string>
+    <string name="label_install_date">วันที่ติดตั้ง</string>
+    <string name="label_balance_amount">คงเหลือ</string>
+    <string name="label_payment_amount">เงินที่ต้องชำระ</string>
+    <string name="label_baht">บาท</string>
+    <string name="label_receipt">ใบเสร็จรับเงิน</string>
+    <string name="label_receipt_date">วันที่รับเงิน</string>
+    <string name="label_receipt_no">เลขที่</string>
+    <string name="label_reference_no">เลขที่อ้างอิง</string>
+    <string name="label_credit_name">ชำระโดยบัตรเครดิต</string>
+    <string name="label_credit_no">เลขที่บัตร</string>
+    <string name="label_cheque_name">ชำระโดยเช็ค</string>
+    <string name="label_cheque_brach">สาขา</string>
+    <string name="label_cheque_no">เลขที่เช็ค</string>
+    <string name="label_cheque_date">ลงวันที่</string>
+    <string name="label_period_payment">ค่างวดที่</string>
+    <string name="label_payment_appointment_date">วันนัดชำระ</string>
+    <string name="label_sale_photo_idcard">ภาพบัตรประชาชน</string>
+    <string name="label_sale_photo_product">ภาพเครื่องที่ติดตั้ง</string>
+    <string name="label_sale_photo_addressno">ภาพบ้านเลขที่</string>
+    <string name="label_sale_photo_address">ภาพที่อยู่อาศัย</string>
+    <string name="label_sale_photo_near">ภาพสถานที่ใกล้เคียง</string>
+    <string name="label_sale_photo_map">ภาพถ่ายแผนที่ (ที่อยู่ติดตั้ง)</string>
+    <string name="label_sale_photo_map_payment">ภาพถ่ายแผนที่ (ที่อยู่เก็บเงิน)</string>
+    <string name="label_sale_photo_payment_card">ภาพถ่ายการ์ด</string>
+    <string name="label_serial_no">หมายเลขเครื่อง</string>
+    <string name="label_name">ชื่อ</string>
+    <string name="label_discount_mc_turn">ส่วนลดเครื่องเทิร์น</string>
+    <string name="label_audit_date">วันที่ตรวจ</string>
+    <string name="label_payment">การชำระเงิน</string>
+    <string name="label_correct">ถูกต้อง</string>
+    <string name="label_incorrect">ไม่ถูกต้อง</string>
+    <string name="label_usage_or_install">การใช้งาน/ติดตั้ง</string>
+    <string name="label_successful">เรียบร้อย</string>
+    <string name="label_not_successful">ไม่เรียบร้อย</string>
+    <string name="label_other_deals">ข้อตกลงอื่นๆ</string>
+    <string name="label_not">ไม่มี</string>
+    <string name="label_have">มี</string>
+    <string name="label_payment_two">วันที่นัดชำระ งวดที่ 2</string>
+    <string name="label_no_problem">เลขที่แจ้งปัญหา</string>
+    <string name="label_date_problem">วันที่แจ้งปัญหา</string>
+    <string name="label_sale_leader">หัวหน้าทีม</string>
+    <string name="label_no_problem_and_customer_name">เลขที่แจ้งปัญหา/ชื่อลูกค้า</string>
+    <string name="label_spare_drawdown">ใบขอเบิกเครื่อง/อะไหล่</string>
+    <string name="label_order">ลำดับ</string>
+    <string name="label_phone_number">เบอร์โทรติดต่อ</string>
+    <string name="label_phone_number_">เบอร์โทรติดต่อ :</string>
+    <string name="label_import">นำเข้า</string>
+    <string name="label_export">ส่งออก</string>
+
+    <!-- Complain -->
+    <string name="btn_complain_request">บันทึกแจ้งปัญหาใหม่ (ส่ง)</string>
+    <string name="btn_complain_action">บันทึกแก้ไขปัญหา (รับ)</string>
+    <string name="complain_request_cause">สาเหตุการแจ้งปัญหา</string>
+    <string name="complain_request_note">หมายเหตุ</string>
+
+    <!-- Stock -->
+    <string name="check_stock_scan">สแกนสินค้าที่ต้องการตรวจสอบ</string>
+    <string name="check_stock_end">จบการตรวจสอบ</string>
+
+    <!-- Spinner -->
+    <string name="person_types_person">บุคคลธรรมดา</string>
+    <string name="person_types_corporation">นิติบุคคล</string>
+    <string name="person_types_foreigners">บุคคลต่างชาติ</string>
+    <string name="person_type_card_passport">หนังสือเดินทาง</string>
+    <string name="person_type_card_alien">บัตรต่างด้าว</string>
+    <string name="person_gender_male">ชาย</string>
+    <string name="person_gender_female">หญิง</string>
+    <string name="prefixcompany_company">บริษัท</string>
+    <string name="prefixcompany_corporate">ห้างหุ้นส่วน</string>
+
+    <!-- Next Payment -->
+    <string name="next_payment_customer_search">ค้นหา</string>
+
+    <!-- Change Contract -->
+    <string name="change_contract_effective_date">วันที่ทำสัญญา</string>
+    <string name="change_contract_contno">เลขที่สัญญา</string>
+    <string name="change_contract_contno_old">เลขที่สัญญา(เดิม)</string>
+    <string name="change_contract_customer_fullname">ผู้เช่าซื้อ</string>
+    <string name="change_contract_customer_fullname_cash">ผู้ซื้อ</string>
+    <string name="change_contract_customer_idcard">เลขที่บัตร</string>
+    <string name="change_contract_address_idcard">ที่อยู่บัตร : </string>
+    <string name="change_contract_address_install">ที่ติดตั้ง : </string>
+    <string name="change_contract_product">สินค้า : </string>
+    <string name="change_contract_serialno">เลขเครื่อง</string>
+    <string name="change_contract_sale_amount">ราคาขาย</string>
+    <string name="change_contract_sale_discount">ส่วนลดเครื่องแสดง</string>
+    <string name="change_contract_sale_netamount">ราคาสุทธิ</string>
+    <string name="change_contract_payment_netamount">เงินที่ต้องชำระ</string>
+    <string name="change_contract_first_payment_amount">งวดที่ 1 ที่ต้องชำระ</string>
+    <string name="change_contract_two_payment_amount">งวดที่ 2 ที่ต้องชำระ</string>
+    <string name="change_contract_next_payment_amount">งวดที่ 2 ถึง 12 ต้องชำระงวดละ</string>
+    <string name="change_contract_cause">สาเหตุการเปลี่ยนสัญญา</string>
+    <string name="change_contract_date">วันที่เปลี่ยนสัญญา</string>
+    <string name="change_contract_lessor">..............ผู้ให้เช่าซื้อ</string>
+    <string name="change_contract_lessee">...................ผู้เช่าซื้อ</string>
+    <string name="change_contract_lessee_cash">...................ผู้ซื้อ</string>
+    <string name="change_contract_witness">..............พยาน</string>
+    <string name="change_contract_baht"> บาท</string>
+
+    <!-- Bluetooth -->
+    <string name="bluetooth_adapter_not_found">Bluetooth is not available.</string>
+    <string name="bluetooth_device_not_found">Device is not available.</string>
+
+    <!-- Loss -->
+    <string name="loss_main_title">ค้นหาลูกค้าที่จะตัดสัญญาค้าง</string>
+    <string name="loss_main_searchType">เลือกการค้นหา</string>
+    <string name="loss_main_liss_header">ลูกค้าที่ยังไม่ได้ชำระเงินงวดแรก</string>
+
+    <!-- Synchronize -->
+    <string name="sync_customer_related">ข้อมูลเกี่ยวกับลูกค้า</string>
+    <string name="sync_payment_related">ข้อมูลเกี่ยวกับการจ่ายเงิน</string>
+    <string name="sync_contract_related">ข้อมูลเกี่ยวกับสัญญา</string>
+    <string name="sync_product_related">ข้อมูลเกี่ยวกับสินค้า</string>
+    <string name="sync_team_related">ข้อมูลเกี่ยวกับทีมงาน</string>
+    <string name="sync_sendmoney_related">ข้อมูลเกี่ยวกับการส่งเงิน</string>
+    <string name="sync_masterdata_related">ข้อมูลเกี่ยวกับข้อมูลหลัก</string>
+
+    <!-- FirstPaymentSummaryFragment-->
+    <string name="title_summary_first_payment">รายละเอียดลูกค้าที่ต้องเก็บเงินงวดแรก</string>
+    <string name="title_summary_first_payment_completed">รายละเอียดลูกค้าที่เก็บเงินงวดแรกได้แล้ว</string>
+    <string name="title_summary_first_payment_hold">รายละเอียดลูกค้าที่เก็บเงินงวดถัดไป</string>
+
+    <!--    <string name="sync_image_type">ข้อมูลชนิดรูปภาพ</string>
+   <string name="sync_package">ข้อมูลประเภทการชำระ</string>
+   <string name="sync_">ข้อมูล</string>
+   <string name="sync_">ข้อมูล</string>
+   <string name="sync_">ข้อมูล</string>
+   <string name="sync_">ข้อมูล</string>
+   <string name="sync_">ข้อมูล</string>
+   <string name="sync_">ข้อมูล</string>
+   <string name="sync_">ข้อมูล</string>
+   <string name="sync_">ข้อมูล</string>
+   -->
+
+
+    <!-- Sale Unfinished Menu // before contract -->
+    <string name="sale_unfinished_scan_product">สแกนสินค้า</string>
+    <string name="sale_unfinished_employee">เลือกพนักงานขาย</string>
+    <string name="sale_unfinished_customer">ข้อมูลลูกค้า</string>
+    <string name="sale_unfinished_package">เลือกแบบชำระเงิน</string>
+    <string name="sale_unfinished_discount">ส่วนลด/เครื่องแสดง</string>
+    <string name="sale_unfinished_detail_contract">รายละเอียดการซื้อ</string>
+
+    <!-- Sale Unfinished Menu // after contract -->
+    <string name="sale_unfinished_contract">ใบสัญญา</string>
+    <string name="sale_unfinished_payment">ชำระเงิน</string>
+
+    <!-- Sale Unfinished Menu // after receipt -->
+    <string name="sale_unfinished_receipt">ใบเสร็จ</string>
+    <string name="sale_unfinished_photo">ถ่ายรูป</string>
+    <string name="sale_unfinished_more">ข้อมูลเพิ่มเติม</string>
+
+    <!-- Sale Contract -->
+    <string name="sale_contract_installment">ใบสัญญาซื้อขาย</string>
+    <string name="sale_contract_payment">ใบสัญญาเช่าซื้อ</string>
+
+    <!-- Manual Document -->
+    <string name="manual_document_detail_title">บันทึกใบเสร็จมือ</string>
+    <string name="manual_document_detail_doc_no">เลขที่ใบเสร็จ</string>
+    <string name="manual_document_detail_manual_book_no">ใบเสร็จมือเล่มที่</string>
+    <string name="manual_document_detail_manual_running_no">ใบเสร็จมือเลขที่</string>
+    <string name="manual_document_detail_note">หมายเหตุ</string>
+    <string name="manual_document_detail_manual_doc_no">เลขที่ใบเสร็จมือ</string>
+
+    <string name="manual_document_contract_title">บันทึกใบสัญญามือ</string>
+    <string name="manual_document_contract_doc_no">เลขที่ใบสัญญา</string>
+    <string name="manual_document_contract_book_no">ใบสัญญามือเล่มที่</string>
+    <string name="manual_document_contract_running_no">ใบสัญญามือเลขที่</string>
+
+    <!-- Return Product -->
+    <string name="label_return_product_id">เลขที่ใบส่งคืนสินค้า</string>
+    <string name="label_return_product_date">วันที่ส่งคืนสินค้า</string>
+    <string name="label_return_product_empid">พนักงานที่ส่งคืนสินค้า</string>
+    <string name="label_return_product_team">ทีมงานที่ส่งคืนสินค้า</string>
+    <string name="label_return_product_receive_date">วันที่รับคืนสินค้า</string>
+    <string name="label_return_product_status">สถานะการรับคืนสินค้า</string>
+    <string name="label_return_product_remark">หมายเหตุการรับคืน</string>
+    <string name="label_return_product_detail">รายละเอียดสินค้าที่ต้องส่งคืน</string>
+    <string name="label_return_product_print">ใบส่งคืนสินค้าเข้าระบบ</string>
+    <string name="label_return_product_print_sender">...............ผู้ส่ง</string>
+
+    <!-- Sale Photo -->
+
+    <!-- Sale Photo -->
+    <string name="sale_photo_home">ภาพที่อยู่อาศัย</string>
+    <string name="sale_photo_id">ภาพบัตรประชาชน</string>
+    <string name="sale_photo_gps">ภาพพิกัดแผนที (GPS) ที่อยู่ติดตั้ง</string>
+    <string name="sale_photo_gps_payment">ภาพพิกัดแผนที (GPS) ที่อยู่เก็บเงิน</string>
+    <string name="sale_photo_product">ภาพเครื่องที่ติดตั้ง</string>
+    <string name="sale_photo_payment_card">ภาพถ่ายการ์ด</string>
+
+
+    <!--  Menu Report -->
+    <string name="menu_report_sale_summary">รายงานสรุปยอดขาย</string>
+
+    <string name="menu_report_daily_summary">รายงานสรุปยอดขายรายวัน</string>
+
+    <string name="menu_report_emp_team">รายงานโครงสร้างพนักงาน</string>
+    <string name="menu_report_product">รายงานยอดขายสินค้าคงเหลือ</string>
+    <string name="menu_report_install_payment">รายงานการติดตั้ง/การเก็บเงิน</string>
+
+    <string name="menu_report_change_product">รายงานการเปลี่ยนเครื่อง</string>
+    <string name="menu_report_impound_product">รายงานการถอดเครื่อง</string>
+    <string name="menu_report_change_contract">รายงานการเปลี่ยนสัญญา</string>
+
+    <string name="menu_report_payment_appointment">รายงานนัดเก็บเงินงวดแรก</string>
+    <string name="menu_report_writeoff_npl">รายงานการตัดสัญญาค้าง</string>
+
+    <string name="menu_report_approved">รายงานขออนุมัติ</string>
+    <string name="menu_report_complain">รายงานสรุปการแจ้งปัญหา</string>
+
+    <string name="menu_report_trade_product">รายงานเครื่องเทิร์น</string>
+    <string name="menu_report_payment_sendmoney">รายงานการเก็บเงินงวดแรก/งวดต่อไป</string>
+
+    <string name="menu_report_sale">รายงานการขาย</string>
+    <string name="menu_report_zone">รายงานพื้นที่การขาย</string>
+    <string name="menu_report_re_print">รายงานการ Re-Print เอกสาร</string>
+
+    <!--<string name="menu_report_document">รายงานเอกสาร/ข้อมูล ไม่เรียบร้อย</string>-->
+    <string name="menu_report_daily_summary_send_money">สรุปรายงานการส่งเงิน</string>
+    <!--จริง ๆ ไม่ได้ใช้แล้ว แต่ File ที่ไม่ได้ใช้งาน ไม่ได้ลบออกไป เลยต้องคงไว้ก่อน เพื่อไม่ให้ error-->
+    <string name="menu_report_daily_summary_send_document">สรุปรายงานการส่งเอกสาร</string>
+    <!-- จริง ๆ ไม่ได้ใช้แล้ว แต่ File ที่ไม่ได้ใช้งาน ไม่ได้ลบออกไป เลยต้องคงไว้ก่อน เพื่อไม่ให้ error -->
+
+    <string name="menu_report_credit_saleaudit">รายงานการตรวจสอบการ์ดงวดแรก</string>
+    <string name="menu_report_credit_next_payment">รายงานการเก็บเงินค่างวด</string>
+    <string name="menu_report_credit_sendmoney">รายงานสรุปการส่งเงิน</string>
+    <string name="menu_report_credit_contract_close_account">รายงานตัดสด</string>
+
+    <string name="bluetooth_select_device">Select a device to connect</string>
+    <string name="bluetooth_scanning">Scanning for devices&#8230;</string>
+    <string name="bluetooth_disabled">Bluetooth is disabled</string>
+    <string name="bluetooth_scan">Scan for devices</string>
+    <string name="bluetooth_address">Address</string>
+    <string name="bluetooth_connect">Connect</string>
+    <string name="bluetooth_please_wait">Please wait</string>
+    <string name="bluetooth_printing">Printing&#8230;</string>
+    <string name="bluetooth_turning_on">Turning on bluetooth&#8230;</string>
+
+    <string name="bluetooth_connecting">Connecting to device&#8230;</string>
+    <string name="bluetooth_failed_to_connect">Failed to establish connection</string>
+    <string name="bluetooth_failed_to_init">Failed to init printer</string>
+
+
+    <!-- Mobile Report -->
+    <string name="mobile_report_daily_summary">ReportDashboard</string>
+
+    <string name="mobile_report_emp_team">ReportSaleAndDriver</string>
+    <string name="mobile_report_product">ReportInventory</string>
+    <string name="mobile_report_install_payment">ReportInstallAndPayment</string>
+
+    <string name="mobile_report_change_product">ReportChangeProduct</string>
+    <string name="mobile_report_impound_product">ReportImpoundProduct</string>
+    <string name="mobile_report_change_contract">ReportChangeContract</string>
+
+    <string name="mobile_report_payment_appointment">ReportPaymentAppointment</string>
+    <string name="mobile_report_writeoff_npl">ReportWriteOffNPL</string>
+
+    <string name="mobile_report_approved">ReportApproved</string>
+    <string name="mobile_report_complain">ReportComplain</string>
+
+    <string name="mobile_report_trade_product">ReportTradeInProduct</string>
+    <string name="mobile_report_payment_sendmoney">ReportPaymentAndSendMoney</string>
+    <string name="mobile_report_zone">ReportSaleArea</string>
+
+    <string name="mobile_report_credit_saleaudit">ReportSaleAudit</string>
+    <string name="mobile_report_credit_next_payment">ReportNextPayment</string>
+    <string name="mobile_report_credit_sendmoney">ReportSendMoney</string>
+    <string name="mobile_report_credit_contract_close_account">ReportContractCloseAccount</string>
+    <string name="mobile_report_re_print">ReportRePrintDocument</string>
+
+    <string name="mobile_report_sale">รายงานการขาย</string>
+    <string name="mobile_report_document">รายงานเอกสาร/ข้อมูล ไม่เรียบร้อย</string>
+    <string name="mobile_report_daily_summary_send_money">สรุปรายงานการส่งเงิน</string>
+    <string name="mobile_report_daily_summary_send_document">สรุปรายงานการส่งเอกสาร</string>
+    <string name="mobile_report_error">โหลดรายงานขัดข้อง</string>
+    <string name="mobile_report_success">โหลดรายงานสำเร็จ</string>
+    <!--1000=1sec-->
+    <string name="mobile_report_delay">20000</string>
+
+    <string name="error_synch">กรุณาทำการปรับปรุงข้อมูลใหม่อีกครั้ง!</string>
+
+    <string name="dialog_ok">ตกลง</string>
+    <string name="dialog_cancel">ยกเลิก</string>
+    <string name="dialog_detail">รายละเอียด</string>
+    <string name="dialog_scan">สแกน</string>
+    <string name="dialog_not_scan">ไม่สแกน</string>
+    <!--for print version 2 -->
+    <string name="none_paired">No devices have been paired</string>
+    <string name="scanning">scanning for devices...</string>
+    <string name="select_device">select a device to connect</string>
+    <string name="none_found">No devices found</string>
+    <string name="btnSearch">Connect  Bluetooth  Printer</string>
+    <string name="btnSend">Print</string>
+    <string name="btn_test">Print  Test  Page</string>
+    <string name="btnClose">Close</string>
+    <string name="txt_content">&quot;&quot;</string>
+    <string name="menu_settings">set</string>
+    <string name="strLang">en</string>
+    <string name="button_scan">Scan for devices</string>
+    <string name="folder_picture_tsr">tsr_temp</string>
+    <string name="title_assign_employee">Assign employee</string>
+
+    <!--end for print version 2-->
+
+
+
+</resources>

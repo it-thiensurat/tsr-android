@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#000000"
+    android:orientation="horizontal"
+    android:weightSum="18">
+
+    <TextView
+        android:id="@+id/txtProductSerialNumber"
+        style="@style/TextView.Value"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtProductID"
+        style="@style/TextView.Value"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtProductName"
+        style="@style/TextView.Value"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtCONTNO"
+        style="@style/TextView.Value"
+        android:layout_width="160dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtCustomerName"
+        style="@style/TextView.Value"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtIDCard"
+        style="@style/TextView.Value"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtAddressInstall"
+        style="@style/TextView.Value"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtTelHome"
+        style="@style/TextView.Value"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtTelMobile"
+        style="@style/TextView.Value"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtTelOffice"
+        style="@style/TextView.Value"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtInstallDate"
+        style="@style/TextView.Value"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtFortnight"
+        style="@style/TextView.Value"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtProblemLoss"
+        style="@style/TextView.Value"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtProblemLossOther"
+        style="@style/TextView.Value"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtLossDate"
+        style="@style/TextView.Value"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/txtEmpNameApprove"
+        style="@style/TextView.Value"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtApproveDate"
+        style="@style/TextView.Value"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+
+    <TextView
+        android:id="@+id/txtApproveOther"
+        style="@style/TextView.Value"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:gravity="center" />
+
+</LinearLayout>

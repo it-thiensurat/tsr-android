@@ -1,0 +1,1 @@
+UPDATE TransactionLog SET SyncStatus = ?, SyncDate = ? WHERE TransactionID = ?

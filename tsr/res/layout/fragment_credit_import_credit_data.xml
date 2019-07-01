@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="100dp"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btnImportAudit"
+        style="@style/ButtonTop"
+        android:layout_width="@dimen/credit_button_width"
+        android:layout_height="@dimen/credit_button_height"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/credit_button_top"
+        android:text="นำเข้าข้อมูลลูกค้าตรวจสอบ" />
+
+    <Button
+        android:id="@+id/btnImportCredit"
+        style="@style/ButtonTop"
+        android:layout_width="@dimen/credit_button_width"
+        android:layout_height="@dimen/credit_button_height"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/credit_button_top"
+        android:text="นำเข้าข้อมูลลูกค้าเก็บเงินค่างวด"/>
+</LinearLayout>

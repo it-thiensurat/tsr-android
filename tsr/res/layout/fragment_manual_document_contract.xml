@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <th.co.thiensurat.views.ViewTitle
+        style="@style/ViewTitle"
+        app:text="@string/manual_document_contract_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding_normal"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                style="@style/TextView.Label"
+                android:layout_width="@dimen/employee_list_height"
+                android:layout_height="@dimen/manual_document_height"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="@string/manual_document_contract_doc_no" />
+
+            <TextView
+                android:id="@+id/txtDocNo"
+                style="@style/TextView.Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                style="@style/TextView.Label"
+                android:layout_width="@dimen/employee_list_height"
+                android:layout_height="@dimen/manual_document_height"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="@string/manual_document_contract_book_no" />
+
+            <EditText
+                android:id="@+id/etBookNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:textSize="@dimen/normal_font_size"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                style="@style/TextView.Label"
+                android:layout_width="@dimen/employee_list_height"
+                android:layout_height="@dimen/manual_document_height"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="@string/manual_document_contract_running_no" />
+
+            <EditText
+                android:id="@+id/etRunningNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:textSize="@dimen/normal_font_size" 
+                android:inputType="number" />
+        </LinearLayout>
+         <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                style="@style/TextView.Label"
+                android:layout_width="@dimen/employee_list_height"
+                android:layout_height="@dimen/manual_document_height"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="@string/manual_document_detail_note" />
+
+            <EditText
+                android:id="@+id/etNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:textSize="@dimen/normal_font_size" />
+        </LinearLayout>
+        
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+   
+
+    <LinearLayout
+        style="@style/ViewTitle"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_normal" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="กลุ่มลูกค้าแบ่งตามพื้นที่"
+            android:textColor="@color/font_color_white"
+            android:textSize="@dimen/normal_font_size" />
+    </LinearLayout>
+
+    <!--<ListView
+        android:id="@+id/lvGroupCustomer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:choiceMode="singleChoice"
+        android:divider="@color/transparent"
+        android:dividerHeight="0dp"
+        android:listSelector="@drawable/selector_list_view_default"
+        android:scrollbars="vertical|horizontal" />-->
+    <ListView
+        android:id="@+id/lvGroupCustomer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:choiceMode="singleChoice"
+        android:dividerHeight="0dp"
+        android:listSelector="@drawable/selector_list_view_default"
+        android:scrollbars="vertical|horizontal" />
+
+</LinearLayout>

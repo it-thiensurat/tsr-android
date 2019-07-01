@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "138216283472",
+    "firebase_url": "https://thiensurat-cee63.firebaseio.com",
+    "project_id": "thiensurat-cee63",
+    "storage_bucket": "thiensurat-cee63.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138216283472:android:88d62e984f346909",
+        "android_client_info": {
+          "package_name": "th.co.thiensurat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138216283472-q9l9r2lfernha8c9u65j1sg8o7b9vgm8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaAipXLku1soFbRMZkVKnu018zc9bAR5w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138216283472:android:80587de814218ac1",
+        "android_client_info": {
+          "package_name": "th.co.thiensurat.uat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138216283472-q9l9r2lfernha8c9u65j1sg8o7b9vgm8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaAipXLku1soFbRMZkVKnu018zc9bAR5w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

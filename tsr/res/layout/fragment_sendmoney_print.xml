@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE LinearLayout PUBLIC "1" "LinearLayout.dtd">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/txtTitle"
+            style="@style/TextView.Label.bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/font_color_style1" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/ivBarcode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/txtReference"
+            style="@style/TextView.Value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="" />
+    </LinearLayout>
+    <LinearLayout
+        style="@style/ItemLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/padding_large"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.4"
+            android:gravity="left"
+            android:text="ชื่อผู้ส่งเงิน :"
+            android:textColor="#2c2c2c" />
+
+        <TextView
+            android:id="@+id/txtEmpName"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.6"
+            android:gravity="left"
+            android:text=""
+            android:textColor="#2c2c2c" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/ItemLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/change_product_detail_top"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.4"
+            android:gravity="left"
+            android:text="รหัสผู้ส่ง :"
+            android:textColor="#2c2c2c" />
+
+        <TextView
+            android:id="@+id/txtEmpCode"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.6"
+            android:gravity="left"
+            android:text=""
+            android:textColor="#2c2c2c" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/ItemLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/change_product_detail_top"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.4"
+            android:gravity="left"
+            android:text="วันที่ส่งเงิน :"
+            android:textColor="#2c2c2c" />
+
+        <TextView
+            android:id="@+id/txtSendDate"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.6"
+            android:gravity="left"
+            android:text=""
+            android:textColor="#2c2c2c" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/ItemLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/change_product_detail_top"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.4"
+            android:gravity="left"
+            android:text="ชื่อผู้รับเงิน/สาขา:"
+            android:textColor="#2c2c2c" />
+
+        <TextView
+            android:id="@+id/txtPayeeName"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.6"
+            android:gravity="left"
+            android:text=""
+            android:textColor="#2c2c2c" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/ItemLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/change_product_detail_top"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.4"
+            android:gravity="left"
+            android:text="Ref. 1 :"
+            android:textColor="#2c2c2c" />
+
+        <TextView
+            android:id="@+id/txtReference1"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.6"
+            android:gravity="left"
+            android:text=""
+            android:textColor="#2c2c2c" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/ItemLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/change_product_detail_top"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.4"
+            android:gravity="left"
+            android:text="Ref. 2 :"
+            android:textColor="#2c2c2c" />
+
+        <TextView
+            android:id="@+id/txtReference2"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.6"
+            android:gravity="left"
+            android:text=""
+            android:textColor="#2c2c2c" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/creditview"
+        style="@style/ItemLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/change_product_detail_top"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.4"
+            android:gravity="left"
+            android:text="เชลล์สลิป"
+            android:textColor="#2c2c2c" />
+
+        <TextView
+            android:id="@+id/txtCreditAmount"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.3"
+            android:gravity="left"
+            android:text=""
+            android:textColor="#2c2c2c" />
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.3"
+            android:gravity="left"
+            android:text="บาท"
+            android:textColor="#2c2c2c" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/chequeview"
+        style="@style/ItemLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/change_product_detail_top"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.4"
+            android:gravity="left"
+            android:text="เช็ค"
+            android:textColor="#2c2c2c" />
+
+        <TextView
+            android:id="@+id/txtChequeAmount"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.3"
+            android:gravity="left"
+            android:text=""
+            android:textColor="#2c2c2c" />
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.3"
+            android:gravity="left"
+            android:text="บาท"
+            android:textColor="#2c2c2c" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/ItemLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/change_product_detail_top"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.4"
+            android:gravity="left"
+            android:text="จำนวนเงิน :"
+            android:textColor="#2c2c2c" />
+
+        <TextView
+            android:id="@+id/txtSendAmount"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.3"
+            android:gravity="left"
+            android:text=""
+            android:textColor="#2c2c2c" />
+
+        <TextView
+            style="@style/TextView.Label.bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.3"
+            android:gravity="left"
+            android:text="บาท"
+            android:textColor="#2c2c2c" />
+    </LinearLayout>
+
+
+
+</LinearLayout>

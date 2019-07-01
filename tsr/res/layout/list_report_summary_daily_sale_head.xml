@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_view_header_height"
+    android:background="#000000"
+    android:weightSum="26">
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="วันที่ทำสัญญา" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="รหัสสินค้า" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="Sale" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ProductID" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ชื่อสินค้า" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="พนักงานผู้แนะนำ" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="CustomerID" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ประเภทลูกค้า" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="หมายเลขบัตร" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="คำนำหน้า" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ชื่อลูกค้า" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ที่อยู่ตามบัตร" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ที่อยู่ติดตั้ง" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ที่อยู่เก็บเงิน" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ราคาขาย" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="สด/ผ่อน" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="350dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="จำนวนงวด" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="สินค้าเทิร์น/ส่วนลด" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ราคาสุทธิ" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="พนักงานติดตั้ง" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="จำนวนเงินที่ชำระจริง" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="วันที่ชำระ" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="ประเภทการจ่ายเงิน" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="เลขที่บัญชี" />
+
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="หมายเลขเช๊ค" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="หมายเลขบัตรเครดิต" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="เลขที่ใบเสร็จมือ" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="0.5dp"
+        android:layout_weight="1"
+        android:background="@color/bg_table_main_header"
+        android:gravity="center"
+        android:text="วันที่นัดชำระ" />
+
+
+</LinearLayout>

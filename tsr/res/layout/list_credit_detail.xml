@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/itemListCreditDetail"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/impound_detail_height2">
+
+    <TextView
+        android:id="@+id/txtPaymentPeriodNumber"
+        style="@style/TextView.Label.bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.5"
+        android:text="@string/label_discount_mc_turn"
+        android:textColor="@color/bg_body_red" />
+
+    <TextView
+        android:id="@+id/txtAmount"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.3"
+        android:gravity="right"
+        android:text="15,000.00"
+        android:textColor="@color/bg_body_red" />
+
+    <TextView
+        android:id="@+id/lblBath"
+        style="@style/TextView.Label.bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="0.2"
+        android:gravity="left"
+        android:text="@string/label_baht"
+        android:textColor="@color/bg_body_red" />
+
+</LinearLayout>

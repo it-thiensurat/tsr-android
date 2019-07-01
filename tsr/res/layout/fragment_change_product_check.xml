@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+ 	<th.co.thiensurat.views.ViewTitle
+ 	    android:id="@+id/ViewTitle1"
+        style="@style/ViewTitle"
+        app:text="@string/title_scan_old_product" />
+   
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/normal_margin_top"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="ตรวจสอบความถูกต้องของสินค้าที่ต้องการเปลี่ยน"
+            android:textColor="#63B8FF"
+            style="@style/TextView.Value" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:layout_marginTop="@dimen/padding_small" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="@dimen/impound_detail_width"
+                android:layout_height="@dimen/impound_detail_height"
+                android:background="@color/bg_show_detail"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:text="@string/label_product_no"
+                 style="@style/TextView.Label.bold" />
+
+            <TextView
+                android:id="@+id/textShowScan"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/impound_detail_height"
+                android:layout_marginLeft="3dp"
+                android:layout_weight="0.72"
+                android:background="@color/bg_show_detail"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="5dp"
+                android:text="TextView"
+                 style="@style/TextView.Value" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:layout_marginTop="@dimen/padding_small" >
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="@dimen/impound_detail_width"
+                android:layout_height="@dimen/impound_detail_height"
+                android:background="@color/bg_show_detail"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:text="@string/label_product_name"
+                 style="@style/TextView.Label.bold"/>
+
+            <TextView
+                android:id="@+id/textShowType"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/impound_detail_height"
+                android:layout_marginLeft="3dp"
+                android:layout_weight="0.72"
+                android:background="@color/bg_show_detail"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="5dp"
+                android:text="TextView"
+                 style="@style/TextView.Value"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

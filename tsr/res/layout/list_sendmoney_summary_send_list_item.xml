@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_list_view_background"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/imageDelete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_weight="0.04"
+        android:src="@drawable/ic_recycle_bin_red" />
+
+    <TextView
+        android:id="@+id/txtPaymentDate"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.35"
+        android:gravity="center"
+        android:text="dd/MM/yyyy\nxxxxxxxxxxxx"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.32"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtTransactionNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.75"
+            android:gravity="center"
+            android:text=""
+            style="@style/TextView.Value"/>
+
+        <LinearLayout
+            android:id="@+id/llAdd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.3"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <ImageButton
+                android:id="@+id/btnAdd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.85"
+                android:background="@color/bg_body_white"
+                android:src="@android:drawable/ic_menu_add" />
+
+            <!-- -->
+            <!--<ImageButton-->
+                <!--android:id="@+id/btnEdit"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@color/bg_body_white"-->
+                <!--android:src="@android:drawable/ic_menu_edit" />-->
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtSendAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.2"
+        android:gravity="right"
+        android:text="##,##0.00"
+        style="@style/TextView.Value"/>
+
+    <TextView
+        android:id="@+id/txtSendDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.23"
+        android:gravity="center"
+        android:text="dd/MM/yyyy HH:mm:ss"
+        style="@style/TextView.Value" />
+
+</LinearLayout>

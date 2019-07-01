@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:weightSum="5">
+
+    <TextView
+        android:id="@+id/txtPartSpareCode"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1.5"
+        android:gravity="center"
+        android:text="รหัสอะไหล่" />
+
+    <TextView
+        android:id="@+id/txtPartSpareName"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:text="ชื่ออะไหล่" />
+
+    <EditText
+        android:id="@+id/editTextQTY"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.75"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="4"
+        android:text="0"/>
+
+    <TextView
+        android:id="@+id/txtUnit"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.75"
+        android:gravity="center"
+        android:text="หน่วย" />
+
+    <TextView
+         android:id="@+id/txtNo"
+         style="@style/TextView.Value"
+         android:layout_width="0dp"
+         android:layout_height="wrap_content"
+         android:layout_gravity="center_vertical"
+         android:layout_weight="1"
+         android:gravity="center"
+         android:visibility="gone"
+         android:text="0" />
+
+
+</LinearLayout>

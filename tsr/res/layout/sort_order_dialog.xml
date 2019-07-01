@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/padding_normal">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:weightSum="1">
+
+        <EditText
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:hint="ระบุบลำดับที่ต้องการ"
+            android:inputType="number"
+            android:maxLength="5"
+            android:id="@+id/editText_order"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:layout_weight="0.7"/>
+
+        <Button
+            style="@style/ButtonTop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/button_ok"
+            android:id="@+id/button_order"
+            android:layout_weight="0.3"/>
+
+    </LinearLayout>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:layout_marginBottom="@dimen/padding_normal"
+        android:background="@color/bg_body_default"></TableRow>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView_order"
+        android:layout_gravity="center_horizontal" />
+
+
+
+
+</LinearLayout>

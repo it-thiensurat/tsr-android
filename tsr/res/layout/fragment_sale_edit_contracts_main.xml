@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnEditCustomerDetails"
+            style="@style/ButtonTop"
+            android:layout_width="@dimen/impound_width"
+            android:layout_height="@dimen/impound_height"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/impound_top"
+            android:text="แก้ไขรายละเอียดลูกค้า"
+            android:textSize="@dimen/normal_font_size"/>
+
+        <Button
+            android:id="@+id/btnEditPhoto"
+            style="@style/ButtonTop"
+            android:layout_width="@dimen/impound_width"
+            android:layout_height="@dimen/impound_height"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/impound_top"
+            android:text="แก้ไขภาพถ่าย"
+            android:textSize="@dimen/normal_font_size"/>
+
+        <Button
+            android:id="@+id/btnEditDetailsMoreClients"
+            style="@style/ButtonTop"
+            android:layout_width="@dimen/impound_width"
+            android:layout_height="@dimen/impound_height"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/impound_top"
+            android:text="แก้ไขรายละเอียดลูกค้าเพิ่มเติม"
+            android:textSize="@dimen/normal_font_size"/>
+    </LinearLayout>
+
+ </LinearLayout>

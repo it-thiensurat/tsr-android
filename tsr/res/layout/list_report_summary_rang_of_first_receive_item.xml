@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#000000"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/txtDateRang"
+        style="@style/TextView.Value"
+        android:layout_width="@dimen/employee_image_size"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/txtEmpName"
+        style="@style/TextView.Value"
+        android:layout_width="@dimen/change_product_detail_width2"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:background="#FFFFFF"
+        android:paddingLeft="@dimen/padding_normal"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/txtNumber"
+        style="@style/TextView.Value"
+        android:layout_width="@dimen/employee_image_size"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/txtFresh"
+        style="@style/TextView.Value"
+        android:layout_width="@dimen/employee_image_size"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/txtOutstanding"
+        style="@style/TextView.Value"
+        android:layout_width="@dimen/employee_image_size"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:text="" />
+
+</LinearLayout>

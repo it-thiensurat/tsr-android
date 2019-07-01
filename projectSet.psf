@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.tigris.subversion.subclipse.core.svnnature">
+<project reference="0.9.3,http://192.168.1.201/svn/Thiensurat/Phase%20I/SourceCode/Android/TSR/pager-sliding-tab-libs,pager-sliding-tab-libs"/>
+<project reference="0.9.3,http://192.168.1.201/svn/Thiensurat/Phase%20I/SourceCode/Android/TSR/pinned-section-listview,pinned-section-listview"/>
+<project reference="0.9.3,http://192.168.1.201/svn/Thiensurat/Phase%20I/SourceCode/Android/TSR/sliding-menu-libs,sliding-menu-libs"/>
+<project reference="0.9.3,http://192.168.1.201/svn/Thiensurat/Phase%20I/SourceCode/Android/TSR/sqlite-asset-helper,sqlite-asset-helper"/>
+<project reference="0.9.3,http://192.168.1.201/svn/Thiensurat/Phase%20I/SourceCode/Android/TSR/tsr,tsr"/>
+<project reference="0.9.3,http://192.168.1.201/svn/Thiensurat/Phase%20I/SourceCode/Android/TSR/viewpager-indicator-library,viewpager-indicator-library"/>
+<project reference="0.9.3,http://192.168.1.201/svn/Thiensurat/Phase%20I/SourceCode/Android/TSR/zxing-android,zxing-android"/>
+</provider>
+</psf>

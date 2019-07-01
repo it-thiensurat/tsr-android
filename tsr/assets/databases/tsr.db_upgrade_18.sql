@@ -1,0 +1,39 @@
+ALTER TABLE EmployeeDetail ADD COLUMN ProcessType VARCHAR(50);
+ALTER TABLE EmployeeDetail ADD COLUMN FirstName NVARCHAR(250);
+ALTER TABLE EmployeeDetail ADD COLUMN LastName NVARCHAR(250);
+ALTER TABLE EmployeeDetail ADD COLUMN EmployeeName NVARCHAR(250);
+ALTER TABLE EmployeeDetail ADD COLUMN PositionName NVARCHAR(250);
+ALTER TABLE EmployeeDetail ADD COLUMN SubTeamName NVARCHAR(250);
+ALTER TABLE EmployeeDetail ADD COLUMN SubTeamHeadName NVARCHAR(250);
+ALTER TABLE EmployeeDetail ADD COLUMN TeamName NVARCHAR(250);
+ALTER TABLE EmployeeDetail ADD COLUMN TeamHeadName NVARCHAR(250);
+ALTER TABLE EmployeeDetail ADD COLUMN SupervisorName NVARCHAR(250);
+ALTER TABLE EmployeeDetail ADD COLUMN SupervisorHeadName NVARCHAR(250);
+ALTER TABLE EmployeeDetail ADD COLUMN SubDepartmentName NVARCHAR(250);
+ALTER TABLE EmployeeDetail ADD COLUMN SubDepartmentHeadName NVARCHAR(250);
+ALTER TABLE EmployeeDetail ADD COLUMN DepartmentName NVARCHAR(250);
+ALTER TABLE EmployeeDetail ADD COLUMN DepartmentHeadName NVARCHAR(250);
+ALTER TABLE EmployeeDetail ADD COLUMN OrganizationName NVARCHAR(250);
+ALTER TABLE EmployeeDetail ADD COLUMN OrganizationHeadName NVARCHAR(250);
+ALTER TABLE EmployeeDetail ADD COLUMN SourceSystemName NVARCHAR(250);
+
+
+ALTER TABLE EmployeeDetailHistory ADD COLUMN ProcessType VARCHAR(50);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN FirstName NVARCHAR(250);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN LastName NVARCHAR(250);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN EmployeeName NVARCHAR(250);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN PositionName NVARCHAR(250);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN SubTeamName NVARCHAR(250);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN SubTeamHeadName NVARCHAR(250);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN TeamName NVARCHAR(250);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN TeamHeadName NVARCHAR(250);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN SupervisorName NVARCHAR(250);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN SupervisorHeadName NVARCHAR(250);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN SubDepartmentName NVARCHAR(250);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN SubDepartmentHeadName NVARCHAR(250);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN DepartmentName NVARCHAR(250);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN DepartmentHeadName NVARCHAR(250);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN OrganizationName NVARCHAR(250);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN OrganizationHeadName NVARCHAR(250);
+ALTER TABLE EmployeeDetailHistory ADD COLUMN SourceSystemName NVARCHAR(250);
+

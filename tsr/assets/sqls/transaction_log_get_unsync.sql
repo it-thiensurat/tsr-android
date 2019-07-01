@@ -1,0 +1,1 @@
+SELECT * FROM TransactionLog WHERE SyncStatus = ? ORDER BY TransactionID

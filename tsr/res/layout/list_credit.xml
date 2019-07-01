@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_list_view_background"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/txtNo"
+        style="@style/TextView.Value.Normal"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="0.15"
+        android:gravity="center"
+        android:text="1" />
+
+    <TextView
+        android:id="@+id/txtCustomerFullNameAndCONTNO"
+        style="@style/TextView.Value.Normal"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.8"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="5dp"
+        android:text="นายสมชาย เจริญวงศ\n1AAA0200AAA033" />
+
+    <TextView
+        android:id="@+id/txtPaymentPeriodNumber"
+        style="@style/TextView.Value.Normal"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.15"
+        android:gravity="center"
+        android:text="1" />
+
+    <TextView
+        android:id="@+id/txtNetAmount"
+        style="@style/TextView.Value.Normal"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.3"
+        android:gravity="right|center_vertical"
+        android:paddingRight="10dp"
+        android:text="3,000.00" />
+
+    <LinearLayout
+        android:id="@+id/fakeClick"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="0.15"
+        android:gravity="center">
+
+        <CheckBox
+            android:id="@+id/chkSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+    </LinearLayout>
+</LinearLayout>

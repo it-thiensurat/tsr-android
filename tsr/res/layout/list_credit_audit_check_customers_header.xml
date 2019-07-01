@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/list_view_header_height"
+              android:background="@color/bg_table_main_header">
+
+    <TextView
+        android:id="@+id/header_txt_no"
+        style="@style/TextView.Label.bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.15"
+        android:gravity="center"
+        android:text="ลำดับ" />
+
+    <TextView
+        android:id="@+id/header_txt_name"
+        style="@style/TextView.Label.bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.6"
+        android:gravity="center"
+        android:text="ชื่อ-นามสกุล/ที่อยู่ติดตั้ง" />
+
+    <TextView
+        android:id="@+id/header_txt_period_number"
+        style="@style/TextView.Label.bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.15"
+        android:gravity="center"
+        android:text="งวดที่" />
+
+    <TextView
+        android:id="@+id/header_txt_payment"
+        style="@style/TextView.Label.bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.2"
+        android:gravity="center"
+        android:text="ค่างวด" />
+
+    <CheckBox
+        android:id="@+id/header_checkBox"
+        style="@style/TextView.Label.bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.1"
+        android:gravity="center"
+        android:text=""/>
+
+</LinearLayout>

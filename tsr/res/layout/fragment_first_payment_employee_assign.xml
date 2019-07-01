@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    
+    <LinearLayout
+        style="@style/ViewTitle"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_normal" >
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/font_color_white"
+            android:textSize="@dimen/normal_font_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                style="@style/TextView.Label"
+                android:layout_width="@dimen/impound_detail_width"
+                android:layout_height="@dimen/impound_detail_height2"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="สัญญา :" />
+
+            <TextView
+                android:id="@+id/txtContNO"
+                style="@style/TextView.Value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_weight="@dimen/first_payment_customer_detail_value_weight" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                style="@style/TextView.Label"
+                android:layout_width="@dimen/impound_detail_width"
+                android:layout_height="@dimen/impound_detail_height2"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="ชื่อ-นามสกุล :" />
+
+            <TextView
+                android:id="@+id/txtCustomerFullName"
+                style="@style/TextView.Value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_weight="@dimen/first_payment_customer_detail_value_weight" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                style="@style/TextView.Label"
+                android:layout_width="@dimen/impound_detail_width"
+                android:layout_height="@dimen/impound_detail_height2"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="ติดตั้ง :" />
+
+            <TextView
+                android:id="@+id/txtInstallDate"
+                style="@style/TextView.Value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_weight="@dimen/first_payment_customer_detail_value_weight" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                style="@style/TextView.Label"
+                android:layout_width="@dimen/impound_detail_width"
+                android:layout_height="@dimen/impound_detail_height2"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="ค่างวด :" />
+
+            <TextView
+                android:id="@+id/txtPaymentAmount"
+                style="@style/TextView.Value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_weight="@dimen/first_payment_customer_detail_value_weight" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                style="@style/TextView.Label"
+                android:layout_width="@dimen/impound_detail_width"
+                android:layout_height="match_parent"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="@string/label_install_address" />
+
+            <TextView
+                android:id="@+id/txtAddress"
+                style="@style/TextView.Value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_weight="@dimen/next_payment_customer_detail_value_weight" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/ItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                style="@style/TextView.Label"
+                android:layout_width="@dimen/impound_detail_width"
+                android:layout_height="@dimen/impound_detail_height2"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="ผู้เก็บเงิน :" />
+
+            <Spinner
+                android:id="@+id/spnEmployee"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_weight="@dimen/first_payment_customer_detail_value_weight" >
+            </Spinner>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

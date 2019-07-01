@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_view_header_height"
+    android:background="@color/bg_table_main_header">
+
+    <TextView
+        android:id="@+id/txtDocumentName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.7"
+        android:gravity="center"
+        android:text="TextView1"
+        android:textSize="@dimen/normal_font_size"
+        android:textStyle="bold" />
+    
+    <!-- <TextView
+        android:id="@+id/txtCustomer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:text="ชื้อลูกค้า"
+        android:textSize="@dimen/normal_font_size"
+        android:textStyle="bold" />	 -->
+
+    <TextView
+        android:id="@+id/txtSelected"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:text="เลือก"
+        android:textSize="@dimen/normal_font_size"
+        android:textStyle="bold" />
+
+</LinearLayout>

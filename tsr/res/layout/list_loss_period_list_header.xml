@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_view_header_height"
+    android:background="@color/bg_table_main_header" >
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.25"
+        android:gravity="center"
+        android:text="@string/label_install_date" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.35"
+        android:gravity="center"
+        android:text="@string/label_firstname_lastname" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.25"
+        android:gravity="center"
+        android:text="ค่างวด" />
+
+    <TextView
+        style="@style/TextView.Label.bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.15"
+        android:gravity="center"
+        android:text="สถานะ" />
+
+</LinearLayout>

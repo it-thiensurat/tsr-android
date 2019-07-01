@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_view_height"
+    android:background="@drawable/selector_list_view_background">
+
+    <TextView
+        android:id="@+id/txtRequestDate"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.25"
+        android:gravity="center"
+        android:text="20/02/2558" />
+
+    <TextView
+        android:id="@+id/txtComplainPaperIDAndCustomerName"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.65"
+        android:gravity="center"
+        android:text="7CAA0100CAA1005809002\nนายAAAAA AAAAA" />
+
+    <TextView
+        android:id="@+id/txtStatus"
+        style="@style/TextView.Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.1"
+        android:gravity="center"
+        android:text="N" />
+</LinearLayout>
