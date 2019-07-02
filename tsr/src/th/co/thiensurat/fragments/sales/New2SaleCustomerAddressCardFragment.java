@@ -350,6 +350,7 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
             longitude = gps.getLongitude();
         }*/
 
+        Log.e("moo","2");
         new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
 
             @Override
@@ -1223,7 +1224,7 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
                                     && mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard == PersonTypeCardInfo.PersonTypeCardEnum.IDCARD
                                     && BHGeneral.ID_CARD_MODE) {
                                 imageButtoncheckIDCard.setImageResource(R.drawable.ic_import_id_card);
-                                select_read_card=1;
+                                //select_read_card=1;
                             } else {
                                 select_read_card=0;
                                 imageButtoncheckIDCard.setImageResource(android.R.drawable.ic_menu_search);
@@ -1326,7 +1327,9 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
                 String perfixName = spinnerPerfix.getSelectedItem().toString();
                 ArrayAdapter sexAdapter = (ArrayAdapter) spinnerSex.getAdapter();
 
-                /*switch (perfixName) {
+                select_read_card=0;
+               // Log.e("XXX",perfixName);
+/*                switch (perfixName) {
                     case "":
                         spinnerSex.setEnabled(false);
                         spinnerSex.setSelection(sexAdapter.getPosition(""));
@@ -1346,6 +1349,9 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
                         spinnerSex.setSelection(sexAdapter.getPosition("หญิง"));
                         break;
                     default:
+
+
+
                         spinnerSex.setEnabled(true);
                         break;
                 }*/
@@ -1359,6 +1365,7 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
                         spinnerSex.setSelection(sexAdapter.getPosition(mainDebtorCustomerInfo.Sex));
 
                         select_read_card=1;
+                       // showDialog("2222","2222");
                     }
                 } else {
                     switch (perfixName) {
@@ -2248,15 +2255,29 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
                         cust.CompanyName = null;// ชื่อบริษัท
                         cust.AuthorizedName = null;// ชื่อกรรมการผู้มีอำนาจ
 
-                        if(select_read_card==1){
-                            showDialog("1111","1111");
+                   /*     if(select_read_card==1){
+                           // showDialog("1111","1111");
                             cust.AuthorizedIDCard = mPersonal.getIssueDate()+"#"+mPersonal.getExpireDate(); // เลขบัตรกรรมการผู้มีอำนาจxcxaCsaxcsCs
                         }
                         else {
-                            showDialog("2222","2222");
+                          //  showDialog("2222","2222");
+                            cust.AuthorizedIDCard = null; // เลขบัตรกรรมการผู้มีอำนาจ
+                        }*/
+
+
+
+                        if(select_read_card==1){
+                            try {
+                                cust.AuthorizedIDCard = mPersonal.getIssueDate()+"#"+mPersonal.getExpireDate(); // เลขบัตรกรรมการผู้มีอำนาจxcxaCsaxcsCs
+                            }
+                            catch (Exception ex){
+
+                            }
+
+                        }
+                        else {
                             cust.AuthorizedIDCard = null; // เลขบัตรกรรมการผู้มีอำนาจ
                         }
-
 
                         c.set(Calendar.MONTH, spinnerMonth.getSelectedItemPosition() - 1);// เดือนเกิด
                         c.set(Calendar.YEAR, ((Integer.valueOf(spinnerYear.getSelectedItem().toString())) - 543));// ปีเกิด
@@ -2493,9 +2514,11 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
                         && mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard == PersonTypeCardInfo.PersonTypeCardEnum.IDCARD
                         && isImportThaiIDCard
                         && BHGeneral.ID_CARD_MODE) {
-
+                    //showDialog("4444","4444");
                     importThaiIDCard();
                 } else {
+
+                   // showDialog("3333","3333");
                     idcard = editTextIdentificationCard.getText().toString().replaceAll("-", "");
                     cardTypeName = textViewIdentificationCard.getText().toString();    // บัตรประชาชน/ใบขับขี่/บัตรข้าราชการ
                     boolean checkidcard = BHValidator.isValidCitizenID(idcard);
@@ -2688,7 +2711,13 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
                 cust.AuthorizedName = null;// ชื่อกรรมการผู้มีอำนาจ
 
                 if(select_read_card==1){
-                    cust.AuthorizedIDCard = mPersonal.getIssueDate()+"#"+mPersonal.getExpireDate(); // เลขบัตรกรรมการผู้มีอำนาจxcxaCsaxcsCs
+                    try {
+                        cust.AuthorizedIDCard = mPersonal.getIssueDate()+"#"+mPersonal.getExpireDate(); // เลขบัตรกรรมการผู้มีอำนาจxcxaCsaxcsCs
+                    }
+                    catch (Exception ex){
+
+                    }
+
                 }
                 else {
                     cust.AuthorizedIDCard = null; // เลขบัตรกรรมการผู้มีอำนาจ
@@ -3031,7 +3060,8 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
         //spinnerType.setEnabled(isEnabled);//ประเภทบุคคล
         //spinnerTypeCard.setEnabled(isEnabled);//ประเภทบัตร
         editTextIdentificationCard.setEnabled(isEnabled);//บัตรประชาชน
-
+        select_read_card=1;
+        //showDialog("okok","okok");
         if (mainDebtorCustomerInfo != null && mainDebtorCustomerInfo.PrefixName.equals("")) {
             spinnerPerfix.setEnabled(true);//คำนำหน้าชื่อ
         } else {

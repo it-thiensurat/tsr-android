@@ -371,7 +371,7 @@ public class New2SaleCustomerAddressBillFragment extends BHFragment {
             latitude = gps.getLatitude();
             longitude = gps.getLongitude();
         }*/
-
+        Log.e("moo","3");
 
         new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
 
@@ -2143,8 +2143,22 @@ public class New2SaleCustomerAddressBillFragment extends BHFragment {
                         cust.AuthorizedName = null;// ชื่อกรรมการผู้มีอำนาจ
 
 
-                        if(select_read_card==1){
+                      /*  if(select_read_card==1){
                             cust.AuthorizedIDCard = mPersonal.getIssueDate()+"#"+mPersonal.getExpireDate(); // เลขบัตรกรรมการผู้มีอำนาจxcxaCsaxcsCs
+                        }
+                        else {
+                            cust.AuthorizedIDCard = null; // เลขบัตรกรรมการผู้มีอำนาจ
+                        }*/
+
+
+                        if(select_read_card==1){
+                            try {
+                                cust.AuthorizedIDCard = mPersonal.getIssueDate()+"#"+mPersonal.getExpireDate(); // เลขบัตรกรรมการผู้มีอำนาจxcxaCsaxcsCs
+                            }
+                            catch (Exception ex){
+
+                            }
+
                         }
                         else {
                             cust.AuthorizedIDCard = null; // เลขบัตรกรรมการผู้มีอำนาจ
@@ -2535,8 +2549,22 @@ public class New2SaleCustomerAddressBillFragment extends BHFragment {
                 cust.CompanyName = null;// ชื่อบริษัท
                 cust.AuthorizedName = null;// ชื่อกรรมการผู้มีอำนาจ
 
-                if(select_read_card==1){
+             /*   if(select_read_card==1){
                     cust.AuthorizedIDCard = mPersonal.getIssueDate()+"#"+mPersonal.getExpireDate(); // เลขบัตรกรรมการผู้มีอำนาจxcxaCsaxcsCs
+                }
+                else {
+                    cust.AuthorizedIDCard = null; // เลขบัตรกรรมการผู้มีอำนาจ
+                }*/
+
+
+                if(select_read_card==1){
+                    try {
+                        cust.AuthorizedIDCard = mPersonal.getIssueDate()+"#"+mPersonal.getExpireDate(); // เลขบัตรกรรมการผู้มีอำนาจxcxaCsaxcsCs
+                    }
+                    catch (Exception ex){
+
+                    }
+
                 }
                 else {
                     cust.AuthorizedIDCard = null; // เลขบัตรกรรมการผู้มีอำนาจ
