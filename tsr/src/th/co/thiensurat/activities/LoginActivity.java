@@ -1,6 +1,8 @@
 package th.co.thiensurat.activities;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -30,7 +33,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -40,7 +42,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,7 +54,6 @@ import th.co.thiensurat.R;
 import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.controller.BaseController;
-import th.co.thiensurat.data.controller.DatabaseManager;
 import th.co.thiensurat.data.info.DeviceMenuInfo;
 import th.co.thiensurat.data.info.FortnightInfo;
 import th.co.thiensurat.data.info.PlatformVersionInfo;
@@ -184,6 +184,19 @@ public class LoginActivity extends BHActivity {
             }
         });
     }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+////
+//        Toast.makeText(getApplicationContext(), requestCode + ": " + resultCode + "(" + RESULT_OK + ")", Toast.LENGTH_LONG).show();
+//        if (resultCode == 999) {
+//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//            startActivity(intent);
+//            finish();
+//            BHPreference.setLogLogin(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+//        }
+//    }
 
     private void login(final String userName, final String password) {
         if (isConnectingToInternet()) {
@@ -359,10 +372,21 @@ public class LoginActivity extends BHActivity {
                                                 BHPreference.setIsAdmin(false);
                                                 BHPreference.initPreference(result.Info,outputGetCurrentFortnight);
 
+//                                                Intent i = getPackageManager().getLaunchIntentForPackage("th.co.thiensurat.gps_tracking");
+//                                                if (i != null) {
+//                                                    i.putExtra("APP", "Bighead");
+//                                                    startActivityForResult(i, 999);
+//                                                } else {
+//                                                    Toast.makeText(LoginActivity.this, "No service.", Toast.LENGTH_LONG).show();
+//                                                }
+//                                                Toast.makeText(LoginActivity.this, "Successfully", Toast.LENGTH_LONG).show();
+//                                                Intent i = new Intent();
                                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                                 startActivity(intent);
                                                 finish();
                                                 BHPreference.setLogLogin(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+
+
 
                                             } else {
                                                 showWarningDialog("แจ้งเตือนการเข้าระบบ", "UserName Or Password ไม่ถูกต้อง");
