@@ -7,7 +7,9 @@ android {
     buildToolsVersion '28.0.3'
 
     def versionCodes = { ->
-        return 135   // 133
+//        return 134
+        return 138   //<-- current version
+        // 133
     }
 
     def tsrAppVersion = { ->
@@ -25,8 +27,10 @@ android {
         applicationId 'th.co.thiensurat'
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode   versionCodes()//
-        versionName "1.0.0.46" //versionNames() ldo 44
+        versionCode   versionCodes()
+//        versionName "1.0.0.45"
+        versionName "1.0.0.49" //<-- current version
+// versionNames() ldo 44
         resValue 'string', 'tsr_app_version', tsrAppVersion()
     }
 
@@ -63,12 +67,18 @@ android {
             resValue "string", "tsr_app_name", 'TSR Mobile App UAT'
             buildConfigField 'String', 'SERVICE_MODE', '"UAT"'
             buildConfigField "boolean", "ID_CARD_MODE", "true"
+            manifestPlaceholders = [
+                    appIcon: "@drawable/ic_launcher_uat"
+            ]
         }
         production {
             applicationIdSuffix ''
             resValue "string", "tsr_app_name", 'TSR Mobile App Production'
             buildConfigField 'String', 'SERVICE_MODE', '"PRODUCTION"'
             buildConfigField "boolean", "ID_CARD_MODE", "true"
+            manifestPlaceholders = [
+                    appIcon: "@drawable/ic_launcher"
+            ]
         }
     }
 
@@ -160,7 +170,7 @@ dependencies {
     }
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':zj_bluetooth_printer_version3')
-
+//    implementation 'org.jsoup:jsoup:1.12.1'
 
 }
 

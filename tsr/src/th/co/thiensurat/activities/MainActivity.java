@@ -1,5 +1,6 @@
 package th.co.thiensurat.activities;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -3290,6 +3291,13 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 } else {
                     if (delegate != null) {
                         delegate.postResult(result.ResultDescription);
+                    }
+//                    Toast.makeText(context, BHPreference.employeeID(), Toast.LENGTH_LONG).show();
+                    Intent i = context.getPackageManager().getLaunchIntentForPackage("com.gps_tracking");
+                    if (i != null) {
+                        Intent in = new Intent(Intent.ACTION_VIEW, Uri.parse("gis://empid/" + BHPreference.employeeID()));
+//                        i.putExtra("empid", BHPreference.employeeID());
+                        context.startActivity(in);
                     }
                 }
             } else {
