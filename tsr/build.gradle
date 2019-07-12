@@ -8,7 +8,7 @@ android {
 
     def versionCodes = { ->
 //        return 134
-        return 138   //<-- current version
+        return 139   //<-- current version
         // 133
     }
 
@@ -29,7 +29,7 @@ android {
         targetSdkVersion 28
         versionCode   versionCodes()
 //        versionName "1.0.0.45"
-        versionName "1.0.0.49" //<-- current version
+        versionName "1.0.0.50" //<-- current version
 // versionNames() ldo 44
         resValue 'string', 'tsr_app_version', tsrAppVersion()
     }
