@@ -2063,21 +2063,13 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
     }
 
     private void newPrintImage(Bitmap bitmap) {
-//        byte[] sendData = null;
-//        PrintPic pg = new PrintPic();
-//        pg.initCanvas(576);
-//        pg.initPaint();
-//        pg.drawImage(0, 0, bitmap);
-//        sendData = pg.printDraw();
-//        mService.write(sendData);
-
-        byte[] bmpByte = PrintPicture.POS_PrintBMP(bitmap, 576, 0);
-        sendByteBitmap(Command.ESC_Init);
-        sendByteBitmap(Command.LF);
-        sendByteBitmap(bmpByte);
-        sendByteBitmap(PrinterCommand.POS_Set_PrtAndFeedPaper(30));
-        sendByteBitmap(PrinterCommand.POS_Set_Cut(1));
-        sendByteBitmap(PrinterCommand.POS_Set_PrtInit());
+        byte[] sendData = null;
+        PrintPic pg = new PrintPic();
+        pg.initCanvas(576);
+        pg.initPaint();
+        pg.drawImage(0, 0, bitmap);
+        sendData = pg.printDraw();
+        mService.write(sendData);
     }
     /**********************************************************************************************/
 
@@ -3500,7 +3492,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
 
 
-    private void printNewReceipt(final Bitmap bmp) {
+    public void printNewReceipt(final Bitmap bmp) {
         byte[] bmpByte = PrintPicture.POS_PrintBMP(bmp, 576, 0);
         sendByteBitmap(Command.ESC_Init);
         sendByteBitmap(Command.LF);

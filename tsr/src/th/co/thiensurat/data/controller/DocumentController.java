@@ -14,6 +14,11 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 
 import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,7 +27,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHBarcode;
@@ -543,13 +550,8 @@ public class DocumentController {
         y += fontSize + LINE_SPACE;
         cv.drawText("เลขประจำตัวภาษี 1122331565468", x, y, p);
 
-
-
         return img;
     }
-
-
-
 
     public static Bitmap getHeader() {
         Bitmap img = Bitmap.createBitmap(LAYOUT_WIDTH, 650, Config.ARGB_8888);
@@ -607,7 +609,6 @@ public class DocumentController {
         return listHeader;
     }
 
-
     public static List<PrintTextInfo> getTextShortHeader() {
         List<PrintTextInfo> listHeader = new ArrayList<>();
 
@@ -654,8 +655,6 @@ public class DocumentController {
 
         return result;
     }
-
-
 
     public static Bitmap getContract(ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress, ManualDocumentInfo manual) {
         Bitmap img = Bitmap.createBitmap(LAYOUT_WIDTH, 3000, Config.ARGB_8888);
@@ -2359,8 +2358,6 @@ public class DocumentController {
             //listText.addAll(getTextAlignLeft(String.format("%s %s", sendMoney.Reference2, BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", ""))));
             //listText.add(new PrintTextInfo("selectStandardMode"));
         }
-
-
         return listText;
     }
 
@@ -3611,18 +3608,102 @@ public class DocumentController {
      * == Print with image ==
      *
      */
-    public static Bitmap drawReceiptBitmap() {
-        Bitmap bitmap = null;
-        ReceiptBuilder receiptBuilder = new ReceiptBuilder(574);
+
+    public static Bitmap getPaymentReceiptImage(PaymentInfo paymentInfo, DebtorCustomerInfo debtorCustomerInfo, AddressInfo addressInf) {
+        ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
         receiptBuilder.setMargin(5, 0);
-        receiptBuilder.setAlign(Align.LEFT);
-        receiptBuilder.setColor(Color.BLACK);
-        receiptBuilder.setTextSize(22);
         receiptBuilder.addImage(getHeader());
-        receiptBuilder.addBlankSpace(20);
         receiptBuilder.addParagraph();
         receiptBuilder.setAlign(Align.CENTER);
+        receiptBuilder.setColor(Color.BLACK);
+        receiptBuilder.setTextSize(22);
+
+        return receiptBuilder.build();
+    }
+
+    public static  Bitmap getNewContactImage(ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
+        ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
+        receiptBuilder.setMargin(5, 0);
+        receiptBuilder.addImage(getHeader());
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Align.CENTER);
+        receiptBuilder.setColor(Color.BLACK);
+        receiptBuilder.setTextSize(22);
+        receiptBuilder.addText(contract.MODE > 1 ? "ใบสัญญาเช่าซื้อ" : "ใบสัญญาซื้อขาย");
+
+        return receiptBuilder.build();
+    }
+
+    public static Bitmap getNewSendMoneyImage(SendMoneyInfo sendMoney) {
+        ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
+        receiptBuilder.setMargin(5, 0);
+        receiptBuilder.addImage(getHeader());
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Align.CENTER);
+        receiptBuilder.setColor(Color.BLACK);
+        receiptBuilder.setTextSize(22);
+        receiptBuilder.addText(String.format("ใบนำส่ง%s", sendMoney.PaymentTypeName) + String.format("(%s)", sendMoney.ChannelItemName));
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Align.CENTER);
+        if(sendMoney.Reference2.length() > 8){
+            String strBarcodeNo = sendMoney.Reference2;
+            Bitmap barcodeBmp = null;
+            try {
+                barcodeBmp = encodeAsBitmap(strBarcodeNo, BarcodeFormat.CODE_128, 600, 300);
+            } catch (WriterException e) {
+                e.printStackTrace();
+            }
+            receiptBuilder.addImage(barcodeBmp);
+        }
+
+        return receiptBuilder.build();
+    }
+
+    private static final int WHITE = 0xFFFFFFFF;
+    private static final int BLACK = 0xFF000000;
+    private static Bitmap encodeAsBitmap(String contents, BarcodeFormat format, int img_width, int img_height) throws WriterException {
+        String contentsToEncode = contents;
+        if (contentsToEncode == null) {
+            return null;
+        }
+        Map<EncodeHintType, Object> hints = null;
+        String encoding = guessAppropriateEncoding(contentsToEncode);
+        if (encoding != null) {
+            hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+            hints.put(EncodeHintType.CHARACTER_SET, encoding);
+        }
+        MultiFormatWriter writer = new MultiFormatWriter();
+        BitMatrix result;
+        try {
+            result = writer.encode(contentsToEncode, format, img_width, img_height, hints);
+        } catch (IllegalArgumentException iae) {
+            // Unsupported format
+            return null;
+        }
+        int width = result.getWidth();
+        int height = result.getHeight();
+        int[] pixels = new int[width * height];
+        for (int y = 0; y < height; y++) {
+            int offset = y * width;
+            for (int x = 0; x < width; x++) {
+                pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
+            }
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height,
+                Bitmap.Config.ARGB_8888);
+        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
         return bitmap;
+    }
+
+    private static String guessAppropriateEncoding(CharSequence contents) {
+        // Very crude at the moment
+        for (int i = 0; i < contents.length(); i++) {
+            if (contents.charAt(i) > 0xFF) {
+                return "UTF-8";
+            }
+        }
+        return null;
     }
 
     /**

@@ -75,75 +75,75 @@ public class SplashActivity extends BHActivity {
 		// TODO Auto-generated method stub
 		super.onResume();
 		context = this;
-//		final Handler handler = new Handler();
-//		// ProgressDialog dialog = ProgressDialog.show(getApplicationContext(),
-//		// "TEST", "Loading...");
-//		new Thread(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				// TODO Auto-generated method stub
-//				try {
-//					Thread.sleep(1000);
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//
-//				handler.post(new Runnable() {
-//
-//					@Override
-//					public void run() {
-//						// TODO Auto-generated method stub
-//						Intent intent;
-//
-//						//ปิดก่อนงานรีบ
-//						/*if ((BHPreference.userID() == null) || !BHPreference.serviceMode().equals(BHGeneral.SERVICE_MODE.toString()) || (BHPreference.serviceMode() == null)) {
-//							//intent = new Intent(getApplicationContext(), LoginActivity.class);
-//							new CheckAppVersion().execute();
-//						} else {
-//							intent = new Intent(getApplicationContext(), MainActivity.class);
-//							startActivity(intent);
-//							finish();
-//						}*/
-//						/*if ((BHPreference.userID() == null) || !BHPreference.serviceMode().equals(BHGeneral.SERVICE_MODE.toString()) || (BHPreference.serviceMode() == null)) {
-//							intent = new Intent(getApplicationContext(), LoginActivity.class);
-//							//new CheckAppVersion().execute();
-//						} else {
-//							intent = new Intent(getApplicationContext(), MainActivity.class);
-//						}
-//						startActivity(intent);
-//						finish();*/
-//
-//						/*** [START] :: Fixed - [BHPROJ-1036-8542] :: ปรับโครงสร้าง โฟรเดอร์รูปภาพของ App Bighead ***/
-//						if ((BHPreference.userID() == null) || !BHPreference.serviceMode().equals(BHGeneral.SERVICE_MODE.toString()) || (BHPreference.serviceMode() == null)) {
-//							//intent = new Intent(getApplicationContext(), LoginActivity.class);
-//							CheckAppVersion();
-//						} else {
-//							intent = new Intent(getApplicationContext(), MainActivity.class);
-//							startActivity(intent);
-//							finish();
-//						}
-//						/*** [END] :: Fixed - [BHPROJ-1036-8542] :: ปรับโครงสร้าง โฟรเดอร์รูปภาพของ App Bighead ***/
-//
-//
-//						//startActivity(intent);
-//						//finish();
-//					}
-//				});
-//
-//			}
-//		}).start();
+		final Handler handler = new Handler();
+		// ProgressDialog dialog = ProgressDialog.show(getApplicationContext(),
+		// "TEST", "Loading...");
+		new Thread(new Runnable() {
 
-		try {
-			currentVersion = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-			currentversion = Integer.parseInt(currentVersion.substring(Math.max(currentVersion.length() - 2, 0)));
-			Log.e("Current Version","::"+ currentVersion.substring(Math.max(currentVersion.length() - 2, 0)));
-		} catch (PackageManager.NameNotFoundException e) {
-			e.printStackTrace();
-		}
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
-		new FetchAppVersionFromGooglePlayStore().execute();
+				handler.post(new Runnable() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						Intent intent;
+
+						//ปิดก่อนงานรีบ
+						/*if ((BHPreference.userID() == null) || !BHPreference.serviceMode().equals(BHGeneral.SERVICE_MODE.toString()) || (BHPreference.serviceMode() == null)) {
+							//intent = new Intent(getApplicationContext(), LoginActivity.class);
+							new CheckAppVersion().execute();
+						} else {
+							intent = new Intent(getApplicationContext(), MainActivity.class);
+							startActivity(intent);
+							finish();
+						}*/
+						/*if ((BHPreference.userID() == null) || !BHPreference.serviceMode().equals(BHGeneral.SERVICE_MODE.toString()) || (BHPreference.serviceMode() == null)) {
+							intent = new Intent(getApplicationContext(), LoginActivity.class);
+							//new CheckAppVersion().execute();
+						} else {
+							intent = new Intent(getApplicationContext(), MainActivity.class);
+						}
+						startActivity(intent);
+						finish();*/
+
+						/*** [START] :: Fixed - [BHPROJ-1036-8542] :: ปรับโครงสร้าง โฟรเดอร์รูปภาพของ App Bighead ***/
+						if ((BHPreference.userID() == null) || !BHPreference.serviceMode().equals(BHGeneral.SERVICE_MODE.toString()) || (BHPreference.serviceMode() == null)) {
+							//intent = new Intent(getApplicationContext(), LoginActivity.class);
+							CheckAppVersion();
+						} else {
+							intent = new Intent(getApplicationContext(), MainActivity.class);
+							startActivity(intent);
+							finish();
+						}
+						/*** [END] :: Fixed - [BHPROJ-1036-8542] :: ปรับโครงสร้าง โฟรเดอร์รูปภาพของ App Bighead ***/
+
+
+						//startActivity(intent);
+						//finish();
+					}
+				});
+
+			}
+		}).start();
+
+//		try {
+//			currentVersion = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+//			currentversion = Integer.parseInt(currentVersion.substring(Math.max(currentVersion.length() - 2, 0)));
+//			Log.e("Current Version","::"+ currentVersion.substring(Math.max(currentVersion.length() - 2, 0)));
+//		} catch (PackageManager.NameNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//
+//		new FetchAppVersionFromGooglePlayStore().execute();
 	}
 
 	String newVersion;

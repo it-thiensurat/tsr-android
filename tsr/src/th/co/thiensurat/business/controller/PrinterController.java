@@ -321,8 +321,6 @@ public class PrinterController {
 
         }*/
 
-
-
         List<List<PrintTextInfo>> document = new ArrayList<>();
 
         final List<PaymentInfo> paymentsForPrint = new ArrayList<>();
@@ -1070,21 +1068,4 @@ public class PrinterController {
             }
         });
     }
-
-    /**
-     *
-     * Edit by Teerayut Klinsanga
-     *
-     * Created: 2019-07-11 11:00.00
-     *
-     * == Print with image ==
-     *
-     */
-
-
-    /**
-     *
-     * End
-     *
-     */
 }
