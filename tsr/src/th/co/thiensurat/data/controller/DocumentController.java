@@ -13,6 +13,8 @@ import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 
+import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.ParseException;
@@ -3599,4 +3601,34 @@ public class DocumentController {
 
         return listText;
     }
+
+    /**
+     *
+     * Edit by Teerayut Klinsanga
+     *
+     * Created: 2019-07-11 11:00.00
+     *
+     * == Print with image ==
+     *
+     */
+    public static Bitmap drawReceiptBitmap() {
+        Bitmap bitmap = null;
+        ReceiptBuilder receiptBuilder = new ReceiptBuilder(574);
+        receiptBuilder.setMargin(5, 0);
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.setColor(Color.BLACK);
+        receiptBuilder.setTextSize(22);
+        receiptBuilder.addImage(getHeader());
+        receiptBuilder.addBlankSpace(20);
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Align.CENTER);
+        return bitmap;
+    }
+
+    /**
+     *
+     *
+     * End
+     *
+     */
 }
