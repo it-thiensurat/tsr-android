@@ -121,7 +121,6 @@ public class PrinterController {
                     num = Hist.PrintOrder + 1;
                 }
 
-
                 docHist.PrintHistoryID = DatabaseHelper.getUUID();
                 docHist.OrganizationCode = BHPreference.organizationCode();
                 docHist.DatePrint = new Date();
@@ -144,10 +143,7 @@ public class PrinterController {
                 docHist.ReceivedDate = null;
                 docHist.ReceivedEmpID = "";
 
-
                 TSRController.addDocumentHistory(docHist, true);
-
-
             }
         });
     }
@@ -324,8 +320,6 @@ public class PrinterController {
         {
 
         }*/
-
-
 
         List<List<PrintTextInfo>> document = new ArrayList<>();
 
@@ -1074,6 +1068,4 @@ public class PrinterController {
             }
         });
     }
-
-
 }
