@@ -1,6 +1,5 @@
 package th.co.thiensurat.activities;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -53,7 +52,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
 import com.google.gson.Gson;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.zj.btsdk.BluetoothService;
@@ -104,14 +102,12 @@ import th.co.bighead.utilities.BHPermissions;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHStorage;
 import th.co.bighead.utilities.BHUtilities;
-import th.co.bighead.utilities.Command.Command;
 import th.co.bighead.utilities.printer.PrintPic;
 import th.co.thiensurat.R;
 import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.controller.BaseController;
 import th.co.thiensurat.data.controller.DatabaseManager;
-import th.co.thiensurat.data.controller.DocumentController;
 import th.co.thiensurat.data.controller.EmployeeDetailController;
 import th.co.thiensurat.data.controller.ThemalPrintController;
 import th.co.thiensurat.data.controller.TransactionLogController;
@@ -187,8 +183,6 @@ import th.co.thiensurat.service.data.CheckSoapOutputInfo;
 import th.co.thiensurat.service.data.DeleteContractInputInfo;
 import th.co.thiensurat.service.data.GetDepartmentSignatureImageInputInfo;
 import th.co.thiensurat.service.data.GetDepartmentSignatureImageOutputInfo;
-import zj.bluetooth.printer.version3.command.sdk.PrintPicture;
-import zj.bluetooth.printer.version3.command.sdk.PrinterCommand;
 
 //import com.zj.btsdk.PrintPic;
 
@@ -851,6 +845,10 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 registerReceiver(receiver, new IntentFilter(MyBroadcastReceiver.ACTION_NAME));
             }
         }).start();
+
+
+
+
     }
 
     @Override
@@ -2071,6 +2069,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         sendData = pg.printDraw();
         mService.write(sendData);
     }
+
     /**********************************************************************************************/
 
 
@@ -3292,13 +3291,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     if (delegate != null) {
                         delegate.postResult(result.ResultDescription);
                     }
-//                    Toast.makeText(context, BHPreference.employeeID(), Toast.LENGTH_LONG).show();
-                    Intent i = context.getPackageManager().getLaunchIntentForPackage("com.gps_tracking");
-                    if (i != null) {
-                        Intent in = new Intent(Intent.ACTION_VIEW, Uri.parse("gis://empid/" + BHPreference.employeeID()));
-//                        i.putExtra("empid", BHPreference.employeeID());
-//                        context.startActivity(in);
-                    }
                 }
             } else {
                 /*if (fileDB.exists()) {
@@ -3359,6 +3351,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 instance = new SynchronizeReceiver();
                 LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(instance, new IntentFilter(SynchronizeService.SYNCHRONIZE_BROADCAST_ACTION));
             }
+
             return instance;
         }
 
@@ -3426,93 +3419,13 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                             });
                         }
                     }
+
                     stop();
                 }
-            }
-        }
-    }
 
-    /**
-     *
-     * Edit by Teerayut Klinsanga
-     *
-     * Created: 2019-07-11 11:00.00
-     *
-     * == Print with image ==
-     *
-     */
-
-    private Bitmap drawReceipt() {
-        Bitmap bmp = null;
-        ReceiptBuilder receiptBuilder = new ReceiptBuilder(574);
-        return bmp;
-    }
-
-    public synchronized void printReceiptImage(final Bitmap bmp, final PrintHandler handler) {
-
-        if (mJob != null) return;
-
-        //ตรวจสอบ Bluetooth
-        if (mService.isBTopen() == false) {
-            Log.d(LOG_TAG, "Bluetooth Disabled");
-            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-        } else {
-            Log.d(LOG_TAG, "Bluetooth Enabled");
-
-            if (mService.getState() != 3) {
-                Log.d(LOG_TAG, "Waiting For Connection Printer...");
-                Intent serverIntent = new Intent(MainActivity.this, DeviceListActivity2.class);
-                startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
             }
         }
 
-        mJob = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    for (int i = 0; i < bmp.getByteCount(); i++) {
-                        printNewReceipt(bmp);
-                        handler.onBackgroundPrinting(i);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    toast(e.getLocalizedMessage());
-                } finally {
-                    mJob = null;
-
-                    if (mService != null)   //close bluetooth
-                        mService.stop();
-                        /*mService = null;
-                        con_dev = null;*/
-                }
-            }
-        };
     }
 
-
-
-    public void printNewReceipt(final Bitmap bmp) {
-        byte[] bmpByte = PrintPicture.POS_PrintBMP(bmp, 576, 0);
-        sendByteBitmap(Command.ESC_Init);
-        sendByteBitmap(Command.LF);
-        sendByteBitmap(bmpByte);
-        sendByteBitmap(PrinterCommand.POS_Set_PrtAndFeedPaper(30));
-        sendByteBitmap(PrinterCommand.POS_Set_Cut(1));
-        sendByteBitmap(PrinterCommand.POS_Set_PrtInit());
-        mService.stop();
-    }
-
-    private void sendByteBitmap(byte[] data) {
-        if (mService.getState() != BluetoothService.STATE_CONNECTED) {
-            return;
-        }
-        mService.write(data);
-    }
-
-    /**
-     *
-     * End
-     *
-     */
 }

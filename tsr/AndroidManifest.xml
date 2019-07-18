@@ -60,7 +60,7 @@
         android:hardwareAccelerated="true"
         android:name="th.co.bighead.utilities.BHApplication"
         android:allowBackup="false"
-        android:icon="${appIcon}"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/tsr_app_name"
         android:largeHeap="true"
         android:theme="@style/AppTheme"
@@ -70,10 +70,9 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
 
         <activity
