@@ -7,6 +7,8 @@ import org.acra.sender.HttpSender.Type;
 import android.app.Application;
 import android.content.Context;
 
+import com.google.firebase.FirebaseApp;
+
 // Development
 //@ReportsCrashes(formKey = "", formUri = "http://192.168.1.243/sit/crashreport.ashx", reportType = Type.JSON)
 //@ReportsCrashes(formKey = "", formUri = "http://bigheadcreative.dyndns.org:24380/sit/crashreport.ashx", reportType = Type.JSON)
@@ -26,6 +28,7 @@ public class BHApplication extends Application {
 		super.onCreate();
 		ACRA.init(this);
 		BHApplication.context = getApplicationContext();
+		FirebaseApp.initializeApp(this);
 	}
 
 	public static Context getContext() {

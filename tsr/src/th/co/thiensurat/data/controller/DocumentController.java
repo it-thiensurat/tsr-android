@@ -13,7 +13,7 @@ import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 
-import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
+//import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -3609,55 +3609,55 @@ public class DocumentController {
      *
      */
 
-    public static Bitmap getPaymentReceiptImage(PaymentInfo paymentInfo, DebtorCustomerInfo debtorCustomerInfo, AddressInfo addressInf) {
-        ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
-        receiptBuilder.setMargin(5, 0);
-        receiptBuilder.addImage(getHeader());
-        receiptBuilder.addParagraph();
-        receiptBuilder.setAlign(Align.CENTER);
-        receiptBuilder.setColor(Color.BLACK);
-        receiptBuilder.setTextSize(22);
-
-        return receiptBuilder.build();
-    }
-
-    public static  Bitmap getNewContactImage(ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
-        ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
-        receiptBuilder.setMargin(5, 0);
-        receiptBuilder.addImage(getHeader());
-        receiptBuilder.addParagraph();
-        receiptBuilder.setAlign(Align.CENTER);
-        receiptBuilder.setColor(Color.BLACK);
-        receiptBuilder.setTextSize(22);
-        receiptBuilder.addText(contract.MODE > 1 ? "ใบสัญญาเช่าซื้อ" : "ใบสัญญาซื้อขาย");
-
-        return receiptBuilder.build();
-    }
-
-    public static Bitmap getNewSendMoneyImage(SendMoneyInfo sendMoney) {
-        ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
-        receiptBuilder.setMargin(5, 0);
-        receiptBuilder.addImage(getHeader());
-        receiptBuilder.addParagraph();
-        receiptBuilder.setAlign(Align.CENTER);
-        receiptBuilder.setColor(Color.BLACK);
-        receiptBuilder.setTextSize(22);
-        receiptBuilder.addText(String.format("ใบนำส่ง%s", sendMoney.PaymentTypeName) + String.format("(%s)", sendMoney.ChannelItemName));
-        receiptBuilder.addParagraph();
-        receiptBuilder.setAlign(Align.CENTER);
-        if(sendMoney.Reference2.length() > 8){
-            String strBarcodeNo = sendMoney.Reference2;
-            Bitmap barcodeBmp = null;
-            try {
-                barcodeBmp = encodeAsBitmap(strBarcodeNo, BarcodeFormat.CODE_128, 600, 300);
-            } catch (WriterException e) {
-                e.printStackTrace();
-            }
-            receiptBuilder.addImage(barcodeBmp);
-        }
-
-        return receiptBuilder.build();
-    }
+//    public static Bitmap getPaymentReceiptImage(PaymentInfo paymentInfo, DebtorCustomerInfo debtorCustomerInfo, AddressInfo addressInf) {
+//        ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
+//        receiptBuilder.setMargin(5, 0);
+//        receiptBuilder.addImage(getHeader());
+//        receiptBuilder.addParagraph();
+//        receiptBuilder.setAlign(Align.CENTER);
+//        receiptBuilder.setColor(Color.BLACK);
+//        receiptBuilder.setTextSize(22);
+//
+//        return receiptBuilder.build();
+//    }
+//
+//    public static  Bitmap getNewContactImage(ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
+//        ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
+//        receiptBuilder.setMargin(5, 0);
+//        receiptBuilder.addImage(getHeader());
+//        receiptBuilder.addParagraph();
+//        receiptBuilder.setAlign(Align.CENTER);
+//        receiptBuilder.setColor(Color.BLACK);
+//        receiptBuilder.setTextSize(22);
+//        receiptBuilder.addText(contract.MODE > 1 ? "ใบสัญญาเช่าซื้อ" : "ใบสัญญาซื้อขาย");
+//
+//        return receiptBuilder.build();
+//    }
+//
+//    public static Bitmap getNewSendMoneyImage(SendMoneyInfo sendMoney) {
+//        ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
+//        receiptBuilder.setMargin(5, 0);
+//        receiptBuilder.addImage(getHeader());
+//        receiptBuilder.addParagraph();
+//        receiptBuilder.setAlign(Align.CENTER);
+//        receiptBuilder.setColor(Color.BLACK);
+//        receiptBuilder.setTextSize(22);
+//        receiptBuilder.addText(String.format("ใบนำส่ง%s", sendMoney.PaymentTypeName) + String.format("(%s)", sendMoney.ChannelItemName));
+//        receiptBuilder.addParagraph();
+//        receiptBuilder.setAlign(Align.CENTER);
+//        if(sendMoney.Reference2.length() > 8){
+//            String strBarcodeNo = sendMoney.Reference2;
+//            Bitmap barcodeBmp = null;
+//            try {
+//                barcodeBmp = encodeAsBitmap(strBarcodeNo, BarcodeFormat.CODE_128, 600, 300);
+//            } catch (WriterException e) {
+//                e.printStackTrace();
+//            }
+//            receiptBuilder.addImage(barcodeBmp);
+//        }
+//
+//        return receiptBuilder.build();
+//    }
 
     private static final int WHITE = 0xFFFFFFFF;
     private static final int BLACK = 0xFF000000;

@@ -3291,6 +3291,13 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     if (delegate != null) {
                         delegate.postResult(result.ResultDescription);
                     }
+
+                    Intent i = context.getPackageManager().getLaunchIntentForPackage("com.gps_tracking");
+                    if (i != null) {
+                        Intent in = new Intent(Intent.ACTION_VIEW, Uri.parse("gis://empid/" + BHPreference.employeeID()));
+//                      i.putExtra("empid", BHPreference.employeeID());
+//                      context.startActivity(in);
+                    }
                 }
             } else {
                 /*if (fileDB.exists()) {
