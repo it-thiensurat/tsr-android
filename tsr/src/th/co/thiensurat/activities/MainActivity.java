@@ -91,6 +91,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+//import th.co.bighead.utilities.BHActivity;
 import th.co.bighead.utilities.BHActivity;
 import th.co.bighead.utilities.BHArrayAdapter;
 import th.co.bighead.utilities.BHBluetoothPrinter.BHBluetoothPrinter;
@@ -3426,13 +3427,21 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                             });
                         }
                     }
-
                     stop();
                 }
 
             }
         }
-
     }
+
+    /**
+     *
+     * Edit by Teerayut Klinsanga
+     *
+     * Created: 2019-08-02 09:00.00
+     *
+     * == Print with image ==
+     *
+     */
 
 }
