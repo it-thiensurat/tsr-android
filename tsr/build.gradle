@@ -170,12 +170,12 @@ dependencies {
     }
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':zj_bluetooth_printer_version3')
-//    implementation project(path: ':draw-receipt')
-//    implementation 'com.github.danielfelgar:draw-receipt:0.1.3'
 //    implementation files('libs\\SmartCardLib.jar')
 
     implementation 'com.squareup.retrofit2:retrofit:2.6.1'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
+    implementation project(path: ':draw-receipt')
+    implementation 'com.google.firebase:firebase-crash:16.2.1'
+//    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
 
 }
 
