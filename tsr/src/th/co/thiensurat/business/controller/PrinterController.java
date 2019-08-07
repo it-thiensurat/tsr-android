@@ -1068,4 +1068,22 @@ public class PrinterController {
             }
         });
     }
+
+    /**
+     *
+     * Edit by Teerayut Klinsanga
+     *
+     * Created: 2019-08-02 09:00.00
+     *
+     * == Print with image ==
+     *
+     */
+    public static void printNewImageContract(final ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
+        mainActivity.printImageNew(null, new MainActivity.PrintHandler(){
+            @Override
+            public void onBackgroundPrinting(int index) {
+                super.onBackgroundPrinting(index);
+            }
+        });
+    }
 }

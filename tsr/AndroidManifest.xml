@@ -65,6 +65,7 @@
         android:label="@string/tsr_app_name"
         android:largeHeap="true"
         android:theme="@style/AppTheme"
+        tools:node="replace"
         tools:replace="android:allowBackup">
         <activity
             android:name=".activities.SplashActivity"
@@ -215,5 +216,11 @@
             android:name="io.fabric.ApiKey"
             android:value="45df8d7f15badfe2047a9857bdbf22a3b9227b75" />
         <!--/*** [END] :: Fabric ***/-->
+
+        <service android:name="com.google.firebase.components.ComponentDiscoveryService" >
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.iid.Registrar"
+                android:value="com.google.firebase.components.ComponentRegistrar" />
+        </service>
     </application>
 </manifest>

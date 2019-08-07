@@ -600,10 +600,18 @@ public class SaleContractPrintFragment extends BHFragment {
             showNoticeDialogBox(title, message);
         }*/
 
-        new PrinterController(activity).printContract(contract, addressIDCard, addressInstall);
+//        new PrinterController(activity).printContract(contract, addressIDCard, addressInstall);
         /*** [END] :: Fixed - [BHPROJ-0024-3080] :: [Android-รายละเอียดสัญญา] แก้ไขให้แสดงค่า 'เลขที่อ้างอิง' โดยเปลี่ยนให้ดึงมาจากค่าข้อมูลใน [Contract].ContractReferenceNo แทน ***/
 
-
+        /**
+         *
+         * Edit by Teerayut Klinsanga
+         * 07/08/2019
+         */
+        new PrinterController(activity).printNewImageContract(contract, addressIDCard, addressInstall);
+        /**
+         * End
+         */
     }
 
     private void saveStatusCode() {

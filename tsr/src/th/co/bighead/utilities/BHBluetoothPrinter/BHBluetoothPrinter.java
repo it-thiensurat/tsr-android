@@ -3,6 +3,7 @@ package th.co.bighead.utilities.BHBluetoothPrinter;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -30,7 +31,7 @@ public class BHBluetoothPrinter {
     private ZJMiniThemalPrint mZJMiniThemalPrint;
 
     /**********************************************************************************************/
-
+    private Bitmap mBitmap;
     private List<List<PrintTextInfo>> mDetailPrint;
     private MainActivity.PrintHandler mHandler;
     private boolean mIsWithInterrupt;
@@ -96,12 +97,9 @@ public class BHBluetoothPrinter {
                     try {
                         String address = data.getExtras().getString(DeviceListActivity2.EXTRA_DEVICE_ADDRESS);
                         if (address != null && !address.isEmpty()) {
-
                             if (BluetoothAdapter.checkBluetoothAddress(address)) {
-
                                 mDeviceAddress = address;
                                 ConnectBluetoothPrinter();
-
                             }
                         }
                     } catch (Exception e) {
@@ -120,4 +118,22 @@ public class BHBluetoothPrinter {
         }
     }
 
+    /**
+     *
+     * Edit by Teerayut Klinsanga
+     *
+     * Created: 2019-08-02 09:00.00
+     *
+     * == Print with image ==
+     *
+     */
+
+    public void SetPrintWithBitmap(Bitmap bitmap, MainActivity.PrintHandler handler) {
+//        mDetailPrint = detailPrint;
+        mHandler = handler;
+        mBitmap = bitmap;
+//        mIsWithInterrupt = false;
+
+        CheckBluetooth();
+    }
 }

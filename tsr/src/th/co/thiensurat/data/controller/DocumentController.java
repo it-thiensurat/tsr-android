@@ -14,6 +14,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 
 //import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
+//import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;

@@ -542,4 +542,14 @@ public class ZJMiniThemalPrint {
         }
     }
     /**********************************************************************************************/
+
+    /**
+     *
+     * Edit by Teerayut Klinsanga
+     *
+     * Created: 2019-08-02 09:00.00
+     *
+     * == Print with image ==
+     *
+     */
 }

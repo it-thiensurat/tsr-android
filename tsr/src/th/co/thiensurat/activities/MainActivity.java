@@ -3429,7 +3429,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     }
                     stop();
                 }
-
             }
         }
     }
@@ -3443,5 +3442,11 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
      * == Print with image ==
      *
      */
+
+    public synchronized void printImageNew(final Bitmap bitmap, final PrintHandler handler) {
+        if (bhBluetoothPrinter != null) {
+            bhBluetoothPrinter.SetPrintWithBitmap(bitmap, handler);
+        }
+    }
 
 }
