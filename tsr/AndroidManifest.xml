@@ -27,7 +27,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-
+    <uses-feature android:name="android.hardware.camera" />
     <!--GCM-->
     <!--<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />-->
     <!--<permission
@@ -61,7 +61,7 @@
         android:hardwareAccelerated="true"
         android:name="th.co.bighead.utilities.BHApplication"
         android:allowBackup="false"
-        android:icon="@drawable/ic_launcher"
+        android:icon="${appIcon}"
         android:label="@string/tsr_app_name"
         android:largeHeap="true"
         android:theme="@style/AppTheme"

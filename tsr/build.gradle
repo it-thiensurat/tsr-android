@@ -8,7 +8,7 @@ android {
 
     def versionCodes = { ->
 //        return 134
-        return 139   //<-- current version
+        return 140   //<-- current version
         // 133
     }
 
@@ -29,7 +29,7 @@ android {
         targetSdkVersion 28
         versionCode   versionCodes()
 //        versionName "1.0.0.45"
-        versionName "1.0.0.50" //<-- current version
+        versionName "1.0.0.51" //<-- current version
 // versionNames() ldo 44
         resValue 'string', 'tsr_app_version', tsrAppVersion()
     }
@@ -174,8 +174,10 @@ dependencies {
 //    implementation 'com.github.danielfelgar:draw-receipt:0.1.3'
 //    implementation files('libs\\SmartCardLib.jar')
 
-    implementation 'com.squareup.retrofit2:retrofit:2.6.1'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
+   // implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+
 
 }
 

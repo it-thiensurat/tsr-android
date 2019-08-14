@@ -268,12 +268,30 @@
 
 package th.co.thiensurat.fragments.sales;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v4.graphics.BitmapCompat;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -282,8 +300,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHPermissions;
@@ -291,6 +327,7 @@ import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHStorage;
 import th.co.bighead.utilities.BHStorage.FolderType;
 import th.co.bighead.utilities.annotation.InjectView;
+import th.co.bighead.utilities.save_image_to_gallery;
 import th.co.thiensurat.R;
 import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.TSRController;
@@ -300,14 +337,34 @@ import th.co.thiensurat.data.controller.ImageTypeController;
 import th.co.thiensurat.data.info.ContractImageInfo;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
 
+import static org.acra.ACRA.LOG_TAG;
+import static org.acra.ACRA.getACRASharedPreferences;
+
 public class SalePhotographyFragment extends BHFragment {
+
+
+
+    private final static int REQUEST_CODE_ASK_PERMISSIONS = 1;
+
+    /**
+     * Permissions that need to be explicitly requested from end user.
+     */
+    private static final String[] REQUIRED_SDK_PERMISSIONS = new String[] {
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE };
+
+
+
+
+
+
+
 
 
     private String STATUS_CODE = "11";
     private int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     private static final int MEDIA_TYPE_IMAGE = 1;
     private static String IMAGE_DIRECTORY_NAME = BHPreference.RefNo();
-    private Uri fileUri;
+    private Uri fileUri,fileUri2;
     private static String Parth;
     private static String imageTypeCode;
     private GPSTracker gps;
@@ -547,8 +604,14 @@ public class SalePhotographyFragment extends BHFragment {
             public void onSuccess(BHPermissions bhPermissions) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+
                 Uri photoURI = FileProvider.getUriForFile(getActivity(),getActivity().getApplicationContext().getPackageName() + ".provider", new File(fileUri.getPath()));
+
+
+
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+
+
                 startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
             }
 
@@ -562,12 +625,20 @@ public class SalePhotographyFragment extends BHFragment {
                 bhPermissions.showMessage(getActivity(), permissionType);
             }
 
-        }, BHPermissions.PermissionType.CAMERA);
+        }, BHPermissions.PermissionType.CAMERA,BHPermissions.PermissionType.STORAGE);
         /*** [END] :: Permission ***/
 
 
     }
+    private File createImageFile() throws IOException {
+        File outputDir = activity.getBaseContext().getCacheDir();
 
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "photo_" + timeStamp + "_";
+        File image = new File(outputDir, imageFileName);
+
+        return image;
+    }
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -584,6 +655,12 @@ public class SalePhotographyFragment extends BHFragment {
         if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 AddContractImage();
+
+
+
+
+
+
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "User cancelled image capture", Toast.LENGTH_SHORT).show();
             } else {
@@ -592,27 +669,77 @@ public class SalePhotographyFragment extends BHFragment {
         }
     }
 
+
+
+
+
+
+
+
+
+
+
     public Uri getOutputMediaFileUri(int type) {
         return Uri.fromFile(getOutputMediaFile(type));
     }
 
-    private static File getOutputMediaFile(int type) {
+
+
+
+
+
+
+
+    private File getOutputMediaFile(int type) {
+
+
+
         File mediaStorageDir = new File(Parth + "/" + IMAGE_DIRECTORY_NAME + "/" + imageTypeCode);
+       // File mediaStorageDir = new File("/sdcard/Android/data/"+activity.getApplicationContext().getPackageName()+"/files/pictures/"  + IMAGE_DIRECTORY_NAME + "/" + imageTypeCode);
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
-                Log.d(IMAGE_DIRECTORY_NAME, "" + IMAGE_DIRECTORY_NAME + " directory");
+              //  Log.d(IMAGE_DIRECTORY_NAME, "" + IMAGE_DIRECTORY_NAME + " directory");
                 return null;
             }
         }
+
+
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator + imageID + ".jpg");
+
         } else {
             return null;
         }
-        return mediaFile;
+        return mediaFile ;
+
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+
+
+
+String DD="",NAME_IMAGE="",IMAGE_TYPE="";
     private void AddContractImage() {
         // TODO Auto-generated method stub
         (new BackgroundProcess(activity) {
@@ -622,12 +749,35 @@ public class SalePhotographyFragment extends BHFragment {
             protected void before() {
                 // TODO Auto-generated method stub
 
+
+
+
+
+
                 input.ImageID = imageID;
                 input.RefNo = BHPreference.RefNo();
                 input.ImageName = imageID + ".jpg";
                 input.ImageTypeCode = imageTypeCode;
                 input.SyncedDate = new Date();
+
+
+
+
+                DD="/sdcard/Android/data/"+activity.getApplicationContext().getPackageName()+"/files/pictures/"+IMAGE_DIRECTORY_NAME + "/"+ input.ImageTypeCode+ "/" +input.ImageName;
+                 NAME_IMAGE=input.ImageName;
+                IMAGE_TYPE=input.ImageTypeCode;
+
+
+
+                checkPermissions();
+
+
+
             }
+
+
+
+
 
             @Override
             protected void calling() {
@@ -641,7 +791,70 @@ public class SalePhotographyFragment extends BHFragment {
 
             }
         }).start();
+
+
+
+
+
+
+
     }
+
+    protected void checkPermissions() {
+        final List<String> missingPermissions = new ArrayList<String>();
+        // check all required dynamic permissions
+        for (final String permission : REQUIRED_SDK_PERMISSIONS) {
+            final int result = ContextCompat.checkSelfPermission(activity, permission);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                missingPermissions.add(permission);
+            }
+        }
+        if (!missingPermissions.isEmpty()) {
+            // request all missing permissions
+            final String[] permissions = missingPermissions
+                    .toArray(new String[missingPermissions.size()]);
+            ActivityCompat.requestPermissions(activity, permissions, REQUEST_CODE_ASK_PERMISSIONS);
+        } else {
+            final int[] grantResults = new int[REQUIRED_SDK_PERMISSIONS.length];
+            Arrays.fill(grantResults, PackageManager.PERMISSION_GRANTED);
+            onRequestPermissionsResult(REQUEST_CODE_ASK_PERMISSIONS, REQUIRED_SDK_PERMISSIONS,
+                    grantResults);
+        }
+    }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                for (int index = permissions.length - 1; index >= 0; --index) {
+                    if (grantResults[index] != PackageManager.PERMISSION_GRANTED) {
+
+                        return;
+                    }
+                }
+
+
+                File file21 = new File(DD);
+
+                String filePath = file21.getPath();
+                Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+
+                save_image_to_gallery.getResizedBiBitmaptmap(bitmap,NAME_IMAGE,IMAGE_TYPE);
+             //  getResizedBiBitmaptmap(bitmap,NAME_IMAGE,IMAGE_TYPE);
+
+
+                break;
+        }
+    }
+
+
+
+
+
+
 
     @Override
     public void onProcessButtonClicked(int buttonID) {

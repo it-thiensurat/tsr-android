@@ -1,10 +1,13 @@
 package th.co.thiensurat.fragments.credit.credit;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +19,19 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHArrayAdapter;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHParcelable;
@@ -32,6 +44,9 @@ import th.co.thiensurat.data.controller.AssignController;
 import th.co.thiensurat.data.info.AddressInfo;
 import th.co.thiensurat.data.info.AssignInfo;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment;
+import th.co.thiensurat.retrofit.api.Service;
+
+import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 
 public class CreditListFragment extends BHFragment {
     @InjectView
@@ -42,6 +57,10 @@ public class CreditListFragment extends BHFragment {
     EditText edtSearch;
     @InjectView
     Button btnSearch;
+
+    @InjectView
+    Button btnRefresh;
+
 
     CheckBox chkHeader;
     boolean selectedChkHeader;
@@ -55,6 +74,7 @@ public class CreditListFragment extends BHFragment {
     public static class Data extends BHParcelable {
         public Date selectedDate;
     }
+
 
     @Override
     protected int fragmentID() {
@@ -124,6 +144,66 @@ public class CreditListFragment extends BHFragment {
                 /*** [END] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
             }
         });
+
+
+
+
+
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ProgressDialog dialog = ProgressDialog.show(getActivity(), "",
+                        "Loading...", true);
+                dialog.show();
+
+                data = getData();
+                chkHeader.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        selectedChkHeader = b;
+                    }
+                });
+                chkHeader.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (creditList != null && creditList.size() > 0) {
+                            for (AssignInfo info : creditList) {
+                                info.Selected = selectedChkHeader;
+                            }
+                            if (customerAdapter != null) {
+                                customerAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    }
+                });
+                chkHeader.setChecked(selectedChkHeader);
+
+                if (creditList == null) {
+                    getCreditList("%" + edtSearch.getText().toString() + "%");
+                }else{
+                    /*** [START] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
+                    //txtCountCredit.setText(String.format("วันที่ " + BHUtilities.dateFormat(data.selectedDate) + " ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
+                    if(isSearch){
+                        txtCountCredit.setText(String.format("ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
+                    } else {
+                        txtCountCredit.setText(String.format("วันที่ " + BHUtilities.dateFormat(data.selectedDate) + " ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
+                    }
+
+
+                   //
+                    /*** [END] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
+                }
+
+                customerAdapter = new CustomerAdapter(activity, R.layout.list_credit, creditList);
+                listView.setAdapter(customerAdapter);
+
+                dialog.dismiss();
+            }
+        });
+
+
+
+
 
     }
 
@@ -354,4 +434,67 @@ public class CreditListFragment extends BHFragment {
             }
         }
     }
+
+
+
+
+
+
+
+
+
+
+    private void login_r() {
+
+        try {
+
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.data("A00094");
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+
+                    Gson gson=new Gson();
+                    try {
+                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+
+                       // JSON_PARSE_DATA_AFTER_WEBCALL(jsonObject.getJSONArray("data"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+
+
+
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+
+
+                }
+            });
+
+        } catch (Exception e) {
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -1,9 +1,12 @@
 package th.co.thiensurat.fragments.sales;
 
+import android.Manifest;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -12,6 +15,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +39,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +50,7 @@ import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHStorage;
 import th.co.bighead.utilities.BHStorage.FolderType;
 import th.co.bighead.utilities.annotation.InjectView;
+import th.co.bighead.utilities.save_image_to_gallery;
 import th.co.thiensurat.R;
 import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.TSRController;
@@ -364,6 +372,7 @@ public class SalePhotographyMapFragment extends BHFragment {
                 break;
         }
     }
+    String DD="",NAME_IMAGE="",IMAGE_TYPE="";
 
     private void AddContractImage() {
         // TODO Auto-generated method stub
@@ -402,6 +411,21 @@ public class SalePhotographyMapFragment extends BHFragment {
                     addressInfo.Longitude =  lng;
                 }
 
+
+
+
+
+                DD="/sdcard/Android/data/"+activity.getApplicationContext().getPackageName()+"/files/pictures/"+IMAGE_DIRECTORY_NAME + "/"+ input.ImageTypeCode+ "/" +input.ImageName;
+                NAME_IMAGE=input.ImageName;
+                IMAGE_TYPE=input.ImageTypeCode;
+
+
+
+                checkPermissions();
+
+
+
+
             }
 
             @Override
@@ -422,4 +446,66 @@ public class SalePhotographyMapFragment extends BHFragment {
             }
         }).start();
     }
+
+    private final static int REQUEST_CODE_ASK_PERMISSIONS = 1;
+
+    /**
+     * Permissions that need to be explicitly requested from end user.
+     */
+    private static final String[] REQUIRED_SDK_PERMISSIONS = new String[] {
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE };
+
+    protected void checkPermissions() {
+        final List<String> missingPermissions = new ArrayList<String>();
+        // check all required dynamic permissions
+        for (final String permission : REQUIRED_SDK_PERMISSIONS) {
+            final int result = ContextCompat.checkSelfPermission(activity, permission);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                missingPermissions.add(permission);
+            }
+        }
+        if (!missingPermissions.isEmpty()) {
+            // request all missing permissions
+            final String[] permissions = missingPermissions
+                    .toArray(new String[missingPermissions.size()]);
+            ActivityCompat.requestPermissions(activity, permissions, REQUEST_CODE_ASK_PERMISSIONS);
+        } else {
+            final int[] grantResults = new int[REQUIRED_SDK_PERMISSIONS.length];
+            Arrays.fill(grantResults, PackageManager.PERMISSION_GRANTED);
+            onRequestPermissionsResult(REQUEST_CODE_ASK_PERMISSIONS, REQUIRED_SDK_PERMISSIONS,
+                    grantResults);
+        }
+    }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                for (int index = permissions.length - 1; index >= 0; --index) {
+                    if (grantResults[index] != PackageManager.PERMISSION_GRANTED) {
+
+                        return;
+                    }
+                }
+
+
+                File file21 = new File(DD);
+
+                String filePath = file21.getPath();
+                Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+
+                save_image_to_gallery.SaveImage(bitmap,NAME_IMAGE,IMAGE_TYPE);
+                //  getResizedBiBitmaptmap(bitmap,NAME_IMAGE,IMAGE_TYPE);
+
+
+                break;
+        }
+    }
+
+
+
+
 }
