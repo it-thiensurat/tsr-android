@@ -44,7 +44,7 @@
             android:id="@+id/edtSearch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
+            android:layout_weight="0.5"
             android:maxLines="1"
             android:textSize="@dimen/normal_font_size"></EditText>
 
@@ -57,6 +57,18 @@
             android:layout_marginRight="@dimen/padding_normal"
             android:layout_weight="0.3"
             android:text="@string/button_search" />
+
+
+        <Button
+            android:id="@+id/btnRefresh"
+            style="@style/ButtonTop2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:layout_weight="0.3"
+            android:text="รีโหลด" />
+
     </LinearLayout>
 
     <ListView

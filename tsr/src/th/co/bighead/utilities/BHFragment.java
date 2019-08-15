@@ -74,7 +74,7 @@ public abstract class BHFragment extends Fragment {
 		return null;
 	}
 
-	protected static void showNextView(BHFragment fragment) {
+	protected void showNextView(BHFragment fragment) {
 
 		Calendar c = Calendar.getInstance();
 		int month = c.get(Calendar.MONTH);

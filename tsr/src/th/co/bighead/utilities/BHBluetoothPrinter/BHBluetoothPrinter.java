@@ -21,6 +21,7 @@ public class BHBluetoothPrinter {
     public static final int REQUEST_ENABLE_BT = 2;
 
     private static final String MAC_ADDRESS_Printer_1 = "00:01"; //เครื่อง datecs
+    private static final String MAC_ADDESS_NEW_DEVICE = "";
     /**********************************************************************************************/
     public MainActivity mActivity;
     public BluetoothAdapter mBluetoothAdapter;
@@ -101,6 +102,7 @@ public class BHBluetoothPrinter {
                                 mDeviceAddress = address;
                                 ConnectBluetoothPrinter();
                             }
+                            Log.e("PRINTER MAC ADDR", mDeviceAddress);
                         }
                     } catch (Exception e) {
                         Toast.makeText(mActivity, "Bluetooth Connect Failed", Toast.LENGTH_SHORT).show();

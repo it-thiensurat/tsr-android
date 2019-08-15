@@ -1,5 +1,6 @@
 package th.co.thiensurat.activities;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -63,6 +64,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -92,6 +95,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 //import th.co.bighead.utilities.BHActivity;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHActivity;
 import th.co.bighead.utilities.BHArrayAdapter;
 import th.co.bighead.utilities.BHBluetoothPrinter.BHBluetoothPrinter;
@@ -169,6 +176,7 @@ import th.co.thiensurat.fragments.sales.EditContractsMainFragment;
 import th.co.thiensurat.fragments.sales.SaleMainFragment;
 import th.co.thiensurat.fragments.sendmoney.SendMoneySummaryMainFragment;
 import th.co.thiensurat.fragments.synchronize.SynchronizeMainFragment;
+//import th.co.thiensurat.retrofit.api.Service;
 import th.co.thiensurat.service.SynchronizeService;
 import th.co.thiensurat.service.TSRService;
 import th.co.thiensurat.service.TimeOutLoginService;
@@ -184,6 +192,8 @@ import th.co.thiensurat.service.data.CheckSoapOutputInfo;
 import th.co.thiensurat.service.data.DeleteContractInputInfo;
 import th.co.thiensurat.service.data.GetDepartmentSignatureImageInputInfo;
 import th.co.thiensurat.service.data.GetDepartmentSignatureImageOutputInfo;
+
+//import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 
 //import com.zj.btsdk.PrintPic;
 
@@ -304,6 +314,8 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         ActionBar actionBar = getActionBar();
         actionBar.setCustomView(R.layout.actionbar_title);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+
 
         menu = new SlidingMenu(this);
         menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
@@ -2343,6 +2355,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
             return bitmap;
         }
 
+        @SuppressLint("WrongThread")
         protected void onPostExecute(Bitmap image) {
 
             if (image != null) {
@@ -3429,6 +3442,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     }
                     stop();
                 }
+
             }
         }
     }
@@ -3443,10 +3457,12 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
      *
      */
 
-    public synchronized void printImageNew(final Bitmap bitmap, final PrintHandler handler) {
+    public void printImageNew(final Bitmap bmp, final PrintHandler handler ) {
         if (bhBluetoothPrinter != null) {
-            bhBluetoothPrinter.SetPrintWithBitmap(bitmap, handler);
+            bhBluetoothPrinter.SetPrintWithBitmap(bmp, handler);
         }
     }
+
+
 
 }

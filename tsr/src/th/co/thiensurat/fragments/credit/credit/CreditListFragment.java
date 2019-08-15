@@ -1,10 +1,14 @@
 package th.co.thiensurat.fragments.credit.credit;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +20,23 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+
+//import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHArrayAdapter;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHParcelable;
@@ -29,9 +46,13 @@ import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
 import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.data.controller.AssignController;
+import th.co.thiensurat.data.controller.DatabaseManager;
 import th.co.thiensurat.data.info.AddressInfo;
 import th.co.thiensurat.data.info.AssignInfo;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment;
+import th.co.thiensurat.retrofit.api.Service;
+
+import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 
 public class CreditListFragment extends BHFragment {
     @InjectView
@@ -43,18 +64,24 @@ public class CreditListFragment extends BHFragment {
     @InjectView
     Button btnSearch;
 
+    @InjectView
+    Button btnRefresh;
+
+
     CheckBox chkHeader;
     boolean selectedChkHeader;
 
     private CustomerAdapter customerAdapter;
     private List<AssignInfo> creditList;
     private Data data;
+    boolean success = false;
 
     private boolean isSearch;   // Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile
 
     public static class Data extends BHParcelable {
         public Date selectedDate;
     }
+
 
     @Override
     protected int fragmentID() {
@@ -69,64 +96,116 @@ public class CreditListFragment extends BHFragment {
 
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
-        data = getData();
 
-        LayoutInflater inflater = activity.getLayoutInflater();
-        ViewGroup headerListView = (ViewGroup) inflater.inflate(R.layout.list_credit_header, listView, false);
-        listView.addHeaderView(headerListView, null, false);
 
-        chkHeader = (CheckBox) headerListView.findViewById(R.id.chkHeader);
-        chkHeader.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                selectedChkHeader = b;
-            }
-        });
-        chkHeader.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (creditList != null && creditList.size() > 0) {
-                    for (AssignInfo info : creditList) {
-                        info.Selected = selectedChkHeader;
-                    }
-                    if (customerAdapter != null) {
-                        customerAdapter.notifyDataSetChanged();
+
+
+
+        if (isConnectingToInternet()) {
+            load_data_test();
+
+          }
+        else {
+
+            data = getData();
+
+            LayoutInflater inflater = activity.getLayoutInflater();
+            ViewGroup headerListView = (ViewGroup) inflater.inflate(R.layout.list_credit_header, listView, false);
+            listView.addHeaderView(headerListView, null, false);
+
+
+
+
+
+
+            chkHeader = (CheckBox) headerListView.findViewById(R.id.chkHeader);
+            chkHeader.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    selectedChkHeader = b;
+                }
+            });
+            chkHeader.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (creditList != null && creditList.size() > 0) {
+                        for (AssignInfo info : creditList) {
+                            info.Selected = selectedChkHeader;
+                        }
+                        if (customerAdapter != null) {
+                            customerAdapter.notifyDataSetChanged();
+                        }
                     }
                 }
-            }
-        });
-        chkHeader.setChecked(selectedChkHeader);
+            });
+            chkHeader.setChecked(selectedChkHeader);
 
-        if (creditList == null) {
-            getCreditList("%" + edtSearch.getText().toString() + "%");
-        }else{
-            /*** [START] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
-            //txtCountCredit.setText(String.format("วันที่ " + BHUtilities.dateFormat(data.selectedDate) + " ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
-            if(isSearch){
-                txtCountCredit.setText(String.format("ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
-            } else {
-                txtCountCredit.setText(String.format("วันที่ " + BHUtilities.dateFormat(data.selectedDate) + " ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
-            }
-            /*** [END] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
-        }
-
-        customerAdapter = new CustomerAdapter(activity, R.layout.list_credit, creditList);
-        listView.setAdapter(customerAdapter);
-
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectedChkHeader = false;
+            if (creditList == null) {
+                getCreditList("%" + edtSearch.getText().toString() + "%");
+            }else{
                 /*** [START] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
-                isSearch = true;
-                //getCreditList("%" + edtSearch.getText().toString() + "%");
-                getNewCreditList("%" + edtSearch.getText().toString() + "%");
+                //txtCountCredit.setText(String.format("วันที่ " + BHUtilities.dateFormat(data.selectedDate) + " ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
+                if(isSearch){
+                    txtCountCredit.setText(String.format("ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
+                } else {
+                    txtCountCredit.setText(String.format("วันที่ " + BHUtilities.dateFormat(data.selectedDate) + " ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
+                }
                 /*** [END] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
             }
-        });
+
+            customerAdapter = new CustomerAdapter(activity, R.layout.list_credit, creditList);
+            listView.setAdapter(customerAdapter);
+
+            btnSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    selectedChkHeader = false;
+                    /*** [START] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
+                    isSearch = true;
+                    //getCreditList("%" + edtSearch.getText().toString() + "%");
+                    getNewCreditList("%" + edtSearch.getText().toString() + "%");
+                    /*** [END] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
+                }
+            });
+
+
+
+
+            btnRefresh.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    load_data();
+
+
+
+                }
+            });
+        }
+
+
+
 
     }
+    public boolean isConnectingToInternet() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        return isConnected;
+    }
+
+    public void    showNextView(BHFragment fragment) {
+
+        Calendar c = Calendar.getInstance();
+        int month = c.get(Calendar.MONTH);
+
+        activity.showNextView(fragment);
+
+
+    }
     public void callCreditDetail(AssignInfo assign) {
         // next payment
         CreditDetailFragment.Data input = new CreditDetailFragment.Data();
@@ -354,4 +433,338 @@ public class CreditListFragment extends BHFragment {
             }
         }
     }
+
+
+
+
+
+
+
+
+
+    private void load_data_test() {
+
+        try {
+
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.data(BHPreference.employeeID());
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+
+                    Gson gson=new Gson();
+                    try {
+                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+
+                        Log.e("jsonObject",jsonObject.toString());
+                        JSON_PARSE_DATA_AFTER_WEBCALL_test(jsonObject.getJSONArray("data"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+
+
+
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+
+
+                }
+            });
+
+        } catch (Exception e) {
+
+        }
+    }
+    private void load_data() {
+
+        try {
+
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.data(BHPreference.employeeID());
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+
+                    Gson gson=new Gson();
+                    try {
+                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+
+                        Log.e("jsonObject",jsonObject.toString());
+                        JSON_PARSE_DATA_AFTER_WEBCALL(jsonObject.getJSONArray("data"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+
+
+
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+
+
+                }
+            });
+
+        } catch (Exception e) {
+
+        }
+    }
+
+
+    public void JSON_PARSE_DATA_AFTER_WEBCALL(JSONArray array) {
+        Log.e("array.length()", String.valueOf(array.length()));
+
+
+        for (int i = 0; i < array.length(); i++) {
+
+            //GetData GetDataAdapter2 = new GetData();
+
+            JSONObject json = null;
+            try {
+                json = array.getJSONObject(i);
+
+
+
+                String FF=json.getString("SalePaymentPeriodID");
+                String PaymentComplete=json.getString("PaymentComplete");
+                Log.e("FFFF",PaymentComplete);
+                    if(PaymentComplete.equals("1.0")){
+                        updateAssignForPostpone(FF);
+
+                    }
+
+            } catch (JSONException e) {
+                Log.e("Exception", e.getLocalizedMessage());
+                e.printStackTrace();
+
+            }
+        }
+    }
+
+    int check_data=0;
+    public void JSON_PARSE_DATA_AFTER_WEBCALL_test(JSONArray array) {
+        Log.e("array.length()", String.valueOf(array.length()));
+
+
+        for (int i = 0; i < array.length(); i++) {
+
+            //GetData GetDataAdapter2 = new GetData();
+
+            JSONObject json = null;
+            try {
+                json = array.getJSONObject(i);
+
+
+
+                String FF=json.getString("SalePaymentPeriodID");
+                String PaymentComplete=json.getString("PaymentComplete");
+                Log.e("FFFF",PaymentComplete);
+                if(PaymentComplete.equals("1.0")){
+                    updateAssignForPostpone2(FF);
+
+                }
+
+
+            } catch (JSONException e) {
+                Log.e("Exception", e.getLocalizedMessage());
+                e.printStackTrace();
+
+            }
+        }
+    }
+    private SQLiteDatabase database = null;
+    public void updateAssignForPostpone(String SalePaymentPeriodID) {
+
+        String sql = "update SalePaymentPeriod set [PaymentComplete] = ? WHERE SalePaymentPeriodID =?";
+      //  String sql = "UPDATE Assign SET [Order] = ? WHERE AssignID = ?";
+        executeNonQuery2(sql, new String[]{"1", SalePaymentPeriodID});
+    }
+    public void updateAssignForPostpone2(String SalePaymentPeriodID) {
+
+        String sql = "update SalePaymentPeriod set [PaymentComplete] = ? WHERE SalePaymentPeriodID =?";
+        //  String sql = "UPDATE Assign SET [Order] = ? WHERE AssignID = ?";
+        executeNonQuery(sql, new String[]{"1", SalePaymentPeriodID});
+    }
+    protected void executeNonQuery(String sql, String[] args) {
+        openDatabase();
+        try {
+            if (args == null) {
+                database.execSQL(sql);
+            } else {
+                database.execSQL(sql, args);
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            closeDatabase();
+        }
+    }
+
+
+    protected void executeNonQuery2(String sql, String[] args) {
+        openDatabase2();
+        try {
+            if (args == null) {
+                database.execSQL(sql);
+            } else {
+                database.execSQL(sql, args);
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            closeDatabase2();
+        }
+    }
+
+    private void openDatabase() {
+        database = DatabaseManager.getInstance().openDatabase();
+    }
+    private void closeDatabase() {
+        closeDatabase(false);
+    }
+    private void openDatabase2() {
+        database = DatabaseManager.getInstance().openDatabase();
+    }
+    private void closeDatabase2() {
+        closeDatabase2(false);
+    }
+    private void closeDatabase(boolean force) {
+
+        Log.e("555","555");
+
+
+
+        data = getData();
+
+        LayoutInflater inflater = activity.getLayoutInflater();
+        ViewGroup headerListView = (ViewGroup) inflater.inflate(R.layout.list_credit_header, listView, false);
+        listView.addHeaderView(headerListView, null, false);
+
+
+
+
+
+
+        chkHeader = (CheckBox) headerListView.findViewById(R.id.chkHeader);
+        chkHeader.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                selectedChkHeader = b;
+            }
+        });
+        chkHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (creditList != null && creditList.size() > 0) {
+                    for (AssignInfo info : creditList) {
+                        info.Selected = selectedChkHeader;
+                    }
+                    if (customerAdapter != null) {
+                        customerAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        });
+        chkHeader.setChecked(selectedChkHeader);
+
+        if (creditList == null) {
+            getCreditList("%" + edtSearch.getText().toString() + "%");
+        }else{
+            /*** [START] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
+            //txtCountCredit.setText(String.format("วันที่ " + BHUtilities.dateFormat(data.selectedDate) + " ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
+            if(isSearch){
+                txtCountCredit.setText(String.format("ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
+            } else {
+                txtCountCredit.setText(String.format("วันที่ " + BHUtilities.dateFormat(data.selectedDate) + " ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
+            }
+            /*** [END] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
+        }
+
+        customerAdapter = new CustomerAdapter(activity, R.layout.list_credit, creditList);
+        listView.setAdapter(customerAdapter);
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedChkHeader = false;
+                /*** [START] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
+                isSearch = true;
+                //getCreditList("%" + edtSearch.getText().toString() + "%");
+                getNewCreditList("%" + edtSearch.getText().toString() + "%");
+                /*** [END] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
+            }
+        });
+
+
+
+
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                load_data();
+
+/*
+                data = getData();
+                txtCountCredit.setText(String.format("วันที่ " + BHUtilities.dateFormat(data.selectedDate) + " ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
+                customerAdapter = new CustomerAdapter(activity, R.layout.list_credit, creditList);
+                listView.setAdapter(customerAdapter);*/
+
+
+
+
+            }
+        });
+
+
+
+
+
+
+        if(force)
+            DatabaseManager.getInstance().forceCloseDatabase();
+        else
+            DatabaseManager.getInstance().closeDatabase();
+    }
+    private void closeDatabase2(boolean force) {
+
+        Log.e("555","6666");
+
+
+
+        CreditListFragment.Data input = new CreditListFragment.Data();
+        input.selectedDate =  Calendar.getInstance().getTime();
+        CreditListFragment fragment = BHFragment
+                .newInstance(CreditListFragment.class, input);
+        showNextView(fragment);
+
+        if(force)
+            DatabaseManager.getInstance().forceCloseDatabase();
+        else
+            DatabaseManager.getInstance().closeDatabase();
+    }
+
 }

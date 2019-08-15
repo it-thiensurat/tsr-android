@@ -39,6 +39,7 @@ public class PrefixInfo extends BHParcelable {
 
 		list.add(new PrefixInfo("company", "บริษัท"));
 		list.add(new PrefixInfo("corporate", "ห้างหุ้นส่วน"));
+		list.add(new PrefixInfo("legal_entity", "นิติบุคคล"));
 		return list;
 	}
 }

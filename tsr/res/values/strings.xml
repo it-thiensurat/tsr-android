@@ -277,13 +277,21 @@
     <string name="label_period_payment">ค่างวดที่</string>
     <string name="label_payment_appointment_date">วันนัดชำระ</string>
     <string name="label_sale_photo_idcard">ภาพบัตรประชาชน</string>
-    <string name="label_sale_photo_product">ภาพเครื่องที่ติดตั้ง</string>
+
+    <!--<string name="label_sale_photo_product">ภาพเครื่องที่ติดตั้ง</string>-->
+    <string name="label_sale_photo_product">ภาพเครื่องเทิร์น</string>
+
     <string name="label_sale_photo_addressno">ภาพบ้านเลขที่</string>
     <string name="label_sale_photo_address">ภาพที่อยู่อาศัย</string>
     <string name="label_sale_photo_near">ภาพสถานที่ใกล้เคียง</string>
     <string name="label_sale_photo_map">ภาพถ่ายแผนที่ (ที่อยู่ติดตั้ง)</string>
     <string name="label_sale_photo_map_payment">ภาพถ่ายแผนที่ (ที่อยู่เก็บเงิน)</string>
-    <string name="label_sale_photo_payment_card">ภาพถ่ายการ์ด</string>
+
+
+    <!--<string name="label_sale_photo_payment_card">ภาพถ่ายการ์ด</string>-->
+    <string name="label_sale_photo_payment_card">ภาพวาดแผนที่</string>
+
+
     <string name="label_serial_no">หมายเลขเครื่อง</string>
     <string name="label_name">ชื่อ</string>
     <string name="label_discount_mc_turn">ส่วนลดเครื่องเทิร์น</string>
@@ -448,9 +456,11 @@
     <string name="sale_photo_id">ภาพบัตรประชาชน</string>
     <string name="sale_photo_gps">ภาพพิกัดแผนที (GPS) ที่อยู่ติดตั้ง</string>
     <string name="sale_photo_gps_payment">ภาพพิกัดแผนที (GPS) ที่อยู่เก็บเงิน</string>
-    <string name="sale_photo_product">ภาพเครื่องที่ติดตั้ง</string>
-    <string name="sale_photo_payment_card">ภาพถ่ายการ์ด</string>
+    <!--<string name="sale_photo_product">ภาพเครื่องที่ติดตั้ง</string>-->
+    <string name="sale_photo_product">ภาพเครื่องเทิร์น</string>
 
+    <!--<string name="sale_photo_payment_card">ภาพถ่ายการ์ด</string>-->
+    <string name="sale_photo_payment_card">ภาพวาดแผนที่</string>
 
     <!--  Menu Report -->
     <string name="menu_report_sale_summary">รายงานสรุปยอดขาย</string>

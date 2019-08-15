@@ -536,6 +536,17 @@ public class AssignController extends BaseController {
         //return executeQueryList(sql, new String[]{OrganizationCode, AssigneeTeamCode, AssigneeEmpID,   AddressTypeCode , valueOf(new TripController().getDueDate()), OrganizationCode, AssigneeTeamCode, AssigneeEmpID,   search}, AssignInfo.class);
         return executeQueryList(sql, new String[]{OrganizationCode, AssigneeEmpID,   AddressTypeCode , valueOf(new TripController().getDueDate()), OrganizationCode, AssigneeEmpID,   search}, AssignInfo.class);
     }
+
+
+
+
+
+
+
+
+
+
+
     /***
      * [END] - Fixed - [Android-เก็บเงินค่างวด] เปลี่ยนเงื่อนไขการนับจำนวนงวดที่ค้าง
      ***/
