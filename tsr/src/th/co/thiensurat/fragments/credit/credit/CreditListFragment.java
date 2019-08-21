@@ -102,6 +102,83 @@ public class CreditListFragment extends BHFragment {
 
 
         if (isConnectingToInternet()) {
+
+            data = getData();
+
+            LayoutInflater inflater = activity.getLayoutInflater();
+            ViewGroup headerListView = (ViewGroup) inflater.inflate(R.layout.list_credit_header, listView, false);
+            listView.addHeaderView(headerListView, null, false);
+
+
+
+
+
+
+            chkHeader = (CheckBox) headerListView.findViewById(R.id.chkHeader);
+            chkHeader.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    selectedChkHeader = b;
+                }
+            });
+            chkHeader.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (creditList != null && creditList.size() > 0) {
+                        for (AssignInfo info : creditList) {
+                            info.Selected = selectedChkHeader;
+                        }
+                        if (customerAdapter != null) {
+                            customerAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+            });
+            chkHeader.setChecked(selectedChkHeader);
+
+            if (creditList == null) {
+                getCreditList("%" + edtSearch.getText().toString() + "%");
+            }else{
+                /*** [START] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
+                //txtCountCredit.setText(String.format("วันที่ " + BHUtilities.dateFormat(data.selectedDate) + " ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
+                if(isSearch){
+                    txtCountCredit.setText(String.format("ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
+                } else {
+                    txtCountCredit.setText(String.format("วันที่ " + BHUtilities.dateFormat(data.selectedDate) + " ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
+                }
+                /*** [END] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
+            }
+
+            customerAdapter = new CustomerAdapter(activity, R.layout.list_credit, creditList);
+            listView.setAdapter(customerAdapter);
+
+            btnSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    selectedChkHeader = false;
+                    /*** [START] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
+                    isSearch = true;
+                    //getCreditList("%" + edtSearch.getText().toString() + "%");
+                    getNewCreditList("%" + edtSearch.getText().toString() + "%");
+                    /*** [END] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
+                }
+            });
+
+
+
+
+            btnRefresh.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    load_data();
+
+
+
+                }
+            });
+
+
             load_data_test();
 
           }
@@ -656,88 +733,6 @@ public class CreditListFragment extends BHFragment {
         Log.e("555","555");
 
 
-
-        data = getData();
-
-        LayoutInflater inflater = activity.getLayoutInflater();
-        ViewGroup headerListView = (ViewGroup) inflater.inflate(R.layout.list_credit_header, listView, false);
-        listView.addHeaderView(headerListView, null, false);
-
-
-
-
-
-
-        chkHeader = (CheckBox) headerListView.findViewById(R.id.chkHeader);
-        chkHeader.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                selectedChkHeader = b;
-            }
-        });
-        chkHeader.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (creditList != null && creditList.size() > 0) {
-                    for (AssignInfo info : creditList) {
-                        info.Selected = selectedChkHeader;
-                    }
-                    if (customerAdapter != null) {
-                        customerAdapter.notifyDataSetChanged();
-                    }
-                }
-            }
-        });
-        chkHeader.setChecked(selectedChkHeader);
-
-        if (creditList == null) {
-            getCreditList("%" + edtSearch.getText().toString() + "%");
-        }else{
-            /*** [START] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
-            //txtCountCredit.setText(String.format("วันที่ " + BHUtilities.dateFormat(data.selectedDate) + " ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
-            if(isSearch){
-                txtCountCredit.setText(String.format("ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
-            } else {
-                txtCountCredit.setText(String.format("วันที่ " + BHUtilities.dateFormat(data.selectedDate) + " ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
-            }
-            /*** [END] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
-        }
-
-        customerAdapter = new CustomerAdapter(activity, R.layout.list_credit, creditList);
-        listView.setAdapter(customerAdapter);
-
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectedChkHeader = false;
-                /*** [START] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
-                isSearch = true;
-                //getCreditList("%" + edtSearch.getText().toString() + "%");
-                getNewCreditList("%" + edtSearch.getText().toString() + "%");
-                /*** [END] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
-            }
-        });
-
-
-
-
-        btnRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                load_data();
-
-/*
-                data = getData();
-                txtCountCredit.setText(String.format("วันที่ " + BHUtilities.dateFormat(data.selectedDate) + " ลูกค้าที่ต้องเก็บเงินจำนวน %d คน", creditList.size()));
-                customerAdapter = new CustomerAdapter(activity, R.layout.list_credit, creditList);
-                listView.setAdapter(customerAdapter);*/
-
-
-
-
-            }
-        });
 
 
 
