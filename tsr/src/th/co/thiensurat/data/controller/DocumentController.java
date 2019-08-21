@@ -12,6 +12,7 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.os.Environment;
 
 //import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
 //import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
@@ -23,7 +24,11 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,6 +45,7 @@ import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHStorage;
 import th.co.bighead.utilities.BHUtilities;
 import th.co.thiensurat.R;
+import th.co.thiensurat.activities.SignatureActivity;
 import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.controller.ReturnProductController.ReturnProductStatus;
 import th.co.thiensurat.data.info.AddressInfo;
@@ -3623,89 +3629,868 @@ public class DocumentController {
 //        return receiptBuilder.build();
 //    }
 //
-    public static  Bitmap getNewContactImage(ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
-        ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
-        receiptBuilder.setMargin(5, 0);
-        receiptBuilder.addImage(getHeader());
-        receiptBuilder.addParagraph();
-        receiptBuilder.setAlign(Align.CENTER);
-        receiptBuilder.setColor(Color.BLACK);
-        receiptBuilder.setTextSize(22);
-        receiptBuilder.addText(contract.MODE > 1 ? "ใบสัญญาเช่าซื้อ" : "ใบสัญญาซื้อขาย");
-
-        return receiptBuilder.build();
-    }
-//
-//    public static Bitmap getNewSendMoneyImage(SendMoneyInfo sendMoney) {
-//        ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
-//        receiptBuilder.setMargin(5, 0);
-//        receiptBuilder.addImage(getHeader());
-//        receiptBuilder.addParagraph();
-//        receiptBuilder.setAlign(Align.CENTER);
-//        receiptBuilder.setColor(Color.BLACK);
-//        receiptBuilder.setTextSize(22);
-//        receiptBuilder.addText(String.format("ใบนำส่ง%s", sendMoney.PaymentTypeName) + String.format("(%s)", sendMoney.ChannelItemName));
-//        receiptBuilder.addParagraph();
-//        receiptBuilder.setAlign(Align.CENTER);
-//        if(sendMoney.Reference2.length() > 8){
-//            String strBarcodeNo = sendMoney.Reference2;
-//            Bitmap barcodeBmp = null;
-//            try {
-//                barcodeBmp = encodeAsBitmap(strBarcodeNo, BarcodeFormat.CODE_128, 600, 300);
-//            } catch (WriterException e) {
-//                e.printStackTrace();
-//            }
-//            receiptBuilder.addImage(barcodeBmp);
-//        }
-//
-//        return receiptBuilder.build();
-//    }
-
-    private static final int WHITE = 0xFFFFFFFF;
-    private static final int BLACK = 0xFF000000;
-    private static Bitmap encodeAsBitmap(String contents, BarcodeFormat format, int img_width, int img_height) throws WriterException {
-        String contentsToEncode = contents;
-        if (contentsToEncode == null) {
-            return null;
-        }
-        Map<EncodeHintType, Object> hints = null;
-        String encoding = guessAppropriateEncoding(contentsToEncode);
-        if (encoding != null) {
-            hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
-            hints.put(EncodeHintType.CHARACTER_SET, encoding);
-        }
-        MultiFormatWriter writer = new MultiFormatWriter();
-        BitMatrix result;
+    private static InputStream ins = null;
+    public static Bitmap headerPrint() {
+        Bitmap bmp = null;
         try {
-            result = writer.encode(contentsToEncode, format, img_width, img_height, hints);
-        } catch (IllegalArgumentException iae) {
-            // Unsupported format
-            return null;
+            ins = mContext.getResources().getAssets().open("tsr_header.png");
+            bmp = BitmapFactory.decodeStream(ins);
+            ins.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        int width = result.getWidth();
-        int height = result.getHeight();
-        int[] pixels = new int[width * height];
-        for (int y = 0; y < height; y++) {
-            int offset = y * width;
-            for (int x = 0; x < width; x++) {
-                pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
+        return bmp;
+    }
+
+    public static Bitmap mergeSignature(Bitmap bmp1, Bitmap bmp2, File path) {
+        Bitmap result = Bitmap.createBitmap((bmp1.getWidth() + bmp2.getWidth()), bmp1.getHeight(), Bitmap.Config.RGB_565 );
+        Canvas canvas = new Canvas(result);
+        canvas.drawColor(Color.WHITE);
+        canvas.drawBitmap(bmp1, 0, 0, null);
+        canvas.drawBitmap(bmp2, bmp1.getWidth(), 0, null);
+        OutputStream stream = null;
+        try {
+            stream = new FileOutputStream(path);
+            result.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+            stream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static int signatureWidthLimit = 220;
+    public static int signatureHeightLimit = 80;
+    public static Bitmap generatSignature() {
+        Bitmap tempSignature = null,signature;
+        Bitmap img = null;
+        Canvas cv;
+        try {
+            if (BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()) {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                tempSignature = BitmapFactory.decodeFile(BHPreference.departmentSignaturePath + BHPreference.departmentSignatureName, options);
+            }else{
+                Context mContext = BHApplication.getContext();
+                tempSignature = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.sample_signature);
             }
+
+            if(tempSignature != null){
+                signature = scaleBitmapByHeight(tempSignature);
+                img = Bitmap.createBitmap(signature.getWidth(), signature.getHeight(), Bitmap.Config.ARGB_8888);
+                img.setHasAlpha(true);
+                cv = new Canvas(img);
+                cv.drawBitmap(signature, 0, 0, null);
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return img;
+    }
+
+    public static Bitmap generateCustomerSignature(String contract) {
+        Bitmap tempSignature = null,signature;
+        Bitmap img = null;
+        Canvas cv;
+
+        File file = new File(getAlbumStorageDir(contract), String.format("Signature_%s.jpg", contract));
+        if (file.exists()) {
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            tempSignature = BitmapFactory.decodeFile(file.getAbsolutePath(), bmOptions);
+            tempSignature = Bitmap.createScaledBitmap(tempSignature, tempSignature.getWidth(), tempSignature.getHeight(), true);
         }
 
-        Bitmap bitmap = Bitmap.createBitmap(width, height,
-                Bitmap.Config.ARGB_8888);
-        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+        if(tempSignature != null){
+            img = Bitmap.createBitmap(tempSignature.getWidth(), tempSignature.getHeight(), Bitmap.Config.ARGB_8888);
+            img.setHasAlpha(true);
+            cv = new Canvas(img);
+            cv.drawBitmap(tempSignature, 100, 0, null);
+
+            img = getResizedBitmap(img, 250, 80);
+        }
+
+        return img;
+    }
+
+    public static Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
+    }
+
+    public static Bitmap scaleBitmapByHeight(Bitmap bm) {
+        int width =  bm.getWidth();
+        int height = bm.getHeight();
+
+        if(bm.getHeight() > signatureHeightLimit){
+            width = (int) (1f * signatureHeightLimit / height * width);
+            height = signatureHeightLimit;
+        }
+
+        if(width > signatureWidthLimit){
+            height = (int) (1f * signatureWidthLimit / width * height);
+            width = signatureWidthLimit;
+        }
+
+        Bitmap bitmap = Bitmap.createScaledBitmap(bm, width, height, true);
         return bitmap;
     }
 
-    private static String guessAppropriateEncoding(CharSequence contents) {
-        // Very crude at the moment
-        for (int i = 0; i < contents.length(); i++) {
-            if (contents.charAt(i) > 0xFF) {
-                return "UTF-8";
+    public static File getAlbumStorageDir(String albumName) {
+        File file = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.FROYO) {
+            file = new File(mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES), albumName);
+        }
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        return file;
+    }
+
+    private static int RECEIPT_WIDTH = 576;
+    public static  Bitmap getNewContactImage(ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
+        ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
+        receiptBuilder.setMargin(5, 0);
+        receiptBuilder.setTextSize(24);
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.setColor(Color.BLACK);
+//        receiptBuilder.addImage(headerPrint());
+        receiptBuilder.addText("บริษัท เธียรสุรัตน์ จำกัด (มหาชน)", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("43/9 หมู่ 7 ซ.ชูชาติอนุสรณ์ 4 ต.บางตลาด", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("อ.ปากเกร็ด จ.นนทบุรี 11120", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("โทร. 0 2819 8888 แฟกซ์ 0 2962 6951-3", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("อีเมล thiensurat@thiensurat.co.th", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addBlankSpace(10);
+        receiptBuilder.setAlign(Align.CENTER);
+        receiptBuilder.addText(contract.MODE > 1 ? "ใบสัญญาเช่าซื้อ" : "ใบสัญญาซื้อขาย");
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("วันที่ทำสัญญา", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(BHUtilities.dateFormat(contract.EFFDATE));
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("เลขที่อ้างอิง", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(contract.ContractReferenceNo != null ? contract.ContractReferenceNo : "", true);
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("เลขที่สัญญา", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(BHUtilities.trim(contract.CONTNO), true);
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText(contract.MODE > 1 ? " ผู้เช่าซื้อ" : " ผู้ซื้อ", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(String.format("%s %s", BHUtilities.trim(contract.CustomerFullName), BHUtilities.trim(contract.CompanyName)), true);
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("เลขที่บัตร", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(BHUtilities.trim(contract.IDCard), true);
+
+        switch (contract.CustomerType) {
+            case "0":
+            case "2":
+                if(defaultAddress.TelMobile.equals(installAddress.TelMobile)){
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("ที่อยู่บัตร", false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(AddressInfo.addr1(defaultAddress.Address()), true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("ที่ติดตั้ง", false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(AddressInfo.addr1(installAddress.Address()), true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("เบอร์โทรติดต่อ", false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(installAddress.TelMobile, true);
+                } else {
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("ที่อยู่บัตร", false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(AddressInfo.addr1(defaultAddress.Address()), true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("เบอร์โทรติดต่อ", false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(defaultAddress.TelMobile, true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("ที่ติดตั้ง", false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(AddressInfo.addr1(installAddress.Address()), true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("เบอร์โทรติดต่อ", false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(installAddress.TelMobile, true);
+                }
+                break;
+            case "1":
+                if(defaultAddress.TelMobile.equals(installAddress.TelMobile)){
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("ที่อยู่บัตร", false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(AddressInfo.addr1(defaultAddress.Address()), true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("ที่ติดตั้ง", false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(AddressInfo.addr1(installAddress.Address()), true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("เบอร์โทรติดต่อ", false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(installAddress.TelHome, true);
+                } else {
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("ที่อยู่บัตร", false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(AddressInfo.addr1(defaultAddress.Address()), true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("เบอร์โทรติดต่อ", false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(defaultAddress.TelHome, true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("ที่ติดตั้ง", false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(AddressInfo.addr1(installAddress.Address()), true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("เบอร์โทรติดต่อ", false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(installAddress.TelHome, true);
+                }
+                break;
+        }
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("สินค้า", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(BHUtilities.trim(contract.ProductName), true);
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("รุ่น", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(BHUtilities.trim(contract.MODEL), true);
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("เลขเครื่อง", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(BHUtilities.trim(contract.ProductSerialNumber), true);
+
+        if (contract.TradeInDiscount > 0) {
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText("ราคา", false);
+            receiptBuilder.setAlign(Paint.Align.RIGHT);
+            receiptBuilder.addText(BHUtilities.numericFormat(contract.SALES) + " บาท", true);
+
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText("ส่วนลดเครื่องแสดง", false);
+            receiptBuilder.setAlign(Paint.Align.RIGHT);
+            receiptBuilder.addText(BHUtilities.numericFormat(contract.TradeInDiscount) + " บาท", true);
+
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText("ราคาสุทธิ", false);
+            receiptBuilder.setAlign(Paint.Align.RIGHT);
+            receiptBuilder.addText(BHUtilities.numericFormat(contract.TotalPrice) + " บาท", true);
+        } else {
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText("ราคาขาย", false);
+            receiptBuilder.setAlign(Paint.Align.RIGHT);
+            receiptBuilder.addText(BHUtilities.numericFormat(contract.SALES) + " บาท", true);
+        }
+
+        if (contract.MODE > 1) {
+            float sum = contract.PaymentAmount - contract.TradeInDiscount;
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText("งวดที่ 1 ต้องชำระ", false);
+            receiptBuilder.setAlign(Paint.Align.RIGHT);
+            receiptBuilder.addText(BHUtilities.numericFormat(sum) + " บาท", true);
+
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText("งวดที่ 2 ถึงงวดที่" + BHUtilities.numericFormat(contract.MODE) + " ต้องชำระงวดละ", false);
+            receiptBuilder.setAlign(Paint.Align.RIGHT);
+            receiptBuilder.addText(BHUtilities.numericFormat(contract.NextPaymentAmount) + " บาท", true);
+        }
+        receiptBuilder.addBlankSpace(40);
+
+        String customer = String.format("(%s%s)", BHUtilities.trim(contract.CustomerFullName), BHUtilities.trim(contract.CompanyName));
+
+        Bitmap img = Bitmap.createBitmap(RECEIPT_WIDTH, 500, Config.ARGB_8888);
+        img.setHasAlpha(true);
+
+        float yy = 0;
+        Canvas cv = new Canvas(img);
+        cv.drawColor(Color.WHITE);
+
+        Paint p = new Paint();
+        p.setColor(Color.BLACK);
+        p.setStyle(Style.FILL_AND_STROKE);
+        p.setAntiAlias(true);
+
+        float fontSize = 22;
+        float lineSpace = fontSize / 2;
+        Paint pTitle = new Paint(p);
+        pTitle.setTypeface(Typeface.DEFAULT);
+        pTitle.setTextSize(fontSize);
+        pTitle.setTextAlign(Align.LEFT);
+
+        Paint pValue = new Paint(pTitle);
+        pValue.setTypeface(null);
+        pValue.setTextAlign(Align.LEFT);
+        Paint pSignature = new Paint(pValue);
+        pSignature.setTextAlign(Align.CENTER);
+
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+
+        Bitmap signature = generatSignature();
+        Bitmap customeSign = generateCustomerSignature(contract.CONTNO);
+        Bitmap contractSign = null;
+
+        if (customeSign != null) {
+            File file = new File(getAlbumStorageDir(contract.CONTNO), String.format("contract_%s.jpg", contract));
+            contractSign = mergeSignature(signature, customeSign, file);
+            final int width = signature.getWidth();
+            final int height = signature.getHeight();
+            final int[] argb = new int[width * height];
+            signature.getPixels(argb, 0, width, 0, 0, width, height);
+            signature.recycle();
+        } else {
+            contractSign = signature;
+        }
+
+        String[] texts = null;
+
+        if (contract.MODE == 1) {
+            if (customeSign != null) {
+                receiptBuilder.setAlign(Align.CENTER);
+            } else {
+                receiptBuilder.setAlign(Align.LEFT);
+            }
+
+            receiptBuilder.addImage(contractSign);
+            yy += 25;
+
+            String TSR = "";
+            if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
+                EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
+                if (saleLeader != null) {
+                    TSR = "("+saleLeader.DepartmentHeadName+")";
+                }
+            }
+
+            cv.drawText(String.format("%s", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - 60)), RECEIPT_WIDTH / 4, yy, pSignature);
+            cv.drawText(String.format("%s", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - 60)), (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
+
+            String[] texts1 = getText(TSR, pSignature, RECEIPT_WIDTH / 2);
+            String[] texts2 = getText(customer, pSignature, RECEIPT_WIDTH / 2);
+            int num;
+            if (texts1.length > texts2.length) {
+                num = texts1.length;
+            } else {
+                num = texts2.length;
+            }
+
+            for (int ii = 0; ii < num; ii++) {
+                yy += fontSize + lineSpace;
+                if (texts1.length > ii) {
+                    cv.drawText(texts1[ii], RECEIPT_WIDTH / 4, yy, pSignature);
+                }
+
+                if (texts2.length > ii) {
+                    cv.drawText(texts2[ii], (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
+                }
+            }
+
+            Bitmap result = Bitmap.createBitmap(RECEIPT_WIDTH, 120, Config.ARGB_8888);
+            cv = new Canvas(result);
+            cv.drawBitmap(img, 0, 0, null);
+            img.recycle();
+
+            receiptBuilder.addImage(result);
+        } else {
+            if (customeSign != null) {
+                receiptBuilder.setAlign(Align.CENTER);
+            } else {
+                receiptBuilder.setAlign(Align.LEFT);
+            }
+
+            receiptBuilder.addImage(contractSign);
+            yy += 25;
+            String TSR = "(นายวิรัช วงศ์นิรันดร์)";
+            if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
+                EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
+                if (saleLeader != null) {
+                    TSR = "("+saleLeader.DepartmentHeadName+")";
+                }
+            }
+            cv.drawText(String.format("%sผู้ให้เช่าซื้อ", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("ผู้ให้เช่าซื้อ", pSignature) + 50))), RECEIPT_WIDTH / 4, yy, pSignature);
+            cv.drawText(String.format("%sผู้เช่าซื้อ", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("ผู้เช่าซื้อ", pSignature) + 50))), (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
+
+            String[] texts1 = getText(TSR, pSignature, RECEIPT_WIDTH / 2);
+            String[] texts2 = getText(customer, pSignature, RECEIPT_WIDTH / 2);
+            int num;
+            if (texts1.length > texts2.length) {
+                num = texts1.length;
+            } else {
+                num = texts2.length;
+            }
+
+            for (int ii = 0; ii < num; ii++) {
+                yy += fontSize + lineSpace;
+                if (texts1.length > ii) {
+                    cv.drawText(texts1[ii], RECEIPT_WIDTH / 4, yy, pSignature);
+                }
+
+                if (texts2.length > ii) {
+                    cv.drawText(texts2[ii], (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
+                }
+            }
+
+            yy += 120;
+            String salename = "(" + BHUtilities.trim(contract.SaleEmployeeName != null ? contract.SaleEmployeeName : "") + ")";
+            String salecode = "รหัส " + BHUtilities.trim(contract.SaleCode);
+
+            String saleteamname = "(" + BHUtilities.trim(contract.upperEmployeeName != null ? contract.upperEmployeeName : "") + ")";
+            String saleteamcode = "" + BHUtilities.trim(contract.SaleTeamName != null ? contract.SaleTeamName : "");
+
+            cv.drawText(String.format("%sพยาน", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("พยาน", pSignature) + 50))), RECEIPT_WIDTH / 4, yy, pSignature);
+            cv.drawText(String.format("%sพยาน", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("พยาน", pSignature) + 50))), (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
+
+            texts1 = getText(saleteamname, pSignature, RECEIPT_WIDTH / 2);
+            texts2 = getText(salename, pSignature, RECEIPT_WIDTH / 2);
+            if (texts1.length > texts2.length) {
+                num = texts1.length;
+            } else {
+                num = texts2.length;
+            }
+
+            for (int ii = 0; ii < num; ii++) {
+                yy += fontSize + lineSpace;
+                if (texts1.length > ii) {
+                    cv.drawText(texts1[ii], RECEIPT_WIDTH / 4, yy, pSignature);
+                }
+
+                if (texts2.length > ii) {
+                    cv.drawText(texts2[ii], (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
+                }
+            }
+
+            yy += fontSize + lineSpace;
+            cv.drawText(saleteamcode, RECEIPT_WIDTH / 4, yy, pSignature);
+            cv.drawText(salecode, (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
+
+            Bitmap result = Bitmap.createBitmap(RECEIPT_WIDTH, 300, Config.ARGB_8888);
+            cv = new Canvas(result);
+            cv.drawBitmap(img, 0, 0, null);
+            img.recycle();
+
+            receiptBuilder.addImage(result);
+        }
+
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText(String.format(" รหัส %s %s", BHUtilities.trim(contract.SaleCode), BHUtilities.trim(contract.SaleEmployeeName)), true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText(String.format(" %s %s", BHUtilities.trim(contract.SaleTeamName), BHUtilities.trim(contract.upperEmployeeName)), true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addBlankSpace(20);
+
+        return receiptBuilder.build();
+    }
+
+    public static Bitmap getNewReceiptImage(PaymentInfo paymentInfo, DebtorCustomerInfo debtorCustomerInfo, AddressInfo addressInfo) {
+        ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
+        receiptBuilder.setMargin(5, 0);
+        receiptBuilder.setAlign(Align.CENTER);
+        receiptBuilder.setColor(Color.BLACK);
+        receiptBuilder.setTextSize(26);
+        receiptBuilder.addText("บริษัท เธียรสุรัตน์ จำกัด (มหาชน)", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("เลขประจำตัวผู้เสียภาษี 0107556000213", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("โทร. 1210", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addBlankSpace(10);
+        receiptBuilder.setTextSize(24);
+        receiptBuilder.addText("ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ");
+        receiptBuilder.addParagraph();
+
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("วันที่รับเงิน", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(BHUtilities.dateFormat(paymentInfo.PayDate) + " เวลา " + BHUtilities.dateFormat(paymentInfo.PayDate, "HH:mm") + " น.", true);
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("เลขที่", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(paymentInfo.ReceiptCode, true);
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("เลขที่สัญญา", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(paymentInfo.CONTNO, true);
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("ชื่อลูกค้า", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(debtorCustomerInfo.CustomerFullName(), true);
+
+        if (paymentInfo.ManualVolumeNo != null && paymentInfo.ManualRunningNo > 0) {
+            String ManualDocumentBookRunningNo = String.format("%s/%d", BHUtilities.trim(paymentInfo.ManualVolumeNo), paymentInfo.ManualRunningNo).replace(' ', '0');
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText("อ้างอิงสัญญาเลขที่", false);
+            receiptBuilder.setAlign(Paint.Align.RIGHT);
+            receiptBuilder.addText(ManualDocumentBookRunningNo, true);
+        }
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(paymentInfo.ProductName, true);
+
+        if (paymentInfo.MODE == 1) {
+            if (paymentInfo.BalancesOfPeriod == 0) {
+                receiptBuilder.addParagraph();
+                receiptBuilder.setAlign(Paint.Align.LEFT);
+                receiptBuilder.addText(BHUtilities.trim(" งวด 1 (ชำระครบ)"), false);
+                receiptBuilder.setAlign(Paint.Align.RIGHT);
+                receiptBuilder.addText("ราคา " + BHUtilities.numericFormat(paymentInfo.Amount) + " บาท", true);
+            } else {
+                receiptBuilder.addParagraph();
+                receiptBuilder.setAlign(Paint.Align.LEFT);
+                receiptBuilder.addText(BHUtilities.trim(" งวด 1 (ชำระบางส่วน)"), false);
+                receiptBuilder.setAlign(Paint.Align.RIGHT);
+                receiptBuilder.addText("ราคา " + BHUtilities.numericFormat(paymentInfo.Amount) + " บาท", true);
+            }
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText("", false);
+            receiptBuilder.setAlign(Paint.Align.RIGHT);
+            receiptBuilder.addText("รวม " + BHUtilities.numericFormat(paymentInfo.Amount) + " บาท", true);
+        } else {
+            if (paymentInfo.CloseAccountPaymentPeriodNumber == paymentInfo.PaymentPeriodNumber && paymentInfo.BalancesOfPeriod == 0) {
+                if(paymentInfo.PaymentPeriodNumber == paymentInfo.MODE) {
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText(BHUtilities.trim(String.format(" งวด %d", paymentInfo.MODE)), false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(BHUtilities.numericFormat(paymentInfo.CloseAccountOutstandingAmount) + " บาท", true);
+                } else {
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText(BHUtilities.trim(String.format(" งวด %d-%d", paymentInfo.PaymentPeriodNumber, paymentInfo.MODE)), false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(BHUtilities.numericFormat(paymentInfo.CloseAccountOutstandingAmount) + " บาท", true);
+                }
+            } else{
+                String txtPeriodAmountLabel = "";
+                if (paymentInfo.BalancesOfPeriod == 0) {
+                    if(paymentInfo.PaymentPeriodNumber == paymentInfo.MODE){
+                        txtPeriodAmountLabel = "ชำระงวดที่ %d (ชำระครบ)";
+                    } else {
+                        txtPeriodAmountLabel = "ชำระงวดที่ %d";
+                    }
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText(BHUtilities.trim(String.format(txtPeriodAmountLabel, paymentInfo.PaymentPeriodNumber)), false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(BHUtilities.numericFormat(paymentInfo.Amount) + " บาท", true);
+                } else {
+                    txtPeriodAmountLabel = " งวด %d (ชำระบางส่วน)";
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText(BHUtilities.trim(String.format(txtPeriodAmountLabel, paymentInfo.PaymentPeriodNumber)), false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(BHUtilities.numericFormat(paymentInfo.Amount) + " บาท", true);
+                }
             }
         }
-        return null;
+
+        if (paymentInfo.CloseAccountPaymentPeriodNumber == paymentInfo.PaymentPeriodNumber && paymentInfo.BalancesOfPeriod == 0) {
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText("ส่วนลดตัดสด", false);
+            receiptBuilder.setAlign(Paint.Align.RIGHT);
+            receiptBuilder.addText(BHUtilities.numericFormat(paymentInfo.CloseAccountDiscountAmount) + " บาท", true);
+
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText("จำนวนที่ชำระ", false);
+            receiptBuilder.setAlign(Paint.Align.RIGHT);
+            receiptBuilder.addText(BHUtilities.numericFormat(paymentInfo.CloseAccountOutstandingAmount - paymentInfo.CloseAccountDiscountAmount) + " บาท", true);
+        } else{
+            /**ยอดเงินคงเหลือของงวดนั้น**/
+            if (paymentInfo.BalancesOfPeriod != 0) {
+                receiptBuilder.addParagraph();
+                receiptBuilder.setAlign(Paint.Align.LEFT);
+                receiptBuilder.addText(String.format(" คงเหลืองวดที่ %d", paymentInfo.PaymentPeriodNumber), false);
+                receiptBuilder.setAlign(Paint.Align.RIGHT);
+                receiptBuilder.addText("ราคา " + BHUtilities.numericFormat(paymentInfo.BalancesOfPeriod) + " บาท", true);
+
+                receiptBuilder.addParagraph();
+                receiptBuilder.setAlign(Paint.Align.LEFT);
+                receiptBuilder.addText("วันนัดชำระ", false);
+                receiptBuilder.setAlign(Paint.Align.RIGHT);
+                receiptBuilder.addText(BHUtilities.dateFormat(paymentInfo.PaymentAppointmentDate), true);
+            }
+            /**ยอดคงเหลือของงวดถัดไป**/
+            if (paymentInfo.Balances - paymentInfo.BalancesOfPeriod != 0) {
+                if (paymentInfo.MODE == 1) {
+                } else {
+                    if((paymentInfo.PaymentPeriodNumber + 1) == paymentInfo.MODE){
+                        receiptBuilder.addParagraph();
+                        receiptBuilder.setAlign(Paint.Align.LEFT);
+                        receiptBuilder.addText(String.format(" คงเหลือ งวดที่ %d เป็นเงิน", paymentInfo.MODE), false);
+                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+                        receiptBuilder.addText(BHUtilities.numericFormat(paymentInfo.Balances - paymentInfo.BalancesOfPeriod) + " บาท", true);
+                    }else {
+                        receiptBuilder.addParagraph();
+                        receiptBuilder.setAlign(Paint.Align.LEFT);
+                        receiptBuilder.addText(String.format(" คงเหลือ งวดที่ %d ถึง %d เป็นเงิน", paymentInfo.PaymentPeriodNumber + 1, paymentInfo.MODE), false);
+                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+                        receiptBuilder.addText(BHUtilities.numericFormat(paymentInfo.Balances - paymentInfo.BalancesOfPeriod) + " บาท", true);
+                    }
+                }
+            }
+        }
+
+        receiptBuilder.addBlankSpace(60);
+
+        Bitmap img = Bitmap.createBitmap(RECEIPT_WIDTH, 80, Config.ARGB_8888);
+        img.setHasAlpha(true);
+
+        float yy = 0;
+        Canvas cv = new Canvas(img);
+        cv.drawColor(Color.WHITE);
+
+        Paint p = new Paint();
+        p.setColor(Color.BLACK);
+        p.setStyle(Style.FILL_AND_STROKE);
+        p.setAntiAlias(true);
+
+        float fontSize = 22;
+        float lineSpace = fontSize / 2;
+        Paint pTitle = new Paint(p);
+        pTitle.setTypeface(Typeface.DEFAULT);
+        pTitle.setTextSize(fontSize);
+        pTitle.setTextAlign(Align.LEFT);
+
+        Paint pValue = new Paint(pTitle);
+        pValue.setTypeface(null);
+        pValue.setTextAlign(Align.LEFT);
+        Paint pSignature = new Paint(pValue);
+        pSignature.setTextAlign(Align.CENTER);
+
+        String sale = String.format("(%s) %s", paymentInfo.SaleEmployeeName != null ? paymentInfo.SaleEmployeeName : "", paymentInfo.CashCode);
+
+        yy += 25;
+        int Value = RECEIPT_WIDTH / 2;
+        String[] texts = getText(sale, pSignature, RECEIPT_WIDTH);
+        for (int ii = 0; ii < texts.length; ii++) {
+            if (ii == 0) {
+                cv.drawText(String.format("%sผู้ซื้อ", getSignatureUnderline(pSignature, (RECEIPT_WIDTH) - (getWidth("ผู้ซื้อ", pSignature) + (RECEIPT_WIDTH / 2)))), RECEIPT_WIDTH / 2, yy, pSignature);
+            }
+            yy += fontSize + lineSpace;
+            cv.drawText(texts[ii], Value, yy, pSignature);
+        }
+
+        Bitmap result = Bitmap.createBitmap(RECEIPT_WIDTH, 80, Config.ARGB_8888);
+        cv = new Canvas(result);
+        cv.drawBitmap(img, 0, 0, null);
+        img.recycle();
+
+        receiptBuilder.addImage(result);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addBlankSpace(20);
+
+        return receiptBuilder.build();
+    }
+
+    public static Bitmap getNewSendMoneyImage(SendMoneyInfo sendMoney) {
+        ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
+        receiptBuilder.setMargin(5, 0);
+        receiptBuilder.setAlign(Align.CENTER);
+        receiptBuilder.setColor(Color.BLACK);
+        receiptBuilder.setTextSize(24);
+        receiptBuilder.addImage(headerPrint());
+        receiptBuilder.addParagraph();
+        receiptBuilder.addBlankSpace(10);
+        receiptBuilder.setAlign(Align.CENTER);
+        receiptBuilder.addText(String.format("ใบนำส่ง%s", sendMoney.PaymentTypeName));
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText(String.format("(%s)", sendMoney.ChannelItemName));
+
+        Bitmap barcode = null;
+        if(sendMoney.Reference2.length() > 8){
+            String strBarcodeNo = sendMoney.Reference2;
+            barcode = BHBarcode.generateCode128(strBarcodeNo, 550, 150);
+            receiptBuilder.addParagraph();
+            receiptBuilder.addImage(barcode);
+        }
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("ชื่อผู้ส่งเงิน", false);
+        receiptBuilder.setAlign(Align.RIGHT);
+        receiptBuilder.addText(BHUtilities.trim(sendMoney.FirstName + " " + sendMoney.LastName), true);
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("รหัสผู้ส่ง", false);
+        receiptBuilder.setAlign(Align.RIGHT);
+        receiptBuilder.addText(BHUtilities.trim(sendMoney.CreateBy), true);
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("วันที่ส่ง", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(BHUtilities.dateFormat(sendMoney.SendDate, BHUtilities.DEFAULT_DATE_FORMAT), true);
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("Ref. 1", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(BHUtilities.trim(sendMoney.Reference1), true);
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("Ref. 2", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(BHUtilities.trim(sendMoney.Reference2), true);
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("ชื่อผู้รับเงิน/สาขา", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(BHUtilities.trim(sendMoney.PayeeName), true);
+
+        if (sendMoney.PaymentType.toLowerCase().equals("credit")) {
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText("เชลล์สลิป", false);
+            receiptBuilder.setAlign(Paint.Align.RIGHT);
+            receiptBuilder.addText(BHUtilities.numericFormat(sendMoney.SendAmount) + " บาท", true);
+        } else if (sendMoney.PaymentType.toLowerCase().equals("cheque")) {
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText("เช็ค", false);
+            receiptBuilder.setAlign(Paint.Align.RIGHT);
+            receiptBuilder.addText(BHUtilities.numericFormat(sendMoney.SendAmount) + " บาท", true);
+        }
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("จำนวนเงิน", false);
+        receiptBuilder.setAlign(Paint.Align.RIGHT);
+        receiptBuilder.addText(BHUtilities.numericFormat(sendMoney.SendAmount) + " บาท", true);
+
+        if(sendMoney.Reference2.length() == 8) {
+            receiptBuilder.setAlign(Align.CENTER);
+            receiptBuilder.addText("--------------------------------------------");
+
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText("สำหรับธนาคาร", true);
+
+            receiptBuilder.setAlign(Paint.Align.CENTER);
+            String SendMoneyBarcode = String.format("%s|%s|%s", sendMoney.Reference1, "", BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", ""));
+            barcode = BHBarcode.generateCode128(SendMoneyBarcode, 450, 50);
+            receiptBuilder.addImage(barcode);
+            receiptBuilder.addParagraph();
+
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText(String.format(" | 010755600021300 %s %s", sendMoney.Reference1, BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", "")));
+            receiptBuilder.addParagraph();
+
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText(String.format(" เพื่อเข้าบัญชี %s",sendMoney.ChannelItemName));
+            receiptBuilder.addParagraph();
+
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText(String.format(" EMPID(Ref.1): %s", BHUtilities.trim(sendMoney.Reference1)));
+            receiptBuilder.addParagraph();
+
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText(String.format(" TNSNO(Ref.2): %s", BHUtilities.trim(sendMoney.Reference2)));
+            receiptBuilder.addParagraph();
+
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText(String.format(" จำนวนเงิน %s บาท", BHUtilities.numericFormat(sendMoney.SendAmount)));
+            receiptBuilder.addParagraph();
+        }
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.addBlankSpace(20);
+
+        return receiptBuilder.build();
     }
 
     /**

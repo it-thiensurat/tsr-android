@@ -364,6 +364,7 @@
     <string name="change_contract_lessor">..............ผู้ให้เช่าซื้อ</string>
     <string name="change_contract_lessee">...................ผู้เช่าซื้อ</string>
     <string name="change_contract_lessee_cash">...................ผู้ซื้อ</string>
+    <string name="change_contract_lessee_cash2">...................ผู้ขาย</string>
     <string name="change_contract_witness">..............พยาน</string>
     <string name="change_contract_baht"> บาท</string>
 

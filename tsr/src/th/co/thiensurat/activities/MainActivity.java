@@ -3457,12 +3457,13 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
      *
      */
 
-    public void printImageNew(final Bitmap bmp, final PrintHandler handler ) {
+    public void printImageNew(final Bitmap bmp, final List<List<PrintTextInfo>> detailPrint, final PrintHandler handler ) {
         if (bhBluetoothPrinter != null) {
-            bhBluetoothPrinter.SetPrintWithBitmap(bmp, handler);
+            bhBluetoothPrinter.SetPrintWithBitmap(bmp, detailPrint, handler);
         }
     }
 
-
-
+    /**
+     * End
+     */
 }

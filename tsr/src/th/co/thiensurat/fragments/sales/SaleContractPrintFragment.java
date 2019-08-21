@@ -3,15 +3,20 @@ package th.co.thiensurat.fragments.sales;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,6 +31,7 @@ import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHUtilities;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
+import th.co.thiensurat.activities.SignatureActivity;
 import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.PrinterController;
 import th.co.thiensurat.business.controller.TSRController;
@@ -44,7 +50,10 @@ import th.co.thiensurat.data.info.SalePaymentPeriodInfo;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
 import th.co.thiensurat.views.ViewTitle;
 
+import static android.app.Activity.RESULT_OK;
 import static th.co.thiensurat.business.controller.TSRController.updateProductStock;
+import static th.co.thiensurat.data.controller.DocumentController.getAlbumStorageDir;
+import static th.co.thiensurat.data.controller.DocumentController.getResizedBitmap;
 
 public class SaleContractPrintFragment extends BHFragment {
 
@@ -134,6 +143,9 @@ public class SaleContractPrintFragment extends BHFragment {
 
     @InjectView
     private Button btnVoidContract;
+    @InjectView
+    private Button btnSignature;
+    @InjectView ImageView imgSignature;
 
 
     private ContractInfo contract = null;
@@ -468,6 +480,52 @@ public class SaleContractPrintFragment extends BHFragment {
                         }
                     });
 
+                    /**
+                     *
+                     * Edit by Teerayut Klinsanga
+                     *
+                     * Add customer signature
+                     * Date: 2019-08-19 14:00:00
+                     *
+                     */
+
+                    Bitmap bitmap = null;
+                    File customerSign = new File(getAlbumStorageDir(contract.CONTNO), String.format("signature_%s.jpg", contract.CONTNO));
+                    if (!customerSign.exists()) {
+                        btnSignature.setVisibility(View.VISIBLE);
+                    } else {
+                        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                        bitmap = BitmapFactory.decodeFile(customerSign.getAbsolutePath(), bmOptions);
+                        bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+                        btnSignature.setVisibility(View.GONE);
+                        imgSignature.setImageBitmap(getResizedBitmap(bitmap, 250, 80));
+                    }
+
+                    imgSignature.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getContext(), SignatureActivity.class);
+                            intent.putExtra("CONTRACT_NUMBER", contract.CONTNO);
+                            startActivityForResult(intent, 999);
+                        }
+                    });
+
+                    btnSignature.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getContext(), SignatureActivity.class);
+                            intent.putExtra("CONTRACT_NUMBER", contract.CONTNO);
+                            startActivityForResult(intent, 999);
+                        }
+                    });
+
+
+                    /**
+                     *
+                     * End
+                     *
+                     */
+
 
                 } else {
                     scrollView1.setVisibility(View.GONE);
@@ -561,7 +619,7 @@ public class SaleContractPrintFragment extends BHFragment {
 
                 /*** [END] :: Fixed - [BHPROJ-0024-3080] :: [Android-รายละเอียดสัญญา] แก้ไขให้แสดงค่า 'เลขที่อ้างอิง' โดยเปลี่ยนให้ดึงมาจากค่าข้อมูลใน [Contract].ContractReferenceNo แทน ***/
 
-
+//                printDocument();
                 break;
             case R.string.button_print:
                 if (contract != null){
@@ -629,5 +687,24 @@ public class SaleContractPrintFragment extends BHFragment {
             }
         });
         setupAlert.show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 999) {
+            Bitmap bitmap = null;
+            File customerSign = new File(getAlbumStorageDir(contract.CONTNO), String.format("signature_%s.jpg", contract.CONTNO));
+            if (!customerSign.exists()) {
+                imgSignature.setImageBitmap(null);
+                btnSignature.setVisibility(View.VISIBLE);
+            } else {
+                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                bitmap = BitmapFactory.decodeFile(customerSign.getAbsolutePath(), bmOptions);
+                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+                btnSignature.setVisibility(View.GONE);
+                imgSignature.setImageBitmap(getResizedBitmap(bitmap, 250, 80));
+            }
+        }
     }
 }

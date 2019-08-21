@@ -264,4 +264,35 @@ public class AddressInfo extends BHParcelable implements Serializable {
 
         return sb;
     }
+
+    public static String subAddress(String addr) {
+        StringBuilder str = new StringBuilder();
+        int index1 = addr.indexOf("ต.");
+        int index2 = addr.indexOf("จ.");
+
+        String addr1 = addr.substring(0, index1);
+        String addr2 = addr.substring(addr1.length(), index2);
+        String addr3 = addr.substring(addr2.length(), addr.length());
+        str.append(addr1);
+        str.append("\n");
+        str.append(addr2);
+        str.append("\n");
+        str.append(addr3);
+
+        return str.toString();
+    }
+
+    public static String addr1(String addr) {
+        int index1 = addr.indexOf("ต.");
+        int index2 = addr.indexOf("จ.");
+
+        return addr.substring(0, index2);
+    }
+
+    public static String addr2(String addr) {
+        int index1 = addr.indexOf("ต.");
+        int index2 = addr.indexOf("จ.");
+
+        return addr.substring(index2, addr.length());
+    }
 }

@@ -183,6 +183,7 @@ public class SaleReceiptPayment extends BHFragment {
         switch (buttonID) {
             case R.string.button_camera:
                 showNextView(new SalePhotographyFragment());
+//                printDocument(payments);
                 break;
             case R.string.button_print:
                 if (viewPager.getChildCount() > 1) {
@@ -349,8 +350,6 @@ public class SaleReceiptPayment extends BHFragment {
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.setCurrentItem(currentViewPosition);
         viewPager.setOnPageChangeListener(viewPagerPageChangeListener);
-
-
     }
 
     private void doVoidReceipt(String RefNo, String ReceiptID) {

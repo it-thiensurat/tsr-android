@@ -552,4 +552,70 @@ public class ZJMiniThemalPrint {
      * == Print with image ==
      *
      */
+
+    public void connect(final String address, final Bitmap bmp, final MainActivity.PrintHandler handler) {
+
+        final ProgressDialog dialog = new ProgressDialog(mBHBluetoothPrinter.mActivity);
+        dialog.setTitle("Plait wait");
+        dialog.setMessage("Connecting");
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        try {
+            mService = new BluetoothService(mBHBluetoothPrinter.mActivity, mHandlerBluetooth);
+
+            if (mService != null) {
+
+                if (mService.getState() == BluetoothService.STATE_NONE) {
+                    // Start the Bluetooth services
+                    mService.start();
+                }
+
+                BluetoothDevice device = mBHBluetoothPrinter.mBluetoothAdapter.getRemoteDevice(address);
+                // Attempt to connect to the device
+                mService.connect(device);
+
+                mJob = new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            printCustomBitmap(bmp);
+//                            for (int i = 0; i < detailPrint.size(); i++) {
+//                                handler.onBackgroundPrinting(i);
+//                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            mBHBluetoothPrinter.mActivity.toast(e.getLocalizedMessage());
+                        }
+                    }
+                };
+            }
+        } finally {
+            dialog.dismiss();
+        }
+    }
+
+    public void printCustomBitmap(Bitmap bitmap) {
+        int nMode = 0;
+        //paperWidth = 384, 576;
+        if (bitmap != null) {
+            /**
+             * Parameters:
+             * mBitmap  要打印的图片
+             * nWidth   打印宽度（58和80）
+             * nMode    打印模式
+             * Returns: byte[]
+             */
+            byte[] data = PrintPicture.POS_PrintBMP(bitmap, 576, nMode);
+            //	SendDataByte(buffer);
+            SendDataByte(Command.ESC_Init);
+            SendDataByte(Command.LF);
+            SendDataByte(data);
+            SendDataByte(PrinterCommand.POS_Set_PrtAndFeedPaper(30));
+            SendDataByte(PrinterCommand.POS_Set_Cut(1));
+            SendDataByte(PrinterCommand.POS_Set_PrtInit());
+            mService.stop();
+        }
+    }
 }

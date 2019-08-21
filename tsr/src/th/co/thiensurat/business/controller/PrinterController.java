@@ -2,6 +2,7 @@ package th.co.thiensurat.business.controller;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -107,6 +108,7 @@ public class PrinterController {
             /*** [END] :: Fixed - [BHPROJ-0024-3080] :: [Android-รายละเอียดสัญญา] แก้ไขให้แสดงค่า 'เลขที่อ้างอิง' โดยเปลี่ยนให้ดึงมาจากค่าข้อมูลใน [Contract].ContractReferenceNo แทน ***/
             documents.add(document);
         }
+
         mainActivity.printText(documents, new MainActivity.PrintHandler() {
             @Override
             public void onBackgroundPrinting(int index) {
@@ -168,8 +170,26 @@ public class PrinterController {
 
         List<List<PrintTextInfo>> document = new ArrayList<>();
         document.add(DocumentController.getTextSendMoney(sendMoney));
-        mainActivity.printText(document, new MainActivity.PrintHandler() {
+
+        /**
+         *
+         * Edit by Teerayut Klinsanga
+         *
+         * Date 2019-08-21 14:15
+         *
+         */
+
+        Bitmap bmp = DocumentController.getNewSendMoneyImage(sendMoney);
+        mainActivity.printImageNew(bmp, document, new MainActivity.PrintHandler() {
+
         });
+
+        /**
+         * End
+         */
+
+//        mainActivity.printText(document, new MainActivity.PrintHandler() {
+//        });
     }
 
 
@@ -321,13 +341,14 @@ public class PrinterController {
 
         }*/
 
+        AddressInfo addressInfo = null;
+        DebtorCustomerInfo debtorCustomerInfo = null;
         List<List<PrintTextInfo>> document = new ArrayList<>();
-
         final List<PaymentInfo> paymentsForPrint = new ArrayList<>();
 
         for (PaymentInfo info : payments) {
-            DebtorCustomerInfo debtorCustomerInfo = TSRController.getDebCustometByID(info.CustomerID);
-            AddressInfo addressInfo = TSRController.getAddress(info.RefNo, AddressInfo.AddressType.AddressInstall);
+            debtorCustomerInfo = TSRController.getDebCustometByID(info.CustomerID);
+            addressInfo = TSRController.getAddress(info.RefNo, AddressInfo.AddressType.AddressInstall);
 
             document.add(DocumentController.getTextReceiptNew(info, debtorCustomerInfo, addressInfo));
             paymentsForPrint.add(info);
@@ -345,8 +366,8 @@ public class PrinterController {
                     break;
             }
             //endregion
-
         }
+//        Log.e("PAYMENT FOR PRINT", String.valueOf(paymentsForPrint));
 
         MainActivity.PrintHandler handler = new MainActivity.PrintHandler() {
             @Override
@@ -388,12 +409,27 @@ public class PrinterController {
 
             }
         };
+//        DocumentController.getTextReceipt(payments, debtorCustomerInfo, addressInfo);
+        /**
+         *
+         * Edit by Teerayut Klinsanga
+         *
+         * Date 2019-08-21 10:35
+         *
+         */
+        PaymentInfo paymentInfo = payments.get(0);
+        Bitmap bmp = DocumentController.getNewReceiptImage(paymentInfo, debtorCustomerInfo, addressInfo);
 
         if(withInterrupt) {
             mainActivity.printTextWithInterrupt(document, handler);
         }else{
-            mainActivity.printText(document, handler);
+//            mainActivity.printText(document, handler);
+            mainActivity.printImageNew(bmp, document, handler);
         }
+
+        /**
+         * End
+         */
 
     }
     /*** [END] :: Fixed - [Android-พิมพ์ใบเสร็จ] การพิมพ์ใบเสร็จกรณีเก็บเงินพร้อมกันหลายงวด  ***/
@@ -1079,10 +1115,54 @@ public class PrinterController {
      *
      */
     public static void printNewImageContract(final ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
-        mainActivity.printImageNew(null, new MainActivity.PrintHandler(){
+
+        Bitmap bmp = DocumentController.getNewContactImage(contract, defaultAddress, installAddress);
+
+        DocumentHistoryInfo checkExist = TSRController.getDocumentHistoryByDocumentNumber(contract.RefNo, DocumentHistoryController.DocumentType.Contract.toString());
+        List<List<PrintTextInfo>> documents = new ArrayList<>();
+        int limit = checkExist != null ? 1 : 2;
+        for (int x = 0; x < limit; x++) {
+            List<PrintTextInfo> document = DocumentController.getTextContract(contract, defaultAddress, installAddress);
+            documents.add(document);
+        }
+
+        mainActivity.printImageNew(bmp, documents, new MainActivity.PrintHandler(){
             @Override
             public void onBackgroundPrinting(int index) {
-                super.onBackgroundPrinting(index);
+                DocumentHistoryInfo docHist = new DocumentHistoryInfo();
+                DocumentHistoryInfo Hist;
+
+                Hist = TSRController.getDocumentHistoryByDocumentNumber(contract.RefNo,
+                        DocumentHistoryController.DocumentType.Contract.toString());
+
+                int num = 1;
+                if (Hist != null) {
+                    num = Hist.PrintOrder + 1;
+                }
+
+                docHist.PrintHistoryID = DatabaseHelper.getUUID();
+                docHist.OrganizationCode = BHPreference.organizationCode();
+                docHist.DatePrint = new Date();
+                docHist.DocumentType = DocumentHistoryController.DocumentType.Contract.toString();
+                docHist.DocumentNumber = contract.RefNo;
+                docHist.SyncedDate = new Date();
+                docHist.CreateBy = BHPreference.employeeID();
+                docHist.CreateDate = new Date();
+                docHist.LastUpdateDate = null;
+                docHist.LastUpdateBy = "";
+                docHist.Selected = false;
+                docHist.Deleted = false;
+                docHist.PrintOrder = num;
+                docHist.Status = "";
+                docHist.SentDate = null;
+                docHist.SentEmpID = "";
+                docHist.SentSaleCode = "";
+                docHist.SentSubTeamCode = "";
+                docHist.SentTeamCode = "";
+                docHist.ReceivedDate = null;
+                docHist.ReceivedEmpID = "";
+
+                TSRController.addDocumentHistory(docHist, true);
             }
         });
     }

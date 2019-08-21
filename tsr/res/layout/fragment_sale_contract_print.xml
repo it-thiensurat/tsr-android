@@ -463,6 +463,57 @@
             </LinearLayout>
 
             <LinearLayout
+                style="@style/ItemLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_large"
+                android:weightSum="2" >
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/change_product_detail_top"
+                    android:layout_weight="1"
+                    android:gravity="center|right"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="แก้ไขลายเซ็นต์คลิก ->"
+                        android:textColor="@android:color/holo_orange_dark"
+                        android:paddingRight="5dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/change_product_detail_top"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:id="@+id/imgSignature"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <Button
+                        android:id="@+id/btnSignature"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="เพิ่มลายเซ็นต์"
+                        android:textColor="@android:color/white"
+                        android:background="@color/bg_sub_header"
+                        android:backgroundTint="@color/bg_sub_header"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/linearLayoutCredit"
                 style="@style/ItemLine"
                 android:layout_width="match_parent"
@@ -475,7 +526,6 @@
                     style="@style/ItemLine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_large"
                     android:weightSum="2" >
 
                     <LinearLayout
@@ -605,24 +655,61 @@
                 style="@style/ItemLine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_large"
-                android:orientation="vertical" >
+                android:weightSum="2" >
 
-                <TextView
-                    style="@style/TextView.Label.bold"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_large"
-                    android:gravity="center"
-                    android:text="@string/change_contract_lessee_cash" />
+                    android:layout_marginTop="@dimen/change_product_detail_top"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/txtCustomer"
-                    style="@style/TextView.Value"
-                    android:layout_width="match_parent"
+                    <TextView
+                        style="@style/TextView.Label.bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_large"
+                        android:gravity="center"
+                        android:text="@string/change_contract_lessee_cash2" />
+
+                    <TextView
+                        android:id="@+id/txtCustomer"
+                        style="@style/TextView.Value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="" />
+                    android:layout_marginTop="@dimen/change_product_detail_top"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        style="@style/TextView.Label.bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_large"
+                        android:gravity="center"
+                        android:text="@string/change_contract_lessee_cash" />
+
+                    <TextView
+                        android:id="@+id/txtCustomer"
+                        style="@style/TextView.Value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="" />
+
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <LinearLayout
