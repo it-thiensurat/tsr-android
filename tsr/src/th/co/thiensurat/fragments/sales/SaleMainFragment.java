@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 import com.viewpagerindicator.TabPageIndicator;
 
@@ -61,6 +62,9 @@ public class SaleMainFragment extends BHFragment {
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
 
         BHPreference.setProcessType(ProcessType.Sale.toString());
+
+
+        Log.e("cccc","cccc");
 
         vpSaleMain.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
             private final String[] PAGE_TITLE = {"รายการขายคงค้าง", "รายการขายเสร็จสมบูรณ์"};

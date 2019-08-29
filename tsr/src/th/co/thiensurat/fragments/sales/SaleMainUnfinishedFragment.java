@@ -2,12 +2,16 @@ package th.co.thiensurat.fragments.sales;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -152,68 +156,61 @@ public class SaleMainUnfinishedFragment extends BHPagerFragment {
 				vh.imageDelete.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
+
+
+
+/*						// TODO Auto-generated method stub
 						final String title = "คำเตือน";
 						final String message = "คุณต้องการลบข้อมูลสัญญา(" + info.CONTNO + ") ของการขายหมายเลขเครื่อง " + info.ProductSerialNumber + " หรือไม่?";
 						showYesNoDialogBox(title, message, info);
-						
-//						Builder setupAlert;
-//						setupAlert = new AlertDialog.Builder(activity).setTitle(title).setMessage(message)
-//								.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//									public void onClick(DialogInterface dialog, int whichButton) {
-//										(new BackgroundProcess(activity) {
-//											ProductStockInfo productInfo;
-//											@Override
-//											protected void calling() {
-//												// TODO Auto-generated method
-//												// stub
-//												deleteContract(info.RefNo, info.CustomerID);
-//												productInfo = getProductStock(info.ProductSerialNumber, ProductStockStatus.SOLD);
-//
-//											}
-//
-//											@Override
-//											protected void after() {
-//												// TODO Auto-generated method
-//												// stub
-//												if(productInfo != null)
-//												{ 
-//													(new BackgroundProcess(activity) {
-//													@Override
-//													protected void before() {
-//														productInfo.ProductSerialNumber = info.ProductSerialNumber;
-//														productInfo.OrganizationCode = BHPreference.organizationCode();
-//														productInfo.Status = ProductStockStatus.CHECKED.toString();
-//														productInfo.ScanByTeam = BHPreference.teamCode();
-//														productInfo.ScanDate = new Date();
-//													}
-//
-//													@Override
-//													protected void calling() {
-//														// TODO Auto-generated
-//														// method stub
-//														updateProductStockStatus(productInfo, true, true);
-//													}
-//
-//													@Override
-//													protected void after() {
-//														// TODO Auto-generated
-//														// method
-//														// stub
-//														GetContractStatusUnFinish();
-//														showMessage("ลบข้อมูลสัญญาเลขที่ " + info.CONTNO + " เรีบยร้อยแล้ว");
-//													}
-//												}).start();
-//												} 
-//											}
-//										}).start();
-//									}
-//								}).setNegativeButton("No", new DialogInterface.OnClickListener() {
-//									public void onClick(DialogInterface dialog, int whichButton) {
-//
-//									}
-//								});
-//						setupAlert.show();
+						*/
+
+
+
+						LayoutInflater layoutInflaterAndroid = LayoutInflater.from(activity);
+						View mView = layoutInflaterAndroid.inflate(R.layout.custom_dialog_delete, null);
+						AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(activity);
+						alertDialogBuilderUserInput.setView(mView);
+
+
+						final TextView dialogTitle2 = (TextView) mView.findViewById(R.id.dialogTitle2);
+						final EditText userInputDialogEditText = (EditText) mView.findViewById(R.id.userInputDialog);
+
+						dialogTitle2.setText("คุณต้องการลบข้อมูลสัญญา(" + info.CONTNO + ") ของการขายหมายเลขเครื่อง " + info.ProductSerialNumber + " หรือไม่?");
+
+
+
+						alertDialogBuilderUserInput
+								.setCancelable(false)
+								.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialogBox, int id) {
+
+										 String OK  =userInputDialogEditText.getText().toString();
+										 if(OK.equals("ตกลง")){
+
+											 deleteContract(info);
+											 Log.e("status","ok");
+
+										 }
+										 else {
+											 Log.e("status","error");
+										 }
+
+										// ToDo get user input here
+									}
+								})
+
+								.setNegativeButton("ยกเลิก",
+										new DialogInterface.OnClickListener() {
+											public void onClick(DialogInterface dialogBox, int id) {
+												dialogBox.cancel();
+											}
+										});
+
+						AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
+						alertDialogAndroid.show();
+
+
 						
 						
 						

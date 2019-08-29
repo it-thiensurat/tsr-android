@@ -835,52 +835,65 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
     //endregion
 
     private void check() {
-        switch (mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonType) {
-            case PERSON:/** 0-บุคคลธรรมดา **/
-                switch (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard) {
-                    case IDCARD://บัตรประชาชน
-                    case DRIVINGLICENSE://ใบขับขี่
-                        if (validateDataForPerson()) {
-                            if (checkIDcard()) {
-                                save();
-                            }
-                        }
-                        break;
-                    case OFFICIALCARD://บัตรข้าราชการ
-                        if (validateDataForPerson()) {
-                            save();
-                        }
-                        break;
-                    default:
-                        showWarningDialog("กรุณาป้อนข้อมูลให้ครบถ้วน", "กรุณาเลือกประเภทบัตร");
-                        break;
-                }
-                break;
-            case CORPORATION:/** 1-นิติบุคคล **/
-                if (validateDataForCorporation()) {
-                    if (checkIdentificationNumber()) {
-                        if (checkIDcard()) {
-                            save();
-                        }
-                    }
-                }
-                break;
-            case FOREIGNER:/** 2-บุคคลต่างชาติ **/
-                switch (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard) {
-                    case PASSPORT: //หนังสือเดินทาง
-                    case OUTLANDER: //บัตรต่างด้าว
-                        if (validateDataForForeigner()) {
-                            save();
-                        }
-                        break;
-                    default:
-                        showWarningDialog("กรุณาป้อนข้อมูลให้ครบถ้วน", "กรุณาเลือกประเภทบัตร");
-                        break;
-                }
-                break;
-            default:
-                break;
-        }
+
+       String age =editTextAge.getText().toString();
+       int age_int= Integer.parseInt(age);
+                     if(age_int<18){
+                      showDialog("ไม่สามารถบันทึกได้","เนื่องจากอายุต่ำกว่า 18 ปี");
+                     }
+                     else {
+
+                         switch (mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonType) {
+                             case PERSON:/** 0-บุคคลธรรมดา **/
+                                 switch (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard) {
+                                     case IDCARD://บัตรประชาชน
+                                     case DRIVINGLICENSE://ใบขับขี่
+                                         if (validateDataForPerson()) {
+                                             if (checkIDcard()) {
+                                                 save();
+                                             }
+                                         }
+                                         break;
+                                     case OFFICIALCARD://บัตรข้าราชการ
+                                         if (validateDataForPerson()) {
+                                             save();
+                                         }
+                                         break;
+                                     default:
+                                         showWarningDialog("กรุณาป้อนข้อมูลให้ครบถ้วน", "กรุณาเลือกประเภทบัตร");
+                                         break;
+                                 }
+                                 break;
+                             case CORPORATION:/** 1-นิติบุคคล **/
+                                 if (validateDataForCorporation()) {
+                                     if (checkIdentificationNumber()) {
+                                         if (checkIDcard()) {
+                                             save();
+                                         }
+                                     }
+                                 }
+                                 break;
+                             case FOREIGNER:/** 2-บุคคลต่างชาติ **/
+                                 switch (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard) {
+                                     case PASSPORT: //หนังสือเดินทาง
+                                     case OUTLANDER: //บัตรต่างด้าว
+                                         if (validateDataForForeigner()) {
+                                             save();
+                                         }
+                                         break;
+                                     default:
+                                         showWarningDialog("กรุณาป้อนข้อมูลให้ครบถ้วน", "กรุณาเลือกประเภทบัตร");
+                                         break;
+                                 }
+                                 break;
+                             default:
+                                 break;
+                         }
+
+                     }
+
+
+
     }
 
     //region bindView
@@ -3103,6 +3116,7 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
                     break;
             }
         }
+
 
 
         imageViewPerson.setEnabled(isEnabled);//ถ่ายรูป
