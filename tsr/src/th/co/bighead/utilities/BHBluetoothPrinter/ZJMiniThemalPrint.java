@@ -217,7 +217,7 @@ public class ZJMiniThemalPrint {
         }
     }
 
-    private void onDestroy() {
+    public void onDestroy() {
         // Stop the Bluetooth services
         if (mService != null) {
             mService.stop();
@@ -553,8 +553,7 @@ public class ZJMiniThemalPrint {
      *
      */
 
-    public void connect(final String address, final Bitmap bmp, final MainActivity.PrintHandler handler) {
-
+    public void connect(final String address, final Bitmap[] bmp, final List<List<PrintTextInfo>> detailPrint, final MainActivity.PrintHandler handler, boolean isWithInterrupt) {
         final ProgressDialog dialog = new ProgressDialog(mBHBluetoothPrinter.mActivity);
         dialog.setTitle("Plait wait");
         dialog.setMessage("Connecting");
@@ -566,30 +565,51 @@ public class ZJMiniThemalPrint {
             mService = new BluetoothService(mBHBluetoothPrinter.mActivity, mHandlerBluetooth);
 
             if (mService != null) {
-
                 if (mService.getState() == BluetoothService.STATE_NONE) {
                     // Start the Bluetooth services
                     mService.start();
                 }
 
+
                 BluetoothDevice device = mBHBluetoothPrinter.mBluetoothAdapter.getRemoteDevice(address);
                 // Attempt to connect to the device
                 mService.connect(device);
 
-                mJob = new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            printCustomBitmap(bmp);
-//                            for (int i = 0; i < detailPrint.size(); i++) {
-//                                handler.onBackgroundPrinting(i);
-//                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            mBHBluetoothPrinter.mActivity.toast(e.getLocalizedMessage());
+                if (isWithInterrupt) {
+                    mJob = new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                mBHBluetoothPrinter.mActivity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        InterruptProcess(detailPrint, handler, 0);
+                                    }
+                                });
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                mBHBluetoothPrinter.mActivity.toast(e.getLocalizedMessage());
+                            }
                         }
-                    }
-                };
+                    };
+                } else {
+                    mJob = new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                for (int i = 0; i < bmp.length; i++) {
+                                    printCustomBitmap(bmp[i]);
+                                    handler.onBackgroundPrinting(i);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                mBHBluetoothPrinter.mActivity.toast(e.getLocalizedMessage());
+                            }
+                        }
+                    };
+                }
+            } else {
+                Log.e("Check service", mService.getState() + "");
             }
         } finally {
             dialog.dismiss();
@@ -615,7 +635,7 @@ public class ZJMiniThemalPrint {
             SendDataByte(PrinterCommand.POS_Set_PrtAndFeedPaper(30));
             SendDataByte(PrinterCommand.POS_Set_Cut(1));
             SendDataByte(PrinterCommand.POS_Set_PrtInit());
-            mService.stop();
+//            mService.stop();
         }
     }
 }

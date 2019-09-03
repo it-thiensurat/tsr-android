@@ -13,6 +13,7 @@ import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Environment;
+import android.util.Log;
 
 //import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
 //import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
@@ -3810,6 +3811,7 @@ public class DocumentController {
         switch (contract.CustomerType) {
             case "0":
             case "2":
+                Log.e("Address", String.valueOf(defaultAddress.Address()));
                 if(defaultAddress.TelMobile.equals(installAddress.TelMobile)){
                     receiptBuilder.addParagraph();
                     receiptBuilder.setAlign(Paint.Align.LEFT);
@@ -4388,12 +4390,12 @@ public class DocumentController {
         receiptBuilder.addParagraph();
         receiptBuilder.addText(String.format("(%s)", sendMoney.ChannelItemName));
 
-        Bitmap barcode = null;
+//        Bitmap barcode = null;
         if(sendMoney.Reference2.length() > 8){
             String strBarcodeNo = sendMoney.Reference2;
-            barcode = BHBarcode.generateCode128(strBarcodeNo, 550, 150);
+//            barcode = BHBarcode.generateCode128(strBarcodeNo, 550, 150);
             receiptBuilder.addParagraph();
-            receiptBuilder.addImage(barcode);
+            receiptBuilder.addImage(BHBarcode.generateCode128(strBarcodeNo, 560, 125));
         }
 
         receiptBuilder.addParagraph();
@@ -4462,8 +4464,8 @@ public class DocumentController {
 
             receiptBuilder.setAlign(Paint.Align.CENTER);
             String SendMoneyBarcode = String.format("%s|%s|%s", sendMoney.Reference1, "", BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", ""));
-            barcode = BHBarcode.generateCode128(SendMoneyBarcode, 450, 50);
-            receiptBuilder.addImage(barcode);
+//            barcode = BHBarcode.generateCode128(SendMoneyBarcode, 450, 50);
+            receiptBuilder.addImage(BHBarcode.generateCode128(SendMoneyBarcode, 450, 60));
             receiptBuilder.addParagraph();
 
             receiptBuilder.setAlign(Paint.Align.LEFT);

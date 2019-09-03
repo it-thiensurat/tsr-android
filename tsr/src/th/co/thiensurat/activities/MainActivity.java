@@ -1860,7 +1860,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
 
     public synchronized void printText(final List<List<PrintTextInfo>> detailPrint, final PrintHandler handler) {
-
         if (bhBluetoothPrinter != null) {
             bhBluetoothPrinter.SetPrint(detailPrint, handler);
         }
@@ -3457,7 +3456,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
      *
      */
 
-    public void printImageNew(final Bitmap bmp, final List<List<PrintTextInfo>> detailPrint, final PrintHandler handler ) {
+    public synchronized void printImageNew(final Bitmap[] bmp, final List<List<PrintTextInfo>> detailPrint, final PrintHandler handler) {
         if (bhBluetoothPrinter != null) {
             bhBluetoothPrinter.SetPrintWithBitmap(bmp, detailPrint, handler);
         }

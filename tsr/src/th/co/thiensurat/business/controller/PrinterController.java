@@ -168,6 +168,7 @@ public class PrinterController {
 
 
 
+        List<Bitmap> bitmapList = new ArrayList<>();
         List<List<PrintTextInfo>> document = new ArrayList<>();
         document.add(DocumentController.getTextSendMoney(sendMoney));
 
@@ -180,7 +181,8 @@ public class PrinterController {
          */
 
         Bitmap bmp = DocumentController.getNewSendMoneyImage(sendMoney);
-        mainActivity.printImageNew(bmp, document, new MainActivity.PrintHandler() {
+        bitmapList.add(bmp);
+        mainActivity.printImageNew(bitmapList.toArray(new Bitmap[bitmapList.size()]), document, new MainActivity.PrintHandler() {
 
         });
 
@@ -213,9 +215,6 @@ public class PrinterController {
             DebtorCustomerInfo debtorCustomerInfo = TSRController.getDebCustometByID(info.CustomerID);
             AddressInfo addressInfo = TSRController.getAddress(info.RefNo, AddressInfo.AddressType.AddressInstall);
             //EmployeeInfo employeeInfo = TSRController.getEmployeeDetailByEmployeeIDAndPositionCode(BHPreference.organizationCode(), info.CreateBy, BHPreference.sourceSystem(), null);
-
-//            Bitmap document = DocumentController.getNewReceipt(info, debtorCustomerInfo, addressInfo);
-//            documents.add(document);
 
 
            *//**ยอดเงินที่จ่ายมาตามใบเสร็จ**//*
@@ -343,6 +342,7 @@ public class PrinterController {
 
         AddressInfo addressInfo = null;
         DebtorCustomerInfo debtorCustomerInfo = null;
+        List<Bitmap> bitmapList = new ArrayList<>();
         List<List<PrintTextInfo>> document = new ArrayList<>();
         final List<PaymentInfo> paymentsForPrint = new ArrayList<>();
 
@@ -353,13 +353,17 @@ public class PrinterController {
             document.add(DocumentController.getTextReceiptNew(info, debtorCustomerInfo, addressInfo));
             paymentsForPrint.add(info);
 
+            bitmapList.add(DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo));
+
             //region RePrint
             switch (Enum.valueOf(EmployeeController.SourceSystem.class, BHPreference.sourceSystem())) {
                 case Sale:
+//                    Bitmap bmp = DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo);
                     DocumentHistoryInfo checkExist = TSRController.getDocumentHistoryByDocumentNumber(info.ReceiptID, DocumentHistoryController.DocumentType.Receipt.toString());
                     if(checkExist == null){
                         document.add(DocumentController.getTextReceiptNew(info, debtorCustomerInfo, addressInfo));
                         paymentsForPrint.add(info);
+                        bitmapList.add(DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo));
                     }
                     break;
                 default:
@@ -417,14 +421,14 @@ public class PrinterController {
          * Date 2019-08-21 10:35
          *
          */
-        PaymentInfo paymentInfo = payments.get(0);
-        Bitmap bmp = DocumentController.getNewReceiptImage(paymentInfo, debtorCustomerInfo, addressInfo);
+//        PaymentInfo paymentInfo = payments.get(0);
+
 
         if(withInterrupt) {
             mainActivity.printTextWithInterrupt(document, handler);
         }else{
 //            mainActivity.printText(document, handler);
-            mainActivity.printImageNew(bmp, document, handler);
+            mainActivity.printImageNew(bitmapList.toArray(new Bitmap[bitmapList.size()]), document, handler);
         }
 
         /**
@@ -1116,19 +1120,23 @@ public class PrinterController {
      */
     public static void printNewImageContract(final ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
 
-        Bitmap bmp = DocumentController.getNewContactImage(contract, defaultAddress, installAddress);
-
         DocumentHistoryInfo checkExist = TSRController.getDocumentHistoryByDocumentNumber(contract.RefNo, DocumentHistoryController.DocumentType.Contract.toString());
         List<List<PrintTextInfo>> documents = new ArrayList<>();
+        List<Bitmap> bitmapList = new ArrayList<>();
         int limit = checkExist != null ? 1 : 2;
         for (int x = 0; x < limit; x++) {
             List<PrintTextInfo> document = DocumentController.getTextContract(contract, defaultAddress, installAddress);
             documents.add(document);
+
+            bitmapList.add(DocumentController.getNewContactImage(contract, defaultAddress, installAddress));
         }
 
-        mainActivity.printImageNew(bmp, documents, new MainActivity.PrintHandler(){
+        Log.e("Document size", documents.size() + "");
+
+        mainActivity.printImageNew(bitmapList.toArray(new Bitmap[bitmapList.size()]), documents, new MainActivity.PrintHandler(){
             @Override
             public void onBackgroundPrinting(int index) {
+//                Log.e("Printing index", String.valueOf(index));
                 DocumentHistoryInfo docHist = new DocumentHistoryInfo();
                 DocumentHistoryInfo Hist;
 
@@ -1166,4 +1174,9 @@ public class PrinterController {
             }
         });
     }
+
+    /**
+     *
+     * End
+     */
 }

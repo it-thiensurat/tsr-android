@@ -283,15 +283,23 @@ public class AddressInfo extends BHParcelable implements Serializable {
     }
 
     public static String addr1(String addr) {
-        int index1 = addr.indexOf("ต.");
+//        int index1 = addr.indexOf("ต.");
         int index2 = addr.indexOf("จ.");
+
+        if (index2 == -1) {
+            index2 = addr.indexOf("เขต");
+        }
 
         return addr.substring(0, index2);
     }
 
     public static String addr2(String addr) {
-        int index1 = addr.indexOf("ต.");
+//        int index1 = addr.indexOf("ต.");
         int index2 = addr.indexOf("จ.");
+
+        if (index2 == -1) {
+            index2 = addr.indexOf("เขต");
+        }
 
         return addr.substring(index2, addr.length());
     }

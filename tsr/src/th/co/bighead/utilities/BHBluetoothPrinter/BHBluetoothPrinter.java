@@ -32,7 +32,7 @@ public class BHBluetoothPrinter {
     private ZJMiniThemalPrint mZJMiniThemalPrint;
 
     /**********************************************************************************************/
-    private Bitmap mBitmap;
+    private Bitmap[] mBitmap;
     private List<List<PrintTextInfo>> mDetailPrint;
     private MainActivity.PrintHandler mHandler;
     private boolean mIsWithInterrupt;
@@ -40,7 +40,6 @@ public class BHBluetoothPrinter {
 
     public BHBluetoothPrinter(MainActivity activity) {
         mActivity = activity;
-
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mDatecsThemalPrint = new DatecsThemalPrint(this);
         mZJMiniThemalPrint = new ZJMiniThemalPrint(this);
@@ -73,6 +72,7 @@ public class BHBluetoothPrinter {
                 mActivity.startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
             } else {
                 Log.d(TAG, "Bluetooth Enabled");
+                mZJMiniThemalPrint.onDestroy();
                 OpenDeviceList();
             }
         } else {
@@ -100,10 +100,10 @@ public class BHBluetoothPrinter {
                         String address = data.getExtras().getString(DeviceListActivity2.EXTRA_DEVICE_ADDRESS);
 //                        Log.e("PRINTER MAC ADDR", address);
                         if (address != null && !address.isEmpty()) {
-//                            if (BluetoothAdapter.checkBluetoothAddress(address)) {
+                            if (BluetoothAdapter.checkBluetoothAddress(address)) {
                                 mDeviceAddress = address;
                                 ConnectBluetoothPrinter();
-//                            }
+                            }
                             Log.e("PRINTER MAC ADDR", mDeviceAddress);
                         }
                     } catch (Exception e) {
@@ -119,7 +119,7 @@ public class BHBluetoothPrinter {
         if (mDeviceAddress.startsWith(MAC_ADDRESS_Printer_1)) {
             mDatecsThemalPrint.establishBluetoothConnection(mDeviceAddress, mDetailPrint, mHandler, mIsWithInterrupt);
         } else if (mDeviceAddress.startsWith(MAC_ADDESS_NEW_DEVICE)) {
-            mZJMiniThemalPrint.connect(mDeviceAddress, mBitmap, mHandler);
+            mZJMiniThemalPrint.connect(mDeviceAddress, mBitmap, mDetailPrint, mHandler, mIsWithInterrupt);
         } else {
             mDatecsThemalPrint.establishBluetoothConnection(mDeviceAddress, mDetailPrint, mHandler, mIsWithInterrupt);
         }
@@ -135,11 +135,11 @@ public class BHBluetoothPrinter {
      *
      */
 
-    public void SetPrintWithBitmap(Bitmap bitmap, List<List<PrintTextInfo>> detailPrint, MainActivity.PrintHandler handler) {
+    public void SetPrintWithBitmap(Bitmap[] bitmap, List<List<PrintTextInfo>> detailPrint, MainActivity.PrintHandler handler) {
         mDetailPrint = detailPrint;
         mHandler = handler;
         mBitmap = bitmap;
-//        mIsWithInterrupt = false;
+        mIsWithInterrupt = false;
 
         CheckBluetooth();
     }

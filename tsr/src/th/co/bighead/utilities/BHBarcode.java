@@ -53,7 +53,7 @@ public class BHBarcode {
             }
         }
 
-        Bitmap bitmap = Bitmap.createBitmap(imgWidth, imgHeight, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(imgWidth, imgHeight, Bitmap.Config.RGB_565);
         bitmap.setPixels(pixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
         return bitmap;
     }

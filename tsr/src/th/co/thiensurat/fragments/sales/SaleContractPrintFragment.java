@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -142,6 +143,10 @@ public class SaleContractPrintFragment extends BHFragment {
     private LinearLayout llAddressInstallPhoneNumber, llAddressIDCardPhoneNumber;
 
     @InjectView
+    private TextView editTextSign;
+    @InjectView
+    private LinearLayout signature_layout;
+    @InjectView
     private Button btnVoidContract;
     @InjectView
     private Button btnSignature;
@@ -218,6 +223,7 @@ public class SaleContractPrintFragment extends BHFragment {
             @Override
             protected void calling() {
                 // TODO Auto-generated method stub
+                Log.e("Process", ProcessType.SendDocument.toString() + ": " + BHPreference.ProcessType());
                 if (BHPreference.ProcessType().equals(ProcessType.SendDocument.toString())) {
                     contract = getContractByRefNoForSendDocuments(BHPreference.organizationCode(), BHPreference.RefNo());
                 } else {
@@ -490,16 +496,62 @@ public class SaleContractPrintFragment extends BHFragment {
                      */
 
                     Bitmap bitmap = null;
+                    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
                     File customerSign = new File(getAlbumStorageDir(contract.CONTNO), String.format("signature_%s.jpg", contract.CONTNO));
-                    if (!customerSign.exists()) {
-                        btnSignature.setVisibility(View.VISIBLE);
-                    } else {
-                        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                        bitmap = BitmapFactory.decodeFile(customerSign.getAbsolutePath(), bmOptions);
-                        bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+
+                    if (Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract) {
                         btnSignature.setVisibility(View.GONE);
-                        imgSignature.setImageBitmap(getResizedBitmap(bitmap, 250, 80));
+                        editTextSign.setVisibility(View.GONE);
+                        if (customerSign.exists()) {
+                            bitmap = BitmapFactory.decodeFile(customerSign.getAbsolutePath(), bmOptions);
+                            bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+                            imgSignature.setImageBitmap(getResizedBitmap(bitmap, 250, 80));
+                            imgSignature.setEnabled(false);
+                        }
                     }
+//                    if (!contract.STATUS.equals("VOID") && Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract) {
+//                        signature_layout.setVisibility(View.GONE);
+//                    }
+//
+                    if (contract.EFFDATE != null) {
+                        Calendar cEFFDATE = Calendar.getInstance();
+                        cEFFDATE.setTime(contract.EFFDATE);
+
+                        Calendar cStartDate = Calendar.getInstance();
+                        cStartDate.set(Calendar.HOUR_OF_DAY, 0);
+                        cStartDate.set(Calendar.MINUTE, 0);
+                        cStartDate.set(Calendar.SECOND, 0);
+                        cStartDate.set(Calendar.MILLISECOND, 0);
+
+                        Calendar cEndDate = Calendar.getInstance();
+                        cEndDate.set(Calendar.HOUR_OF_DAY, 23);
+                        cEndDate.set(Calendar.MINUTE, 59);
+                        cEndDate.set(Calendar.SECOND, 59);
+                        cEndDate.set(Calendar.MILLISECOND, 999);
+
+                        if (cEFFDATE.before(cStartDate) || cEFFDATE.after(cEndDate)) {
+//                            signature_layout.setVisibility(View.GONE);
+                            btnSignature.setVisibility(View.GONE);
+                            editTextSign.setVisibility(View.GONE);
+
+                            if (customerSign.exists()) {
+                                bitmap = BitmapFactory.decodeFile(customerSign.getAbsolutePath(), bmOptions);
+                                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+                                btnSignature.setVisibility(View.GONE);
+                                imgSignature.setImageBitmap(getResizedBitmap(bitmap, 250, 80));
+                            }
+                        }
+                    }
+////
+////
+//                    if (!customerSign.exists()) {
+//                        btnSignature.setVisibility(View.VISIBLE);
+//                    } else {
+//                        bitmap = BitmapFactory.decodeFile(customerSign.getAbsolutePath(), bmOptions);
+//                        bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+//                        btnSignature.setVisibility(View.GONE);
+//                        imgSignature.setImageBitmap(getResizedBitmap(bitmap, 250, 80));
+//                    }
 
                     imgSignature.setOnClickListener(new View.OnClickListener() {
                         @Override
