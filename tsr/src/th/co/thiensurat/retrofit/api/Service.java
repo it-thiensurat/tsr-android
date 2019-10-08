@@ -21,6 +21,8 @@ public interface Service {
 
 
 
+    @GET("/api/api-creditpaymentstatus.php")
+    Call<Object> data2(@Query("Empid") String data);
 
 
 
