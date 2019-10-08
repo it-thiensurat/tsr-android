@@ -3309,7 +3309,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     if (i != null) {
                         Intent in = new Intent(Intent.ACTION_VIEW, Uri.parse("gis://empid/" + BHPreference.employeeID()));
 //                      i.putExtra("empid", BHPreference.employeeID());
-//                      context.startActivity(in);
+                      context.startActivity(in);
                     }
                 }
             } else {
