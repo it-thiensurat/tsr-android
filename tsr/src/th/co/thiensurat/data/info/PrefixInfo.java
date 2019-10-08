@@ -40,6 +40,16 @@ public class PrefixInfo extends BHParcelable {
 		list.add(new PrefixInfo("company", "บริษัท"));
 		list.add(new PrefixInfo("corporate", "ห้างหุ้นส่วน"));
 		list.add(new PrefixInfo("legal_entity", "นิติบุคคล"));
+		list.add(new PrefixInfo("partnership", "ห้างหุ้นส่วนจํากัด"));
+		list.add(new PrefixInfo("office", "สำนักงาน"));
+		list.add(new PrefixInfo("Bureau", "สำนักการ"));
+		list.add(new PrefixInfo("school", "โรงเรียน"));
+		list.add(new PrefixInfo("College", "วิทยาลัย"));
+		list.add(new PrefixInfo("University", "มหาวิทยาลัย"));
+		list.add(new PrefixInfo("hotel", "โรงแรม"));
+		list.add(new PrefixInfo("foundation", "มูลนิธิ"));
+		list.add(new PrefixInfo("municipality", "เทศบาล"));
+
 		return list;
 	}
 }

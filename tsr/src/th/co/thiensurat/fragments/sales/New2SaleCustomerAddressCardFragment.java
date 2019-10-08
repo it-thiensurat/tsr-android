@@ -731,20 +731,27 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
             }
         });
 
-        switch (getType(mainDebtorCustomerInfo.CustomerType)) {
-            case PERSON://บุคคลธรรมดา
-            case FOREIGNER://บุคคลต่างชาติ
-                editTextPhone.setText(mainAddressInfo.TelHome);// เบอร์บ้าน
-                editTextWorkPhone.setText(mainAddressInfo.TelOffice);// เบอร์ทีทำงาน
-                editTextMobilePhone.setText(mainAddressInfo.TelMobile);// เบอร์มือถือ
-                break;
-            case CORPORATION://นิติบุคคล
-                editTextPhonecorporation1.setText(mainAddressInfo.TelHome);// เบอร์โทรศัพท์ 1
-                editTextPhonecorporation2.setText(mainAddressInfo.TelOffice);// เบอร์โทรศัพท์ 2
-                editTextFaxcorporation.setText(mainAddressInfo.TelMobile);// เบอร์แฟกซ์
-                break;
+
+        try {
+            switch (getType(mainDebtorCustomerInfo.CustomerType)) {
+                case PERSON://บุคคลธรรมดา
+                case FOREIGNER://บุคคลต่างชาติ
+                    editTextPhone.setText(mainAddressInfo.TelHome);// เบอร์บ้าน
+                    editTextWorkPhone.setText(mainAddressInfo.TelOffice);// เบอร์ทีทำงาน
+                    editTextMobilePhone.setText(mainAddressInfo.TelMobile);// เบอร์มือถือ
+                    break;
+                case CORPORATION://นิติบุคคล
+                    editTextPhonecorporation1.setText(mainAddressInfo.TelHome);// เบอร์โทรศัพท์ 1
+                    editTextPhonecorporation2.setText(mainAddressInfo.TelOffice);// เบอร์โทรศัพท์ 2
+                    editTextFaxcorporation.setText(mainAddressInfo.TelMobile);// เบอร์แฟกซ์
+                    break;
+
+            }
+        }
+        catch (Exception ex){
 
         }
+
         editTextEmail.setText(mainAddressInfo.EMail);// อีเมล์
 
     }
@@ -836,61 +843,118 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
 
     private void check() {
 
-       String age =editTextAge.getText().toString();
-       int age_int= Integer.parseInt(age);
-                     if(age_int<18){
-                      showDialog("ไม่สามารถบันทึกได้","เนื่องจากอายุต่ำกว่า 18 ปี");
-                     }
-                     else {
 
-                         switch (mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonType) {
-                             case PERSON:/** 0-บุคคลธรรมดา **/
-                                 switch (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard) {
-                                     case IDCARD://บัตรประชาชน
-                                     case DRIVINGLICENSE://ใบขับขี่
-                                         if (validateDataForPerson()) {
-                                             if (checkIDcard()) {
-                                                 save();
-                                             }
-                                         }
-                                         break;
-                                     case OFFICIALCARD://บัตรข้าราชการ
-                                         if (validateDataForPerson()) {
-                                             save();
-                                         }
-                                         break;
-                                     default:
-                                         showWarningDialog("กรุณาป้อนข้อมูลให้ครบถ้วน", "กรุณาเลือกประเภทบัตร");
-                                         break;
-                                 }
-                                 break;
-                             case CORPORATION:/** 1-นิติบุคคล **/
-                                 if (validateDataForCorporation()) {
-                                     if (checkIdentificationNumber()) {
-                                         if (checkIDcard()) {
-                                             save();
-                                         }
-                                     }
-                                 }
-                                 break;
-                             case FOREIGNER:/** 2-บุคคลต่างชาติ **/
-                                 switch (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard) {
-                                     case PASSPORT: //หนังสือเดินทาง
-                                     case OUTLANDER: //บัตรต่างด้าว
-                                         if (validateDataForForeigner()) {
-                                             save();
-                                         }
-                                         break;
-                                     default:
-                                         showWarningDialog("กรุณาป้อนข้อมูลให้ครบถ้วน", "กรุณาเลือกประเภทบัตร");
-                                         break;
-                                 }
-                                 break;
-                             default:
-                                 break;
-                         }
+try {
+    String age =editTextAge.getText().toString()+"";
+    int  age_int= Integer.parseInt(age);
 
-                     }
+    if(age_int<18){
+        showDialog("ไม่สามารถบันทึกได้","เนื่องจากอายุต่ำกว่า 18 ปี");
+    }
+    else {
+
+
+        switch (mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonType) {
+            case PERSON:/** 0-บุคคลธรรมดา **/
+                switch (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard) {
+                    case IDCARD://บัตรประชาชน
+                    case DRIVINGLICENSE://ใบขับขี่
+                        if (validateDataForPerson()) {
+                            if (checkIDcard()) {
+                                save();
+                            }
+                        }
+                        break;
+                    case OFFICIALCARD://บัตรข้าราชการ
+                        if (validateDataForPerson()) {
+                            save();
+                        }
+                        break;
+                    default:
+                        showWarningDialog("กรุณาป้อนข้อมูลให้ครบถ้วน", "กรุณาเลือกประเภทบัตร");
+                        break;
+                }
+                break;
+            case CORPORATION:/** 1-นิติบุคคล **/
+                if (validateDataForCorporation()) {
+                    if (checkIdentificationNumber()) {
+                        if (checkIDcard()) {
+                            save();
+                        }
+                    }
+                }
+                break;
+            case FOREIGNER:/** 2-บุคคลต่างชาติ **/
+                switch (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard) {
+                    case PASSPORT: //หนังสือเดินทาง
+                    case OUTLANDER: //บัตรต่างด้าว
+                        if (validateDataForForeigner()) {
+                            save();
+                        }
+                        break;
+                    default:
+                        showWarningDialog("กรุณาป้อนข้อมูลให้ครบถ้วน", "กรุณาเลือกประเภทบัตร");
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+}
+catch (Exception ex){
+    switch (mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonType) {
+        case PERSON:/** 0-บุคคลธรรมดา **/
+            switch (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard) {
+                case IDCARD://บัตรประชาชน
+                case DRIVINGLICENSE://ใบขับขี่
+                    if (validateDataForPerson()) {
+                        if (checkIDcard()) {
+                            save();
+                        }
+                    }
+                    break;
+                case OFFICIALCARD://บัตรข้าราชการ
+                    if (validateDataForPerson()) {
+                        save();
+                    }
+                    break;
+                default:
+                    showWarningDialog("กรุณาป้อนข้อมูลให้ครบถ้วน", "กรุณาเลือกประเภทบัตร");
+                    break;
+            }
+            break;
+        case CORPORATION:/** 1-นิติบุคคล **/
+            if (validateDataForCorporation()) {
+                if (checkIdentificationNumber()) {
+                    if (checkIDcard()) {
+                        save();
+                    }
+                }
+            }
+            break;
+        case FOREIGNER:/** 2-บุคคลต่างชาติ **/
+            switch (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard) {
+                case PASSPORT: //หนังสือเดินทาง
+                case OUTLANDER: //บัตรต่างด้าว
+                    if (validateDataForForeigner()) {
+                        save();
+                    }
+                    break;
+                default:
+                    showWarningDialog("กรุณาป้อนข้อมูลให้ครบถ้วน", "กรุณาเลือกประเภทบัตร");
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+
+
+
+
 
 
 
@@ -1576,10 +1640,12 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
 
     private void bindYear() {
         Calendar c = Calendar.getInstance();
-        String[] year = new String[90];
+      //  String[] year = new String[90];
+        String[] year = new String[107];
         year[0] = "";
         for (int x = 1; x < year.length; x++) {
-            year[x] = c.get(Calendar.YEAR) + 526 - x + "";
+           // year[x] = c.get(Calendar.YEAR) + 526 - x + "";
+            year[x] = c.get(Calendar.YEAR) + 543 - x + "";
         }
         BHSpinnerAdapter<String> arrayyear = new BHSpinnerAdapter<String>(activity, year);
         spinnerYear.setAdapter(arrayyear);
@@ -2258,51 +2324,50 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
                 switch (mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonType) {
 
                     case PERSON://บุคคลธรรมดา
-                        prefixInfo = mPrefixList.get(spinnerPerfix.getSelectedItemPosition());
-                        cust.PrefixCode = prefixInfo.PrefixCode;// คำนำหน้าชื่อ
-                        cust.PrefixName = prefixInfo.PrefixName;// คำนำหน้าชื่อ
-                        cust.CustomerName = editTextName.getText().toString();//ชื่อ-สกุล
-                        cust.CustomerType = mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonTypeCode;//ประเภทบุคคล
-                        cust.IDCardType = mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard.toString();//ประเภทบัตร
-                        cust.IDCard = editTextIdentificationCard.getText().toString();//เลขที่บัตร
-                        cust.CompanyName = null;// ชื่อบริษัท
-                        cust.AuthorizedName = null;// ชื่อกรรมการผู้มีอำนาจ
-
-                   /*     if(select_read_card==1){
-                           // showDialog("1111","1111");
-                            cust.AuthorizedIDCard = mPersonal.getIssueDate()+"#"+mPersonal.getExpireDate(); // เลขบัตรกรรมการผู้มีอำนาจxcxaCsaxcsCs
-                        }
-                        else {
-                          //  showDialog("2222","2222");
-                            cust.AuthorizedIDCard = null; // เลขบัตรกรรมการผู้มีอำนาจ
-                        }*/
 
 
 
-                        if(select_read_card==1){
-                            try {
-                                cust.AuthorizedIDCard = mPersonal.getIssueDate()+"#"+mPersonal.getExpireDate(); // เลขบัตรกรรมการผู้มีอำนาจxcxaCsaxcsCs
+
+
+
+
+                            prefixInfo = mPrefixList.get(spinnerPerfix.getSelectedItemPosition());
+                            cust.PrefixCode = prefixInfo.PrefixCode;// คำนำหน้าชื่อ
+                            cust.PrefixName = prefixInfo.PrefixName;// คำนำหน้าชื่อ
+                            cust.CustomerName = editTextName.getText().toString();//ชื่อ-สกุล
+                            cust.CustomerType = mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonTypeCode;//ประเภทบุคคล
+                            cust.IDCardType = mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard.toString();//ประเภทบัตร
+                            cust.IDCard = editTextIdentificationCard.getText().toString();//เลขที่บัตร
+                            cust.CompanyName = null;// ชื่อบริษัท
+                            cust.AuthorizedName = null;// ชื่อกรรมการผู้มีอำนาจ
+
+
+                            if (select_read_card == 1) {
+                                try {
+                                    cust.AuthorizedIDCard = mPersonal.getIssueDate() + "#" + mPersonal.getExpireDate(); // เลขบัตรกรรมการผู้มีอำนาจxcxaCsaxcsCs
+                                } catch (Exception ex) {
+
+                                }
+
+                            } else {
+                                cust.AuthorizedIDCard = null; // เลขบัตรกรรมการผู้มีอำนาจ
                             }
-                            catch (Exception ex){
 
-                            }
+                            c.set(Calendar.MONTH, spinnerMonth.getSelectedItemPosition() - 1);// เดือนเกิด
+                            c.set(Calendar.YEAR, ((Integer.valueOf(spinnerYear.getSelectedItem().toString())) - 543));// ปีเกิด
+                            c.set(Calendar.DAY_OF_MONTH, Integer.valueOf(spinnerDate.getSelectedItem().toString()));// วันเกิด
+                            c.set(Calendar.HOUR, 0);
+                            c.set(Calendar.MINUTE, 0);
+                            c.set(Calendar.SECOND, 0);
+                            c.set(Calendar.MILLISECOND, 0);
+                            c.set(Calendar.HOUR_OF_DAY, 0);
+                            cust.Brithday = c.getTime();
 
-                        }
-                        else {
-                            cust.AuthorizedIDCard = null; // เลขบัตรกรรมการผู้มีอำนาจ
-                        }
+                            cust.Sex = spinnerSex.getSelectedItem().toString();// เพศ
 
-                        c.set(Calendar.MONTH, spinnerMonth.getSelectedItemPosition() - 1);// เดือนเกิด
-                        c.set(Calendar.YEAR, ((Integer.valueOf(spinnerYear.getSelectedItem().toString())) - 543));// ปีเกิด
-                        c.set(Calendar.DAY_OF_MONTH, Integer.valueOf(spinnerDate.getSelectedItem().toString()));// วันเกิด
-                        c.set(Calendar.HOUR, 0);
-                        c.set(Calendar.MINUTE, 0);
-                        c.set(Calendar.SECOND, 0);
-                        c.set(Calendar.MILLISECOND, 0);
-                        c.set(Calendar.HOUR_OF_DAY, 0);
-                        cust.Brithday = c.getTime();
 
-                        cust.Sex = spinnerSex.getSelectedItem().toString();// เพศ
+
+
                         break;
 
                     case CORPORATION://นิติบุคคล

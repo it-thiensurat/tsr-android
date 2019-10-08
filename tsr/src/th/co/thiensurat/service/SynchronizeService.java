@@ -240,6 +240,11 @@ public class SynchronizeService extends Service {
 //                                    result.progress += percent;
 //                                }
 
+
+
+
+
+
 								/*** [START] :: Fixed - [BHPROJ-0026-970] :: [Meeting@TSR@07/03/2559] [Android-เปลี่ยนเครื่อง/ถอดเครื่อง/เปลี่ยนสัญญา/แจ้งปัญหา] ทำ Performance Tuning ในขณะทำการปรับปรุงรายการ ***/
 								if (master.syncRequestChangeProductRelated) {
 									result.message = "ปรับปรุงข้อมูลการร้องขอเปลี่ยนเครื่อง";

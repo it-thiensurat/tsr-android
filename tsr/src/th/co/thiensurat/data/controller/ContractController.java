@@ -1,5 +1,7 @@
 package th.co.thiensurat.data.controller;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -499,6 +501,9 @@ public class ContractController extends BaseController {
                 + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
                 + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
                 + " WHERE     (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?)";
+
+
+        //Log.e("xxxxx_moo_test",organizationCode+","+saleTeamCode+","+StatusName);
         return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName}, ContractInfo.class);
     }
 
