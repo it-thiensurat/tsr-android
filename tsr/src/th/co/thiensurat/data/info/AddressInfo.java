@@ -284,7 +284,7 @@ public class AddressInfo extends BHParcelable implements Serializable {
 
     public static String addr1(String addr) {
 //        int index1 = addr.indexOf("ต.");
-        int index2 = addr.indexOf("จ.");
+        int index2 = addr.indexOf("อ.");
 
         if (index2 == -1) {
             index2 = addr.indexOf("เขต");
@@ -295,7 +295,7 @@ public class AddressInfo extends BHParcelable implements Serializable {
 
     public static String addr2(String addr) {
 //        int index1 = addr.indexOf("ต.");
-        int index2 = addr.indexOf("จ.");
+        int index2 = addr.indexOf("อ.");
 
         if (index2 == -1) {
             index2 = addr.indexOf("เขต");
