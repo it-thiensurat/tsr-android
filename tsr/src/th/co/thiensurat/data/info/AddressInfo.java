@@ -282,25 +282,114 @@ public class AddressInfo extends BHParcelable implements Serializable {
         return str.toString();
     }
 
-    public static String addr1(String addr) {
-//        int index1 = addr.indexOf("ต.");
-        int index2 = addr.indexOf("อ.");
-
-        if (index2 == -1) {
-            index2 = addr.indexOf("เขต");
+    public static int addrCheckMultiLine(String addr) {
+        int soi = addr.indexOf("ซ.");
+        int road = addr.indexOf("ถ.");
+        if (soi > -1 || road > -1) {
+            return 3;
+        } else {
+            return 2;
         }
+    }
 
-        return addr.substring(0, index2);
+    public static String addr1(String addr) {
+        int soi = -1;
+        int road = -1;
+        int index = -1;
+        int province = -1;
+        int district = -1;
+        int subdistrict = -1;
+        int line = addrCheckMultiLine(addr);
+
+        if (line == 2) {
+            index = addr.indexOf("อ.");
+        } else {
+            soi = addr.indexOf("ซ.");
+            road = addr.indexOf("ถ.");
+            subdistrict = addr.indexOf("ต.");
+            if (subdistrict == -1) {
+                subdistrict = addr.indexOf("แขวง");
+            }
+
+            if (soi > -1) {
+                if (road > -1) {
+                    index = road;
+                } else {
+                    index = subdistrict;
+                }
+            } else {
+                if (road > -1) {
+                    index = road;
+                }
+            }
+        }
+//        int index1 = addr.indexOf("ต.");
+//        int index2 = addr.indexOf("อ.");
+//
+//        if (index2 == -1) {
+//            index2 = addr.indexOf("เขต");
+//        }
+//
+        return addr.substring(0, index);
     }
 
     public static String addr2(String addr) {
-//        int index1 = addr.indexOf("ต.");
-        int index2 = addr.indexOf("อ.");
+        int soi = -1;
+        int road = -1;
+        int index1 = -1;
+        int index2 = -1;
+        int province = -1;
+        int district = -1;
+        int subdistrict = -1;
+        int line = addrCheckMultiLine(addr);
 
-        if (index2 == -1) {
-            index2 = addr.indexOf("เขต");
+        if (line == 2) {
+            index1 = addr.indexOf("อ.");
+            if (index1 == -1) {
+                index1 = addr.indexOf("เขต");
+            }
+            index2 = addr.length();
+        } else {
+            soi = addr.indexOf("ซ.");
+            road = addr.indexOf("ถ.");
+            province = addr.indexOf("จ.");
+            if (province == -1) {
+                province = addr.indexOf("กรุง");
+            }
+
+            subdistrict = addr.indexOf("ต.");
+            if (subdistrict == -1) {
+                subdistrict = addr.indexOf("แขวง");
+            }
+
+            if (soi > -1) {
+                if (road > -1) {
+                    index1 = road;
+                } else {
+                    index1 = subdistrict;
+                }
+            } else {
+                if (road > -1) {
+                    index1 = road;
+                }
+            }
+
+            index2 = province;
         }
+//        int index1 = addr.indexOf("ต.");
+//        int index2 = addr.indexOf("อ.");
+//
 
-        return addr.substring(index2, addr.length());
+
+        return addr.substring(index1, index2);
+    }
+
+    public static String addr3(String addr) {
+        int province = -1;
+        province = addr.indexOf("จ.");
+        if (province == -1) {
+            province = addr.indexOf("กรุง");
+        }
+        return addr.substring(province, addr.length());
     }
 }

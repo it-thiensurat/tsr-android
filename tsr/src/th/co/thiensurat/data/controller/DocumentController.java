@@ -3822,6 +3822,11 @@ public class DocumentController {
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
                     receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
                     receiptBuilder.addParagraph();
+                    if (AddressInfo.addrCheckMultiLine(defaultAddress.Address()) == 3) {
+                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+                        receiptBuilder.addText(AddressInfo.addr3(defaultAddress.Address()), true);
+                        receiptBuilder.addParagraph();
+                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("ที่ติดตั้ง", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -3830,6 +3835,11 @@ public class DocumentController {
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
                     receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
                     receiptBuilder.addParagraph();
+                    if (AddressInfo.addrCheckMultiLine(installAddress.Address()) == 3) {
+                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+                        receiptBuilder.addText(AddressInfo.addr3(installAddress.Address()), true);
+                        receiptBuilder.addParagraph();
+                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -3844,6 +3854,11 @@ public class DocumentController {
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
                     receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
                     receiptBuilder.addParagraph();
+                    if (AddressInfo.addrCheckMultiLine(defaultAddress.Address()) == 3) {
+                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+                        receiptBuilder.addText(AddressInfo.addr3(defaultAddress.Address()), true);
+                        receiptBuilder.addParagraph();
+                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -3857,6 +3872,11 @@ public class DocumentController {
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
                     receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
                     receiptBuilder.addParagraph();
+                    if (AddressInfo.addrCheckMultiLine(installAddress.Address()) == 3) {
+                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+                        receiptBuilder.addText(AddressInfo.addr3(installAddress.Address()), true);
+                        receiptBuilder.addParagraph();
+                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -3874,6 +3894,11 @@ public class DocumentController {
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
                     receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
                     receiptBuilder.addParagraph();
+                    if (AddressInfo.addrCheckMultiLine(defaultAddress.Address()) == 3) {
+                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+                        receiptBuilder.addText(AddressInfo.addr3(defaultAddress.Address()), true);
+                        receiptBuilder.addParagraph();
+                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("ที่ติดตั้ง", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -3882,6 +3907,11 @@ public class DocumentController {
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
                     receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
                     receiptBuilder.addParagraph();
+                    if (AddressInfo.addrCheckMultiLine(installAddress.Address()) == 3) {
+                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+                        receiptBuilder.addText(AddressInfo.addr3(installAddress.Address()), true);
+                        receiptBuilder.addParagraph();
+                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -3896,6 +3926,11 @@ public class DocumentController {
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
                     receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
                     receiptBuilder.addParagraph();
+                    if (AddressInfo.addrCheckMultiLine(defaultAddress.Address()) == 3) {
+                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+                        receiptBuilder.addText(AddressInfo.addr3(defaultAddress.Address()), true);
+                        receiptBuilder.addParagraph();
+                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -3909,6 +3944,11 @@ public class DocumentController {
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
                     receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
                     receiptBuilder.addParagraph();
+                    if (AddressInfo.addrCheckMultiLine(installAddress.Address()) == 3) {
+                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+                        receiptBuilder.addText(AddressInfo.addr3(installAddress.Address()), true);
+                        receiptBuilder.addParagraph();
+                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
