@@ -303,6 +303,9 @@ public class AddressInfo extends BHParcelable implements Serializable {
 
         if (line == 2) {
             index = addr.indexOf("อ.");
+            if (index == -1) {
+                index = addr.indexOf("เขต");
+            }
         } else {
             soi = addr.indexOf("ซ.");
             road = addr.indexOf("ถ.");

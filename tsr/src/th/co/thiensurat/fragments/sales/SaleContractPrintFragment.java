@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -56,14 +57,14 @@ import th.co.thiensurat.data.info.AddressInfo;
 import th.co.thiensurat.data.info.AddressInfo.AddressType;
 import th.co.thiensurat.data.info.ContractInfo;
 import th.co.thiensurat.data.info.EmployeeDetailInfo;
-import th.co.thiensurat.data.info.GET_data_payment_online;
+//import th.co.thiensurat.data.info.GET_data_payment_online;
 import th.co.thiensurat.data.info.PackagePeriodDetailInfo;
 import th.co.thiensurat.data.info.PaymentInfo;
 import th.co.thiensurat.data.info.ProductStockInfo;
 import th.co.thiensurat.data.info.SalePaymentPeriodInfo;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
 import th.co.thiensurat.fragments.synchronize.SynchronizeMainFragment;
-import th.co.thiensurat.retrofit.api.SQLiteHelper;
+//import th.co.thiensurat.retrofit.api.SQLiteHelper;
 import th.co.thiensurat.retrofit.api.Service;
 import th.co.thiensurat.views.ViewTitle;
 
@@ -192,8 +193,8 @@ public class SaleContractPrintFragment extends BHFragment {
 
 
 
-    List<GET_data_payment_online> get_data_payment_onlines;
-    GET_data_payment_online get_data_payment_online;
+//    List<GET_data_payment_online> get_data_payment_onlines;
+//    GET_data_payment_online get_data_payment_online;
 
     private Data data;
 
@@ -245,8 +246,7 @@ public class SaleContractPrintFragment extends BHFragment {
             saveStatusCode();
         }
 
-        get_data_payment_onlines = new ArrayList<>();
-
+//        get_data_payment_onlines = new ArrayList<>();
         loadData();
 
 
@@ -376,15 +376,14 @@ public class SaleContractPrintFragment extends BHFragment {
                     txtTotalPrice.setText(BHUtilities.numericFormat(contract.TotalPrice));
                     textViewModel.setText(contract.MODEL);
 
-                    get_data_payment_onlines.clear();
-
-                    SQLiteDataBaseBuild();
-                    SQLiteTableBuild();
-                    sqLiteDatabase.execSQL("DELETE FROM " + SQLiteHelper.TABLE_NAME + "");
-
+//                    get_data_payment_onlines.clear();
+//                    SQLiteDataBaseBuild();
+//                    SQLiteTableBuild();
+//                    sqLiteDatabase.execSQL("DELETE FROM " + SQLiteHelper.TABLE_NAME + "");
 
 
-                    load_data(BHUtilities.trim(contract.CONTNO));
+
+//                    load_data(BHUtilities.trim(contract.CONTNO));
 
                     if (contract.MODE == 1) {
                         if (contract.TradeInDiscount != 0) {
@@ -704,437 +703,394 @@ public class SaleContractPrintFragment extends BHFragment {
         }).start();
     }
 
-
-
-
-
-
-
-    private void load_data(String CONCON) {
-
-        try {
-
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-            Service request = retrofit.create(Service.class);
-            Call call = request.payment(CONCON);
-            call.enqueue(new Callback() {
-                @Override
-                public void onResponse(Call call, retrofit2.Response response) {
-
-                    Gson gson=new Gson();
-                    try {
-                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
-
-                        Log.e("data","1");
-                        Log.e("jsonObject",jsonObject.toString());
-                        JSON_PARSE_DATA_AFTER_WEBCALL(jsonObject.getJSONArray("data"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.e("data","22");
-
-
-
-                    }
-
-
-                }
-
-                @Override
-                public void onFailure(Call call, Throwable t) {
-                    Log.e("data","2");
-
-
-                }
-            });
-
-        } catch (Exception e) {
-            Log.e("data","3");
-        }
-    }
-
-
-
-    String ReceiptCode="";
-    String CONTNO="";
-    String CustomerName="";
-    String IDCard="";
-    String AddressInstall="";
-    String ProductName="";
-    String MODEL="";
-    String ProductSerialNumber="";
-    String MaxPaymentPeriodNumber="";
-    String TotalPayment="";
-    String TotalPaymentText="";
-    String PeriodTotal="";
-    String PeriodTotalPrice="";
-    String EFFDATE="";
-    String DatePayment="";
-
-
-
-
-
-    String SalePaymentPeriod_SalePaymentPeriodID="";
-    String SalePaymentPeriod_RefNo="";
-    String SalePaymentPeriod_PaymentPeriodNumber="";
-    String SalePaymentPeriod_PaymentAmount="";
-    String SalePaymentPeriod_Discount="";
-    String SalePaymentPeriod_NetAmount="";
-    String SalePaymentPeriod_PaymentComplete="";
-    String SalePaymentPeriod_TripID="";
-    String SalePaymentPeriod_CreateBy="";
-    String SalePaymentPeriod_LastUpdateBy="";
-    String SalePaymentPeriod_CloseAccountDiscountAmount="";
-    String SalePaymentPeriod_CreateDate="";
-    String SalePaymentPeriod_PaymentDueDate="";
-    String SalePaymentPeriod_PaymentAppointmentDate="";
-    String SalePaymentPeriod_LastUpdateDate="";
-    String SalePaymentPeriod_SyncedDate="";
-    String DatePayment1="";
-    String paymentID="";
-
-
-    String PaymentID="";
-    String OrganizationCode="";
-    String SendMoneyID="";
-    String  PaymentType="";
-    String  PayPartial="";
-    String BankCode="";
-    String ChequeNumber="";
-    String ChequeBankBranch="";
-    String ChequeDate="";
-    String CreditCardNumber="";
-    String  CreditCardApproveCode="";
-    String  CreditEmployeeLevelPath="";
-    String  TripID="";
-    String Status="";
-    String  RefNo="";
-    String  PayPeriod="";
-    String PayDate="";
-    String PAYAMT="";
-    String CashCode="";
-    String EmpID="";
-    String TeamCode="";
-    String receiptkind="";
-    String Kind="";
-    String  BookNo="";
-    String  ReceiptNo="";
-    String  CreateDate="";
-    String CreateBy="";
-    String LastUpdateDate="";
-    String LastUpdateBy="";
-    String SyncedDate="";
-
-
-
-    public void JSON_PARSE_DATA_AFTER_WEBCALL(JSONArray array) {
-        Log.e("array.length()", valueOf(array.length()));
-        if(array.length()==0){
-            sizee=0;
-        }
-        else {
-            sizee=array.length();
-
-            SQLiteDataBaseBuild();
-            SQLiteTableBuild();
-
-        }
-
-        for (int i = 0; i < array.length(); i++) {
-
-            //GetData GetDataAdapter2 = new GetData();
-
-        //    final GET_data_payment_online GetDataAdapter2 = new GET_data_payment_online();
-            final PaymentInfo GetDataAdapter2 = new PaymentInfo();
-
-            JSONObject json = null;
-            try {
-                json = array.getJSONObject(i);
-
-
-                ReceiptCode=json.getString("ReceiptCode")+"";
-                CONTNO=json.getString("CONTNO")+"";
-                CustomerName=json.getString("CustomerName")+"";
-                IDCard=json.getString("IDCard")+"";
-                AddressInstall=json.getString("AddressInstall")+"";
-                ProductName=json.getString("ProductName")+"";
-                MODEL=json.getString("MODEL")+"";
-                ProductSerialNumber=json.getString("ProductSerialNumber")+"";
-                MaxPaymentPeriodNumber=json.getString("MaxPaymentPeriodNumber")+"";
-                TotalPayment=json.getString("TotalPayment")+"";
-                TotalPaymentText=json.getString("TotalPaymentText")+"";
-                PeriodTotal=json.getString("PeriodTotal")+"";
-                PeriodTotalPrice=json.getString("PeriodTotalPrice")+"";
-                EFFDATE=json.getString("EFFDATE")+"";
-                DatePayment=json.getString("DatePayment")+"";
-
-
-
-
-
-
-
-                 SalePaymentPeriod_SalePaymentPeriodID=json.getString("SalePaymentPeriod_SalePaymentPeriodID")+"";
-                 SalePaymentPeriod_RefNo=json.getString("SalePaymentPeriod_RefNo")+"";
-                 SalePaymentPeriod_PaymentPeriodNumber=json.getString("SalePaymentPeriod_PaymentPeriodNumber")+"";
-                 SalePaymentPeriod_PaymentAmount=json.getString("SalePaymentPeriod_PaymentAmount")+"";
-                 SalePaymentPeriod_Discount=json.getString("SalePaymentPeriod_Discount")+"";
-                 SalePaymentPeriod_NetAmount=json.getString("SalePaymentPeriod_NetAmount")+"";
-                 SalePaymentPeriod_PaymentComplete=json.getString("SalePaymentPeriod_PaymentComplete")+"";
-                 SalePaymentPeriod_TripID=json.getString("SalePaymentPeriod_TripID")+"";
-                 SalePaymentPeriod_CreateBy=json.getString("SalePaymentPeriod_CreateBy")+"";
-                 SalePaymentPeriod_LastUpdateBy=json.getString("SalePaymentPeriod_LastUpdateBy")+"";
-                 SalePaymentPeriod_CloseAccountDiscountAmount=json.getString("SalePaymentPeriod_CloseAccountDiscountAmount")+"";
-
-
-              //  paymentID=json.getString("DatePayment")+"";
-
-
-                PaymentID=json.getString("Payment_paymentID")+"";
-                OrganizationCode=json.getString("Payment_OrganizationCode")+"";
-                SendMoneyID=json.getString("Payment_SendMoneyID")+"";
-                PaymentType=json.getString("Payment_PaymentType")+"";
-                PayPartial=json.getString("Payment_PayPartial")+"";
-                BankCode=json.getString("Payment_BankCode")+"";
-                ChequeNumber=json.getString("Payment_ChequeNumber")+"";
-                ChequeBankBranch=json.getString("Payment_ChequeBankBranch")+"";
-                ChequeDate=json.getString("Payment_ChequeDate")+"";
-                CreditCardNumber=json.getString("Payment_CreditCardNumber")+"";
-                CreditCardApproveCode=json.getString("Payment_CreditCardApproveCode")+"";
-                CreditEmployeeLevelPath=json.getString("Payment_CreditEmployeeLevelPath")+"";
-                TripID=json.getString("Payment_TripID")+"";
-                Status=json.getString("Payment_Status")+"";
-                RefNo=json.getString("Payment_RefNo")+"";
-                PayPeriod=json.getString("Payment_PayPeriod")+"";;
-                PAYAMT=json.getString("Payment_PAYAMT")+"";
-                CashCode=json.getString("Payment_CashCode")+"";
-                EmpID=json.getString("Payment_EmpID")+"";
-                TeamCode=json.getString("Payment_TeamCode")+"";
-                receiptkind=json.getString("Payment_receiptkind")+"";
-                Kind=json.getString("Payment_Kind")+"";
-                BookNo=json.getString("Payment_BookNo")+"";
-                ReceiptNo=json.getString("Payment_ReceiptNo")+"";
-
-
-                CreateBy=json.getString("Payment_CreateBy")+"";
-                LastUpdateBy=json.getString("Payment_LastUpdateBy")+"";
-
-                CreateDate=json.getJSONObject("Payment_CreateDate").getString("date")+"";
-
-                LastUpdateDate=json.getJSONObject("Payment_LastUpdateDate").getString("date")+"";
-
-
-
-                PayDate=json.getJSONObject("Payment_PayDate").getString("date")+"";
-                SyncedDate=json.getJSONObject("Payment_SyncedDate").getString("date")+"";
-                DatePayment1=json.getJSONObject("DatePayment1").getString("date")+"";
-
-
-                SalePaymentPeriod_CreateDate=json.getJSONObject("SalePaymentPeriod_CreateDate").getString("date")+"";
-                 SalePaymentPeriod_PaymentDueDate=json.getJSONObject("SalePaymentPeriod_PaymentDueDate").getString("date")+"";
-                 SalePaymentPeriod_PaymentAppointmentDate=json.getJSONObject("SalePaymentPeriod_PaymentAppointmentDate").getString("date")+"";
-                 SalePaymentPeriod_LastUpdateDate=json.getJSONObject("SalePaymentPeriod_LastUpdateDate").getString("date")+"";
-                 SalePaymentPeriod_SyncedDate=json.getJSONObject("SalePaymentPeriod_SyncedDate").getString("date")+"";
-
-
-                GetDataAdapter2.setReceiptCode(json.getString("ReceiptCode"));
-                GetDataAdapter2.setCONTNO(json.getString("CONTNO"));
-                GetDataAdapter2.setCustomerName(json.getString("CustomerName"));
-                GetDataAdapter2.setIDCard(json.getString("IDCard"));
-
-
-                GetDataAdapter2.setProductName(json.getString("ProductName"));
-                GetDataAdapter2.setMODEL(json.getString("MODEL"));
-                GetDataAdapter2.setProductSerialNumber(json.getString("ProductSerialNumber"));
-
-
-
-
-                  // update_payment(DatePayment1,paymentID);
-
-                try {
-                    addPayment(PaymentID, OrganizationCode, SendMoneyID, PaymentType, PayPartial, BankCode, ChequeNumber, ChequeBankBranch,
-                            ChequeDate, CreditCardNumber, CreditCardApproveCode, CreditEmployeeLevelPath, TripID, Status, RefNo, PayPeriod, PayDate, PAYAMT, CashCode, EmpID, TeamCode, receiptkind, Kind, BookNo, ReceiptNo, CreateDate, CreateBy, LastUpdateDate, LastUpdateBy, SyncedDate);
-
-                }
-                catch (Exception exx){
-
-                }
-
-
-                try {
-                    addSalePaymentPeriod( SalePaymentPeriod_SalePaymentPeriodID, SalePaymentPeriod_RefNo, SalePaymentPeriod_PaymentPeriodNumber,
-                            SalePaymentPeriod_PaymentAmount, SalePaymentPeriod_Discount, SalePaymentPeriod_NetAmount, SalePaymentPeriod_PaymentComplete,
-                            SalePaymentPeriod_PaymentDueDate, SalePaymentPeriod_PaymentAppointmentDate, SalePaymentPeriod_TripID,
-                            SalePaymentPeriod_CreateDate, SalePaymentPeriod_CreateBy, SalePaymentPeriod_LastUpdateDate,
-                            SalePaymentPeriod_LastUpdateBy, SalePaymentPeriod_SyncedDate, SalePaymentPeriod_CloseAccountDiscountAmount);
-                }
-                catch (Exception ex){
-
-                }
-
-
-
-            } catch (JSONException e) {
-                //Log.e("Exception", e.getLocalizedMessage());
-                e.printStackTrace();
-
-            }
-            //get_data_payment_onlines.add(GetDataAdapter2);
-            payments.add(GetDataAdapter2);
-        }
-
-        size_ww = get_data_payment_onlines.size();
-
-
-
-
-
-
-
-
-
-
-        cursor = sqLiteDatabase.rawQuery("SELECT ReceiptCode,CONTNO,CustomerName,IDCard,AddressInstall,ProductName,MODEL,ProductSerialNumber,MaxPaymentPeriodNumber,TotalPayment,TotalPaymentText,PeriodTotal,PeriodTotalPrice,EFFDATE,DatePayment FROM "+ SQLiteHelper.TABLE_NAME+""  +" order  by ReceiptCode ASC"   , null);
-        if (cursor.moveToFirst()) {
-            do {
-
-
-
-
-                String Table_ReceiptCode = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ReceiptCode));
-                String Table_CONTNO = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_CONTNO));
-                String Table_CustomerName = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_CustomerName));
-                String Table_IDCard = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_IDCard));
-                String Table_AddressInstall = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_AddressInstall));
-                String Table_ProductName = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ProductName));
-
-                String Table_MODEL = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_MODEL));
-                String Table_ProductSerialNumber = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ProductSerialNumber));
-                String Table_MaxPaymentPeriodNumber = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_MaxPaymentPeriodNumber));
-                String Table_TotalPayment = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_TotalPayment));
-
-
-                String Table_TotalPaymentText = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_TotalPaymentText));
-                String Table_PeriodTotal = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_PeriodTotal));
-                String Table_PeriodTotalPrice = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_PeriodTotalPrice));
-                String Table_EFFDATE = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_EFFDATE));
-                String Table_DatePayment = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_DatePayment));
-
-                Log.e("Table_ReceiptCode", Table_ReceiptCode);
-
-
-
-
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-
-        paymentPeriodOutput = new SalePaymentPeriodController().getSalePaymentPeriodByRefNoORDERBYPaymentPeriodNumber(BHPreference.RefNo());
-
-
-    }
-
-
-    private SQLiteDatabase database = null;
-    public void addSalePaymentPeriod(String SalePaymentPeriodID,String RefNo,String PaymentPeriodNumber,
-                                     String PaymentAmount,String Discount,String NetAmount,String PaymentComplete,
-                                     String PaymentDueDate,String PaymentAppointmentDate,String TripID,
-                                     String CreateDate,String CreateBy,String LastUpdateDate,
-                                     String LastUpdateBy,String SyncedDate,String CloseAccountDiscountAmount) {
-        String sql = "INSERT INTO SalePaymentPeriod (SalePaymentPeriodID, RefNo, PaymentPeriodNumber, PaymentAmount, Discount, NetAmount, PaymentComplete, PaymentDueDate, PaymentAppointmentDate, TripID, CreateDate, CreateBy, LastUpdateDate, LastUpdateBy, SyncedDate, CloseAccountDiscountAmount)"
-                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        executeNonQuery2(sql, new String[]{SalePaymentPeriodID, RefNo, valueOf(PaymentPeriodNumber), valueOf(PaymentAmount),
-                valueOf(Discount), valueOf(NetAmount), valueOf(PaymentComplete), valueOf(PaymentDueDate),
-                valueOf(PaymentAppointmentDate), TripID, valueOf(CreateDate), CreateBy, valueOf(LastUpdateDate), LastUpdateBy,
-                valueOf(SyncedDate), valueOf(CloseAccountDiscountAmount)});
-    }
-
-
-    public void update_payment(String DatePayment1,String paymentID) {
-
-
-            String sql = "update Payment set [PayDate] = ? WHERE PaymentID =?";
-            //  String sql = "UPDATE Assign SET [Order] = ? WHERE AssignID = ?";
-            executeNonQuery2(sql, new String[]{DatePayment1, paymentID});
-        }
-
-
-    public void addPayment(String PaymentID,String OrganizationCode,String SendMoneyID,String PaymentType,
-                           String PayPartial,String BankCode,String ChequeNumber,String ChequeBankBranch,
-                           String ChequeDate,String CreditCardNumber,String CreditCardApproveCode,
-                           String CreditEmployeeLevelPath,String TripID,String Status,String RefNo,
-                           String PayPeriod,String PayDate,String PAYAMT, String CashCode,String EmpID,
-                           String TeamCode,String receiptkind,String Kind,String BookNo,String ReceiptNo,String CreateDate,
-                           String CreateBy,String LastUpdateDate,String LastUpdateBy,String SyncedDate) {
-        String sql = "INSERT INTO Payment (PaymentID, OrganizationCode, SendMoneyID, PaymentType, PayPartial, BankCode, ChequeNumber, ChequeBankBranch, "
-                + "ChequeDate, CreditCardNumber, CreditCardApproveCode, CreditEmployeeLevelPath, TripID, Status, RefNo, PayPeriod, PayDate, PAYAMT, CashCode, EmpID, TeamCode, "
-                + "receiptkind, Kind, BookNo, ReceiptNo, CreateDate, CreateBy, LastUpdateDate, LastUpdateBy, SyncedDate)"
-                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        executeNonQuery2(sql, new String[]{PaymentID,
-                OrganizationCode, SendMoneyID, PaymentType,
-                valueOf(PayPartial), BankCode, ChequeNumber,
-                ChequeBankBranch, ChequeDate, CreditCardNumber,
-                CreditCardApproveCode, CreditEmployeeLevelPath,
-                TripID, Status, RefNo, PayPeriod,
-                valueOf(PayDate), valueOf(PAYAMT), CashCode,
-                EmpID, TeamCode, receiptkind, Kind,
-                BookNo, ReceiptNo, valueOf(CreateDate),
-                CreateBy, valueOf(LastUpdateDate), LastUpdateBy,
-                valueOf(SyncedDate)});
-    }
-
-    protected void executeNonQuery2(String sql, String[] args) {
-        openDatabase2();
-        try {
-            if (args == null) {
-                database.execSQL(sql);
-            } else {
-                database.execSQL(sql, args);
-            }
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        } finally {
-            closeDatabase2();
-        }
-    }
-    private void openDatabase2() {
-        database = DatabaseManager.getInstance().openDatabase();
-    }
-    private void closeDatabase2() {
-        closeDatabase2(false);
-    }
-    private void closeDatabase2(boolean force) {
-
-
-
-        if(force)
-            DatabaseManager.getInstance().forceCloseDatabase();
-        else
-            DatabaseManager.getInstance().closeDatabase();
-    }
-
-
-
-    public void SQLiteDataBaseBuild(){
-
-        sqLiteDatabase = getActivity().openOrCreateDatabase(SQLiteHelper.DATABASE_NAME, Context.MODE_PRIVATE, null);
-
-    }
-
-    public void SQLiteTableBuild(){
-
-
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS "+SQLiteHelper.TABLE_NAME+"("+ SQLiteHelper.Table_Column_ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+SQLiteHelper.Table_ReceiptCode+" VARCHAR, "+SQLiteHelper.Table_CONTNO+" VARCHAR, "+SQLiteHelper.Table_CustomerName+" VARCHAR, "+SQLiteHelper.Table_IDCard+" VARCHAR, "+SQLiteHelper.Table_AddressInstall+" VARCHAR, "+SQLiteHelper.Table_ProductName+" VARCHAR, "+SQLiteHelper.Table_MODEL+" VARCHAR, "+SQLiteHelper.Table_ProductSerialNumber+" VARCHAR, "+SQLiteHelper.Table_MaxPaymentPeriodNumber+" VARCHAR, "+SQLiteHelper.Table_TotalPayment+" VARCHAR, "+SQLiteHelper.Table_TotalPaymentText+" VARCHAR, "+SQLiteHelper.Table_PeriodTotal+" VARCHAR, "+SQLiteHelper.Table_PeriodTotalPrice+" VARCHAR, "+SQLiteHelper.Table_EFFDATE+" VARCHAR, "+SQLiteHelper.Table_DatePayment+" VARCHAR);");
-
-
-    }
+//    private void load_data(String CONCON) {
+//        try {
+//            Retrofit retrofit = new Retrofit.Builder()
+//                    .baseUrl(BASE_URL)
+//                    .addConverterFactory(GsonConverterFactory.create())
+//                    .build();
+//            Service request = retrofit.create(Service.class);
+//            Call call = request.payment(CONCON);
+//            call.enqueue(new Callback() {
+//                @Override
+//                public void onResponse(Call call, retrofit2.Response response) {
+//
+//                    Gson gson=new Gson();
+//                    try {
+//                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+//                        Log.e("data","1");
+//                        Log.e("jsonObject",jsonObject.toString());
+////                        JSON_PARSE_DATA_AFTER_WEBCALL(jsonObject.getJSONArray("data"));
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                        Log.e("data","22");
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call call, Throwable t) {
+//                    Log.e("data","2");
+//                }
+//            });
+//
+//        } catch (Exception e) {
+//            Log.e("data","3");
+//        }
+//    }
+
+
+//    String ReceiptCode="";
+//    String CONTNO="";
+//    String CustomerName="";
+//    String IDCard="";
+//    String AddressInstall="";
+//    String ProductName="";
+//    String MODEL="";
+//    String ProductSerialNumber="";
+//    String MaxPaymentPeriodNumber="";
+//    String TotalPayment="";
+//    String TotalPaymentText="";
+//    String PeriodTotal="";
+//    String PeriodTotalPrice="";
+//    String EFFDATE="";
+//    String DatePayment="";
+//    String SalePaymentPeriod_SalePaymentPeriodID="";
+//    String SalePaymentPeriod_RefNo="";
+//    String SalePaymentPeriod_PaymentPeriodNumber="";
+//    String SalePaymentPeriod_PaymentAmount="";
+//    String SalePaymentPeriod_Discount="";
+//    String SalePaymentPeriod_NetAmount="";
+//    String SalePaymentPeriod_PaymentComplete="";
+//    String SalePaymentPeriod_TripID="";
+//    String SalePaymentPeriod_CreateBy="";
+//    String SalePaymentPeriod_LastUpdateBy="";
+//    String SalePaymentPeriod_CloseAccountDiscountAmount="";
+//    String SalePaymentPeriod_CreateDate="";
+//    String SalePaymentPeriod_PaymentDueDate="";
+//    String SalePaymentPeriod_PaymentAppointmentDate="";
+//    String SalePaymentPeriod_LastUpdateDate="";
+//    String SalePaymentPeriod_SyncedDate="";
+//    String DatePayment1="";
+//    String paymentID="";
+//
+//
+//    String PaymentID="";
+//    String OrganizationCode="";
+//    String SendMoneyID="";
+//    String  PaymentType="";
+//    String  PayPartial="";
+//    String BankCode="";
+//    String ChequeNumber="";
+//    String ChequeBankBranch="";
+//    String ChequeDate="";
+//    String CreditCardNumber="";
+//    String  CreditCardApproveCode="";
+//    String  CreditEmployeeLevelPath="";
+//    String  TripID="";
+//    String Status="";
+//    String  RefNo="";
+//    String  PayPeriod="";
+//    String PayDate="";
+//    String PAYAMT="";
+//    String CashCode="";
+//    String EmpID="";
+//    String TeamCode="";
+//    String receiptkind="";
+//    String Kind="";
+//    String  BookNo="";
+//    String  ReceiptNo="";
+//    String  CreateDate="";
+//    String CreateBy="";
+//    String LastUpdateDate="";
+//    String LastUpdateBy="";
+//    String SyncedDate="";
+
+//    public void JSON_PARSE_DATA_AFTER_WEBCALL(JSONArray array) {
+//        Log.e("array.length()", valueOf(array.length()));
+//        if(array.length()==0){
+//            sizee=0;
+//        }
+//        else {
+//            sizee=array.length();
+//
+//            SQLiteDataBaseBuild();
+//            SQLiteTableBuild();
+//
+//        }
+//
+//        for (int i = 0; i < array.length(); i++) {
+//
+//            //GetData GetDataAdapter2 = new GetData();
+//
+//        //    final GET_data_payment_online GetDataAdapter2 = new GET_data_payment_online();
+//            final PaymentInfo GetDataAdapter2 = new PaymentInfo();
+//
+//            JSONObject json = null;
+//            try {
+//                json = array.getJSONObject(i);
+//
+//
+//                ReceiptCode=json.getString("ReceiptCode")+"";
+//                CONTNO=json.getString("CONTNO")+"";
+//                CustomerName=json.getString("CustomerName")+"";
+//                IDCard=json.getString("IDCard")+"";
+//                AddressInstall=json.getString("AddressInstall")+"";
+//                ProductName=json.getString("ProductName")+"";
+//                MODEL=json.getString("MODEL")+"";
+//                ProductSerialNumber=json.getString("ProductSerialNumber")+"";
+//                MaxPaymentPeriodNumber=json.getString("MaxPaymentPeriodNumber")+"";
+//                TotalPayment=json.getString("TotalPayment")+"";
+//                TotalPaymentText=json.getString("TotalPaymentText")+"";
+//                PeriodTotal=json.getString("PeriodTotal")+"";
+//                PeriodTotalPrice=json.getString("PeriodTotalPrice")+"";
+//                EFFDATE=json.getString("EFFDATE")+"";
+//                DatePayment=json.getString("DatePayment")+"";
+//
+//                 SalePaymentPeriod_SalePaymentPeriodID=json.getString("SalePaymentPeriod_SalePaymentPeriodID")+"";
+//                 SalePaymentPeriod_RefNo=json.getString("SalePaymentPeriod_RefNo")+"";
+//                 SalePaymentPeriod_PaymentPeriodNumber=json.getString("SalePaymentPeriod_PaymentPeriodNumber")+"";
+//                 SalePaymentPeriod_PaymentAmount=json.getString("SalePaymentPeriod_PaymentAmount")+"";
+//                 SalePaymentPeriod_Discount=json.getString("SalePaymentPeriod_Discount")+"";
+//                 SalePaymentPeriod_NetAmount=json.getString("SalePaymentPeriod_NetAmount")+"";
+//                 SalePaymentPeriod_PaymentComplete=json.getString("SalePaymentPeriod_PaymentComplete")+"";
+//                 SalePaymentPeriod_TripID=json.getString("SalePaymentPeriod_TripID")+"";
+//                 SalePaymentPeriod_CreateBy=json.getString("SalePaymentPeriod_CreateBy")+"";
+//                 SalePaymentPeriod_LastUpdateBy=json.getString("SalePaymentPeriod_LastUpdateBy")+"";
+//                 SalePaymentPeriod_CloseAccountDiscountAmount=json.getString("SalePaymentPeriod_CloseAccountDiscountAmount")+"";
+//
+//
+//              //  paymentID=json.getString("DatePayment")+"";
+//
+//
+//                PaymentID=json.getString("Payment_paymentID")+"";
+//                OrganizationCode=json.getString("Payment_OrganizationCode")+"";
+//                SendMoneyID=json.getString("Payment_SendMoneyID")+"";
+//                PaymentType=json.getString("Payment_PaymentType")+"";
+//                PayPartial=json.getString("Payment_PayPartial")+"";
+//                BankCode=json.getString("Payment_BankCode")+"";
+//                ChequeNumber=json.getString("Payment_ChequeNumber")+"";
+//                ChequeBankBranch=json.getString("Payment_ChequeBankBranch")+"";
+//                ChequeDate=json.getString("Payment_ChequeDate")+"";
+//                CreditCardNumber=json.getString("Payment_CreditCardNumber")+"";
+//                CreditCardApproveCode=json.getString("Payment_CreditCardApproveCode")+"";
+//                CreditEmployeeLevelPath=json.getString("Payment_CreditEmployeeLevelPath")+"";
+//                TripID=json.getString("Payment_TripID")+"";
+//                Status=json.getString("Payment_Status")+"";
+//                RefNo=json.getString("Payment_RefNo")+"";
+//                PayPeriod=json.getString("Payment_PayPeriod")+"";;
+//                PAYAMT=json.getString("Payment_PAYAMT")+"";
+//                CashCode=json.getString("Payment_CashCode")+"";
+//                EmpID=json.getString("Payment_EmpID")+"";
+//                TeamCode=json.getString("Payment_TeamCode")+"";
+//                receiptkind=json.getString("Payment_receiptkind")+"";
+//                Kind=json.getString("Payment_Kind")+"";
+//                BookNo=json.getString("Payment_BookNo")+"";
+//                ReceiptNo=json.getString("Payment_ReceiptNo")+"";
+//
+//
+//                CreateBy=json.getString("Payment_CreateBy")+"";
+//                LastUpdateBy=json.getString("Payment_LastUpdateBy")+"";
+//
+//                CreateDate=json.getJSONObject("Payment_CreateDate").getString("date")+"";
+//
+//                LastUpdateDate=json.getJSONObject("Payment_LastUpdateDate").getString("date")+"";
+//
+//
+//
+//                PayDate=json.getJSONObject("Payment_PayDate").getString("date")+"";
+//                SyncedDate=json.getJSONObject("Payment_SyncedDate").getString("date")+"";
+//                DatePayment1=json.getJSONObject("DatePayment1").getString("date")+"";
+//
+//
+//                SalePaymentPeriod_CreateDate=json.getJSONObject("SalePaymentPeriod_CreateDate").getString("date")+"";
+//                 SalePaymentPeriod_PaymentDueDate=json.getJSONObject("SalePaymentPeriod_PaymentDueDate").getString("date")+"";
+//                 SalePaymentPeriod_PaymentAppointmentDate=json.getJSONObject("SalePaymentPeriod_PaymentAppointmentDate").getString("date")+"";
+//                 SalePaymentPeriod_LastUpdateDate=json.getJSONObject("SalePaymentPeriod_LastUpdateDate").getString("date")+"";
+//                 SalePaymentPeriod_SyncedDate=json.getJSONObject("SalePaymentPeriod_SyncedDate").getString("date")+"";
+//
+//
+//                GetDataAdapter2.setReceiptCode(json.getString("ReceiptCode"));
+//                GetDataAdapter2.setCONTNO(json.getString("CONTNO"));
+//                GetDataAdapter2.setCustomerName(json.getString("CustomerName"));
+//                GetDataAdapter2.setIDCard(json.getString("IDCard"));
+//
+//
+//                GetDataAdapter2.setProductName(json.getString("ProductName"));
+//                GetDataAdapter2.setMODEL(json.getString("MODEL"));
+//                GetDataAdapter2.setProductSerialNumber(json.getString("ProductSerialNumber"));
+//
+//
+//
+//
+//                  // update_payment(DatePayment1,paymentID);
+//
+//                try {
+//                    addPayment(PaymentID, OrganizationCode, SendMoneyID, PaymentType, PayPartial, BankCode, ChequeNumber, ChequeBankBranch,
+//                            ChequeDate, CreditCardNumber, CreditCardApproveCode, CreditEmployeeLevelPath, TripID, Status, RefNo, PayPeriod, PayDate, PAYAMT, CashCode, EmpID, TeamCode, receiptkind, Kind, BookNo, ReceiptNo, CreateDate, CreateBy, LastUpdateDate, LastUpdateBy, SyncedDate);
+//
+//                }
+//                catch (Exception exx){
+//
+//                }
+//
+//
+//                try {
+//                    addSalePaymentPeriod( SalePaymentPeriod_SalePaymentPeriodID, SalePaymentPeriod_RefNo, SalePaymentPeriod_PaymentPeriodNumber,
+//                            SalePaymentPeriod_PaymentAmount, SalePaymentPeriod_Discount, SalePaymentPeriod_NetAmount, SalePaymentPeriod_PaymentComplete,
+//                            SalePaymentPeriod_PaymentDueDate, SalePaymentPeriod_PaymentAppointmentDate, SalePaymentPeriod_TripID,
+//                            SalePaymentPeriod_CreateDate, SalePaymentPeriod_CreateBy, SalePaymentPeriod_LastUpdateDate,
+//                            SalePaymentPeriod_LastUpdateBy, SalePaymentPeriod_SyncedDate, SalePaymentPeriod_CloseAccountDiscountAmount);
+//                }
+//                catch (Exception ex){
+//
+//                }
+//
+//
+//
+//            } catch (JSONException e) {
+//                //Log.e("Exception", e.getLocalizedMessage());
+//                e.printStackTrace();
+//
+//            }
+//            //get_data_payment_onlines.add(GetDataAdapter2);
+//            payments.add(GetDataAdapter2);
+//        }
+//
+//        size_ww = get_data_payment_onlines.size();
+//
+//
+//        cursor = sqLiteDatabase.rawQuery("SELECT ReceiptCode,CONTNO,CustomerName,IDCard,AddressInstall,ProductName,MODEL,ProductSerialNumber,MaxPaymentPeriodNumber,TotalPayment,TotalPaymentText,PeriodTotal,PeriodTotalPrice,EFFDATE,DatePayment FROM "+ SQLiteHelper.TABLE_NAME+""  +" order  by ReceiptCode ASC"   , null);
+//        if (cursor.moveToFirst()) {
+//            do {
+//                String Table_ReceiptCode = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ReceiptCode));
+//                String Table_CONTNO = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_CONTNO));
+//                String Table_CustomerName = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_CustomerName));
+//                String Table_IDCard = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_IDCard));
+//                String Table_AddressInstall = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_AddressInstall));
+//                String Table_ProductName = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ProductName));
+//
+//                String Table_MODEL = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_MODEL));
+//                String Table_ProductSerialNumber = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ProductSerialNumber));
+//                String Table_MaxPaymentPeriodNumber = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_MaxPaymentPeriodNumber));
+//                String Table_TotalPayment = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_TotalPayment));
+//
+//
+//                String Table_TotalPaymentText = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_TotalPaymentText));
+//                String Table_PeriodTotal = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_PeriodTotal));
+//                String Table_PeriodTotalPrice = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_PeriodTotalPrice));
+//                String Table_EFFDATE = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_EFFDATE));
+//                String Table_DatePayment = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_DatePayment));
+//
+//                Log.e("Table_ReceiptCode", Table_ReceiptCode);
+//
+//
+//
+//
+//            } while (cursor.moveToNext());
+//        }
+//        cursor.close();
+//
+//        paymentPeriodOutput = new SalePaymentPeriodController().getSalePaymentPeriodByRefNoORDERBYPaymentPeriodNumber(BHPreference.RefNo());
+//
+//
+//    }
+
+
+//    private SQLiteDatabase database = null;
+//    public void addSalePaymentPeriod(String SalePaymentPeriodID,String RefNo,String PaymentPeriodNumber,
+//                                     String PaymentAmount,String Discount,String NetAmount,String PaymentComplete,
+//                                     String PaymentDueDate,String PaymentAppointmentDate,String TripID,
+//                                     String CreateDate,String CreateBy,String LastUpdateDate,
+//                                     String LastUpdateBy,String SyncedDate,String CloseAccountDiscountAmount) {
+//        String sql = "INSERT INTO SalePaymentPeriod (SalePaymentPeriodID, RefNo, PaymentPeriodNumber, PaymentAmount, Discount, NetAmount, PaymentComplete, PaymentDueDate, PaymentAppointmentDate, TripID, CreateDate, CreateBy, LastUpdateDate, LastUpdateBy, SyncedDate, CloseAccountDiscountAmount)"
+//                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+//        executeNonQuery2(sql, new String[]{SalePaymentPeriodID, RefNo, valueOf(PaymentPeriodNumber), valueOf(PaymentAmount),
+//                valueOf(Discount), valueOf(NetAmount), valueOf(PaymentComplete), valueOf(PaymentDueDate),
+//                valueOf(PaymentAppointmentDate), TripID, valueOf(CreateDate), CreateBy, valueOf(LastUpdateDate), LastUpdateBy,
+//                valueOf(SyncedDate), valueOf(CloseAccountDiscountAmount)});
+//    }
+//
+//
+//    public void update_payment(String DatePayment1,String paymentID) {
+//
+//
+//            String sql = "update Payment set [PayDate] = ? WHERE PaymentID =?";
+//            //  String sql = "UPDATE Assign SET [Order] = ? WHERE AssignID = ?";
+//            executeNonQuery2(sql, new String[]{DatePayment1, paymentID});
+//        }
+//
+//
+//    public void addPayment(String PaymentID,String OrganizationCode,String SendMoneyID,String PaymentType,
+//                           String PayPartial,String BankCode,String ChequeNumber,String ChequeBankBranch,
+//                           String ChequeDate,String CreditCardNumber,String CreditCardApproveCode,
+//                           String CreditEmployeeLevelPath,String TripID,String Status,String RefNo,
+//                           String PayPeriod,String PayDate,String PAYAMT, String CashCode,String EmpID,
+//                           String TeamCode,String receiptkind,String Kind,String BookNo,String ReceiptNo,String CreateDate,
+//                           String CreateBy,String LastUpdateDate,String LastUpdateBy,String SyncedDate) {
+//        String sql = "INSERT INTO Payment (PaymentID, OrganizationCode, SendMoneyID, PaymentType, PayPartial, BankCode, ChequeNumber, ChequeBankBranch, "
+//                + "ChequeDate, CreditCardNumber, CreditCardApproveCode, CreditEmployeeLevelPath, TripID, Status, RefNo, PayPeriod, PayDate, PAYAMT, CashCode, EmpID, TeamCode, "
+//                + "receiptkind, Kind, BookNo, ReceiptNo, CreateDate, CreateBy, LastUpdateDate, LastUpdateBy, SyncedDate)"
+//                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+//        executeNonQuery2(sql, new String[]{PaymentID,
+//                OrganizationCode, SendMoneyID, PaymentType,
+//                valueOf(PayPartial), BankCode, ChequeNumber,
+//                ChequeBankBranch, ChequeDate, CreditCardNumber,
+//                CreditCardApproveCode, CreditEmployeeLevelPath,
+//                TripID, Status, RefNo, PayPeriod,
+//                valueOf(PayDate), valueOf(PAYAMT), CashCode,
+//                EmpID, TeamCode, receiptkind, Kind,
+//                BookNo, ReceiptNo, valueOf(CreateDate),
+//                CreateBy, valueOf(LastUpdateDate), LastUpdateBy,
+//                valueOf(SyncedDate)});
+//    }
+//
+//    protected void executeNonQuery2(String sql, String[] args) {
+//        openDatabase2();
+//        try {
+//            if (args == null) {
+//                database.execSQL(sql);
+//            } else {
+//                database.execSQL(sql, args);
+//            }
+//        } catch (Exception e) {
+//            // TODO: handle exception
+//            e.printStackTrace();
+//            throw new RuntimeException(e);
+//        } finally {
+//            closeDatabase2();
+//        }
+//    }
+//    private void openDatabase2() {
+//        database = DatabaseManager.getInstance().openDatabase();
+//    }
+//    private void closeDatabase2() {
+//        closeDatabase2(false);
+//    }
+//    private void closeDatabase2(boolean force) {
+//
+//
+//
+//        if(force)
+//            DatabaseManager.getInstance().forceCloseDatabase();
+//        else
+//            DatabaseManager.getInstance().closeDatabase();
+//    }
+//
+//
+//
+//    public void SQLiteDataBaseBuild(){
+//
+//        sqLiteDatabase = getActivity().openOrCreateDatabase(SQLiteHelper.DATABASE_NAME, Context.MODE_PRIVATE, null);
+//
+//    }
+//
+//    public void SQLiteTableBuild(){
+//
+//
+//        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS "+SQLiteHelper.TABLE_NAME+"("+ SQLiteHelper.Table_Column_ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+SQLiteHelper.Table_ReceiptCode+" VARCHAR, "+SQLiteHelper.Table_CONTNO+" VARCHAR, "+SQLiteHelper.Table_CustomerName+" VARCHAR, "+SQLiteHelper.Table_IDCard+" VARCHAR, "+SQLiteHelper.Table_AddressInstall+" VARCHAR, "+SQLiteHelper.Table_ProductName+" VARCHAR, "+SQLiteHelper.Table_MODEL+" VARCHAR, "+SQLiteHelper.Table_ProductSerialNumber+" VARCHAR, "+SQLiteHelper.Table_MaxPaymentPeriodNumber+" VARCHAR, "+SQLiteHelper.Table_TotalPayment+" VARCHAR, "+SQLiteHelper.Table_TotalPaymentText+" VARCHAR, "+SQLiteHelper.Table_PeriodTotal+" VARCHAR, "+SQLiteHelper.Table_PeriodTotalPrice+" VARCHAR, "+SQLiteHelper.Table_EFFDATE+" VARCHAR, "+SQLiteHelper.Table_DatePayment+" VARCHAR);");
+//
+//
+//    }
     @Override
     public void onProcessButtonClicked(int buttonID) {
         // TODO Auto-generated method stub
@@ -1189,9 +1145,15 @@ public class SaleContractPrintFragment extends BHFragment {
                 if (data != null && data.resTitle != 0 && Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract) {
                     SaleReceiptPayment.Data input = new SaleReceiptPayment.Data();
                     input.resTitle = data.resTitle;
+                    input.contno = BHUtilities.trim(contract.CONTNO);
                     showNextView(BHFragment.newInstance(SaleReceiptPayment.class, input));
+                    Toast.makeText(getActivity(), "CONTNO: " + BHUtilities.trim(contract.CONTNO), Toast.LENGTH_LONG).show();
                 } else {
-                    showNextView(new SaleReceiptPayment());
+                    Toast.makeText(getActivity(), "CONTNO2: " + BHUtilities.trim(contract.CONTNO), Toast.LENGTH_LONG).show();
+                    SaleReceiptPayment.Data input = new SaleReceiptPayment.Data();
+                    input.contno = BHUtilities.trim(contract.CONTNO);
+                    showNextView(BHFragment.newInstance(SaleReceiptPayment.class, input));
+//                    showNextView(new SaleReceiptPayment());
                 }
                 break;
             case R.string.button_back:
