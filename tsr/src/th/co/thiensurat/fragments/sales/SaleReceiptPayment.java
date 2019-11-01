@@ -202,8 +202,6 @@ public class SaleReceiptPayment extends BHFragment {
         initViews();
         try {
             Contno = data.contno;
-//            load_data(Contno);
-//            Toast.makeText(getActivity(), "CONTNO: " + data.contno, Toast.LENGTH_LONG).show();?
         } catch (NullPointerException ex) {
 
         }
@@ -601,11 +599,11 @@ public class SaleReceiptPayment extends BHFragment {
                     if(forcePrint == true) {
                         activity.forceButtonClick(R.string.button_print);
                     }
-                    try {
-                        load_data(Contno);
-                    } catch (NullPointerException e) {
-
-                    }
+//                    try {
+//                        load_data(Contno);
+//                    } catch (NullPointerException e) {
+//
+//                    }
                 } else {
                     showLastView();
                     showDialog("แจ้งเตือน", "ไม่พบข้อมูลใบเสร็จ");

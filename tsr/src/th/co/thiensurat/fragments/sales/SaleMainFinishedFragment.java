@@ -202,8 +202,8 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 					try {
 						JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
 
-						Log.e("data","1");
-						Log.e("jsonObject",jsonObject.toString());
+//						Log.e("data","1");
+//						Log.e("jsonObject",jsonObject.toString());
 						JSON_PARSE_DATA_AFTER_WEBCALL(jsonObject.getJSONArray("data"));
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -232,7 +232,7 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 
 
 	public void JSON_PARSE_DATA_AFTER_WEBCALL(JSONArray array) {
-		Log.e("array.length()", valueOf(array.length()));
+//		Log.e("array.length()", valueOf(array.length()));
 
 
 		for (int i = 0; i < array.length(); i++) {

@@ -1147,9 +1147,9 @@ public class SaleContractPrintFragment extends BHFragment {
                     input.resTitle = data.resTitle;
                     input.contno = BHUtilities.trim(contract.CONTNO);
                     showNextView(BHFragment.newInstance(SaleReceiptPayment.class, input));
-                    Toast.makeText(getActivity(), "CONTNO: " + BHUtilities.trim(contract.CONTNO), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getActivity(), "CONTNO: " + BHUtilities.trim(contract.CONTNO), Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getActivity(), "CONTNO2: " + BHUtilities.trim(contract.CONTNO), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getActivity(), "CONTNO2: " + BHUtilities.trim(contract.CONTNO), Toast.LENGTH_LONG).show();
                     SaleReceiptPayment.Data input = new SaleReceiptPayment.Data();
                     input.contno = BHUtilities.trim(contract.CONTNO);
                     showNextView(BHFragment.newInstance(SaleReceiptPayment.class, input));
