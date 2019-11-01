@@ -38,6 +38,7 @@ import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.controller.ContractController;
 import th.co.thiensurat.data.controller.DatabaseManager;
 import th.co.thiensurat.data.controller.EmployeeController;
+import th.co.thiensurat.data.controller.PaymentController;
 import th.co.thiensurat.data.info.ContractInfo;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
 import th.co.thiensurat.retrofit.api.Service;
@@ -144,6 +145,10 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 
 							dialog = ProgressDialog.show(activity, "",
 									"Loading...", true);
+
+
+							//new PaymentController().deletePaymentByRefNo(BHPreference.RefNo());
+
 							load_data();
 						}
 						else {
@@ -301,19 +306,57 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 				String IsMigrate=json.getString("IsMigrate")+"";
 				String PayStatus=json.getString("PayStatus")+"";
 
+
+
+				String Payment_PaymentID=json.getString("Payment_PaymentID")+"";
+				String Payment_OrganizationCode=json.getString("Payment_OrganizationCode")+"";
+				String Payment_SendMoneyID=json.getString("Payment_SendMoneyID")+"";
+				String Payment_PaymentType=json.getString("Payment_PaymentType")+"";
+				String Payment_PayPartial=json.getString("Payment_PayPartial")+"";
+				String Payment_BankCode=json.getString("Payment_BankCode")+"";
+				String Payment_ChequeNumber=json.getString("Payment_ChequeNumber")+"";
+				String Payment_ChequeBankBranch=json.getString("Payment_ChequeBankBranch")+"";
+				String Payment_ChequeDate=json.getString("Payment_ChequeDate")+"";
+				String Payment_CreditCardNumber=json.getString("Payment_CreditCardNumber")+"";
+				String Payment_CreditCardApproveCode=json.getString("Payment_CreditCardApproveCode")+"";
+				String Payment_CreditEmployeeLevelPath=json.getString("Payment_CreditEmployeeLevelPath")+"";
+				String Payment_TripID=json.getString("Payment_TripID")+"";
+				String Payment_Status=json.getString("Payment_Status")+"";
+				String Payment_RefNo=json.getString("Payment_RefNo")+"";
+				String Payment_PayPeriod=json.getString("Payment_PayPeriod")+"";
+				String Payment_PAYAMT=json.getString("Payment_PAYAMT")+"";
+				String Payment_CashCode=json.getString("Payment_CashCode")+"";
+				String Payment_EmpID=json.getString("Payment_EmpID")+"";
+				String Payment_TeamCode=json.getString("Payment_TeamCode")+"";
+				String Payment_receiptkind=json.getString("Payment_receiptkind")+"";
+				String Payment_Kind=json.getString("Payment_Kind")+"";
+				String Payment_BookNo=json.getString("Payment_BookNo")+"";
+				String Payment_ReceiptNo=json.getString("Payment_ReceiptNo")+"";
+				String Payment_CreateBy=json.getString("Payment_CreateBy")+"";
+				String Payment_LastUpdateBy=json.getString("Payment_LastUpdateBy")+"";
+
+
+
+
+
+
+
 				String EFFDATE=json.getJSONObject("EFFDATE").getString("date")+"";
 				String InstallDate=json.getJSONObject("InstallDate").getString("date")+"";
 				String todate=json.getJSONObject("todate").getString("date")+"";
 				String CreateDate=json.getJSONObject("CreateDate").getString("date")+"";
 				String LastUpdateDate=json.getJSONObject("LastUpdateDate").getString("date")+"";
 				String SyncedDate=json.getJSONObject("SyncedDate").getString("date")+"";
+				String DatePayment=json.getJSONObject("DatePayment").getString("date")+"";
 
-			//	Log.e("FFFF",PaymentComplete);
+				String Payment_PayDate=json.getJSONObject("Payment_PayDate").getString("date")+"";
+				String Payment_CreateDate=json.getJSONObject("Payment_CreateDate").getString("date")+"";
+				String Payment_LastUpdateDate=json.getJSONObject("Payment_LastUpdateDate").getString("date")+"";
+				String Payment_SyncedDate=json.getJSONObject("Payment_SyncedDate").getString("date")+"";
+
 				if(!CONTNO.equals("null")){
-
 					updateAssignForPostpone(PayStatus,CONTNO);
-					//addContract2(RefNo,CONTNO,CustomerID, OrganizationCode, STATUS);
-//Log.e("IsMigrate",IsMigrate);
+
 
 
 					try {
@@ -331,56 +374,21 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 					}
 
 
-	//Log.e("RefNo",RefNo);
-				//	TSRController.importContractFromServer(OrganizationCode,SaleTeamCode,RefNo);
 
-					 //TSRController.importContractFromServer(BHPreference.organizationCode(), BHPreference.teamCode(), RefNo);
 
-					//if (contractList != null) {
-					//	TSRController.importContractFromServer(BHPreference.organizationCode(), null, RefNo);
-					//}
 
-	/*				try {
-						BHPreference.setRefNo(RefNo);
-						BHPreference.setProcessType(ProcessType.ViewCompletedContract.toString());
-						final String refNo = RefNo;
-
-						*//*** [START] :: Fixed - [BHPROJ-0026-3277][Android-รายละเอียดสัญญา] ในเมนูนี้ เหมือนว่าต้องการจะทำให้สามารถค้นหาสัญญาใด ๆ ก็ได้ แต่ปัจจุบันค้นหาได้เฉพาะสัญญาของตนเองเท่านั้น ***//*
-						new BackgroundProcess(activity) {
-							ContractInfo cont;
-							@Override
-							protected void calling() {
-								// TODO Auto-generated method stub
-								try {
-									cont = TSRController.getContract(refNo);
-									if(cont == null){
-
-										TSRController.importContractFromServer(BHPreference.organizationCode(), BHPreference.teamCode(), refNo);
-										Log.e("xxxx",refNo);
-									}
-
-								} catch (Exception e) {
-									// TODO: handle exception
-									e.printStackTrace();
-								}
-							}
-							@Override
-							protected void after() {
-								// TODO Auto-generated method stub
-								if (cont != null) {
-									//TSRController.importContractFromServer(BHPreference.organizationCode(), BHPreference.teamCode(), refNo);
-									//Log.e("xxxx",refNo);
-								}
-							}
-						}.start();
-						*//*** [END] :: Fixed - [BHPROJ-0026-3277][Android-รายละเอียดสัญญา] ในเมนูนี้ เหมือนว่าต้องการจะทำให้สามารถค้นหาสัญญาใด ๆ ก็ได้ แต่ปัจจุบันค้นหาได้เฉพาะสัญญาของตนเองเท่านั้น ***//*
-
-					} catch (Exception e) {
-						// TODO: handle exception
-						e.printStackTrace();
+					try {
+						addPayment(Payment_PaymentID, Payment_OrganizationCode, Payment_SendMoneyID, Payment_PaymentType, Payment_PayPartial, Payment_BankCode,
+								Payment_ChequeNumber, Payment_ChequeBankBranch, Payment_ChequeDate, Payment_CreditCardNumber, Payment_CreditCardApproveCode,
+								Payment_CreditEmployeeLevelPath, Payment_TripID, Payment_Status, Payment_RefNo, Payment_PayPeriod, Payment_PayDate, Payment_PAYAMT,
+								Payment_CashCode, Payment_EmpID, Payment_TeamCode,Payment_receiptkind, Payment_Kind, Payment_BookNo, Payment_ReceiptNo, Payment_CreateDate, Payment_CreateBy,
+								Payment_LastUpdateDate, Payment_LastUpdateBy, Payment_SyncedDate);
 					}
-*/
-					//updateAssignForPostpone(PayStatus,CONTNO);
+					catch (Exception ex){
+
+					}
+
+
 
 
 				}
@@ -413,12 +421,27 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 		bindContractList();
 	}
 
+
+
+
+
+
+
+
+
+
 	private SQLiteDatabase database = null;
 	public void updateAssignForPostpone(String STATUSNAME,String CONTNO) {
 
 		String sql = "update Contract set [svcontno] = ? WHERE CONTNO =?";
 		//  String sql = "UPDATE Assign SET [Order] = ? WHERE AssignID = ?";
 		executeNonQuery2(sql, new String[]{STATUSNAME, CONTNO});
+	}
+	public void updateAssignForPostpone_DatePayment(String STATUSNAME,String REFNO) {
+
+		String sql = "update Contract set [svcontno] = ? WHERE CONTNO =?";
+		//  String sql = "UPDATE Assign SET [Order] = ? WHERE AssignID = ?";
+		executeNonQuery2(sql, new String[]{STATUSNAME, REFNO});
 	}
 	public void addContract2(String RefNo,String CONTNO, String CustomerID,String OrganizationCode,String STATUS){
 /*		String sql = "INSERT INTO Contract (RefNo, CONTNO, CustomerID, OrganizationCode, STATUS, StatusCode, SALES, TotalPrice)"
@@ -456,14 +479,7 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 				+ "VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 
-		Log.e("aaaaaaa",RefNo+CONTNO+CustomerID+ OrganizationCode+ STATUS+ StatusCode+valueOf(SALES)+
-				valueOf(TotalPrice)+ valueOf(EFFDATE)+ valueOf(HasTradeIn)+TradeInProductCode+ TradeInBrandCode+
-				TradeInProductModel+ valueOf(TradeInDiscount)+ PreSaleSaleCode+ PreSaleEmployeeCode+ PreSaleEmployeeName+ PreSaleTeamCode+ SaleCode+
-				SaleEmployeeCode+ SaleTeamCode+ InstallerSaleCode+ InstallerEmployeeCode+ InstallerTeamCode+
-				valueOf(InstallDate)+ ProductSerialNumber+ ProductID+ SaleEmployeeLevelPath+ valueOf(MODE)+ FortnightID+
-				ProblemID+ svcontno+ valueOf(isActive)+ MODEL+ fromrefno+ fromcontno+ valueOf(todate)+ tocontno+
-				torefno+ valueOf(CreateDate)+ CreateBy+ valueOf(LastUpdateDate)+ LastUpdateBy+ valueOf(SyncedDate)+
-				SaleSubTeamCode+ valueOf(TradeInReturnFlag)+ valueOf(IsReadyForSaleAudit)+ ContractReferenceNo+ valueOf(IsMigrate));
+
 		executeNonQuery3(sql, new String[]{RefNo,CONTNO,CustomerID, OrganizationCode, STATUS, StatusCode,valueOf(SALES),
 				valueOf(TotalPrice), valueOf(EFFDATE), valueOf(HasTradeIn),TradeInProductCode, TradeInBrandCode,
 				TradeInProductModel, valueOf(TradeInDiscount), PreSaleSaleCode, PreSaleEmployeeCode, PreSaleEmployeeName, PreSaleTeamCode, SaleCode,
@@ -473,6 +489,34 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 				torefno, valueOf(CreateDate), CreateBy, valueOf(LastUpdateDate), LastUpdateBy, valueOf(SyncedDate),
 				SaleSubTeamCode, valueOf(TradeInReturnFlag), valueOf(IsReadyForSaleAudit), ContractReferenceNo, valueOf(IsMigrate)});
 	}
+
+
+	public void addPayment(String Payment_PaymentID,String Payment_OrganizationCode,String Payment_SendMoneyID,String Payment_PaymentType,String Payment_PayPartial,String Payment_BankCode,
+						   String Payment_ChequeNumber,String Payment_ChequeBankBranch,String Payment_ChequeDate,String Payment_CreditCardNumber,String Payment_CreditCardApproveCode,
+						   String Payment_CreditEmployeeLevelPath,String Payment_TripID,String Payment_Status,String Payment_RefNo,String Payment_PayPeriod,String Payment_PayDate,String Payment_PAYAMT,
+						   String Payment_CashCode,String Payment_EmpID,String Payment_TeamCode,String Payment_receiptkind,String Payment_Kind,String Payment_BookNo,String Payment_ReceiptNo,String Payment_CreateDate,String Payment_CreateBy,
+						   String Payment_LastUpdateDate,String Payment_LastUpdateBy,String Payment_SyncedDate ) {
+		String sql = "INSERT INTO Payment (PaymentID, OrganizationCode, SendMoneyID, PaymentType, PayPartial, BankCode, ChequeNumber, ChequeBankBranch, "
+				+ "ChequeDate, CreditCardNumber, CreditCardApproveCode, CreditEmployeeLevelPath, TripID, Status, RefNo, PayPeriod, PayDate, PAYAMT, CashCode, EmpID, TeamCode, "
+				+ "receiptkind, Kind, BookNo, ReceiptNo, CreateDate, CreateBy, LastUpdateDate, LastUpdateBy, SyncedDate)"
+				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+
+
+		executeNonQuery2(sql, new String[]{Payment_PaymentID,
+				Payment_OrganizationCode, Payment_SendMoneyID, Payment_PaymentType,
+				valueOf(Payment_PayPartial),Payment_BankCode,Payment_ChequeNumber,
+				Payment_ChequeBankBranch, Payment_ChequeDate, Payment_CreditCardNumber,
+				Payment_CreditCardApproveCode, Payment_CreditEmployeeLevelPath,
+				Payment_TripID, Payment_Status, Payment_RefNo, Payment_PayPeriod,
+				valueOf(Payment_PayDate), valueOf(Payment_PAYAMT), Payment_CashCode,
+				Payment_EmpID, Payment_TeamCode, Payment_receiptkind, Payment_Kind,
+				Payment_BookNo, Payment_ReceiptNo, valueOf(Payment_CreateDate),
+				Payment_CreateBy, valueOf(Payment_LastUpdateDate), Payment_LastUpdateBy,
+				valueOf(Payment_SyncedDate)});
+	}
+
+
 	protected void executeNonQuery2(String sql, String[] args) {
 		openDatabase2();
 		try {
@@ -615,93 +659,6 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 		contractAdapter = new ContractAdapter(activity, R.layout.list_main_status, contractList);
 		listViewFinish.setAdapter(contractAdapter);
 
-		/*BHArrayAdapter<ContractInfo> statusfinish = new BHArrayAdapter<ContractInfo>(activity, R.layout.list_main_status, contractList) {
-			class ViewHolder {
-				public TextView textViewContractnumber;
-				public TextView textViewName;
-				public TextView textViewStatus;
-				public ImageView imageDelete;
-				public ImageView imageNext;
-			}
-
-			@Override
-			protected void onViewItem(final int position, View view, Object holder, final ContractInfo info) {
-				// TODO Auto-generated method stub
-				ViewHolder vh = (ViewHolder) holder;
-				vh.textViewContractnumber.setText("เลขที่สัญญา  :  "+ info.CONTNO);
-				vh.textViewName.setText	         ("ชื่อลูกค้า        :  "+ BHUtilities.trim(info.CustomerFullName) +" "+ BHUtilities.trim(info.CompanyName));
-				vh.textViewStatus.setText        ("สถานะ           :  "+ info.StatusName);
-				vh.imageDelete.setVisibility(View.GONE);
-
-//				vh.imageDelete.setOnClickListener(new OnClickListener() {
-//					@Override
-//					public void onClick(View v) {
-//						// TODO Auto-generated method stub
-//						final String title = "คำเตือน";
-//						final String message = "คุณต้องการลบข้อมมูลสัญญา  " + info.CONTNO + " ?";
-//						Builder setupAlert;
-//						setupAlert = new AlertDialog.Builder(activity).setTitle(title).setMessage(message)
-//								.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//									public void onClick(DialogInterface dialog, int whichButton) {
-//										(new BackgroundProcess(activity) {
-//											ProductStockInfo productInfo;
-//
-//											@Override
-//											protected void calling() {
-//												// TODO Auto-generated method
-//												// stub
-//												deleteContract(info.RefNo, "");
-//												productInfo = getProductStock(info.ProductSerialNumber, ProductStockStatus.SOLD);
-//											}
-//
-//											@Override
-//											protected void after() {
-//												// TODO Auto-generated method
-//												// stub
-//												(new BackgroundProcess(activity) {
-//													@Override
-//													protected void before() {
-//														productInfo.ProductSerialNumber = info.ProductSerialNumber;
-//														productInfo.OrganizationCode = BHPreference.organizationCode();
-//														productInfo.Status = ProductStockStatus.CHECKED.toString();
-//														productInfo.ScanByTeam = BHPreference.teamCode();
-//														productInfo.ScanDate = new Date();
-//													}
-//
-//													@Override
-//													protected void calling() {
-//														// TODO Auto-generated
-//														// method stub
-//														updateProductStockStatus(productInfo, true, true);
-//													}
-//
-//													@Override
-//													protected void after() {
-//														// TODO Auto-generated
-//														// method stub
-//														GetContractStatusFinish();
-//														showMessage("ลบข้อมมูลสัญญาเลขที่ " + info.CONTNO + " เรีบยร้อยแล้ว");
-//													}
-//												}).start();
-//											}
-//										}).start();
-//									}
-//								}).setNegativeButton("No", new DialogInterface.OnClickListener() {
-//									public void onClick(DialogInterface dialog, int whichButton) {
-//									}
-//								});
-//						setupAlert.show();
-//					}
-//				});
-				vh.imageNext.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-					}
-				});
-			}
-		};
-		listViewFinish.setAdapter(statusfinish);*/
 		listViewFinish.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

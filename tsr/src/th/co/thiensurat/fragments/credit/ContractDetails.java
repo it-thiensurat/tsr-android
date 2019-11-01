@@ -28,6 +28,7 @@ public class ContractDetails extends BHFragment {
     @InjectView private ViewPager viewPager;
     @InjectView private EditText txtSearch;
     @InjectView private Button btnSearch;
+    @InjectView private Button btnRefresh;
     public static List<ContractInfo> contractList = null;
 
     private final boolean isCredit = BHPreference.sourceSystem().equals(EmployeeController.SourceSystem.Credit.toString());
@@ -78,6 +79,34 @@ public class ContractDetails extends BHFragment {
                 searchContractList();
             }
         });
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
+
+                    @Override
+                    public int getCount() {
+                        // TODO Auto-generated method stub
+                        return 1;
+                    }
+
+                    @Override
+                    public Fragment getItem(int position) {
+                        // TODO Auto-generated method stub
+
+
+                        //return BHFragment.newInstance(SaleMainFinishedFragment.class);
+
+                        SaleMainFinishedFragment fm = BHFragment.newInstance(SaleMainFinishedFragment.class);
+                        fm.isContractDetails = true;
+
+                        return  fm;
+                    }
+                });
+
+            }
+        });
+
     }
 
 

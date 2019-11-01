@@ -623,10 +623,14 @@ public class CreditListFragment extends BHFragment {
 
                 String FF=json.getString("SalePaymentPeriodID");
                 String PaymentComplete=json.getString("PaymentComplete");
+                String NetAmount=json.getString("NetAmount");
                 Log.e("FFFF",PaymentComplete);
                     if(PaymentComplete.equals("1.0")){
                         updateAssignForPostpone(FF);
 
+                    }
+                    else {
+                        updateAssignForPostpone3(NetAmount,FF);
                     }
 
             } catch (JSONException e) {
@@ -674,6 +678,12 @@ public class CreditListFragment extends BHFragment {
         String sql = "update SalePaymentPeriod set [PaymentComplete] = ? WHERE SalePaymentPeriodID =?";
       //  String sql = "UPDATE Assign SET [Order] = ? WHERE AssignID = ?";
         executeNonQuery2(sql, new String[]{"1", SalePaymentPeriodID});
+    }
+    public void updateAssignForPostpone3(String NetAmount,String SalePaymentPeriodID) {
+
+        String sql = "update SalePaymentPeriod set [NetAmount] = ? WHERE SalePaymentPeriodID =?";
+        //  String sql = "UPDATE Assign SET [Order] = ? WHERE AssignID = ?";
+        executeNonQuery2(sql, new String[]{NetAmount, SalePaymentPeriodID});
     }
     public void updateAssignForPostpone2(String SalePaymentPeriodID) {
 

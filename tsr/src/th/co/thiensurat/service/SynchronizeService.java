@@ -20,6 +20,8 @@ import th.co.thiensurat.service.TransactionService.TransactionServiceHandler;
 import th.co.thiensurat.service.data.SynchStatusInputInfo;
 import th.co.thiensurat.service.data.SynchStatusOutputInfo;
 
+import static th.co.thiensurat.fragments.sales.SaleContractPrintFragment.select_page;
+
 public class SynchronizeService extends Service {
 	public static final String SYNCHRONIZE_BROADCAST_ACTION = "th.co.thiensurat.service.synchronize.action";
 	public static final String SYNCHRONIZE_REQUEST_DATA_KEY = "th.co.thiensurat.service.synchronize.data.request";
@@ -35,9 +37,14 @@ public class SynchronizeService extends Service {
 		public SynchronizeTransaction transaction;
 
 	}
+	public static class SynchronizeData2 extends BHParcelable {
+		public SynchronizeMaster2 master;
+		public SynchronizeTransaction transaction;
+
+	}
 
 	public static class SynchronizeMaster extends BHParcelable {
-//		public boolean syncTeamRelated;
+		//		public boolean syncTeamRelated;
 		public boolean syncProductRelated;
 //		public boolean syncCustomerRelated;
 //		public boolean syncPaymentRelated;
@@ -55,10 +62,10 @@ public class SynchronizeService extends Service {
 //		public boolean syncSendMoneyRelated;
 //		public boolean syncMasterDataRelated;
 //		public boolean syncSaleAuditDataRelated;
-//		public boolean syncCreditDataRelated;
+		public boolean syncCreditDataRelated;
 		public boolean syncSpareDrawdownRelated;
 		public boolean syncFullRelated;
-		
+
 		private int percent() {
 //			int count = (syncTeamRelated ? 1 : 0) + (syncProductRelated ? 1 : 0) + (syncCustomerRelated ? 1 : 0) + (syncPaymentRelated ? 1 : 0)
 //					+ (syncContractRelated ? 1 : 0) + (syncEditContractRelated ? 1 : 0)
@@ -72,18 +79,46 @@ public class SynchronizeService extends Service {
 //					+ (syncSendMoneyRelated ? 1 : 0) + (syncSaleAuditDataRelated ? 1 : 0)
 //					+ (syncCreditDataRelated ? 1 : 0) + (syncMasterDataRelated ? 1 : 0) + (syncSpareDrawdownRelated ? 1 : 0) + (syncFullRelated ? 1 : 0);
 
-			int count = (syncProductRelated ? 1 : 0)
 
-					/*** [START] :: Fixed - [BHPROJ-0026-970] :: [Meeting@TSR@07/03/2559] [Android-เปลี่ยนเครื่อง/ถอดเครื่อง/เปลี่ยนสัญญา/แจ้งปัญหา] ทำ Performance Tuning ในขณะทำการปรับปรุงรายการ ***/
-					+ (syncRequestChangeProductRelated ? 1 : 0) + (syncRequestChangeContractRelated ? 1 : 0)
-					+ (syncRequestImpoundProductRelated ? 1 : 0) + (syncRequestComplainRelated ? 1 : 0)
-					+ (syncRequestNextPaymentRelated ? 1 : 0)
-					/*** [END] :: Fixed - [BHPROJ-0026-970] :: [Meeting@TSR@07/03/2559] [Android-เปลี่ยนเครื่อง/ถอดเครื่อง/เปลี่ยนสัญญา/แจ้งปัญหา] ทำ Performance Tuning ในขณะทำการปรับปรุงรายการ ***/
 
-					+ (syncSpareDrawdownRelated ? 1 : 0) + (syncFullRelated ? 1 : 0);
-			return (int) Math.ceil(100.0 / count);
+				int count = (syncProductRelated ? 1 : 0)
+
+						/*** [START] :: Fixed - [BHPROJ-0026-970] :: [Meeting@TSR@07/03/2559] [Android-เปลี่ยนเครื่อง/ถอดเครื่อง/เปลี่ยนสัญญา/แจ้งปัญหา] ทำ Performance Tuning ในขณะทำการปรับปรุงรายการ ***/
+						+ (syncRequestChangeProductRelated ? 1 : 0) + (syncRequestChangeContractRelated ? 1 : 0)
+						+ (syncRequestImpoundProductRelated ? 1 : 0) + (syncRequestComplainRelated ? 1 : 0)
+						+ (syncRequestNextPaymentRelated ? 1 : 0)
+						/*** [END] :: Fixed - [BHPROJ-0026-970] :: [Meeting@TSR@07/03/2559] [Android-เปลี่ยนเครื่อง/ถอดเครื่อง/เปลี่ยนสัญญา/แจ้งปัญหา] ทำ Performance Tuning ในขณะทำการปรับปรุงรายการ ***/
+
+						+ (syncSpareDrawdownRelated ? 1 : 0) + (syncFullRelated ? 1 : 0);
+				return (int) Math.ceil(100.0 / count);
+
+
+
+
+
+
 		}
 	}
+
+
+
+
+	public static class SynchronizeMaster2 extends BHParcelable {
+
+		public boolean syncProductRelated;
+
+		public boolean syncRequestChangeProductRelated;
+		public boolean syncRequestChangeContractRelated;
+		public boolean syncRequestImpoundProductRelated;
+		public boolean syncRequestComplainRelated;
+		public boolean syncRequestNextPaymentRelated;
+
+	}
+
+
+
+
+
 
 	public static class SynchronizeTransaction extends BHParcelable {
 
@@ -179,6 +214,7 @@ public class SynchronizeService extends Service {
 								sendBroadcast(result);
 							}
 
+
 							@Override
 							protected void onFinish(Exception e) {
 								// TODO Auto-generated method stub
@@ -198,7 +234,11 @@ public class SynchronizeService extends Service {
 					if (localSuccess[0]) {
                         result.progress = 0;
 						if (master != null) {
+
+
                             int percent = master.percent();
+
+
                             try {
 //                                if (master.syncTeamRelated) {
 //                                    result.message = "ปรับปรุงข้อมูลทีมงาน";
@@ -207,12 +247,84 @@ public class SynchronizeService extends Service {
 //                                    result.progress += percent;
 //                                }
 
-                                if (master.syncProductRelated) {
-                                    result.message = "ปรับปรุงข้อมูลสินค้า";
-                                    sendBroadcast(result);
-                                    TSRController.importProduct(BHPreference.organizationCode(), BHPreference.teamCode());
-                                    result.progress += percent;
-                                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+								if(select_page==1){
+									Log.e("test_pate","1");
+
+
+									if (master.syncFullRelated) {
+									//	result.message = "ปรับปรุงข้อมูลหลัก";
+										sendBroadcast(result);
+										TSRController.SynchDataFromServer2Local(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.employeeID());
+										//result.progress += percent;
+
+
+										SynchStatusInputInfo synchStatusInputInfo = new SynchStatusInputInfo();
+										synchStatusInputInfo.OrganizationCode = BHPreference.organizationCode();
+										synchStatusInputInfo.TeamCode = BHPreference.teamCode();
+										synchStatusInputInfo.EmpID = BHPreference.employeeID();
+										synchStatusInputInfo.CallStatus = "CHECKE";
+										synchStatusInputInfo.IsAdmin = BHPreference.IsAdmin();
+
+										boolean statusSQLite = false;
+										while (statusSQLite == false) {
+
+											//try {
+											//RUNNING, COMPLETED, ERROR
+											SynchStatusOutputInfo output = TSRService.synchDataFromServer2Local(synchStatusInputInfo, false);
+
+
+
+											if (output.ResultCode == 0) {
+												if (output.Info.Status.equals("RUNNING")) { //Running
+													//result.progress = output.Info.Progress;
+													sendBroadcast(result);
+												} else if (output.Info.Status.equals("COMPLETED")) //Completed
+												{
+													statusSQLite = true;
+												} else { //Error
+													//throw new RuntimeException(info.ResultDescription);
+													throw new RuntimeException(getResources().getString(R.string.error_synch));
+												}
+												//Thread.sleep(5000);
+											} else {
+												throw new RuntimeException(output.ResultDescription);
+											}
+
+										}
+
+
+
+										select_page=0;
+									}
+
+
+
+
+
+
+								}
+								else {
+
+									Log.e("test_pate","2");
+									if (master.syncProductRelated) {
+										result.message = "ปรับปรุงข้อมูลสินค้า";
+										sendBroadcast(result);
+										TSRController.importProduct(BHPreference.organizationCode(), BHPreference.teamCode());
+										result.progress += percent;
+									}
 
 //                                if (master.syncCustomerRelated) {
 //                                    result.message = "ปรับปรุงข้อมูลลูกค้า";
@@ -241,57 +353,53 @@ public class SynchronizeService extends Service {
 //                                }
 
 
-
-
-
-
-								/*** [START] :: Fixed - [BHPROJ-0026-970] :: [Meeting@TSR@07/03/2559] [Android-เปลี่ยนเครื่อง/ถอดเครื่อง/เปลี่ยนสัญญา/แจ้งปัญหา] ทำ Performance Tuning ในขณะทำการปรับปรุงรายการ ***/
-								if (master.syncRequestChangeProductRelated) {
-									result.message = "ปรับปรุงข้อมูลการร้องขอเปลี่ยนเครื่อง";
-									sendBroadcast(result);
-									/*** [START] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
+									/*** [START] :: Fixed - [BHPROJ-0026-970] :: [Meeting@TSR@07/03/2559] [Android-เปลี่ยนเครื่อง/ถอดเครื่อง/เปลี่ยนสัญญา/แจ้งปัญหา] ทำ Performance Tuning ในขณะทำการปรับปรุงรายการ ***/
+									if (master.syncRequestChangeProductRelated) {
+										result.message = "ปรับปรุงข้อมูลการร้องขอเปลี่ยนเครื่อง";
+										sendBroadcast(result);
+										/*** [START] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
 //									TSRController.importRequestChangeProduct(BHPreference.organizationCode(), BHPreference.teamCode(), result);
-									TSRController.importRequestChangeProduct(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.employeeID(), result);
-									/*** [END] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
-									result.progress += percent;
-								}
-								if (master.syncRequestChangeContractRelated) {
-									result.message = "ปรับปรุงข้อมูลการร้องขอเปลี่ยนสัญญา";
-									sendBroadcast(result);
-									/*** [START] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
+										TSRController.importRequestChangeProduct(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.employeeID(), result);
+										/*** [END] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
+										result.progress += percent;
+									}
+									if (master.syncRequestChangeContractRelated) {
+										result.message = "ปรับปรุงข้อมูลการร้องขอเปลี่ยนสัญญา";
+										sendBroadcast(result);
+										/*** [START] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
 //									TSRController.importRequestChangeContract(BHPreference.organizationCode(), BHPreference.teamCode(), result);
-									TSRController.importRequestChangeContract(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.employeeID(), result);
-									/*** [END] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
-									result.progress += percent;
-								}
-								if (master.syncRequestImpoundProductRelated) {
-									result.message = "ปรับปรุงข้อมูลการร้องขอถอดเครื่อง";
-									sendBroadcast(result);
-									/*** [START] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
+										TSRController.importRequestChangeContract(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.employeeID(), result);
+										/*** [END] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
+										result.progress += percent;
+									}
+									if (master.syncRequestImpoundProductRelated) {
+										result.message = "ปรับปรุงข้อมูลการร้องขอถอดเครื่อง";
+										sendBroadcast(result);
+										/*** [START] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
 //									TSRController.importRequestImpoundProduct(BHPreference.organizationCode(), BHPreference.teamCode(), result);
-									TSRController.importRequestImpoundProduct(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.employeeID(), result);
-									/*** [END] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
-									result.progress += percent;
-								}
-								if (master.syncRequestComplainRelated) {
-									result.message = "ปรับปรุงข้อมูลการร้องขอแจ้งปัญหาและแก้ไขปัญหา";
-									sendBroadcast(result);
-									/*** [START] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
+										TSRController.importRequestImpoundProduct(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.employeeID(), result);
+										/*** [END] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
+										result.progress += percent;
+									}
+									if (master.syncRequestComplainRelated) {
+										result.message = "ปรับปรุงข้อมูลการร้องขอแจ้งปัญหาและแก้ไขปัญหา";
+										sendBroadcast(result);
+										/*** [START] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
 //									TSRController.importRequestComplain(BHPreference.organizationCode(), BHPreference.teamCode(), result);
-									TSRController.importRequestComplain(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.employeeID(), result);
-									/*** [END] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
-									result.progress += percent;
-								}
-								if (master.syncRequestNextPaymentRelated) {
-									result.message = "ปรับปรุงข้อมูลการร้องขออนุมัติเก็บเงินค่างวด";
-									sendBroadcast(result);
-									/*** [START] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
+										TSRController.importRequestComplain(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.employeeID(), result);
+										/*** [END] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
+										result.progress += percent;
+									}
+									if (master.syncRequestNextPaymentRelated) {
+										result.message = "ปรับปรุงข้อมูลการร้องขออนุมัติเก็บเงินค่างวด";
+										sendBroadcast(result);
+										/*** [START] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
 //									TSRController.importRequestNextPayment(BHPreference.organizationCode(), BHPreference.teamCode(), result);
-									TSRController.importRequestNextPayment(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.employeeID(), result);
-									/*** [END] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
-									result.progress += percent;
-								}
-								/*** [END] :: Fixed - [BHPROJ-0026-970] :: [Meeting@TSR@07/03/2559] [Android-เปลี่ยนเครื่อง/ถอดเครื่อง/เปลี่ยนสัญญา/แจ้งปัญหา] ทำ Performance Tuning ในขณะทำการปรับปรุงรายการ ***/
+										TSRController.importRequestNextPayment(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.employeeID(), result);
+										/*** [END] :: Fixed - [BHPROJ-0026-3253] :: [Android-RequestNextPayment] กดปุ่ม ปรับปรุง แล้วค้างที่ 100% ==> เพิ่ม Method + Web-Service เพื่อกรองข้อมูลให้น้อยลง ในตอน Synch from Server-DB to Local-DB ***/
+										result.progress += percent;
+									}
+									/*** [END] :: Fixed - [BHPROJ-0026-970] :: [Meeting@TSR@07/03/2559] [Android-เปลี่ยนเครื่อง/ถอดเครื่อง/เปลี่ยนสัญญา/แจ้งปัญหา] ทำ Performance Tuning ในขณะทำการปรับปรุงรายการ ***/
 
 //                                if (master.syncSendMoneyRelated) {
 //                                    result.message = "ปรับปรุงข้อมูลการส่งเงิน";
@@ -314,12 +422,12 @@ public class SynchronizeService extends Service {
 //									result.progress += percent;
 //								}
 
-								if (master.syncSpareDrawdownRelated) {
-									result.message = "ปรับปรุงข้อมูลขอเบิกอะไหล่";
-									sendBroadcast(result);
-									TSRController.importSpareDrawdown();
-									result.progress += percent;
-								}
+									if (master.syncSpareDrawdownRelated) {
+										result.message = "ปรับปรุงข้อมูลขอเบิกอะไหล่";
+										sendBroadcast(result);
+										TSRController.importSpareDrawdown();
+										result.progress += percent;
+									}
 
 //								if (master.syncMasterDataRelated) {
 //                                    result.message = "ปรับปรุงข้อมูลหลัก";
@@ -328,32 +436,31 @@ public class SynchronizeService extends Service {
 //                                    result.progress += percent;
 //                                }
 
-								if (master.syncFullRelated) {
-                                    result.message = "ปรับปรุงข้อมูลหลัก";
-									sendBroadcast(result);
-                                    TSRController.SynchDataFromServer2Local(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.employeeID());
-									result.progress += percent;
+									if (master.syncFullRelated) {
+										result.message = "ปรับปรุงข้อมูลหลัก";
+										sendBroadcast(result);
+										TSRController.SynchDataFromServer2Local(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.employeeID());
+										result.progress += percent;
 
 
-									SynchStatusInputInfo synchStatusInputInfo = new SynchStatusInputInfo();
-									synchStatusInputInfo.OrganizationCode = BHPreference.organizationCode();
-									synchStatusInputInfo.TeamCode = BHPreference.teamCode();
-									synchStatusInputInfo.EmpID = BHPreference.employeeID();
-									synchStatusInputInfo.CallStatus = "CHECKE";
-									synchStatusInputInfo.IsAdmin = BHPreference.IsAdmin();
+										SynchStatusInputInfo synchStatusInputInfo = new SynchStatusInputInfo();
+										synchStatusInputInfo.OrganizationCode = BHPreference.organizationCode();
+										synchStatusInputInfo.TeamCode = BHPreference.teamCode();
+										synchStatusInputInfo.EmpID = BHPreference.employeeID();
+										synchStatusInputInfo.CallStatus = "CHECKE";
+										synchStatusInputInfo.IsAdmin = BHPreference.IsAdmin();
 
-									boolean statusSQLite = false;
-									while (statusSQLite == false){
+										boolean statusSQLite = false;
+										while (statusSQLite == false) {
 
-										//try {
+											//try {
 											//RUNNING, COMPLETED, ERROR
 											SynchStatusOutputInfo output = TSRService.synchDataFromServer2Local(synchStatusInputInfo, false);
-											if(output.ResultCode == 0){
-												if(output.Info.Status.equals("RUNNING")){ //Running
+											if (output.ResultCode == 0) {
+												if (output.Info.Status.equals("RUNNING")) { //Running
 													result.progress = output.Info.Progress;
 													sendBroadcast(result);
-												}
-												else if(output.Info.Status.equals("COMPLETED")) //Completed
+												} else if (output.Info.Status.equals("COMPLETED")) //Completed
 												{
 													statusSQLite = true;
 												} else { //Error
@@ -361,18 +468,35 @@ public class SynchronizeService extends Service {
 													throw new RuntimeException(getResources().getString(R.string.error_synch));
 												}
 												Thread.sleep(5000);
-											}
-											else
-											{
+											} else {
 												throw new RuntimeException(output.ResultDescription);
 											}
 //										} catch (Exception e) {
 //											// TODO Auto-generated catch block
 //											throw new RuntimeException(e);
 //										}
+										}
+										//result.progress += percent;
 									}
-                                    //result.progress += percent;
-                                }
+
+
+								}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                                 result.title = "Update Master Table";
                                 result.message = "ปรับปรุงข้อมูลเรียบร้อย";

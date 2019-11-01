@@ -372,7 +372,7 @@ public class SynchronizeMainFragment extends BHFragment {
         return info;
     }
 
-    private void startSynchronize() {
+    public void startSynchronize() {
         TransactionService.stopService(activity);
         SynchronizeReceiver.getInstance().start();
         //new BaseController().removeDatabase();
@@ -394,6 +394,8 @@ public class SynchronizeMainFragment extends BHFragment {
         i.putExtra(SynchronizeService.SYNCHRONIZE_REQUEST_DATA_KEY, request);
         activity.startService(i);
     }
+
+
 
     private void getDataList() {
         data = new Data();

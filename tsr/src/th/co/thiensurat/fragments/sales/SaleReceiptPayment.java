@@ -3,16 +3,21 @@ package th.co.thiensurat.fragments.sales;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +26,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,6 +39,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHParcelable;
 import th.co.bighead.utilities.BHPreference;
@@ -41,12 +56,20 @@ import th.co.thiensurat.data.controller.DocumentHistoryController;
 import th.co.thiensurat.data.controller.PaymentController;
 import th.co.thiensurat.data.info.AddressInfo;
 import th.co.thiensurat.data.info.DebtorCustomerInfo;
+import th.co.thiensurat.data.info.GET_data_payment_online;
 import th.co.thiensurat.data.info.PaymentInfo;
 import th.co.thiensurat.fragments.credit.credit.CreditListFragment;
 import th.co.thiensurat.fragments.document.manual.ManualDocumentDetailFragment;
 import th.co.thiensurat.fragments.payment.first.FirstPaymentMainMenuFragment;
 import th.co.thiensurat.fragments.payment.next.NextPaymentListFragment;
+import th.co.thiensurat.retrofit.api.SQLiteHelper;
+import th.co.thiensurat.retrofit.api.Service;
 import th.co.thiensurat.views.ViewTitle;
+
+import static java.lang.String.valueOf;
+import static th.co.thiensurat.fragments.sales.SaleContractPrintFragment.size_ww;
+import static th.co.thiensurat.fragments.sales.SaleContractPrintFragment.sizee;
+import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 
 public class SaleReceiptPayment extends BHFragment {
 
@@ -69,6 +92,10 @@ public class SaleReceiptPayment extends BHFragment {
 
     private List<PaymentInfo> payments;
 
+
+    List<GET_data_payment_online> get_data_payment_onlines;
+    GET_data_payment_online get_data_payment_online;
+    Cursor cursor;
     @InjectView
     public ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
@@ -78,6 +105,11 @@ public class SaleReceiptPayment extends BHFragment {
     private int dotsCount;
     private TextView[] dots;
     private int currentViewPosition = 0;
+    int xx=0;
+
+    SQLiteDatabase sqLiteDatabase;
+
+    TextView tvReceiptNo;
 
     @InjectView
     public ViewTitle lblTitle;
@@ -163,6 +195,8 @@ public class SaleReceiptPayment extends BHFragment {
                 lblTitle.setText(R.string.title_next_payment_credit);
                 break;
         }
+
+        get_data_payment_onlines = new ArrayList<>();
 
         initViews();
 
@@ -339,11 +373,17 @@ public class SaleReceiptPayment extends BHFragment {
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         String currentDate = df.format(c.getTime());
 
-        String ReceiptDate = df.format(payments.get(0).PayDate);
+        try {
+            String ReceiptDate = df.format(payments.get(0).PayDate);
 
-        if (!ReceiptDate.equals(currentDate)) {
-            activity.setViewProcessButtons(listId, View.GONE);
+            if (!ReceiptDate.equals(currentDate)) {
+                activity.setViewProcessButtons(listId, View.GONE);
+            }
         }
+        catch (Exception ex){
+
+        }
+
 
 
         myViewPagerAdapter = new MyViewPagerAdapter(payments);
@@ -386,21 +426,38 @@ public class SaleReceiptPayment extends BHFragment {
             listId.add(R.string.button_print);
             listId.add(R.string.button_save_manual_receipt);
 
-            if (!payments.get(position).EmpID.equals(BHPreference.employeeID()) || payments.get(position).VoidStatus == true) {
-                activity.setViewProcessButtons(listId, View.GONE);
-            } else {
-                activity.setViewProcessButtons(listId, View.VISIBLE);
-            }
-            /*** [END] :: Fixed - [BHPROJ-0025-815] :: [Android-Reprint ใบสัญญา+ใบเสร็จ] กรณีเป็นฝ่ายเก็บเงินจะ Re-Print ได้เฉพาะใบเสร็จรับเงินที่เค้าเป็นคนเก็บเท่านั้น จะไม่สามารถกลับไป Re-Print ใบสัญญา หรือ ใบเสร็จรับเงินของคนอื่นได้  ***/
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-            String currentDate = df.format(c.getTime());
 
-            String ReceiptDate = df.format(payments.get(position).PayDate);
 
-            if (!ReceiptDate.equals(currentDate)) {
-                activity.setViewProcessButtons(listId, View.GONE);
+            try {
+                if (!payments.get(position).EmpID.equals(BHPreference.employeeID()) || payments.get(position).VoidStatus == true) {
+                    activity.setViewProcessButtons(listId, View.GONE);
+                } else {
+                    activity.setViewProcessButtons(listId, View.VISIBLE);
+                }
+                /*** [END] :: Fixed - [BHPROJ-0025-815] :: [Android-Reprint ใบสัญญา+ใบเสร็จ] กรณีเป็นฝ่ายเก็บเงินจะ Re-Print ได้เฉพาะใบเสร็จรับเงินที่เค้าเป็นคนเก็บเท่านั้น จะไม่สามารถกลับไป Re-Print ใบสัญญา หรือ ใบเสร็จรับเงินของคนอื่นได้  ***/
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                String currentDate = df.format(c.getTime());
+
+                String ReceiptDate = df.format(payments.get(position).PayDate);
+
+                if (!ReceiptDate.equals(currentDate)) {
+                    activity.setViewProcessButtons(listId, View.GONE);
+                }
             }
+            catch (Exception ex){
+
+            }
+
+
+
+
+
+
+
+
+
+
 
         }
 
@@ -560,7 +617,7 @@ public class SaleReceiptPayment extends BHFragment {
 
 
     }
-
+    String CONCON="";
     //  adapter
     public class MyViewPagerAdapter extends PagerAdapter {
 
@@ -577,79 +634,490 @@ public class SaleReceiptPayment extends BHFragment {
             layoutInflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = layoutInflater.inflate(R.layout.view_sale_receipt_payment_item, container, false);
 
-            DebtorCustomerInfo debtorCustomerInfo = TSRController.getDebCustometByID(payments.get(position).CustomerID);
-            AddressInfo addressInfo = TSRController.getAddress(payments.get(position).RefNo, AddressInfo.AddressType.AddressInstall);
-            //EmployeeInfo employeeInfo = TSRController.getEmployeeByEmployeeIDAndPositionCodeSaleAndCerdit(BHPreference.organizationCode(), payments.get(position).CreateBy);
-            //EmployeeInfo employeeInfo = TSRController.getEmployeeByTreeHistoryIDAndEmployeeID(BHPreference.organizationCode(), payments.get(position).CreditEmployeeLevelPath, payments.get(position).CreateBy);
+
+            get_data_payment_onlines = new ArrayList<>();
+
             String bahtLabel = " บาท";
+try {
+     CONCON=payments.get(position).CONTNO;
+  //  load_data(CONCON);
+    DebtorCustomerInfo debtorCustomerInfo = TSRController.getDebCustometByID(payments.get(position).CustomerID);
+    AddressInfo addressInfo = TSRController.getAddress(payments.get(position).RefNo, AddressInfo.AddressType.AddressInstall);
+    //EmployeeInfo employeeInfo = TSRController.getEmployeeByEmployeeIDAndPositionCodeSaleAndCerdit(BHPreference.organizationCode(), payments.get(position).CreateBy);
+    //EmployeeInfo employeeInfo = TSRController.getEmployeeByTreeHistoryIDAndEmployeeID(BHPreference.organizationCode(), payments.get(position).CreditEmployeeLevelPath, payments.get(position).CreateBy);
 
-            TextView txtReceiptHeadTitle = (TextView) view.findViewById(R.id.txtReceiptHeadTitle);
 
-            txtReceiptHeadTitle.setText(txtReceiptHeadTitle.getText() + (payments.get(position).VoidStatus == true ? "  (ใบเสร็จถูกยกเลิก)" : ""));
+    TextView txtReceiptHeadTitle = (TextView) view.findViewById(R.id.txtReceiptHeadTitle);
 
-            TextView tvReceiptDate = (TextView) view.findViewById(R.id.tvReceiptDate); //วันที่รับเงิน
-            tvReceiptDate.setText(BHUtilities.dateFormat(payments.get(position).PayDate));
+    txtReceiptHeadTitle.setText(txtReceiptHeadTitle.getText() + (payments.get(position).VoidStatus == true ? "  (ใบเสร็จถูกยกเลิก)" : ""));
 
-            TextView tvReceiptNo = (TextView) view.findViewById(R.id.tvReceiptNo); //เลขที่ใบเสร็จ
-            tvReceiptNo.setText(payments.get(position).ReceiptCode);
+    TextView tvReceiptDate = (TextView) view.findViewById(R.id.tvReceiptDate); //วันที่รับเงิน
+    tvReceiptDate.setText(BHUtilities.dateFormat(payments.get(position).PayDate));
 
-            LinearLayout llReferenceNo = (LinearLayout) view.findViewById(R.id.llReferenceNo);//เลขที่อ้างอิง
-            TextView tvReferenceNo = (TextView) view.findViewById(R.id.tvReferenceNo);
-            if (payments.get(position).ManualVolumeNo != null && payments.get(position).ManualRunningNo > 0) {
-                String ManualDocumentBookRunningNo = String.format("%s/%d", BHUtilities.trim(payments.get(position).ManualVolumeNo), payments.get(position).ManualRunningNo).replace(' ', '0');
-                tvReferenceNo.setText(ManualDocumentBookRunningNo);
+    TextView tvReceiptNo = (TextView) view.findViewById(R.id.tvReceiptNo); //เลขที่ใบเสร็จ
+    tvReceiptNo.setText(payments.get(position).ReceiptCode);
+
+    LinearLayout llReferenceNo = (LinearLayout) view.findViewById(R.id.llReferenceNo);//เลขที่อ้างอิง
+    TextView tvReferenceNo = (TextView) view.findViewById(R.id.tvReferenceNo);
+    if (payments.get(position).ManualVolumeNo != null && payments.get(position).ManualRunningNo > 0) {
+        String ManualDocumentBookRunningNo = String.format("%s/%d", BHUtilities.trim(payments.get(position).ManualVolumeNo), payments.get(position).ManualRunningNo).replace(' ', '0');
+        tvReferenceNo.setText(ManualDocumentBookRunningNo);
+    } else {
+        llReferenceNo.setVisibility(View.GONE);
+    }
+
+    TextView tvContractNo = (TextView) view.findViewById(R.id.tvContractNo); //เลขที่สัญญา
+    tvContractNo.setText(payments.get(position).CONTNO);
+
+    TextView tvContractDate = (TextView) view.findViewById(R.id.tvContractDate); //วันที่ทำสัญญา
+    tvContractDate.setText(BHUtilities.dateFormat(payments.get(position).EFFDATE));
+
+    TextView tvCustomerName = (TextView) view.findViewById(R.id.tvCustomerName); //ชื่อลูกค้า
+    tvCustomerName.setText(debtorCustomerInfo.CustomerFullName());
+
+    TextView tvCitizenNo = (TextView) view.findViewById(R.id.tvCitizenNo); //เลขที่บัตรประชาชน
+    tvCitizenNo.setText(debtorCustomerInfo.IDCard);
+
+    TextView tvCustomerAddress = (TextView) view.findViewById(R.id.tvCustomerAddress); //ที่อยู่ติดตั้ง
+    tvCustomerAddress.setText(addressInfo.Address());
+
+    TextView tvProductName = (TextView) view.findViewById(R.id.tvProductName); //ชื่อสินค้า
+    tvProductName.setText(payments.get(position).ProductName);
+
+    TextView textViewModel = (TextView) view.findViewById(R.id.textViewModel); //รุ่นสินค้า
+    textViewModel.setText(payments.get(position).MODEL);
+
+    TextView tvProductNo = (TextView) view.findViewById(R.id.tvProductNo); //รหัสสินค้า
+    tvProductNo.setText(payments.get(position).ProductSerialNumber);
+
+
+    /**ส่วนลดตัดสด**/
+    LinearLayout llDiscount = (LinearLayout) view.findViewById(R.id.llDiscount); //ส่วนลดตัดสด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+    if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
+        llDiscount.setVisibility(View.VISIBLE);
+
+        TextView tvCloseAccountOutstandingAmountLabel = (TextView) view.findViewById(R.id.tvCloseAccountOutstandingAmountLabel); //ชำระงวดที่ 2-n
+        TextView tvCloseAccountOutstandingAmount = (TextView) view.findViewById(R.id.tvCloseAccountOutstandingAmount); //ชำระงวดที่ 2-n จำนวน
+        TextView tvDiscountAmount = (TextView) view.findViewById(R.id.tvDiscountAmount); //ส่วนลดตัดสด
+
+        tvCloseAccountOutstandingAmountLabel.setText(String.format("ชำระงวดที่ %d-%d", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+        tvCloseAccountOutstandingAmount.setText(BHUtilities.numericFormat(payments.get(position).CloseAccountOutstandingAmount) + bahtLabel);
+
+        tvDiscountAmount.setText(BHUtilities.numericFormat(payments.get(position).CloseAccountDiscountAmount) + bahtLabel);
+    } else {
+        llDiscount.setVisibility(View.GONE);
+    }
+
+
+    /**ยอดเงินที่จ่ายมาตามใบเสร็จ**/
+    TextView tvPeriodAmountLabel = (TextView) view.findViewById(R.id.tvPeriodAmountLabel); //ค่างวดเงินสด หรือ ค่างวดที่ 1/n ((ชำระบางส่วน) ถ้าชำระไม่ครบตามงวด)
+    TextView tvPeriodAmount = (TextView) view.findViewById(R.id.tvPeriodAmount); //ยอดเงินที่จ่ายมาตามใบเสร็จ
+    TextView txtThaiBaht = (TextView) view.findViewById(R.id.txtThaiBaht); //จำนวนเงินที่จ่ายมาตามใบเสร็จเป็นตัวหนังสือ
+
+    if (payments.get(position).MODE == 1) {
+        if (payments.get(position).BalancesOfPeriod == 0) {
+            tvPeriodAmountLabel.setText("ค่างงวดเงินสด\n(ชำระครบ)");
+        } else {
+            tvPeriodAmountLabel.setText("ค่างวดเงินสด\n(ชำระบางส่วน)");
+        }
+    } else {
+        if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
+            tvPeriodAmountLabel.setText("จำนวนที่ชำระ");
+        } else {
+            if (payments.get(position).BalancesOfPeriod == 0) {
+                String txtPeriodAmountLabel = "";
+                if (payments.get(position).PaymentPeriodNumber == payments.get(position).MODE) {
+                    txtPeriodAmountLabel = "ค่างวดที่ %d/%d\n(ชำระครบ)";
+                } else {
+                    txtPeriodAmountLabel = "ค่างวดที่ %d/%d";
+                }
+                tvPeriodAmountLabel.setText(String.format(txtPeriodAmountLabel, payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
             } else {
-                llReferenceNo.setVisibility(View.GONE);
+                if(payments.get(position).Amount == 0){
+                    tvPeriodAmountLabel.setText(String.format("ค่างวดที่ %d/%d\n", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+
+                } else {
+                    tvPeriodAmountLabel.setText(String.format("ค่างวดที่ %d/%d\n(ชำระบางส่วน)", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+
+                }
             }
+        }
+    }
+    /*** [START] :: Fixed - [BHPROJ-0026-751] :: แก้ไขการแสดงผลในส่วนของ ยอดชำระเงิน ให้เป็นตัวสีแดง + ตัวหนา + เพิ่มขนาดตัวหนังสือมา 1 ระดับี ***/
 
-            TextView tvContractNo = (TextView) view.findViewById(R.id.tvContractNo); //เลขที่สัญญา
-            tvContractNo.setText(payments.get(position).CONTNO);
+    if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
+        SpannableString periodAmount = new SpannableString(BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount) + bahtLabel);
+        periodAmount.setSpan(new ForegroundColorSpan(Color.RED), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//สี
+        periodAmount.setSpan(new StyleSpan(Typeface.BOLD), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//ตัวหนา
+        periodAmount.setSpan(new TextAppearanceSpan(activity, R.style.TextView_Value2), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//ขนาดตัว
+        tvPeriodAmount.setText(periodAmount, TextView.BufferType.SPANNABLE);
 
-            TextView tvContractDate = (TextView) view.findViewById(R.id.tvContractDate); //วันที่ทำสัญญา
-            tvContractDate.setText(BHUtilities.dateFormat(payments.get(position).EFFDATE));
+        txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount)));
+    } else {
+        SpannableString periodAmount = new SpannableString(BHUtilities.numericFormat(payments.get(position).Amount) + bahtLabel);
+        periodAmount.setSpan(new ForegroundColorSpan(Color.RED), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//สี
+        periodAmount.setSpan(new StyleSpan(Typeface.BOLD), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//ตัวหนา
+        periodAmount.setSpan(new TextAppearanceSpan(activity, R.style.TextView_Value2), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//ขนาดตัว
+        tvPeriodAmount.setText(periodAmount, TextView.BufferType.SPANNABLE);
 
-            TextView tvCustomerName = (TextView) view.findViewById(R.id.tvCustomerName); //ชื่อลูกค้า
-            tvCustomerName.setText(debtorCustomerInfo.CustomerFullName());
+        txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(payments.get(position).Amount)));
 
-            TextView tvCitizenNo = (TextView) view.findViewById(R.id.tvCitizenNo); //เลขที่บัตรประชาชน
-            tvCitizenNo.setText(debtorCustomerInfo.IDCard);
+    }
+    txtThaiBaht.setVisibility(payments.get(position).VoidStatus ? View.GONE : View.VISIBLE);
+    tvPeriodAmount.setText(payments.get(position).VoidStatus ? "ยกเลิกการชำระเงิน" : tvPeriodAmount.getText());
 
-            TextView tvCustomerAddress = (TextView) view.findViewById(R.id.tvCustomerAddress); //ที่อยู่ติดตั้ง
-            tvCustomerAddress.setText(addressInfo.Address());
-
-            TextView tvProductName = (TextView) view.findViewById(R.id.tvProductName); //ชื่อสินค้า
-            tvProductName.setText(payments.get(position).ProductName);
-
-            TextView textViewModel = (TextView) view.findViewById(R.id.textViewModel); //รุ่นสินค้า
-            textViewModel.setText(payments.get(position).MODEL);
-
-            TextView tvProductNo = (TextView) view.findViewById(R.id.tvProductNo); //รหัสสินค้า
-            tvProductNo.setText(payments.get(position).ProductSerialNumber);
+    //tvPeriodAmount.setText(BHUtilities.numericFormat(payments.get(position).Amount) + bahtLabel);
+    /*** [END] :: Fixed - [BHPROJ-0026-751] :: แก้ไขการแสดงผลในส่วนของ ยอดชำระเงิน ให้เป็นตัวสีแดง + ตัวหนา + เพิ่มขนาดตัวหนังสือมา 1 ระดับ***/
 
 
-            /**ส่วนลดตัดสด**/
-            LinearLayout llDiscount = (LinearLayout) view.findViewById(R.id.llDiscount); //ส่วนลดตัดสด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
-            if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
-                llDiscount.setVisibility(View.VISIBLE);
+    //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
+    if ((payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) || payments.get(position).VoidStatus) {
+        LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+        llBalancesOfPeriod.setVisibility(View.GONE);
 
-                TextView tvCloseAccountOutstandingAmountLabel = (TextView) view.findViewById(R.id.tvCloseAccountOutstandingAmountLabel); //ชำระงวดที่ 2-n
-                TextView tvCloseAccountOutstandingAmount = (TextView) view.findViewById(R.id.tvCloseAccountOutstandingAmount); //ชำระงวดที่ 2-n จำนวน
-                TextView tvDiscountAmount = (TextView) view.findViewById(R.id.tvDiscountAmount); //ส่วนลดตัดสด
+        LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+        llBalanceAmount.setVisibility(View.GONE);
 
-                tvCloseAccountOutstandingAmountLabel.setText(String.format("ชำระงวดที่ %d-%d", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
-                tvCloseAccountOutstandingAmount.setText(BHUtilities.numericFormat(payments.get(position).CloseAccountOutstandingAmount) + bahtLabel);
+    } else {
+        /**ยอดเงินคงเหลือของงวดนั้น**/
+        LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+        TextView tvBalancesOfPeriodLabel = (TextView) view.findViewById(R.id.tvBalancesOfPeriodLabel); //คงเหลืองวดที่ n
+        TextView tvBalancesOfPeriod = (TextView) view.findViewById(R.id.tvBalancesOfPeriod); //จำนวนเงินคงเหลือของงวด
 
-                tvDiscountAmount.setText(BHUtilities.numericFormat(payments.get(position).CloseAccountDiscountAmount) + bahtLabel);
+        if (payments.get(position).BalancesOfPeriod == 0) {
+            llBalancesOfPeriod.setVisibility(View.GONE);
+        } else {
+            llBalancesOfPeriod.setVisibility(View.VISIBLE);
+            if (payments.get(position).MODE == 1) {
+                tvBalancesOfPeriodLabel.setText("คงเหลือเงินสด");
             } else {
-                llDiscount.setVisibility(View.GONE);
+                tvBalancesOfPeriodLabel.setText(String.format("คงเหลืองวดที่ %d", payments.get(position).PaymentPeriodNumber));
             }
+            tvBalancesOfPeriod.setText(BHUtilities.numericFormat(payments.get(position).BalancesOfPeriod) + bahtLabel);
+        }
 
 
-            /**ยอดเงินที่จ่ายมาตามใบเสร็จ**/
-            TextView tvPeriodAmountLabel = (TextView) view.findViewById(R.id.tvPeriodAmountLabel); //ค่างวดเงินสด หรือ ค่างวดที่ 1/n ((ชำระบางส่วน) ถ้าชำระไม่ครบตามงวด)
-            TextView tvPeriodAmount = (TextView) view.findViewById(R.id.tvPeriodAmount); //ยอดเงินที่จ่ายมาตามใบเสร็จ
-            TextView txtThaiBaht = (TextView) view.findViewById(R.id.txtThaiBaht); //จำนวนเงินที่จ่ายมาตามใบเสร็จเป็นตัวหนังสือ
+        /**ยอดคงเหลือของงวดถัดไป**/
+        LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+        TextView tvBalanceAmountLabel = (TextView) view.findViewById(R.id.tvBalanceAmountLabel); //คงเหลือเงินสด หรื คงเหลืองวดที่ 1 - n หรือ คงเหลืองวดที่ n
+        TextView tvBalanceAmount = (TextView) view.findViewById(R.id.tvBalanceAmount); //จำนวนเงินคงเหลือ
 
+        //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
+        if (payments.get(position).Balances - payments.get(position).BalancesOfPeriod == 0 || payments.get(position).VoidStatus) {
+            llBalanceAmount.setVisibility(View.GONE);
+        } else {
+            llBalanceAmount.setVisibility(View.VISIBLE);
+            if (payments.get(position).MODE == 1) {
+                tvBalanceAmountLabel.setText("คงเหลือเงินสด");
+            } else {
+                    /*if (payments.get(position).BalancesOfPeriod == 0) {
+                        if ((payments.get(position).PaymentPeriodNumber + 1) == payments.get(position).MODE) {
+                            tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d", payments.get(position).MODE));
+                        } else {
+                            tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d - %d", payments.get(position).PaymentPeriodNumber + 1, payments.get(position).MODE));
+                        }
+                    } else {
+                        if (payments.get(position).PaymentPeriodNumber == payments.get(position).MODE) {
+                            tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d", payments.get(position).MODE));
+                        } else {
+                            tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d - %d", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+                        }
+                    }*/
+                tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d - %d", payments.get(position).PaymentPeriodNumber + 1, payments.get(position).MODE));
+            }
+            tvBalanceAmount.setText(BHUtilities.numericFormat(payments.get(position).Balances - payments.get(position).BalancesOfPeriod) + bahtLabel);
+        }
+    }
+
+
+    /**ชำระโดยบัตรเครดิต**/
+    LinearLayout llCreditAmount = (LinearLayout) view.findViewById(R.id.llCreditAmount); //ชำระโดยบัตรเครดิต ถ้าไม่ใช่ให้ซ่อน (แสดง/ซ่อน LinearLayout)
+    TextView tvCreditName = (TextView) view.findViewById(R.id.tvCreditName); //ชื่อธนาคารของบัตรเครดิต
+    TextView tvCreditNumber = (TextView) view.findViewById(R.id.tvCreditNumber); //เลขที่บัตรของธนาคาร
+
+    /**ชำระโดยเช็ค**/
+    LinearLayout llChequeAmount = (LinearLayout) view.findViewById(R.id.llChequeAmount);  //ชำระโดยเช็ค ถ้าไม่ใช่ให้ซ่อน (แสดง/ซ่อน LinearLayout)
+    TextView tvChequeName = (TextView) view.findViewById(R.id.tvChequeName); //ชื่อธนาคารของเช็ด
+    TextView tvChequeBrach = (TextView) view.findViewById(R.id.tvChequeBrach); //สาขาเช็ด
+    TextView tvChequeNo = (TextView) view.findViewById(R.id.tvChequeNo); //เลขที่เช็ด
+    TextView tvChequeDate = (TextView) view.findViewById(R.id.tvChequeDate); //วันที่ลงเช็ด
+
+    switch (Enum.valueOf(PaymentInfo.PaymentType1.class, payments.get(position).PaymentType)) {
+        case Cash:
+            llCreditAmount.setVisibility(View.GONE);
+            llChequeAmount.setVisibility(View.GONE);
+            break;
+        case Credit:
+            llCreditAmount.setVisibility(View.VISIBLE);
+            llChequeAmount.setVisibility(View.GONE);
+
+            tvCreditName.setText(payments.get(position).BankName);
+            tvCreditNumber.setText(payments.get(position).CreditCardNumber);
+            break;
+        case Cheque:
+            llCreditAmount.setVisibility(View.GONE);
+            llChequeAmount.setVisibility(View.VISIBLE);
+
+            tvChequeName.setText(payments.get(position).BankName);
+            tvChequeBrach.setText(payments.get(position).ChequeBankBranch);
+            tvChequeNo.setText(payments.get(position).ChequeNumber);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                Date date = formatter.parse(payments.get(position).ChequeDate);
+                tvChequeDate.setText(BHUtilities.dateFormat(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            break;
+        default:
+            break;
+    }
+
+    /**พนักงานที่ออกใบเสร็จ**/
+    TextView txtSaleEmpName = (TextView) view.findViewById(R.id.txtSaleEmpName); //ชื่อเต็มของพนักงานที่ออกใบเสร็จ
+    TextView txtSaleTeamName = (TextView) view.findViewById(R.id.txtSaleTeamName); //ทีมของพนักงานที่ออกใบเสร็จ
+
+    txtSaleEmpName.setText(String.format("(%s)", payments.get(position).SaleEmployeeName != null ? payments.get(position).SaleEmployeeName : ""));
+    txtSaleTeamName.setText(String.format("(ทีม %s)", payments.get(position).TeamCode != null ? payments.get(position).TeamCode : ""));
+
+            /*if(employeeInfo != null) {
+                txtSaleEmpName.setText(String.format("(%s)", employeeInfo.SaleEmployeeName != null ? employeeInfo.SaleEmployeeName : ""));
+                txtSaleTeamName.setText(String.format("(ทีม %s)", employeeInfo.TeamCode != null ? employeeInfo.TeamCode : ""));
+            } else {
+                txtSaleEmpName.setText("");
+                txtSaleTeamName.setText("");
+            }*/
+
+    /*Void Button*/
+    Button voidBtn = (Button) view.findViewById(R.id.btnVoidReceipt);
+    voidBtn.setVisibility(payments.get(position).CanVoid ? view.VISIBLE : view.GONE);
+
+    voidBtn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            currentViewPosition = position;
+            AlertDialog.Builder setupAlert;
+            setupAlert = new AlertDialog.Builder(activity)
+                    .setTitle("ยกเลิกใบเสร็จ")
+                    .setMessage("ต้องการยกเลิกใบเสร็จหมายเลข " + payments.get(position).ReceiptCode + " ใช่หรือไม่")
+                    .setCancelable(false);
+
+            setupAlert = setupAlert.setPositiveButton("ใช่ ฉันต้องการยกเลิกใบเสร็จนี้", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dialog.cancel();
+                    doVoidReceipt(payments.get(position).RefNo, payments.get(position).ReceiptID);
+                }
+            }).setNeutralButton("ไม่ใช่", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            setupAlert.show();
+
+        }
+    });
+
+    Button btnPrintImage = (Button) view.findViewById(R.id.btnPrintImage);
+    btnPrintImage.setVisibility(View.GONE);
+//
+//            if (!payments.get(position).EmpID.equals(BHPreference.employeeID()) || payments.get(position).VoidStatus == true) {
+//                btnPrintImage.setVisibility(View.GONE);
+//            } else {
+//                btnPrintImage.setVisibility(View.VISIBLE);
+//
+//                btnPrintImage.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        new PrinterController(activity).newImagePrintReceipt(payments.get(position));
+//                    }
+//                });
+//            }
+
+
+    TextView txtHeader = (TextView) view.findViewById(R.id.txtReceiptHeadTitle);
+    if (!(!payments.get(position).EmpID.equals(BHPreference.employeeID()) || payments.get(position).VoidStatus == true))
+    {
+        txtHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new PrinterController(activity).newImagePrintReceipt(payments.get(position));
+            }
+        });
+    }
+}
+catch (Exception ex) {
+    Log.e("CONCON", CONCON);
+
+    if(xx==0){
+      //  load_data(CONCON);
+    }
+
+
+    get_data_payment_onlines = new ArrayList<>();
+
+
+
+    Log.e("size_ww", String.valueOf(size_ww));
+
+
+   // for (int i = 0; i < dotsCount; i++) {
+
+       // Log.e("ReceiptCode_N", ReceiptCode_N[i]);
+  // }
+
+
+    Log.e("dotsCount", String.valueOf(dotsCount));
+
+
+
+
+
+
+
+
+
+
+    SQLiteDataBaseBuild();
+    SQLiteTableBuild();
+
+
+
+
+    cursor = sqLiteDatabase.rawQuery("SELECT ReceiptCode,CONTNO,CustomerName,IDCard,AddressInstall,ProductName,MODEL,ProductSerialNumber,MaxPaymentPeriodNumber,TotalPayment,TotalPaymentText,PeriodTotal,PeriodTotalPrice,EFFDATE,DatePayment FROM "+ SQLiteHelper.TABLE_NAME+""  +" order  by ReceiptCode ASC"   , null);
+    if (cursor.moveToFirst()) {
+        do {
+
+           // final GetData_cedit GetDataAdapter2 = new GetData_cedit();
+
+
+            String Table_ReceiptCode = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ReceiptCode));
+            String Table_CONTNO = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_CONTNO));
+            String Table_CustomerName = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_CustomerName));
+            String Table_IDCard = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_IDCard));
+            String Table_AddressInstall = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_AddressInstall));
+            String Table_ProductName = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ProductName));
+
+            String Table_MODEL = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_MODEL));
+            String Table_ProductSerialNumber = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ProductSerialNumber));
+            String Table_MaxPaymentPeriodNumber = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_MaxPaymentPeriodNumber));
+            String Table_TotalPayment = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_TotalPayment));
+
+
+            String Table_TotalPaymentText = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_TotalPaymentText));
+            String Table_PeriodTotal = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_PeriodTotal));
+            String Table_PeriodTotalPrice = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_PeriodTotalPrice));
+            String Table_EFFDATE = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_EFFDATE));
+            String Table_DatePayment = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_DatePayment));
+
+            Log.e("Table_ReceiptCode", Table_ReceiptCode);
+
+
+
+
+        } while (cursor.moveToNext());
+    }
+    cursor.close();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        TextView tvReceiptDate = (TextView) view.findViewById(R.id.tvReceiptDate); //วันที่รับเงิน
+        tvReceiptDate.setText(DatePayment);
+
+         tvReceiptNo = (TextView) view.findViewById(R.id.tvReceiptNo); //เลขที่ใบเสร็จ
+
+
+        TextView tvContractNo = (TextView) view.findViewById(R.id.tvContractNo); //เลขที่สัญญา
+        tvContractNo.setText(CONTNO);
+
+        TextView tvContractDate = (TextView) view.findViewById(R.id.tvContractDate); //วันที่ทำสัญญา
+        tvContractDate.setText(EFFDATE);
+
+        TextView tvCustomerName = (TextView) view.findViewById(R.id.tvCustomerName); //ชื่อลูกค้า
+        tvCustomerName.setText(CustomerName);
+
+        TextView tvCitizenNo = (TextView) view.findViewById(R.id.tvCitizenNo); //เลขที่บัตรประชาชน
+        tvCitizenNo.setText(IDCard);
+
+        TextView tvCustomerAddress = (TextView) view.findViewById(R.id.tvCustomerAddress); //ที่อยู่ติดตั้ง
+        tvCustomerAddress.setText(AddressInstall);
+
+        TextView tvProductName = (TextView) view.findViewById(R.id.tvProductName); //ชื่อสินค้า
+        tvProductName.setText(ProductName);
+
+        TextView textViewModel = (TextView) view.findViewById(R.id.textViewModel); //รุ่นสินค้า
+        textViewModel.setText(MODEL);
+
+        TextView tvProductNo = (TextView) view.findViewById(R.id.tvProductNo); //รหัสสินค้า
+        tvProductNo.setText(ProductSerialNumber);
+
+
+        LinearLayout llReferenceNo = (LinearLayout) view.findViewById(R.id.llReferenceNo);//เลขที่อ้างอิง
+
+        llReferenceNo.setVisibility(View.GONE);
+
+
+        /**ส่วนลดตัดสด**/
+
+        LinearLayout llDiscount = (LinearLayout) view.findViewById(R.id.sss); //ส่วนลดตัดสด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+
+        llDiscount.setVisibility(View.GONE);
+        TextView tvPeriodAmountLabel = (TextView) view.findViewById(R.id.tvPeriodAmountLabel); //ค่างวดเงินสด หรือ ค่างวดที่ 1/n ((ชำระบางส่วน) ถ้าชำระไม่ครบตามงวด)
+
+        TextView tvCloseAccountOutstandingAmountLabel = (TextView) view.findViewById(R.id.tvCloseAccountOutstandingAmountLabel); //ชำระงวดที่ 2-n
+        TextView tvCloseAccountOutstandingAmount = (TextView) view.findViewById(R.id.tvCloseAccountOutstandingAmount); //ชำระงวดที่ 2-n จำนวน
+        tvCloseAccountOutstandingAmountLabel.setText("ค่างวดที่ " + MaxPaymentPeriodNumber);
+        tvCloseAccountOutstandingAmountLabel.setVisibility(View.GONE);
+        tvPeriodAmountLabel.setText("ค่างวดที่ " + MaxPaymentPeriodNumber);
+
+        TextView tvPeriodAmount = (TextView) view.findViewById(R.id.tvPeriodAmount); //ยอดเงินที่จ่ายมาตามใบเสร็จ
+
+
+        tvCloseAccountOutstandingAmount.setVisibility(View.GONE);
+
+        //tvPeriodAmount.setText(TotalPayment + bahtLabel);
+
+        final SpannableString text = new SpannableString(TotalPayment + bahtLabel);
+/*    text.setSpan(new RelativeSizeSpan(1.0f), bahtLabel.length(), text.length(),
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            );*/
+        text.setSpan(new StyleSpan(Typeface.BOLD), 0, text.length() - 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        text.setSpan(new ForegroundColorSpan(Color.RED), 0, text.length() - 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvPeriodAmount.setText(text);
+        // tvPeriodAmount.setTypeface(tvPeriodAmount.getTypeface(), Typeface.BOLD);
+
+
+        tvCloseAccountOutstandingAmount.setText(TotalPayment + bahtLabel);
+        TextView txtThaiBaht = (TextView) view.findViewById(R.id.txtThaiBaht); //จำนวนเงินที่จ่ายมาตามใบเสร็จเป็นตัวหนังสือ
+        txtThaiBaht.setText(TotalPaymentText + "บาทถ้วน");
+
+
+
+
+        TextView tvBalancesOfPeriodLabel = (TextView) view.findViewById(R.id.tvBalancesOfPeriodLabel); //คงเหลืองวดที่ n
+        TextView tvBalancesOfPeriod = (TextView) view.findViewById(R.id.tvBalancesOfPeriod); //จำนวนเงินคงเหลือของงวด
+
+
+        tvBalancesOfPeriodLabel.setText("คงเหลืองวดที่ " + PeriodTotal);
+
+        tvBalancesOfPeriod.setText(PeriodTotalPrice + bahtLabel);
+
+
+        try {
             if (payments.get(position).MODE == 1) {
                 if (payments.get(position).BalancesOfPeriod == 0) {
                     tvPeriodAmountLabel.setText("ค่างงวดเงินสด\n(ชำระครบ)");
@@ -669,7 +1137,7 @@ public class SaleReceiptPayment extends BHFragment {
                         }
                         tvPeriodAmountLabel.setText(String.format(txtPeriodAmountLabel, payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
                     } else {
-                        if(payments.get(position).Amount == 0){
+                        if (payments.get(position).Amount == 0) {
                             tvPeriodAmountLabel.setText(String.format("ค่างวดที่ %d/%d\n", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
 
                         } else {
@@ -679,6 +1147,12 @@ public class SaleReceiptPayment extends BHFragment {
                     }
                 }
             }
+        } catch (Exception ee) {
+
+        }
+
+
+        try {
             /*** [START] :: Fixed - [BHPROJ-0026-751] :: แก้ไขการแสดงผลในส่วนของ ยอดชำระเงิน ให้เป็นตัวสีแดง + ตัวหนา + เพิ่มขนาดตัวหนังสือมา 1 ระดับี ***/
 
             if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
@@ -699,45 +1173,43 @@ public class SaleReceiptPayment extends BHFragment {
                 txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(payments.get(position).Amount)));
 
             }
+        } catch (Exception ew) {
+
+        }
+
+
+        LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+        llBalanceAmount.setVisibility(View.GONE);
+
+
+        try {
             txtThaiBaht.setVisibility(payments.get(position).VoidStatus ? View.GONE : View.VISIBLE);
             tvPeriodAmount.setText(payments.get(position).VoidStatus ? "ยกเลิกการชำระเงิน" : tvPeriodAmount.getText());
+        } catch (Exception ee) {
 
-            //tvPeriodAmount.setText(BHUtilities.numericFormat(payments.get(position).Amount) + bahtLabel);
-            /*** [END] :: Fixed - [BHPROJ-0026-751] :: แก้ไขการแสดงผลในส่วนของ ยอดชำระเงิน ให้เป็นตัวสีแดง + ตัวหนา + เพิ่มขนาดตัวหนังสือมา 1 ระดับ***/
+        }
 
 
+        //tvPeriodAmount.setText(BHUtilities.numericFormat(payments.get(position).Amount) + bahtLabel);
+        /*** [END] :: Fixed - [BHPROJ-0026-751] :: แก้ไขการแสดงผลในส่วนของ ยอดชำระเงิน ให้เป็นตัวสีแดง + ตัวหนา + เพิ่มขนาดตัวหนังสือมา 1 ระดับ***/
+
+
+        LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+        try {
             //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
             if ((payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) || payments.get(position).VoidStatus) {
-                LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
                 llBalancesOfPeriod.setVisibility(View.GONE);
 
-                LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
-                llBalanceAmount.setVisibility(View.GONE);
 
             } else {
                 /**ยอดเงินคงเหลือของงวดนั้น**/
-                LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
-                TextView tvBalancesOfPeriodLabel = (TextView) view.findViewById(R.id.tvBalancesOfPeriodLabel); //คงเหลืองวดที่ n
-                TextView tvBalancesOfPeriod = (TextView) view.findViewById(R.id.tvBalancesOfPeriod); //จำนวนเงินคงเหลือของงวด
-
-                if (payments.get(position).BalancesOfPeriod == 0) {
-                    llBalancesOfPeriod.setVisibility(View.GONE);
-                } else {
-                    llBalancesOfPeriod.setVisibility(View.VISIBLE);
-                    if (payments.get(position).MODE == 1) {
-                        tvBalancesOfPeriodLabel.setText("คงเหลือเงินสด");
-                    } else {
-                        tvBalancesOfPeriodLabel.setText(String.format("คงเหลืองวดที่ %d", payments.get(position).PaymentPeriodNumber));
-                    }
-                    tvBalancesOfPeriod.setText(BHUtilities.numericFormat(payments.get(position).BalancesOfPeriod) + bahtLabel);
-                }
 
 
                 /**ยอดคงเหลือของงวดถัดไป**/
-                LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
                 TextView tvBalanceAmountLabel = (TextView) view.findViewById(R.id.tvBalanceAmountLabel); //คงเหลือเงินสด หรื คงเหลืองวดที่ 1 - n หรือ คงเหลืองวดที่ n
                 TextView tvBalanceAmount = (TextView) view.findViewById(R.id.tvBalanceAmount); //จำนวนเงินคงเหลือ
-
+                llBalanceAmount.setVisibility(View.GONE);
                 //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
                 if (payments.get(position).Balances - payments.get(position).BalancesOfPeriod == 0 || payments.get(position).VoidStatus) {
                     llBalanceAmount.setVisibility(View.GONE);
@@ -764,20 +1236,24 @@ public class SaleReceiptPayment extends BHFragment {
                     tvBalanceAmount.setText(BHUtilities.numericFormat(payments.get(position).Balances - payments.get(position).BalancesOfPeriod) + bahtLabel);
                 }
             }
+        } catch (Exception XX) {
+
+        }
 
 
-            /**ชำระโดยบัตรเครดิต**/
-            LinearLayout llCreditAmount = (LinearLayout) view.findViewById(R.id.llCreditAmount); //ชำระโดยบัตรเครดิต ถ้าไม่ใช่ให้ซ่อน (แสดง/ซ่อน LinearLayout)
-            TextView tvCreditName = (TextView) view.findViewById(R.id.tvCreditName); //ชื่อธนาคารของบัตรเครดิต
-            TextView tvCreditNumber = (TextView) view.findViewById(R.id.tvCreditNumber); //เลขที่บัตรของธนาคาร
+        /**ชำระโดยบัตรเครดิต**/
+        LinearLayout llCreditAmount = (LinearLayout) view.findViewById(R.id.llCreditAmount); //ชำระโดยบัตรเครดิต ถ้าไม่ใช่ให้ซ่อน (แสดง/ซ่อน LinearLayout)
+        TextView tvCreditName = (TextView) view.findViewById(R.id.tvCreditName); //ชื่อธนาคารของบัตรเครดิต
+        TextView tvCreditNumber = (TextView) view.findViewById(R.id.tvCreditNumber); //เลขที่บัตรของธนาคาร
 
-            /**ชำระโดยเช็ค**/
-            LinearLayout llChequeAmount = (LinearLayout) view.findViewById(R.id.llChequeAmount);  //ชำระโดยเช็ค ถ้าไม่ใช่ให้ซ่อน (แสดง/ซ่อน LinearLayout)
-            TextView tvChequeName = (TextView) view.findViewById(R.id.tvChequeName); //ชื่อธนาคารของเช็ด
-            TextView tvChequeBrach = (TextView) view.findViewById(R.id.tvChequeBrach); //สาขาเช็ด
-            TextView tvChequeNo = (TextView) view.findViewById(R.id.tvChequeNo); //เลขที่เช็ด
-            TextView tvChequeDate = (TextView) view.findViewById(R.id.tvChequeDate); //วันที่ลงเช็ด
+        /**ชำระโดยเช็ค**/
+        LinearLayout llChequeAmount = (LinearLayout) view.findViewById(R.id.llChequeAmount);  //ชำระโดยเช็ค ถ้าไม่ใช่ให้ซ่อน (แสดง/ซ่อน LinearLayout)
+        TextView tvChequeName = (TextView) view.findViewById(R.id.tvChequeName); //ชื่อธนาคารของเช็ด
+        TextView tvChequeBrach = (TextView) view.findViewById(R.id.tvChequeBrach); //สาขาเช็ด
+        TextView tvChequeNo = (TextView) view.findViewById(R.id.tvChequeNo); //เลขที่เช็ด
+        TextView tvChequeDate = (TextView) view.findViewById(R.id.tvChequeDate); //วันที่ลงเช็ด
 
+        try {
             switch (Enum.valueOf(PaymentInfo.PaymentType1.class, payments.get(position).PaymentType)) {
                 case Cash:
                     llCreditAmount.setVisibility(View.GONE);
@@ -808,24 +1284,36 @@ public class SaleReceiptPayment extends BHFragment {
                 default:
                     break;
             }
+        } catch (Exception ew) {
 
+        }
+
+
+        try {
             /**พนักงานที่ออกใบเสร็จ**/
             TextView txtSaleEmpName = (TextView) view.findViewById(R.id.txtSaleEmpName); //ชื่อเต็มของพนักงานที่ออกใบเสร็จ
             TextView txtSaleTeamName = (TextView) view.findViewById(R.id.txtSaleTeamName); //ทีมของพนักงานที่ออกใบเสร็จ
 
-            txtSaleEmpName.setText(String.format("(%s)", payments.get(position).SaleEmployeeName != null ? payments.get(position).SaleEmployeeName : ""));
-            txtSaleTeamName.setText(String.format("(ทีม %s)", payments.get(position).TeamCode != null ? payments.get(position).TeamCode : ""));
+            //  txtSaleEmpName.setText(String.format("(%s)", payments.get(position).SaleEmployeeName != null ? payments.get(position).SaleEmployeeName : ""));
+            // txtSaleTeamName.setText(String.format("(ทีม %s)", payments.get(position).TeamCode != null ? payments.get(position).TeamCode : ""));
 
-            /*if(employeeInfo != null) {
-                txtSaleEmpName.setText(String.format("(%s)", employeeInfo.SaleEmployeeName != null ? employeeInfo.SaleEmployeeName : ""));
-                txtSaleTeamName.setText(String.format("(ทีม %s)", employeeInfo.TeamCode != null ? employeeInfo.TeamCode : ""));
-            } else {
-                txtSaleEmpName.setText("");
-                txtSaleTeamName.setText("");
-            }*/
+            txtSaleEmpName.setText(ChanelName);
+            txtSaleTeamName.setText(TeamName);
 
-            /*Void Button*/
-            Button voidBtn = (Button) view.findViewById(R.id.btnVoidReceipt);
+
+        } catch (Exception eew) {
+
+        }
+
+
+        llCreditAmount.setVisibility(View.GONE);
+        llChequeAmount.setVisibility(View.GONE);
+        // llBalancesOfPeriod.setVisibility(View.GONE);
+
+        Button voidBtn = (Button) view.findViewById(R.id.btnVoidReceipt);
+        voidBtn.setVisibility(View.GONE);
+        try {
+
             voidBtn.setVisibility(payments.get(position).CanVoid ? view.VISIBLE : view.GONE);
 
             voidBtn.setOnClickListener(new View.OnClickListener() {
@@ -854,27 +1342,19 @@ public class SaleReceiptPayment extends BHFragment {
 
                 }
             });
+        } catch (Exception ss) {
 
-            Button btnPrintImage = (Button) view.findViewById(R.id.btnPrintImage);
-            btnPrintImage.setVisibility(View.GONE);
-//
-//            if (!payments.get(position).EmpID.equals(BHPreference.employeeID()) || payments.get(position).VoidStatus == true) {
-//                btnPrintImage.setVisibility(View.GONE);
-//            } else {
-//                btnPrintImage.setVisibility(View.VISIBLE);
-//
-//                btnPrintImage.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        new PrinterController(activity).newImagePrintReceipt(payments.get(position));
-//                    }
-//                });
-//            }
+        }
 
 
-            TextView txtHeader = (TextView) view.findViewById(R.id.txtReceiptHeadTitle);
-            if (!(!payments.get(position).EmpID.equals(BHPreference.employeeID()) || payments.get(position).VoidStatus == true))
-            {
+        Button btnPrintImage = (Button) view.findViewById(R.id.btnPrintImage);
+        btnPrintImage.setVisibility(View.GONE);
+
+
+        TextView txtHeader = (TextView) view.findViewById(R.id.txtReceiptHeadTitle);
+
+        try {
+            if (!(!payments.get(position).EmpID.equals(BHPreference.employeeID()) || payments.get(position).VoidStatus == true)) {
                 txtHeader.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -882,6 +1362,19 @@ public class SaleReceiptPayment extends BHFragment {
                     }
                 });
             }
+        } catch (Exception ww) {
+
+        }
+
+
+
+
+
+   // for (int i = 0; i < size_ww; i++)
+
+
+}
+
 
 
             ((ViewPager) container).addView(view);
@@ -891,6 +1384,7 @@ public class SaleReceiptPayment extends BHFragment {
 
         @Override
         public int getCount() {
+         //   return items.size()+sizee;
             return items.size();
         }
 
@@ -905,5 +1399,196 @@ public class SaleReceiptPayment extends BHFragment {
             ((ViewPager) container).removeView(view);
         }
     }
+
+
+
+    public void SQLiteDataBaseBuild(){
+
+        sqLiteDatabase = getActivity().openOrCreateDatabase(SQLiteHelper.DATABASE_NAME, Context.MODE_PRIVATE, null);
+
+    }
+
+    public void SQLiteTableBuild(){
+
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS "+SQLiteHelper.TABLE_NAME+"("+ SQLiteHelper.Table_Column_ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+SQLiteHelper.Table_ReceiptCode+" VARCHAR, "+SQLiteHelper.Table_CONTNO+" VARCHAR, "+SQLiteHelper.Table_CustomerName+" VARCHAR, "+SQLiteHelper.Table_IDCard+" VARCHAR, "+SQLiteHelper.Table_AddressInstall+" VARCHAR, "+SQLiteHelper.Table_ProductName+" VARCHAR, "+SQLiteHelper.Table_MODEL+" VARCHAR, "+SQLiteHelper.Table_ProductSerialNumber+" VARCHAR, "+SQLiteHelper.Table_MaxPaymentPeriodNumber+" VARCHAR, "+SQLiteHelper.Table_TotalPayment+" VARCHAR, "+SQLiteHelper.Table_TotalPaymentText+" VARCHAR, "+SQLiteHelper.Table_PeriodTotal+" VARCHAR, "+SQLiteHelper.Table_PeriodTotalPrice+" VARCHAR, "+SQLiteHelper.Table_EFFDATE+" VARCHAR, "+SQLiteHelper.Table_DatePayment+" VARCHAR);");
+
+
+    }
+
+
+    private void load_data(String CONCON) {
+
+        try {
+
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.payment(CONCON);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+
+                    Gson gson=new Gson();
+                    try {
+                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+
+                        Log.e("data","1");
+                        Log.e("jsonObject",jsonObject.toString());
+                        JSON_PARSE_DATA_AFTER_WEBCALL(jsonObject.getJSONArray("data"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("data","22");
+
+
+
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("data","2");
+
+
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("data","3");
+        }
+    }
+
+
+    String ReceiptCode="";
+    String CONTNO="";
+    String CustomerName="";
+    String IDCard="";
+    String AddressInstall="";
+    String ProductName="";
+    String MODEL="";
+    String ProductSerialNumber="";
+    String MaxPaymentPeriodNumber="";
+    String TotalPayment="";
+    String TotalPaymentText="";
+    String PeriodTotal="";
+    String PeriodTotalPrice="";
+    String EFFDATE="";
+    String DatePayment="";
+    String ChanelName="";
+    String TeamName="";
+
+
+
+    String[] ReceiptCode_N;
+    String[] CONTNO_N;
+    String[] CustomerName_N;
+    String[] IDCard_N;
+    String[] AddressInstall_N;
+    String[] ProductName_N;
+    String[] MODEL_N;
+    String[] ProductSerialNumber_N;
+    String[] MaxPaymentPeriodNumber_N;
+    String[] TotalPayment_N;
+    String[] TotalPaymentText_N;
+    String[] PeriodTotal_N;
+    String[] PeriodTotalPrice_N;
+    String[] EFFDATE_N;
+    String[] DatePayment_N;
+    String[] ChanelName_N;
+    String[] TeamName_N;
+    public void JSON_PARSE_DATA_AFTER_WEBCALL(JSONArray array) {
+        Log.e("array.length()", valueOf(array.length()));
+
+
+        for (int i = 0; i < array.length(); i++) {
+
+            //GetData GetDataAdapter2 = new GetData();
+            final GET_data_payment_online GetDataAdapter2 = new GET_data_payment_online();
+            JSONObject json = null;
+            try {
+                json = array.getJSONObject(i);
+
+
+                 ReceiptCode=json.getString("ReceiptCode")+"";
+                 CONTNO=json.getString("CONTNO")+"";
+                 CustomerName=json.getString("CustomerName")+"";
+                 IDCard=json.getString("IDCard")+"";
+                 AddressInstall=json.getString("AddressInstall")+"";
+                 ProductName=json.getString("ProductName")+"";
+                 MODEL=json.getString("MODEL")+"";
+                 ProductSerialNumber=json.getString("ProductSerialNumber")+"";
+                 MaxPaymentPeriodNumber=json.getString("MaxPaymentPeriodNumber")+"";
+                 TotalPayment=json.getString("TotalPayment")+"";
+                 TotalPaymentText=json.getString("TotalPaymentText")+"";
+                 PeriodTotal=json.getString("PeriodTotal")+"";
+                 PeriodTotalPrice=json.getString("PeriodTotalPrice")+"";
+                 EFFDATE=json.getString("EFFDATE")+"";
+                 DatePayment=json.getString("DatePayment")+"";
+                ChanelName=json.getString("ChanelName")+"";
+                TeamName=json.getString("TeamName")+"";
+
+
+                GetDataAdapter2.setReceiptCode(json.getString("ReceiptCode"));
+                GetDataAdapter2.setCONTNO(json.getString("CONTNO"));
+                GetDataAdapter2.setCustomerName(json.getString("CustomerName"));
+                GetDataAdapter2.setIDCard(json.getString("IDCard"));
+                GetDataAdapter2.setAddressInstall(json.getString("AddressInstall"));
+                GetDataAdapter2.setProductName(json.getString("ProductName"));
+                GetDataAdapter2.setMODEL(json.getString("MODEL"));
+                GetDataAdapter2.setProductSerialNumber(json.getString("ProductSerialNumber"));
+                GetDataAdapter2.setMaxPaymentPeriodNumber(json.getString("MaxPaymentPeriodNumber"));
+                GetDataAdapter2.setTotalPayment(json.getString("TotalPayment"));
+                GetDataAdapter2.setTotalPaymentText(json.getString("TotalPaymentText"));
+                GetDataAdapter2.setPeriodTotal(json.getString("PeriodTotal"));
+                GetDataAdapter2.setPeriodTotalPrice(json.getString("PeriodTotalPrice"));
+                GetDataAdapter2.setEFFDATE(json.getString("EFFDATE"));
+                GetDataAdapter2.setDatePayment(json.getString("DatePayment"));
+
+            } catch (JSONException e) {
+                //Log.e("Exception", e.getLocalizedMessage());
+                e.printStackTrace();
+
+
+
+            }
+
+            get_data_payment_onlines.add(GetDataAdapter2);
+        }
+
+        xx=1;
+
+        //tvReceiptNo.setText(fname);
+
+
+        for (int i = 0; i < get_data_payment_onlines.size(); i++) {
+
+
+            get_data_payment_online = get_data_payment_onlines.get(i);
+
+            String fname = get_data_payment_online.getReceiptCode()+"";
+
+            Log.e("size_ww_1",fname);
+
+            try {
+
+                tvReceiptNo.setText(fname);
+
+
+            }
+            catch (Exception ee){
+
+            }
+
+
+        }
+
+
+    }
+
 
 }

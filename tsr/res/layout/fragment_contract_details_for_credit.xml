@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:layout_weight="3.4"
+            android:layout_weight="3.0"
             android:textSize="@dimen/normal_font_size">
         </EditText>
 
@@ -42,6 +42,17 @@
             android:layout_marginLeft="@dimen/padding_normal"
             android:layout_marginRight="@dimen/padding_normal"
             android:text="@string/button_search" />
+
+        <Button
+            android:id="@+id/btnRefresh"
+            style="@style/ButtonTop2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:text="รีโหลด" />
+
     </LinearLayout>
 
     <android.support.v4.view.ViewPager

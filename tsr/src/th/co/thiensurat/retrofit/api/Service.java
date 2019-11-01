@@ -16,14 +16,20 @@ import retrofit2.http.Query;
 public interface Service {
 
 
-    @GET("/api/api-createpaymentdaily.php")
+    //@GET("/api/api-createpaymentdaily.php")
+    @GET("/api/api-createpaymentdaily-uat.php")
     Call<Object> data(@Query("Empid") String data);
 
 
 
-    @GET("/api/api-creditpaymentstatus.php")
+    //@GET("/api/api-creditpaymentstatus.php")
+    @GET("/api/api-creditpaymentstatus-uat.php")
     Call<Object> data2(@Query("Empid") String data);
 
+
+    //@GET("/api/api-creditpaymentstatus.php")
+    @GET("/api/api-receiptupdatedaily-uat.php")
+    Call<Object> payment(@Query("contno") String data);
 
 
 
