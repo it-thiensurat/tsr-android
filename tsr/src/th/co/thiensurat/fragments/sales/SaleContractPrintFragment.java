@@ -56,14 +56,14 @@ import th.co.thiensurat.data.info.AddressInfo;
 import th.co.thiensurat.data.info.AddressInfo.AddressType;
 import th.co.thiensurat.data.info.ContractInfo;
 import th.co.thiensurat.data.info.EmployeeDetailInfo;
-import th.co.thiensurat.data.info.GET_data_payment_online;
+//import th.co.thiensurat.data.info.GET_data_payment_online;
 import th.co.thiensurat.data.info.PackagePeriodDetailInfo;
 import th.co.thiensurat.data.info.PaymentInfo;
 import th.co.thiensurat.data.info.ProductStockInfo;
 import th.co.thiensurat.data.info.SalePaymentPeriodInfo;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
 import th.co.thiensurat.fragments.synchronize.SynchronizeMainFragment;
-import th.co.thiensurat.retrofit.api.SQLiteHelper;
+//import th.co.thiensurat.retrofit.api.SQLiteHelper;
 import th.co.thiensurat.retrofit.api.Service;
 import th.co.thiensurat.views.ViewTitle;
 
@@ -192,8 +192,8 @@ public class SaleContractPrintFragment extends BHFragment {
 
 
 
-    List<GET_data_payment_online> get_data_payment_onlines;
-    GET_data_payment_online get_data_payment_online;
+//    List<GET_data_payment_online> get_data_payment_onlines;
+//    GET_data_payment_online get_data_payment_online;
 
     private Data data;
 
@@ -245,7 +245,7 @@ public class SaleContractPrintFragment extends BHFragment {
             saveStatusCode();
         }
 
-        get_data_payment_onlines = new ArrayList<>();
+//        get_data_payment_onlines = new ArrayList<>();
 
         loadData();
 
@@ -376,11 +376,11 @@ public class SaleContractPrintFragment extends BHFragment {
                     txtTotalPrice.setText(BHUtilities.numericFormat(contract.TotalPrice));
                     textViewModel.setText(contract.MODEL);
 
-                    get_data_payment_onlines.clear();
+//                    get_data_payment_onlines.clear();
 
-                    SQLiteDataBaseBuild();
-                    SQLiteTableBuild();
-                    sqLiteDatabase.execSQL("DELETE FROM " + SQLiteHelper.TABLE_NAME + "");
+//                    SQLiteDataBaseBuild();
+//                    SQLiteTableBuild();
+//                    sqLiteDatabase.execSQL("DELETE FROM " + SQLiteHelper.TABLE_NAME + "");
 
 
 
@@ -839,8 +839,8 @@ public class SaleContractPrintFragment extends BHFragment {
         else {
             sizee=array.length();
 
-            SQLiteDataBaseBuild();
-            SQLiteTableBuild();
+//            SQLiteDataBaseBuild();
+//            SQLiteTableBuild();
 
         }
 
@@ -988,7 +988,7 @@ public class SaleContractPrintFragment extends BHFragment {
             payments.add(GetDataAdapter2);
         }
 
-        size_ww = get_data_payment_onlines.size();
+//        size_ww = get_data_payment_onlines.size();
 
 
 
@@ -999,40 +999,40 @@ public class SaleContractPrintFragment extends BHFragment {
 
 
 
-        cursor = sqLiteDatabase.rawQuery("SELECT ReceiptCode,CONTNO,CustomerName,IDCard,AddressInstall,ProductName,MODEL,ProductSerialNumber,MaxPaymentPeriodNumber,TotalPayment,TotalPaymentText,PeriodTotal,PeriodTotalPrice,EFFDATE,DatePayment FROM "+ SQLiteHelper.TABLE_NAME+""  +" order  by ReceiptCode ASC"   , null);
-        if (cursor.moveToFirst()) {
-            do {
-
-
-
-
-                String Table_ReceiptCode = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ReceiptCode));
-                String Table_CONTNO = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_CONTNO));
-                String Table_CustomerName = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_CustomerName));
-                String Table_IDCard = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_IDCard));
-                String Table_AddressInstall = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_AddressInstall));
-                String Table_ProductName = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ProductName));
-
-                String Table_MODEL = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_MODEL));
-                String Table_ProductSerialNumber = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ProductSerialNumber));
-                String Table_MaxPaymentPeriodNumber = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_MaxPaymentPeriodNumber));
-                String Table_TotalPayment = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_TotalPayment));
-
-
-                String Table_TotalPaymentText = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_TotalPaymentText));
-                String Table_PeriodTotal = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_PeriodTotal));
-                String Table_PeriodTotalPrice = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_PeriodTotalPrice));
-                String Table_EFFDATE = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_EFFDATE));
-                String Table_DatePayment = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_DatePayment));
-
-                Log.e("Table_ReceiptCode", Table_ReceiptCode);
-
-
-
-
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
+//        cursor = sqLiteDatabase.rawQuery("SELECT ReceiptCode,CONTNO,CustomerName,IDCard,AddressInstall,ProductName,MODEL,ProductSerialNumber,MaxPaymentPeriodNumber,TotalPayment,TotalPaymentText,PeriodTotal,PeriodTotalPrice,EFFDATE,DatePayment FROM "+ SQLiteHelper.TABLE_NAME+""  +" order  by ReceiptCode ASC"   , null);
+//        if (cursor.moveToFirst()) {
+//            do {
+//
+//
+//
+//
+//                String Table_ReceiptCode = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ReceiptCode));
+//                String Table_CONTNO = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_CONTNO));
+//                String Table_CustomerName = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_CustomerName));
+//                String Table_IDCard = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_IDCard));
+//                String Table_AddressInstall = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_AddressInstall));
+//                String Table_ProductName = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ProductName));
+//
+//                String Table_MODEL = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_MODEL));
+//                String Table_ProductSerialNumber = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ProductSerialNumber));
+//                String Table_MaxPaymentPeriodNumber = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_MaxPaymentPeriodNumber));
+//                String Table_TotalPayment = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_TotalPayment));
+//
+//
+//                String Table_TotalPaymentText = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_TotalPaymentText));
+//                String Table_PeriodTotal = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_PeriodTotal));
+//                String Table_PeriodTotalPrice = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_PeriodTotalPrice));
+//                String Table_EFFDATE = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_EFFDATE));
+//                String Table_DatePayment = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_DatePayment));
+//
+//                Log.e("Table_ReceiptCode", Table_ReceiptCode);
+//
+//
+//
+//
+//            } while (cursor.moveToNext());
+//        }
+//        cursor.close();
 
         paymentPeriodOutput = new SalePaymentPeriodController().getSalePaymentPeriodByRefNoORDERBYPaymentPeriodNumber(BHPreference.RefNo());
 
@@ -1122,19 +1122,19 @@ public class SaleContractPrintFragment extends BHFragment {
 
 
 
-    public void SQLiteDataBaseBuild(){
-
-        sqLiteDatabase = getActivity().openOrCreateDatabase(SQLiteHelper.DATABASE_NAME, Context.MODE_PRIVATE, null);
-
-    }
-
-    public void SQLiteTableBuild(){
-
-
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS "+SQLiteHelper.TABLE_NAME+"("+ SQLiteHelper.Table_Column_ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+SQLiteHelper.Table_ReceiptCode+" VARCHAR, "+SQLiteHelper.Table_CONTNO+" VARCHAR, "+SQLiteHelper.Table_CustomerName+" VARCHAR, "+SQLiteHelper.Table_IDCard+" VARCHAR, "+SQLiteHelper.Table_AddressInstall+" VARCHAR, "+SQLiteHelper.Table_ProductName+" VARCHAR, "+SQLiteHelper.Table_MODEL+" VARCHAR, "+SQLiteHelper.Table_ProductSerialNumber+" VARCHAR, "+SQLiteHelper.Table_MaxPaymentPeriodNumber+" VARCHAR, "+SQLiteHelper.Table_TotalPayment+" VARCHAR, "+SQLiteHelper.Table_TotalPaymentText+" VARCHAR, "+SQLiteHelper.Table_PeriodTotal+" VARCHAR, "+SQLiteHelper.Table_PeriodTotalPrice+" VARCHAR, "+SQLiteHelper.Table_EFFDATE+" VARCHAR, "+SQLiteHelper.Table_DatePayment+" VARCHAR);");
-
-
-    }
+//    public void SQLiteDataBaseBuild(){
+//
+//        sqLiteDatabase = getActivity().openOrCreateDatabase(SQLiteHelper.DATABASE_NAME, Context.MODE_PRIVATE, null);
+//
+//    }
+//
+//    public void SQLiteTableBuild(){
+//
+//
+//        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS "+SQLiteHelper.TABLE_NAME+"("+ SQLiteHelper.Table_Column_ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+SQLiteHelper.Table_ReceiptCode+" VARCHAR, "+SQLiteHelper.Table_CONTNO+" VARCHAR, "+SQLiteHelper.Table_CustomerName+" VARCHAR, "+SQLiteHelper.Table_IDCard+" VARCHAR, "+SQLiteHelper.Table_AddressInstall+" VARCHAR, "+SQLiteHelper.Table_ProductName+" VARCHAR, "+SQLiteHelper.Table_MODEL+" VARCHAR, "+SQLiteHelper.Table_ProductSerialNumber+" VARCHAR, "+SQLiteHelper.Table_MaxPaymentPeriodNumber+" VARCHAR, "+SQLiteHelper.Table_TotalPayment+" VARCHAR, "+SQLiteHelper.Table_TotalPaymentText+" VARCHAR, "+SQLiteHelper.Table_PeriodTotal+" VARCHAR, "+SQLiteHelper.Table_PeriodTotalPrice+" VARCHAR, "+SQLiteHelper.Table_EFFDATE+" VARCHAR, "+SQLiteHelper.Table_DatePayment+" VARCHAR);");
+//
+//
+//    }
     @Override
     public void onProcessButtonClicked(int buttonID) {
         // TODO Auto-generated method stub

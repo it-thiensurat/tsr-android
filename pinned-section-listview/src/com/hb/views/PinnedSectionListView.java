@@ -24,6 +24,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
+import android.os.Build;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -152,7 +153,9 @@ public class PinnedSectionListView extends ListView {
 
     private void initView() {
         setOnScrollListener(mOnScrollListener);
-        mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+            mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+        }
         initShadow(true);
     }
 
@@ -292,19 +295,21 @@ public class PinnedSectionListView extends ListView {
 		ListAdapter adapter = getAdapter();
 
 		if (fromPosition >= adapter.getCount()) return -1; // dataset has changed, no candidate
-		
-		if (adapter instanceof SectionIndexer) {
-			// try fast way by asking section indexer
-			SectionIndexer indexer = (SectionIndexer) adapter;
-			int sectionPosition = indexer.getSectionForPosition(fromPosition);
-			int itemPosition = indexer.getPositionForSection(sectionPosition);
-			int typeView = adapter.getItemViewType(itemPosition);
-			if (isItemViewTypePinned(adapter, typeView)) {
-				return itemPosition;
-			} // else, no luck
-		}
 
-		// try slow way by looking through to the next section item above
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+            if (adapter instanceof SectionIndexer) {
+                // try fast way by asking section indexer
+                SectionIndexer indexer = (SectionIndexer) adapter;
+                int sectionPosition = indexer.getSectionForPosition(fromPosition);
+                int itemPosition = indexer.getPositionForSection(sectionPosition);
+                int typeView = adapter.getItemViewType(itemPosition);
+                if (isItemViewTypePinned(adapter, typeView)) {
+                    return itemPosition;
+                } // else, no luck
+            }
+        }
+
+        // try slow way by looking through to the next section item above
 		for (int position=fromPosition; position>=0; position--) {
 			int viewType = adapter.getItemViewType(position);
 			if (isItemViewTypePinned(adapter, viewType)) return position;
@@ -500,7 +505,9 @@ public class PinnedSectionListView extends ListView {
             View view =  mPinnedSection.view;
             playSoundEffect(SoundEffectConstants.CLICK);
             if (view != null) {
-                view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_CLICKED);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.DONUT) {
+                    view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_CLICKED);
+                }
             }
             listener.onItemClick(this, view, mPinnedSection.position, mPinnedSection.id);
             return true;
