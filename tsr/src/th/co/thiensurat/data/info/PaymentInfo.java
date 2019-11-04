@@ -123,7 +123,7 @@ public class PaymentInfo extends BHParcelable {
 
 
 
-
+/*
 
 
 	public String getPaymentID() {
@@ -652,5 +652,5 @@ public class PaymentInfo extends BHParcelable {
 
 	public void setVoidStatus(Boolean voidStatus) {
 		VoidStatus = voidStatus;
-	}
+	}*/
 }
