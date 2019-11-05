@@ -55,6 +55,8 @@ import th.co.thiensurat.service.data.GetDeviceMenusOutputInfo;
 import th.co.thiensurat.service.data.GetUserByUserNameInputInfo;
 import th.co.thiensurat.service.data.GetUserByUserNameOutputInfo;
 
+
+
 public class SynchronizeMainFragment extends BHFragment {
 
     @InjectView
@@ -63,6 +65,8 @@ public class SynchronizeMainFragment extends BHFragment {
     private PinnedSectionListView lvTransactionTable;
 
     public static int timeOut = 20000;//20s
+
+    public static int check_update_database=0;
 
     private static class Data extends BHParcelable {
         public List<Integer> masterList;
@@ -213,6 +217,7 @@ public class SynchronizeMainFragment extends BHFragment {
         switch (buttonID) {
             case R.string.button_synchronize_database:
                 // YIM change flow full-sync
+                 check_update_database=0;
                 startSynchronize();
                 //updateUserInfo(BHPreference.userID());
                 // test();
