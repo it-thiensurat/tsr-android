@@ -23,6 +23,8 @@ import th.co.thiensurat.service.TSRService;
 import th.co.thiensurat.service.data.GetContractStatusFinishForCreditBySearchInputInfo;
 import th.co.thiensurat.service.data.GetContractStatusFinishForCreditBySearchOutputInfo;
 
+import static th.co.thiensurat.fragments.synchronize.SynchronizeMainFragment.check_update_database;
+
 public class ContractDetails extends BHFragment {
 
     @InjectView private ViewPager viewPager;
@@ -96,6 +98,7 @@ public class ContractDetails extends BHFragment {
 
 
                         //return BHFragment.newInstance(SaleMainFinishedFragment.class);
+                        //check_update_database=1;
 
                         SaleMainFinishedFragment fm = BHFragment.newInstance(SaleMainFinishedFragment.class);
                         fm.isContractDetails = true;
