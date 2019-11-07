@@ -1,5 +1,7 @@
 package th.co.thiensurat.data.info;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -326,13 +328,7 @@ public class AddressInfo extends BHParcelable implements Serializable {
                 }
             }
         }
-//        int index1 = addr.indexOf("ต.");
-//        int index2 = addr.indexOf("อ.");
-//
-//        if (index2 == -1) {
-//            index2 = addr.indexOf("เขต");
-//        }
-//
+        Log.e("addr1", addr.substring(0, index));
         return addr.substring(0, index);
     }
 
@@ -355,10 +351,6 @@ public class AddressInfo extends BHParcelable implements Serializable {
         } else {
             soi = addr.indexOf("ซ.");
             road = addr.indexOf("ถ.");
-            province = addr.indexOf("จ.");
-            if (province == -1) {
-                province = addr.indexOf("กรุง");
-            }
 
             subdistrict = addr.indexOf("ต.");
             if (subdistrict == -1) {
@@ -377,13 +369,17 @@ public class AddressInfo extends BHParcelable implements Serializable {
                 }
             }
 
+            province = addr.indexOf("จ.");
+            if (province == -1) {
+                province = addr.indexOf("กรุงเทพมหานคร");
+//                Log.e("province", String.valueOf(province));
+            }
             index2 = province;
+//            Log.e("addr2", addr.substring(index1, index2));
         }
-//        int index1 = addr.indexOf("ต.");
-//        int index2 = addr.indexOf("อ.");
-//
-
-
+        Log.e("index1", String.valueOf(index1));
+        Log.e("index2", String.valueOf(index2));
+        Log.e("addr2", addr.substring(index1, index2));
         return addr.substring(index1, index2);
     }
 
@@ -391,8 +387,9 @@ public class AddressInfo extends BHParcelable implements Serializable {
         int province = -1;
         province = addr.indexOf("จ.");
         if (province == -1) {
-            province = addr.indexOf("กรุง");
+            province = addr.indexOf("กรุงเทพมหานคร");
         }
+        Log.e("addr3", addr.substring(province, addr.length()));
         return addr.substring(province, addr.length());
     }
 }

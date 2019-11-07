@@ -2300,6 +2300,10 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
         public void onPrinting(int index) {
         }
+
+        public void onPrintCompleted() {
+
+        }
     }
     //endregion
 
@@ -3456,9 +3460,9 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
      *
      */
 
-    public synchronized void printImageNew(final Bitmap[] bmp, final List<List<PrintTextInfo>> detailPrint, final PrintHandler handler) {
+    public synchronized void printImageNew(final Bitmap[] bmp, final List<List<PrintTextInfo>> detailPrint, final PrintHandler handler, final String receiptType) {
         if (bhBluetoothPrinter != null) {
-            bhBluetoothPrinter.SetPrintWithBitmap(bmp, detailPrint, handler);
+            bhBluetoothPrinter.SetPrintWithBitmap(bmp, detailPrint, handler, receiptType);
         }
     }
 

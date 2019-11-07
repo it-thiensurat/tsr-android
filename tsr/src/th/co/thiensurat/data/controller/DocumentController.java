@@ -3798,7 +3798,7 @@ public class DocumentController {
 
         receiptBuilder.addParagraph();
         receiptBuilder.setAlign(Paint.Align.LEFT);
-        receiptBuilder.addText(contract.MODE > 1 ? " ผู้เช่าซื้อ" : " ผู้ซื้อ", false);
+        receiptBuilder.addText(contract.MODE > 1 ? "ผู้เช่าซื้อ" : "ผู้ซื้อ", false);
         receiptBuilder.setAlign(Paint.Align.RIGHT);
         receiptBuilder.addText(String.format("%s %s", BHUtilities.trim(contract.CustomerFullName), BHUtilities.trim(contract.CompanyName)), true);
 
@@ -4200,7 +4200,9 @@ public class DocumentController {
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(20);
 
-        return receiptBuilder.build();
+        Bitmap bmp = receiptBuilder.build();
+
+        return scaleBitmap(bmp, bmp.getWidth(), bmp.getHeight());
     }
 
     public static Bitmap getNewReceiptImage(PaymentInfo paymentInfo, DebtorCustomerInfo debtorCustomerInfo, AddressInfo addressInfo) {
@@ -4495,8 +4497,8 @@ public class DocumentController {
         receiptBuilder.addText(BHUtilities.numericFormat(sendMoney.SendAmount) + " บาท", true);
 
         if(sendMoney.Reference2.length() == 8) {
-            receiptBuilder.setAlign(Align.CENTER);
-            receiptBuilder.addText("--------------------------------------------");
+//            receiptBuilder.setAlign(Align.CENTER);
+//            receiptBuilder.addText("--------------------------------------------");
 
             receiptBuilder.addParagraph();
             receiptBuilder.setAlign(Paint.Align.LEFT);
@@ -4504,8 +4506,15 @@ public class DocumentController {
 
             receiptBuilder.setAlign(Paint.Align.CENTER);
             String SendMoneyBarcode = String.format("%s|%s|%s", sendMoney.Reference1, "", BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", ""));
-//            barcode = BHBarcode.generateCode128(SendMoneyBarcode, 450, 50);
-            receiptBuilder.addImage(BHBarcode.generateCode128(SendMoneyBarcode, 450, 60));
+
+            Bitmap bmp = BHBarcode.generateCode128(SendMoneyBarcode, 550, 100);
+            Bitmap result = Bitmap.createBitmap(550, 100, Config.ARGB_8888);
+            Canvas cv = new Canvas(result);
+            cv.drawColor(Color.BLACK);
+            cv.drawBitmap(bmp, 0, 0, null);
+            bmp.recycle();
+
+            receiptBuilder.addImage(result);
             receiptBuilder.addParagraph();
 
             receiptBuilder.setAlign(Paint.Align.LEFT);
@@ -4532,7 +4541,31 @@ public class DocumentController {
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(20);
 
-        return receiptBuilder.build();
+        Bitmap bmp = receiptBuilder.build();
+
+        return scaleBitmap(bmp, bmp.getWidth(), bmp.getHeight());
+    }
+
+    public static String barcodeString(SendMoneyInfo sendMoney) {
+        String SendMoneyBarcode = String.format("%s|%s|%s", sendMoney.Reference1, "", BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", ""));
+        return SendMoneyBarcode;
+    }
+
+    public static Bitmap scaleBitmap(Bitmap bitmap, int newWidth, int newHeight) {
+        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Config.ARGB_8888);
+        float scaleX = newWidth / (float) bitmap.getWidth();
+        float scaleY = newHeight / (float) bitmap.getHeight();
+        float pivotX = 0;
+        float pivotY = 0;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(scaleX, scaleY, pivotX, pivotY);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap, 0, 0, new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
+
+        return scaledBitmap;
     }
 
     /**

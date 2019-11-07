@@ -92,10 +92,6 @@ public class DatecsThemalPrint {
             };
         }
 
-
-
-
-
         final ProgressDialog dialog = new ProgressDialog(mBHBluetoothPrinter.mActivity);
         dialog.setTitle("Plait wait");
         dialog.setMessage("Connecting");
@@ -165,8 +161,6 @@ public class DatecsThemalPrint {
 
     private synchronized void closePrinterServer() {
         closeNetworkConnection();
-
-        // Close network server
         PrinterServer ps = mPrinterServer;
         mPrinterServer = null;
         if (ps != null) {
@@ -180,7 +174,6 @@ public class DatecsThemalPrint {
     }
 
     private synchronized void closeNetworkConnection() {
-        // Close network connection
         Socket s = mPrinterSocket;
         mPrinterSocket = null;
         if (s != null) {
@@ -204,10 +197,8 @@ public class DatecsThemalPrint {
                 public void onConnect(Socket socket) {
                     if (BHGeneral.DEVELOPER_MODE)
                         Log.d(TAG, "Accept connection from " + socket.getRemoteSocketAddress().toString());
-
-                    // Close Bluetooth selection dialog
-                    mBHBluetoothPrinter.mActivity.finishActivity(BHBluetoothPrinter.REQUEST_CONNECT_DEVICE);
-                    mPrinterSocket = socket;
+                        mBHBluetoothPrinter.mActivity.finishActivity(BHBluetoothPrinter.REQUEST_CONNECT_DEVICE);
+                        mPrinterSocket = socket;
                     try {
                         InputStream in = socket.getInputStream();
                         OutputStream out = socket.getOutputStream();

@@ -232,7 +232,6 @@ public class BluetoothService {
             setName("AcceptThread");
             BluetoothSocket socket = null;
 
-
             // Listen to the server socket if we're not connected
             while (mState != STATE_CONNECTED) {
                 try {
@@ -390,7 +389,9 @@ public class BluetoothService {
 	                    // Send the obtained bytes to the UI Activity
 	                    mHandler.obtainMessage(Main.MESSAGE_READ, bytes, -1, buffer)
 	                            .sendToTarget();
-                    } else {
+                    }
+                    else
+                    {
                         Log.e(TAG, "disconnected");
                         connectionLost();
                         

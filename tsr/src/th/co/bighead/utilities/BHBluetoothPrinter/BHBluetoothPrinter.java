@@ -33,6 +33,7 @@ public class BHBluetoothPrinter {
 
     /**********************************************************************************************/
     private Bitmap[] mBitmap;
+    private String mReceiptType;
     private List<List<PrintTextInfo>> mDetailPrint;
     private MainActivity.PrintHandler mHandler;
     private boolean mIsWithInterrupt;
@@ -119,7 +120,7 @@ public class BHBluetoothPrinter {
         if (mDeviceAddress.startsWith(MAC_ADDRESS_Printer_1)) {
             mDatecsThemalPrint.establishBluetoothConnection(mDeviceAddress, mDetailPrint, mHandler, mIsWithInterrupt);
         } else if (mDeviceAddress.startsWith(MAC_ADDESS_NEW_DEVICE)) {
-            mZJMiniThemalPrint.connect(mDeviceAddress, mBitmap, mDetailPrint, mHandler, mIsWithInterrupt);
+            mZJMiniThemalPrint.connect(mDeviceAddress, mBitmap, mDetailPrint, mHandler, mIsWithInterrupt, mReceiptType);
         } else {
             mDatecsThemalPrint.establishBluetoothConnection(mDeviceAddress, mDetailPrint, mHandler, mIsWithInterrupt);
         }
@@ -135,12 +136,12 @@ public class BHBluetoothPrinter {
      *
      */
 
-    public void SetPrintWithBitmap(Bitmap[] bitmap, List<List<PrintTextInfo>> detailPrint, MainActivity.PrintHandler handler) {
+    public void SetPrintWithBitmap(Bitmap[] bitmap, List<List<PrintTextInfo>> detailPrint, MainActivity.PrintHandler handler, String receiptType) {
         mDetailPrint = detailPrint;
         mHandler = handler;
         mBitmap = bitmap;
         mIsWithInterrupt = false;
-
+        mReceiptType = receiptType;
         CheckBluetooth();
     }
 }

@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothAdapter;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
@@ -18,7 +19,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import th.co.bighead.utilities.BHGeneral;
 import th.co.bighead.utilities.BHLoading;
+import th.co.bighead.utilities.BHPreference;
 import th.co.thiensurat.R;
 import th.co.thiensurat.activities.MainActivity;
 import th.co.thiensurat.data.controller.ThemalPrintController;
@@ -148,6 +151,11 @@ public class ZJMiniThemalPrint {
 
     public ZJMiniThemalPrint(BHBluetoothPrinter bhBluetoothPrinter) {
         mBHBluetoothPrinter = bhBluetoothPrinter;
+    }
+
+    private static String barcodeString = "";
+    public static void setBarcodeString(String barcode) {
+        barcodeString = barcode;
     }
 
     /**********************************************************************************************/
@@ -389,7 +397,7 @@ public class ZJMiniThemalPrint {
         }
         if (data.length() > 0) {
             try {
-                mService.write(data.getBytes("GBK"));
+                mService.write(data.getBytes("CP874"));
             } catch (UnsupportedEncodingException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -438,7 +446,9 @@ public class ZJMiniThemalPrint {
         }
     }
 
-    private void Print_BarCode(String str, int type) {
+    public void Print_BarCode(String str, int type) {
+        Log.e("Barcode string", str);
+        SendDataByte(byteCodebar[type]);
         if (type == 0) {
             if (str.length() == 11 || str.length() == 12) {
                 byte[] code = PrinterCommand.getCodeBarCommand(str, 65, 3, 168, 0, 2);
@@ -486,8 +496,10 @@ public class ZJMiniThemalPrint {
             } else {
                 byte[] code = PrinterCommand.getCodeBarCommand(str, 69, 3, 168, 1, 2);
                 SendDataString("CODE39\n");
-                SendDataByte(new byte[]{0x1b, 0x61, 0x00});
+                SendDataByte(new byte[]{0x1b, 0x61, 0x00 });
                 SendDataByte(code);
+                SendDataString("\n");
+                SendDataString(str);
             }
         } else if (type == 5) {
             if (str.length() == 0) {
@@ -553,7 +565,7 @@ public class ZJMiniThemalPrint {
      *
      */
 
-    public void connect(final String address, final Bitmap[] bmp, final List<List<PrintTextInfo>> detailPrint, final MainActivity.PrintHandler handler, boolean isWithInterrupt) {
+    public void connect(final String address, final Bitmap[] bmp, final List<List<PrintTextInfo>> detailPrint, final MainActivity.PrintHandler handler, boolean isWithInterrupt, String receiptType) {
         final ProgressDialog dialog = new ProgressDialog(mBHBluetoothPrinter.mActivity);
         dialog.setTitle("Plait wait");
         dialog.setMessage("Connecting");
@@ -570,9 +582,7 @@ public class ZJMiniThemalPrint {
                     mService.start();
                 }
 
-
                 BluetoothDevice device = mBHBluetoothPrinter.mBluetoothAdapter.getRemoteDevice(address);
-                // Attempt to connect to the device
                 mService.connect(device);
 
                 if (isWithInterrupt) {
@@ -598,7 +608,7 @@ public class ZJMiniThemalPrint {
                         public void run() {
                             try {
                                 for (int i = 0; i < bmp.length; i++) {
-                                    printCustomBitmap(bmp[i]);
+                                    printCustomBitmap(bmp[i], i);
                                     handler.onBackgroundPrinting(i);
                                 }
                             } catch (Exception e) {
@@ -612,13 +622,17 @@ public class ZJMiniThemalPrint {
                 Log.e("Check service", mService.getState() + "");
             }
         } finally {
+//            if ("Barcode".equals(receiptType)) {
+//                handler.onPrintCompleted();
+//            }
             dialog.dismiss();
         }
     }
 
-    public void printCustomBitmap(Bitmap bitmap) {
+    public void printCustomBitmap(Bitmap bitmap, int index) {
         int nMode = 0;
         //paperWidth = 384, 576;
+        Log.e("print index", String.valueOf(index));
         if (bitmap != null) {
             /**
              * Parameters:
@@ -628,13 +642,44 @@ public class ZJMiniThemalPrint {
              * Returns: byte[]
              */
             byte[] data = PrintPicture.POS_PrintBMP(bitmap, 576, nMode);
-            //	SendDataByte(buffer);
             SendDataByte(Command.ESC_Init);
             SendDataByte(Command.LF);
             SendDataByte(data);
             SendDataByte(PrinterCommand.POS_Set_PrtAndFeedPaper(30));
             SendDataByte(PrinterCommand.POS_Set_Cut(1));
             SendDataByte(PrinterCommand.POS_Set_PrtInit());
+
+//            if ("Barcode".equals(receiptType)) {
+//                Print_BarCode(barcodeString, 8);
+//                byte[] code = PrinterCommand.getCodeBarCommand(barcodeString, 73, 3, 168, 1, 2);
+//                SendDataString("CODE128\n");
+//                SendDataByte(new byte[]{0x1b, 0x61, 0x00 });
+//                SendDataByte(code);
+//            }
+
+
+//            if (index == 1) {
+//                new android.os.Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        SendDataByte(Command.ESC_Init);
+//                        SendDataByte(Command.LF);
+//                        SendDataByte(data);
+//                        SendDataByte(PrinterCommand.POS_Set_PrtAndFeedPaper(30));
+//                        SendDataByte(PrinterCommand.POS_Set_Cut(1));
+//                        SendDataByte(PrinterCommand.POS_Set_PrtInit());
+//                        mService.stop();
+//                    }
+//                }, 2500);
+//            } else {
+//                SendDataByte(Command.ESC_Init);
+//                SendDataByte(Command.LF);
+//                SendDataByte(data);
+//                SendDataByte(PrinterCommand.POS_Set_PrtAndFeedPaper(30));
+//                SendDataByte(PrinterCommand.POS_Set_Cut(1));
+//                SendDataByte(PrinterCommand.POS_Set_PrtInit());
+//            }
+
 //            mService.stop();
         }
     }

@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import th.co.bighead.utilities.BHBluetoothPrinter.ZJMiniThemalPrint;
 import th.co.bighead.utilities.BHPreference;
 import th.co.thiensurat.activities.MainActivity;
 import th.co.thiensurat.data.controller.ContractController;
@@ -181,10 +182,15 @@ public class PrinterController {
          */
 
         Bitmap bmp = DocumentController.getNewSendMoneyImage(sendMoney);
+//        String barcode = DocumentController.barcodeString(sendMoney);
         bitmapList.add(bmp);
         mainActivity.printImageNew(bitmapList.toArray(new Bitmap[bitmapList.size()]), document, new MainActivity.PrintHandler() {
-
-        });
+//            @Override
+//            public void onPrintCompleted() {
+//                super.onPrintCompleted();
+//                ZJMiniThemalPrint.setBarcodeString(barcode);
+//            }
+        }, "Barcode");
 
         /**
          * End
@@ -428,7 +434,7 @@ public class PrinterController {
             mainActivity.printTextWithInterrupt(document, handler);
         }else{
 //            mainActivity.printText(document, handler);
-            mainActivity.printImageNew(bitmapList.toArray(new Bitmap[bitmapList.size()]), document, handler);
+            mainActivity.printImageNew(bitmapList.toArray(new Bitmap[bitmapList.size()]), document, handler, "");
         }
 
         /**
@@ -1172,7 +1178,7 @@ public class PrinterController {
 
                 TSRController.addDocumentHistory(docHist, true);
             }
-        });
+        }, "");
     }
 
     /**
