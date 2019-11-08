@@ -114,6 +114,12 @@ public class PaymentInfo extends BHParcelable {
 
 
 
+	public int status_online=0;
+	public String PeriodTotal;
+	public String TotalPaymentText;
+	public String PeriodTotalPrice;
+	public String TotalPayment;
+
 
 
 

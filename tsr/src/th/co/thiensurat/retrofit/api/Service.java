@@ -33,6 +33,14 @@ public interface Service {
 
 
 
+
+
+    @GET("/api/api-receiptupdatedaily1-uat.php")
+    Call<Object> payment2(@Query("contno") String data);
+
+
+
+
 }
 
 

@@ -311,6 +311,7 @@
                     android:layout_marginTop="@dimen/change_product_detail_top">
 
                     <TextView
+
                         style="@style/TextView.Label.bold"
                         android:layout_width="@dimen/change_product_print_width"
                         android:layout_height="wrap_content"
