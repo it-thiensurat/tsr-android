@@ -4505,7 +4505,7 @@ public class DocumentController {
             receiptBuilder.addText("สำหรับธนาคาร", true);
 
             receiptBuilder.setAlign(Paint.Align.CENTER);
-            String SendMoneyBarcode = String.format("%s|%s|%s", sendMoney.Reference1, "", BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", ""));
+            String SendMoneyBarcode = String.format("| 010755600021300 %s|%s|%s", sendMoney.Reference1, "", BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", ""));
 
             Bitmap bmp = BHBarcode.generateCode128(SendMoneyBarcode, 550, 100);
             Bitmap result = Bitmap.createBitmap(550, 100, Config.ARGB_8888);

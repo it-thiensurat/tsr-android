@@ -52,7 +52,7 @@ import th.co.thiensurat.R;
 import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.PrinterController;
 import th.co.thiensurat.business.controller.TSRController;
-import th.co.thiensurat.data.Get_data_online;
+//import th.co.thiensurat.data.Get_data_online;
 import th.co.thiensurat.data.controller.DocumentHistoryController;
 import th.co.thiensurat.data.controller.PaymentController;
 import th.co.thiensurat.data.info.AddressInfo;
@@ -86,8 +86,8 @@ public class SaleReceiptPayment extends BHFragment {
     private String Contno = "";
 
 
-    Get_data_online getData_cedit;
-    List<Get_data_online> GetDataAdapter1;
+//    Get_data_online getData_cedit;
+//    List<Get_data_online> GetDataAdapter1;
 
 
     public static class Data extends BHParcelable {
@@ -209,7 +209,7 @@ public class SaleReceiptPayment extends BHFragment {
 
 //        get_data_payment_onlines = new ArrayList<>();
 
-        GetDataAdapter1 = new ArrayList<>();
+//        GetDataAdapter1 = new ArrayList<>();
 
         initViews();
         try {
