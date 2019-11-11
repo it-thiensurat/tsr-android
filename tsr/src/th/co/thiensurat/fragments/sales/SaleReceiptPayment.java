@@ -106,7 +106,7 @@ public class SaleReceiptPayment extends BHFragment {
     private List<PaymentInfo> payments;
 
 
-    //    List<GET_data_payment_online> get_data_payment_onlines;
+//        List<GET_data_payment_online> get_data_payment_onlines;
 //    GET_data_payment_online get_data_payment_online;
     Cursor cursor;
     @InjectView
@@ -603,28 +603,20 @@ public class SaleReceiptPayment extends BHFragment {
 
 
                 if (payments != null && payments.size() > 0) {
-
                     try {
-
-                        if (isConnectingToInternet()) {
+                        if (isConnectingToInternet() && !forcePrint) {
                             load_data2(Contno);
-                        }
-                        else {
+                        } else {
                             setViewPagerItemsWithAdapter();
                             setUiPageViewController();
                         }
-
-
-
-
-
                     } catch (NullPointerException e) {
 
                     }
+
                     if (forcePrint == true) {
                         activity.forceButtonClick(R.string.button_print);
                     }
-
                 } else {
                     showLastView();
                     showDialog("แจ้งเตือน", "ไม่พบข้อมูลใบเสร็จ");
@@ -1570,33 +1562,7 @@ public class SaleReceiptPayment extends BHFragment {
                             }
                         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     }
-
-
-
-
-
-
-
-
-
-
-
-
                     Log.e("Payment size2", String.valueOf(payments.size()));
 //                payments.addAll(payments.size(), paymentInfos);
 //                payments.add(payments.size(), );
@@ -1617,40 +1583,8 @@ public class SaleReceiptPayment extends BHFragment {
                 } catch (Exception ex) {
 
                 }
-//            Log.e("Payment size2", "xxxx");
-
-
-
-           // }
-
-
-
-
-
-
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public void JSON_PARSE_DATA_AFTER_WEBCALL_TEST(JSONArray array,String CONCON) {
         if (array.length() == 0) {

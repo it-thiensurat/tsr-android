@@ -4418,6 +4418,7 @@ public class DocumentController {
         return receiptBuilder.build();
     }
 
+    public final static char CR  = (char) 0x0D;
     public static Bitmap getNewSendMoneyImage(SendMoneyInfo sendMoney) {
         ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
         receiptBuilder.setMargin(5, 0);
@@ -4505,20 +4506,16 @@ public class DocumentController {
             receiptBuilder.addText("สำหรับธนาคาร", true);
 
             receiptBuilder.setAlign(Paint.Align.CENTER);
-            String SendMoneyBarcode = String.format("| 010755600021300 %s|%s|%s", sendMoney.Reference1, "", BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", ""));
+            String SendMoneyBarcode = String.format("|010755600021300" + CR + "%s" + CR + "%s" + CR + "%s", sendMoney.Reference1, "", BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", ""));
 
-            Bitmap bmp = BHBarcode.generateCode128(SendMoneyBarcode, 550, 100);
-            Bitmap result = Bitmap.createBitmap(550, 100, Config.ARGB_8888);
-            Canvas cv = new Canvas(result);
-            cv.drawColor(Color.BLACK);
-            cv.drawBitmap(bmp, 0, 0, null);
-            bmp.recycle();
-
-            receiptBuilder.addImage(result);
+            Bitmap bmp = BHBarcode.generateCode128(SendMoneyBarcode, 540, 100);
+            receiptBuilder.addImage(bmp);
             receiptBuilder.addParagraph();
 
+
+
             receiptBuilder.setAlign(Paint.Align.LEFT);
-            receiptBuilder.addText(String.format(" | 010755600021300 %s %s", sendMoney.Reference1, BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", "")));
+            receiptBuilder.addText(String.format("| 010755600021300 %s %s", sendMoney.Reference1, BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", "")));
             receiptBuilder.addParagraph();
 
             receiptBuilder.setAlign(Paint.Align.LEFT);
