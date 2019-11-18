@@ -32,7 +32,8 @@ public class BHBarcode {
         String encoding = guessAppropriateEncoding(contentsToEncode);
         if (encoding != null) {
             hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
-            hints.put(EncodeHintType.CHARACTER_SET, encoding);
+            hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+            hints.put(EncodeHintType.MARGIN, 3);
         }
         MultiFormatWriter writer = new MultiFormatWriter();
         BitMatrix result;
@@ -53,7 +54,7 @@ public class BHBarcode {
             }
         }
 
-        Bitmap bitmap = Bitmap.createBitmap(imgWidth, imgHeight, Bitmap.Config.RGB_565);
+        Bitmap bitmap = Bitmap.createBitmap(imgWidth, imgHeight, Bitmap.Config.ARGB_8888);
         bitmap.setPixels(pixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
         return bitmap;
     }

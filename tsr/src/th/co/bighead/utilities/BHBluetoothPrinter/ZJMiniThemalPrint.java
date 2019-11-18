@@ -10,27 +10,61 @@ import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
+//import com.google.zxing.BarcodeFormat;
+//import com.google.zxing.EncodeHintType;
+//import com.google.zxing.MultiFormatWriter;
+//import com.google.zxing.WriterException;
+//import com.google.zxing.common.BitMatrix;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
+//import com.zj.btsdk.BluetoothService;
+import com.zj.btsdk.PrintPic;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Random;
 
 import th.co.bighead.utilities.BHGeneral;
 import th.co.bighead.utilities.BHLoading;
 import th.co.bighead.utilities.BHPreference;
+import th.co.bighead.utilities.Command.Command;
 import th.co.thiensurat.R;
 import th.co.thiensurat.activities.MainActivity;
 import th.co.thiensurat.data.controller.ThemalPrintController;
 import th.co.thiensurat.data.info.PrintTextInfo;
 import zj.bluetooth.printer.version3.cn.bluetooth.sdk.BluetoothService;
-import zj.bluetooth.printer.version3.cn.bluetooth.sdk.Main;
-import zj.bluetooth.printer.version3.command.sdk.Command;
 import zj.bluetooth.printer.version3.command.sdk.PrintPicture;
 import zj.bluetooth.printer.version3.command.sdk.PrinterCommand;
+//import zj.bluetooth.printer.version3.cn.bluetooth.sdk.BluetoothService;
+//import zj.bluetooth.printer.version3.cn.bluetooth.sdk.Main;
+//import zj.bluetooth.printer.version3.command.sdk.Command;
+//import zj.bluetooth.printer.version3.command.sdk.PrintPicture;
+//import zj.bluetooth.printer.version3.command.sdk.PrinterCommand;
+////import zj.bluetooth.printer.version3.command.sdk.PrinterCommand;
+
+import static android.graphics.Color.BLACK;
+import static android.graphics.Color.WHITE;
+import static android.view.Gravity.CENTER;
 
 public class ZJMiniThemalPrint {
 
@@ -182,9 +216,6 @@ public class ZJMiniThemalPrint {
                 BluetoothDevice device = mBHBluetoothPrinter.mBluetoothAdapter.getRemoteDevice(address);
                 // Attempt to connect to the device
                 mService.connect(device);
-
-
-
 
                 if (isWithInterrupt) {
                     mJob = new Runnable() {
@@ -538,7 +569,7 @@ public class ZJMiniThemalPrint {
             } else {
                 byte[] code = PrinterCommand.getCodeBarCommand(str, 73, 3, 168, 1, 2);
                 SendDataString("CODE128\n");
-                SendDataByte(new byte[]{0x1b, 0x61, 0x00});
+                SendDataByte(new byte[]{0x1b, 0x61, 0x00 });
                 SendDataByte(code);
             }
         } else if (type == 9) {
@@ -608,7 +639,7 @@ public class ZJMiniThemalPrint {
                         public void run() {
                             try {
                                 for (int i = 0; i < bmp.length; i++) {
-                                    printCustomBitmap(bmp[i], i);
+                                    printCustomBitmap(bmp[i], i, receiptType);
                                     handler.onBackgroundPrinting(i);
                                 }
                             } catch (Exception e) {
@@ -622,17 +653,18 @@ public class ZJMiniThemalPrint {
                 Log.e("Check service", mService.getState() + "");
             }
         } finally {
-//            if ("Barcode".equals(receiptType)) {
-//                handler.onPrintCompleted();
-//            }
+            if ("Barcode".equals(receiptType)) {
+                handler.onPrintCompleted();
+            }
             dialog.dismiss();
         }
     }
 
-    public void printCustomBitmap(Bitmap bitmap, int index) {
+    public void printCustomBitmap(Bitmap bitmap, int index, String receiptType) {
         int nMode = 0;
         //paperWidth = 384, 576;
-        Log.e("print index", String.valueOf(index));
+        String path = "";
+//        Log.e("print index", String.valueOf(index));
         if (bitmap != null) {
             /**
              * Parameters:
@@ -648,15 +680,25 @@ public class ZJMiniThemalPrint {
             SendDataByte(PrinterCommand.POS_Set_PrtAndFeedPaper(30));
             SendDataByte(PrinterCommand.POS_Set_Cut(1));
             SendDataByte(PrinterCommand.POS_Set_PrtInit());
-
-//            if ("Barcode".equals(receiptType)) {
-//                Print_BarCode(barcodeString, 8);
-//                byte[] code = PrinterCommand.getCodeBarCommand(barcodeString, 73, 3, 168, 1, 2);
-//                SendDataString("CODE128\n");
-//                SendDataByte(new byte[]{0x1b, 0x61, 0x00 });
-//                SendDataByte(code);
+            SendDataByte(PrinterCommand.POS_Set_PrtInit());
+//            if (!"Barcode".equals(receiptType)) {
+//                SendDataByte(PrinterCommand.POS_Set_PrtAndFeedPaper(30));
+//                SendDataByte(PrinterCommand.POS_Set_Cut(1));
+//                SendDataByte(PrinterCommand.POS_Set_PrtInit());
 //            }
 
+//            if ("Barcode".equals(receiptType)) {
+//                byte[] d = PrintPicture.POS_PrintBMP(generateBarcode(barcodeString), 810, nMode);
+//                SendDataByte(Command.ESC_Init);
+//                SendDataByte(Command.LF);
+//                SendDataByte(d);
+//                Command.ESC_Align[2] = 0x02;
+//                SendDataByte(Command.ESC_Align);
+//                SendDataString(barcodeString);
+//                SendDataByte(PrinterCommand.POS_Set_PrtAndFeedPaper(100));
+//                SendDataByte(PrinterCommand.POS_Set_Cut(1));
+//                SendDataByte(PrinterCommand.POS_Set_PrtInit());
+//            }
 
 //            if (index == 1) {
 //                new android.os.Handler().postDelayed(new Runnable() {
@@ -683,4 +725,42 @@ public class ZJMiniThemalPrint {
 //            mService.stop();
         }
     }
+
+    public Bitmap generateBarcode(String contents) {
+        Bitmap bitmap = null;
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(contents, BarcodeFormat.CODE_128,810,120);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            bitmap = barcodeEncoder.createBitmap(bitMatrix);
+        } catch (WriterException e) {
+            e.printStackTrace();
+            Log.e("create barcode", e.getLocalizedMessage());
+        }
+
+        return bitmap;
+    }
+
+//    public Bitmap createBarcode128(String contents) {
+//        EnumMap<EncodeHintType, Object> hint = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+//        hint.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+//        BitMatrix result = null;
+//        try {
+//            result = new MultiFormatWriter().encode(contents, BarcodeFormat.CODE_128, 800, 80, hint);
+//        } catch (WriterException e) {
+//            e.printStackTrace();
+//        }
+//        int w = result.getWidth();
+//        int h = result.getHeight();
+//        int[] pixels = new int[w * h];
+//        for (int y = 0; y < h; y++) {
+//            int offset = y * w;
+//            for (int x = 0; x < w; x++) {
+//                pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
+//            }
+//        }
+//        Bitmap bit = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+//        bit.setPixels(pixels, 0, w, 0, 0, w, h);
+//        return bit;
+//    }
 }

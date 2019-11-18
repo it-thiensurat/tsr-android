@@ -15,5 +15,5 @@ android {
 dependencies {
     //implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation files('libs/btsdk.jar')
-    //implementation files('libs/zixng.jar')
+//    implementation files('libs/zixng.jar')
 }

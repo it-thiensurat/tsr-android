@@ -67,6 +67,9 @@ import th.co.thiensurat.data.info.SendDocumentInfo;
 import th.co.thiensurat.data.info.SendMoneyInfo;
 import th.co.thiensurat.data.info.ShortReceiptInfo;
 
+import static android.graphics.Color.BLACK;
+import static android.graphics.Color.WHITE;
+
 public class DocumentController {
 
     private static Context mContext = BHApplication.getContext();
@@ -4121,7 +4124,7 @@ public class DocumentController {
 
             receiptBuilder.addImage(contractSign);
             yy += 25;
-            String TSR = "(นายวิรัช วงศ์นิรันดร์)";
+            String TSR = "";
             if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
                 EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
                 if (saleLeader != null) {
@@ -4400,7 +4403,7 @@ public class DocumentController {
         String[] texts = getText(sale, pSignature, RECEIPT_WIDTH);
         for (int ii = 0; ii < texts.length; ii++) {
             if (ii == 0) {
-                cv.drawText(String.format("%sผู้ซื้อ", getSignatureUnderline(pSignature, (RECEIPT_WIDTH) - (getWidth("ผู้ซื้อ", pSignature) + (RECEIPT_WIDTH / 2)))), RECEIPT_WIDTH / 2, yy, pSignature);
+                cv.drawText(String.format("%sผู้รับเงิน", getSignatureUnderline(pSignature, (RECEIPT_WIDTH) - (getWidth("ผู้รับเงิน", pSignature) + (RECEIPT_WIDTH / 2)))), RECEIPT_WIDTH / 2, yy, pSignature);
             }
             yy += fontSize + lineSpace;
             cv.drawText(texts[ii], Value, yy, pSignature);
@@ -4433,10 +4436,8 @@ public class DocumentController {
         receiptBuilder.addParagraph();
         receiptBuilder.addText(String.format("(%s)", sendMoney.ChannelItemName));
 
-//        Bitmap barcode = null;
         if(sendMoney.Reference2.length() > 8){
             String strBarcodeNo = sendMoney.Reference2;
-//            barcode = BHBarcode.generateCode128(strBarcodeNo, 550, 150);
             receiptBuilder.addParagraph();
             receiptBuilder.addImage(BHBarcode.generateCode128(strBarcodeNo, 560, 125));
         }
@@ -4498,8 +4499,6 @@ public class DocumentController {
         receiptBuilder.addText(BHUtilities.numericFormat(sendMoney.SendAmount) + " บาท", true);
 
         if(sendMoney.Reference2.length() == 8) {
-//            receiptBuilder.setAlign(Align.CENTER);
-//            receiptBuilder.addText("--------------------------------------------");
 
             receiptBuilder.addParagraph();
             receiptBuilder.setAlign(Paint.Align.LEFT);
@@ -4508,43 +4507,47 @@ public class DocumentController {
             receiptBuilder.setAlign(Paint.Align.CENTER);
             String SendMoneyBarcode = String.format("|010755600021300" + CR + "%s" + CR + "%s" + CR + "%s", sendMoney.Reference1, "", BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", ""));
 
-            Bitmap bmp = BHBarcode.generateCode128(SendMoneyBarcode, 540, 100);
+            Bitmap bmp = BHBarcode.generateCode128(SendMoneyBarcode, 580, 80);
             receiptBuilder.addImage(bmp);
             receiptBuilder.addParagraph();
-
-
 
             receiptBuilder.setAlign(Paint.Align.LEFT);
             receiptBuilder.addText(String.format("| 010755600021300 %s %s", sendMoney.Reference1, BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", "")));
             receiptBuilder.addParagraph();
 
             receiptBuilder.setAlign(Paint.Align.LEFT);
-            receiptBuilder.addText(String.format(" เพื่อเข้าบัญชี %s",sendMoney.ChannelItemName));
+            receiptBuilder.addText(String.format("เพื่อเข้าบัญชี %s",sendMoney.ChannelItemName));
             receiptBuilder.addParagraph();
 
             receiptBuilder.setAlign(Paint.Align.LEFT);
-            receiptBuilder.addText(String.format(" EMPID(Ref.1): %s", BHUtilities.trim(sendMoney.Reference1)));
+            receiptBuilder.addText(String.format("EMPID(Ref.1): %s", BHUtilities.trim(sendMoney.Reference1)));
             receiptBuilder.addParagraph();
 
             receiptBuilder.setAlign(Paint.Align.LEFT);
-            receiptBuilder.addText(String.format(" TNSNO(Ref.2): %s", BHUtilities.trim(sendMoney.Reference2)));
+            receiptBuilder.addText(String.format("TNSNO(Ref.2): %s", BHUtilities.trim(sendMoney.Reference2)));
             receiptBuilder.addParagraph();
 
             receiptBuilder.setAlign(Paint.Align.LEFT);
-            receiptBuilder.addText(String.format(" จำนวนเงิน %s บาท", BHUtilities.numericFormat(sendMoney.SendAmount)));
+            receiptBuilder.addText(String.format("จำนวนเงิน %s บาท", BHUtilities.numericFormat(sendMoney.SendAmount)));
             receiptBuilder.addParagraph();
         }
 
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(20);
 
-        Bitmap bmp = receiptBuilder.build();
-
-        return scaleBitmap(bmp, bmp.getWidth(), bmp.getHeight());
+//        Bitmap bitmap = receiptBuilder.build();
+//        return scaleBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight());
+        return receiptBuilder.build();
     }
 
     public static String barcodeString(SendMoneyInfo sendMoney) {
-        String SendMoneyBarcode = String.format("%s|%s|%s", sendMoney.Reference1, "", BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", ""));
+        String SendMoneyBarcode = "";
+        if(sendMoney.Reference2.length() > 8){
+            SendMoneyBarcode = sendMoney.Reference2;
+        } else if (sendMoney.Reference2.length() == 8) {
+            SendMoneyBarcode = String.format("|010755600021300" + CR + "%s" + CR + "%s" + CR + "%s", sendMoney.Reference1, "", BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", ""));
+        }
+
         return SendMoneyBarcode;
     }
 
@@ -4563,6 +4566,30 @@ public class DocumentController {
         canvas.drawBitmap(bitmap, 0, 0, new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
 
         return scaledBitmap;
+    }
+
+    public static Bitmap createBarcode128(String contents) {
+        EnumMap<EncodeHintType, Object> hint = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+        hint.put(EncodeHintType.MARGIN, 5);
+        hint.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+        BitMatrix result = null;
+        try {
+            result = new MultiFormatWriter().encode(contents, BarcodeFormat.CODE_128, 800, 120, hint);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        int w = result.getWidth();
+        int h = result.getHeight();
+        int[] pixels = new int[w * h];
+        for (int y = 0; y < h; y++) {
+            int offset = y * w;
+            for (int x = 0; x < w; x++) {
+                pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
+            }
+        }
+        Bitmap bit = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        bit.setPixels(pixels, 0, w, 0, 0, w, h);
+        return bit;
     }
 
     /**

@@ -182,14 +182,14 @@ public class PrinterController {
          */
 
         Bitmap bmp = DocumentController.getNewSendMoneyImage(sendMoney);
-//        String barcode = DocumentController.barcodeString(sendMoney);
+        String barcode = DocumentController.barcodeString(sendMoney);
         bitmapList.add(bmp);
         mainActivity.printImageNew(bitmapList.toArray(new Bitmap[bitmapList.size()]), document, new MainActivity.PrintHandler() {
-//            @Override
-//            public void onPrintCompleted() {
-//                super.onPrintCompleted();
+            @Override
+            public void onPrintCompleted() {
+                super.onPrintCompleted();
 //                ZJMiniThemalPrint.setBarcodeString(barcode);
-//            }
+            }
         }, "Barcode");
 
         /**
