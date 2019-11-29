@@ -523,12 +523,28 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
                 //BHPreference.setProcessType(data.processType.toString());
                 //BHPreference.setRefNo(data.refNo);
 
-                SaleReceiptPayment.Data dataReceiptID = new SaleReceiptPayment.Data();
+
+
+
+
+
+
+               /* SaleReceiptPayment.Data dataReceiptID = new SaleReceiptPayment.Data();
                 dataReceiptID.PaymentID = input.PaymentID;
                 dataReceiptID.selectedDate = data.selectedDate;
                 SaleReceiptPayment fmReceipt = BHFragment.newInstance(SaleReceiptPayment.class, dataReceiptID);
                 fmReceipt.forcePrint = true;
                 showNextView(fmReceipt);
+*/
+
+                SaleReceiptPayment_old.Data dataReceiptID = new SaleReceiptPayment_old.Data();
+                dataReceiptID.PaymentID = input.PaymentID;
+                dataReceiptID.selectedDate = data.selectedDate;
+                SaleReceiptPayment_old fmReceipt = BHFragment.newInstance(SaleReceiptPayment_old.class, dataReceiptID);
+                fmReceipt.forcePrint = true;
+                showNextView(fmReceipt);
+
+
             }
         }.start();
     }

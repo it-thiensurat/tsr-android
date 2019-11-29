@@ -1187,16 +1187,42 @@ public class SaleContractPrintFragment extends BHFragment {
 
             case R.string.button_receipt:
                 if (data != null && data.resTitle != 0 && Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract) {
-                    SaleReceiptPayment.Data input = new SaleReceiptPayment.Data();
+/*                    SaleReceiptPayment.Data input = new SaleReceiptPayment.Data();
                     input.resTitle = data.resTitle;
-                    showNextView(BHFragment.newInstance(SaleReceiptPayment.class, input));
+                    showNextView(BHFragment.newInstance(SaleReceiptPayment.class, input));*/
+
+
+                    SaleReceiptPayment_old.Data input = new SaleReceiptPayment_old.Data();
+                    input.resTitle = data.resTitle;
+                    showNextView(BHFragment.newInstance(SaleReceiptPayment_old.class, input));
+
+
                 } else {
 
-                  SaleReceiptPayment.Data input = new SaleReceiptPayment.Data();
+                /*  SaleReceiptPayment.Data input = new SaleReceiptPayment.Data();
                     input.contno = BHUtilities.trim(contract.CONTNO);
-                    showNextView(BHFragment.newInstance(SaleReceiptPayment.class, input));
+                    showNextView(BHFragment.newInstance(SaleReceiptPayment.class, input));*/
 
-                    //showNextView(new SaleReceiptPayment());
+
+/*                    SaleReceiptPayment_old.Data input = new SaleReceiptPayment_old.Data();
+                    input.contno = BHUtilities.trim(contract.CONTNO);
+                    showNextView(BHFragment.newInstance(SaleReceiptPayment_old.class, input));
+                    */
+                    
+                    
+
+                       // if(select_fragment==1){
+                            SaleReceiptPayment_new.Data input = new SaleReceiptPayment_new.Data();
+                            input.contno = BHUtilities.trim(contract.CONTNO);
+                            showNextView(BHFragment.newInstance(SaleReceiptPayment_new.class, input));
+                    /*    }
+                        else {
+                            showNextView(new SaleReceiptPayment_new());
+                        }*/
+                  //  showNextView(new SaleReceiptPayment_old());
+
+
+
                 }
                 break;
             case R.string.button_back:

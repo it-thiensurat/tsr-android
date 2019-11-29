@@ -119,6 +119,7 @@ public class PaymentInfo extends BHParcelable {
 	public String TotalPaymentText;
 	public String PeriodTotalPrice;
 	public String TotalPayment;
+	public String MaxPaymentPeriodNumber;
 
 
 
