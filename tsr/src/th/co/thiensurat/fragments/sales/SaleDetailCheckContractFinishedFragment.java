@@ -335,9 +335,18 @@ public class SaleDetailCheckContractFinishedFragment extends BHFragment {
 										dataReceipt);
 						showNextView(fmReceipt);*/
 
-						SaleReceiptPayment.Data dataReceiptID = new SaleReceiptPayment.Data();
+
+
+						//SaleReceiptPayment.Data dataReceiptID = new SaleReceiptPayment.Data();
+						SaleReceiptPayment_old.Data dataReceiptID = new SaleReceiptPayment_old.Data();
+
 						dataReceiptID.PaymentID = payment.PaymentID;
-						SaleReceiptPayment fmReceipt = BHFragment.newInstance(SaleReceiptPayment.class, dataReceiptID);
+
+						//SaleReceiptPayment fmReceipt = BHFragment.newInstance(SaleReceiptPayment.class, dataReceiptID);
+
+						SaleReceiptPayment_old fmReceipt = BHFragment.newInstance(SaleReceiptPayment_old.class, dataReceiptID);
+
+
 						showNextView(fmReceipt);
 					} else {
 						// (1-B) Never had payment

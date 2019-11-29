@@ -278,6 +278,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+
                 android:layout_marginTop="@dimen/change_product_detail_top">
 
                 <LinearLayout
@@ -580,7 +581,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text=".................. ผู้รับเงิน"
-                    android:textColor="#2C2C2C"/>
+                    android:textColor="#2C2C2C" />
 
                 <TextView
                     android:id="@+id/txtSaleEmpName"

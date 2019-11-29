@@ -215,10 +215,31 @@ public class SaleUnfinishedFragment extends BHFragment {
 										SaleReceiptFirstPayment fm = BHFragment.newInstance(SaleReceiptFirstPayment.class, receiptData);
 										showNextView(fm);*/
 
-											SaleReceiptPayment.Data dataReceiptID = new SaleReceiptPayment.Data();
+
+
+
+
+
+
+									/*		SaleReceiptPayment.Data dataReceiptID = new SaleReceiptPayment.Data();
 											dataReceiptID.PaymentID = output.PaymentID;
 											SaleReceiptPayment fmReceipt = BHFragment.newInstance(SaleReceiptPayment.class, dataReceiptID);
+											showNextView(fmReceipt);*/
+
+
+
+
+
+
+											SaleReceiptPayment_old.Data dataReceiptID = new SaleReceiptPayment_old.Data();
+											dataReceiptID.PaymentID = output.PaymentID;
+											SaleReceiptPayment_old fmReceipt = BHFragment.newInstance(SaleReceiptPayment_old.class, dataReceiptID);
 											showNextView(fmReceipt);
+
+
+
+
+
 										}
 									}
 								}).start();

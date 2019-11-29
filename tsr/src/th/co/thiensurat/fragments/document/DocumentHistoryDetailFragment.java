@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,21 +26,17 @@ import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.data.controller.DatabaseHelper;
 import th.co.thiensurat.data.info.AddressInfo;
 import th.co.thiensurat.data.info.AddressInfo.AddressType;
-import th.co.thiensurat.data.info.BankInfo;
 import th.co.thiensurat.data.info.ContractInfo;
 import th.co.thiensurat.data.info.DocumentHistoryInfo;
-import th.co.thiensurat.data.info.PaymentInfo;
 import th.co.thiensurat.data.info.SalePaymentPeriodInfo;
 import th.co.thiensurat.data.info.SendDocumentDetailInfo;
 import th.co.thiensurat.data.info.SendDocumentInfo;
-import th.co.thiensurat.data.info.SendMoneyInfo;
 import th.co.thiensurat.fragments.contracts.change.ChangeContractPrintFragment;
 import th.co.thiensurat.fragments.impound.ImpoundProductPrintFragment;
 import th.co.thiensurat.fragments.products.change.ChangeProductPrintFragment;
 import th.co.thiensurat.fragments.sales.SaleContractPrintFragment;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
-import th.co.thiensurat.fragments.sales.SaleReceiptPayment;
-import th.co.thiensurat.fragments.sendmoney.SendMoneyPrintFragment;
+import th.co.thiensurat.fragments.sales.SaleReceiptPayment_old;
 
 import static th.co.thiensurat.business.controller.TSRController.addSendDocument;
 import static th.co.thiensurat.business.controller.TSRController.addSendDocumentDetail;
@@ -462,9 +456,23 @@ public class DocumentHistoryDetailFragment extends BHPagerFragment {
                             @Override
                             protected void after() {
                                 // TODO Auto-generated method stub
-                                SaleReceiptPayment.Data dataReceiptID = new SaleReceiptPayment.Data();
+
+
+                               // SaleReceiptPayment.Data dataReceiptID = new SaleReceiptPayment.Data();
+                               // dataReceiptID.ReceiptID = strDocumentNumber;
+                                //SaleReceiptPayment fmReceipt = BHFragment.newInstance(SaleReceiptPayment.class, dataReceiptID);
+
+
+
+                                SaleReceiptPayment_old.Data dataReceiptID = new SaleReceiptPayment_old.Data();
                                 dataReceiptID.ReceiptID = strDocumentNumber;
-                                SaleReceiptPayment fmReceipt = BHFragment.newInstance(SaleReceiptPayment.class, dataReceiptID);
+                                SaleReceiptPayment_old fmReceipt = BHFragment.newInstance(SaleReceiptPayment_old.class, dataReceiptID);
+
+
+
+
+
+
                                 showNextView(fmReceipt);
                             }
                         }).start();
