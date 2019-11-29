@@ -611,7 +611,8 @@ public class SaleReceiptPayment extends BHFragment {
                             setUiPageViewController();
                         }
                     } catch (NullPointerException e) {
-
+                        setViewPagerItemsWithAdapter();
+                        setUiPageViewController();
                     }
 
                     if (forcePrint == true) {

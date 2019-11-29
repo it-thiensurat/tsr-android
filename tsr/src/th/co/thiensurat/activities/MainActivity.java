@@ -3311,7 +3311,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
                     Intent i = context.getPackageManager().getLaunchIntentForPackage("com.gps_tracking");
                     if (i != null) {
-                        Intent in = new Intent(Intent.ACTION_VIEW, Uri.parse("gis://empid/" + BHPreference.employeeID()));
+                        Intent in = new Intent(Intent.ACTION_VIEW, Uri.parse("gis://empid/" + BHPreference.employeeID() + "/BH"));
 //                      i.putExtra("empid", BHPreference.employeeID());
                       context.startActivity(in);
                     }

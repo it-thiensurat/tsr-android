@@ -4214,11 +4214,12 @@ public class DocumentController {
         receiptBuilder.setAlign(Align.CENTER);
         receiptBuilder.setColor(Color.BLACK);
         receiptBuilder.setTextSize(26);
-        receiptBuilder.addText("บริษัท เธียรสุรัตน์ จำกัด (มหาชน)", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addText("เลขประจำตัวผู้เสียภาษี 0107556000213", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addText("โทร. 1210", true);
+//        receiptBuilder.addText("บริษัท เธียรสุรัตน์ จำกัด (มหาชน)", true);
+//        receiptBuilder.addParagraph();
+//        receiptBuilder.addText("เลขประจำตัวผู้เสียภาษี 0107556000213", true);
+//        receiptBuilder.addParagraph();
+//        receiptBuilder.addText("โทร. 1210", true);
+        receiptBuilder.addImage(headerPrint());
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
         receiptBuilder.setTextSize(24);
