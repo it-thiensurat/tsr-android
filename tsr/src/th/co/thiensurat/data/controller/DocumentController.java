@@ -12,6 +12,8 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.util.Log;
 
@@ -3646,6 +3648,63 @@ public class DocumentController {
         return bmp;
     }
 
+    public static Bitmap shortHeaderPrint() {
+        Bitmap bmp = null;
+        try {
+            ins = mContext.getResources().getAssets().open("tsr_short_header.png");
+            bmp = BitmapFactory.decodeStream(ins);
+            ins.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bmp;
+    }
+
+    public static Bitmap backgroundTitle() {
+        Bitmap bmp = null;
+        try {
+            ins = mContext.getResources().getAssets().open("title_background.png");
+            bmp = BitmapFactory.decodeStream(ins);
+            ins.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bmp;
+    }
+
+    public static Bitmap logoTelesale() {
+        Bitmap bmp = null;
+        try {
+            ins = mContext.getResources().getAssets().open("logo_tsr_telsale.png");
+            bmp = BitmapFactory.decodeStream(ins);
+            ins.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return getResizedBitmap(bmp, 120, 120);
+    }
+
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        Bitmap bitmap = null;
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if(bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
     public static Bitmap mergeSignature(Bitmap bmp1, Bitmap bmp2, File path) {
         Bitmap result = Bitmap.createBitmap((bmp1.getWidth() + bmp2.getWidth()), bmp1.getHeight(), Bitmap.Config.RGB_565 );
         Canvas canvas = new Canvas(result);
@@ -4219,12 +4278,36 @@ public class DocumentController {
 //        receiptBuilder.addText("เลขประจำตัวผู้เสียภาษี 0107556000213", true);
 //        receiptBuilder.addParagraph();
 //        receiptBuilder.addText("โทร. 1210", true);
-        receiptBuilder.addImage(headerPrint());
+        receiptBuilder.addImage(shortHeaderPrint());
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
-        receiptBuilder.setTextSize(24);
-        receiptBuilder.addText("ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ");
+//        receiptBuilder.setTextSize(24);
+//        receiptBuilder.addText("ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ");
+//        receiptBuilder.addParagraph();
+
+        Bitmap imgTitle = Bitmap.createBitmap(RECEIPT_WIDTH, 65, Config.RGBA_F16);
+        imgTitle.setHasAlpha(true);
+        Canvas cvTitle = new Canvas(imgTitle);
+        cvTitle.drawColor(BLACK);
+        Paint rect = new Paint();
+        rect.setColor(BLACK);
+        rect.setStyle(Style.FILL);
+        rect.setAntiAlias(true);
+        cvTitle.drawBitmap(backgroundTitle(), 0, 0, null);
+        Paint pTitle = new Paint();
+        pTitle.setTypeface(Typeface.DEFAULT_BOLD);
+        pTitle.setTextSize(26);
+        pTitle.setTextAlign(Align.CENTER);
+        pTitle.setColor(WHITE);
+        pTitle.setStyle(Style.FILL);
+        pTitle.setAntiAlias(true);
+        cvTitle.drawText("ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ", RECEIPT_WIDTH / 2, 42, pTitle);
+        Bitmap title = Bitmap.createBitmap(RECEIPT_WIDTH, 65, Config.RGBA_F16);
+        Canvas cvTitle2 = new Canvas(title);
+        cvTitle2.drawBitmap(imgTitle, 0, 0, null);
+        receiptBuilder.addImage(imgTitle);
         receiptBuilder.addParagraph();
+        receiptBuilder.addBlankSpace(10);
 
         receiptBuilder.setAlign(Paint.Align.LEFT);
         receiptBuilder.addText("วันที่รับเงิน", false);
@@ -4386,12 +4469,12 @@ public class DocumentController {
 
         float fontSize = 22;
         float lineSpace = fontSize / 2;
-        Paint pTitle = new Paint(p);
-        pTitle.setTypeface(Typeface.DEFAULT);
-        pTitle.setTextSize(fontSize);
-        pTitle.setTextAlign(Align.LEFT);
+        Paint pTitle2 = new Paint(p);
+        pTitle2.setTypeface(Typeface.DEFAULT);
+        pTitle2.setTextSize(fontSize);
+        pTitle2.setTextAlign(Align.LEFT);
 
-        Paint pValue = new Paint(pTitle);
+        Paint pValue = new Paint(pTitle2);
         pValue.setTypeface(null);
         pValue.setTextAlign(Align.LEFT);
         Paint pSignature = new Paint(pValue);
@@ -4417,7 +4500,12 @@ public class DocumentController {
 
         receiptBuilder.addImage(result);
         receiptBuilder.addParagraph();
-        receiptBuilder.addBlankSpace(20);
+        receiptBuilder.addBlankSpace(10);
+
+        receiptBuilder.setAlign(Align.RIGHT);
+        receiptBuilder.addImage(logoTelesale());
+        receiptBuilder.addParagraph();
+        receiptBuilder.addBlankSpace(10);
 
         return receiptBuilder.build();
     }
@@ -4429,10 +4517,11 @@ public class DocumentController {
         receiptBuilder.setAlign(Align.CENTER);
         receiptBuilder.setColor(Color.BLACK);
         receiptBuilder.setTextSize(24);
-        receiptBuilder.addImage(headerPrint());
+        receiptBuilder.addImage(shortHeaderPrint());
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
         receiptBuilder.setAlign(Align.CENTER);
+
         receiptBuilder.addText(String.format("ใบนำส่ง%s", sendMoney.PaymentTypeName));
         receiptBuilder.addParagraph();
         receiptBuilder.addText(String.format("(%s)", sendMoney.ChannelItemName));

@@ -7,12 +7,8 @@ android {
     buildToolsVersion '28.0.3'
 
     def versionCodes = { ->
-//<<<<<<< Updated upstream
-//        return 146   //<-- current version
-//=======
-//        return 145   //<-- current version
-//>>>>>>> Stashed changes
-        return 147   //<-- New version
+//        return 147   //<-- current version
+        return 148   //<-- New version
     }
 
     def tsrAppVersion = { ->
@@ -31,12 +27,8 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode   versionCodes()
-//<<<<<<< Updated upstream
-//        versionName "1.0.0.57" //<-- current version
-//=======
-//        versionName "1.0.0.56" //<-- current version
-//>>>>>>> Stashed changes
-        versionName "1.0.0.58" //<-- New version
+//        versionName "1.0.0.58" //<-- current version
+        versionName "1.0.0.59" //<-- New version
         resValue 'string', 'tsr_app_version', tsrAppVersion()
     }
 
