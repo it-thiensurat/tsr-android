@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="USERNAME"
-            android:text="DBAE02"
+            android:text=""
             android:imeOptions="actionNext"
             android:inputType="text|textNoSuggestions|textCapCharacters"
             android:singleLine="true" />
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="PASSWORD"
-            android:text="1234"
+            android:text=""
             android:imeOptions="actionDone"
             android:inputType="textPassword" />
 
