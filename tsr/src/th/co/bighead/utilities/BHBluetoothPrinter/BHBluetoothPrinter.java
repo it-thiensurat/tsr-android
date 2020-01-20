@@ -22,6 +22,7 @@ public class BHBluetoothPrinter {
 
     private static final String MAC_ADDRESS_Printer_1 = "00:01"; //เครื่อง datecs
     private static final String MAC_ADDESS_NEW_DEVICE = "66:12";
+    private static final String MAC_ADDESS_NEW_DEVICE_2 = "66:22";
     /**********************************************************************************************/
     public MainActivity mActivity;
     public BluetoothAdapter mBluetoothAdapter;
@@ -119,7 +120,7 @@ public class BHBluetoothPrinter {
     private void ConnectBluetoothPrinter() {
         if (mDeviceAddress.startsWith(MAC_ADDRESS_Printer_1)) {
             mDatecsThemalPrint.establishBluetoothConnection(mDeviceAddress, mDetailPrint, mHandler, mIsWithInterrupt);
-        } else if (mDeviceAddress.startsWith(MAC_ADDESS_NEW_DEVICE)) {
+        } else if (mDeviceAddress.startsWith(MAC_ADDESS_NEW_DEVICE) || mDeviceAddress.startsWith(MAC_ADDESS_NEW_DEVICE_2)) {
             mZJMiniThemalPrint.connect(mDeviceAddress, mBitmap, mDetailPrint, mHandler, mIsWithInterrupt, mReceiptType);
         } else {
             mDatecsThemalPrint.establishBluetoothConnection(mDeviceAddress, mDetailPrint, mHandler, mIsWithInterrupt);
