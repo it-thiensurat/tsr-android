@@ -513,12 +513,12 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                         BHPreference.setSuspendServiceNotice(false);
                         TimeOutLoginService.startAlarmSuspendServiceNotice(activity.getApplicationContext(), NoticeCalendar.getTimeInMillis());
 
-                        Intent i = getApplicationContext().getPackageManager().getLaunchIntentForPackage("com.gps_tracking");
-                        if (i != null) {
-                            Intent in = new Intent(Intent.ACTION_VIEW, Uri.parse("gis://empid/" + BHPreference.employeeID() + "/BH"));
-//                      i.putExtra("empid", BHPreference.employeeID());
-                            getApplicationContext().startActivity(in);
-                        }
+//                        Intent i = getApplicationContext().getPackageManager().getLaunchIntentForPackage("com.gps_tracking");
+//                        if (i != null) {
+//                            Intent in = new Intent(Intent.ACTION_VIEW, Uri.parse("gis://empid/" + BHPreference.employeeID() + "/BH"));
+////                      i.putExtra("empid", BHPreference.employeeID());
+//                            getApplicationContext().startActivity(in);
+//                        }
 
                     } else {
                         BHPreference.setTimeOutLogin(true);

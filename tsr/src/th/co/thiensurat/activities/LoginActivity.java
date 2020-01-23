@@ -55,9 +55,12 @@ import th.co.bighead.utilities.BHLoading;
 import th.co.bighead.utilities.BHPreference;
 import th.co.thiensurat.R;
 import th.co.thiensurat.business.controller.BackgroundProcess;
+import th.co.thiensurat.business.controller.PrinterController;
 import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.controller.BaseController;
 import th.co.thiensurat.data.controller.DatabaseManager;
+import th.co.thiensurat.data.info.AddressInfo;
+import th.co.thiensurat.data.info.ContractInfo;
 import th.co.thiensurat.data.info.DeviceMenuInfo;
 import th.co.thiensurat.data.info.FortnightInfo;
 import th.co.thiensurat.data.info.PlatformVersionInfo;
@@ -69,6 +72,8 @@ import th.co.thiensurat.service.data.GetCurrentFortnightOutputInfo;
 import th.co.thiensurat.service.data.GetDeviceMenusInputInfo;
 import th.co.thiensurat.service.data.GetDeviceMenusOutputInfo;
 import th.co.thiensurat.service.data.PlatformVersionOutputInfo;
+
+import static th.co.thiensurat.activities.MainActivity.activity;
 
 public class LoginActivity extends BHActivity {
     private static final String TAG = "gcm";
@@ -162,6 +167,7 @@ public class LoginActivity extends BHActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
+
                 /*** [START] :: Fixed - [BHPROJ-0016-1064] :: [Android-Auto-Full-Synch] เปิดให้ Auto Full-Synch แค่กรณีหลังจาก Login เสร็จแล้วเท่านั้น (ส่วน Full-Synch ตอนที่เปิด App. ให้ตัดทิ้งไปเลย)  ***/
                 if (!BHGeneral.DEVELOPER_MODE) {
                     /*File oldFileDB = new File(DatabaseManager.getInstance().getDatabasePath());

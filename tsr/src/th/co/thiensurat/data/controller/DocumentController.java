@@ -4260,6 +4260,21 @@ public class DocumentController {
         receiptBuilder.setAlign(Paint.Align.LEFT);
         receiptBuilder.addText(String.format(" %s %s", BHUtilities.trim(contract.SaleTeamName), BHUtilities.trim(contract.upperEmployeeName)), true);
         receiptBuilder.addParagraph();
+        receiptBuilder.addBlankSpace(10);
+
+        receiptBuilder.setTextSize(22);
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("** หมายเหตุ: ผู้เช่าซื้อหรือผู้ซื้อมีสิทธิเลิกสัญญาโดยการ", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("ส่งหนังสือแสดงเจตนาได้ภายใน 7 วัน นับแต่วันที่ผู้เช่าซื้อ", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("หรือผู้ซื้อได้รับสินค้าและผู้ให้เช่าซื้อหรือผู้ขายจะคืนเงิน", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.setTextSize(20);
+        receiptBuilder.addText("เต็มจำนวนที่ผู้เช่าซื้อหรือผู้ซื้อได้จ่ายไปเพื่อเช่าซื้อหรือซื้อสินค้า", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("ภายใน 15 วันนับแต่วันที่ผู้เช่าซื้อหรือผู้ซื้อใช้สิทธิในการคืนสินค้า", true);
+        receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(20);
 
         Bitmap bmp = receiptBuilder.build();

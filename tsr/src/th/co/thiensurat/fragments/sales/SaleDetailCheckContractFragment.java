@@ -332,6 +332,9 @@ public class SaleDetailCheckContractFragment extends BHFragment {
 
                 ManualDocumentDetailFragment fmManualDocContract = BHFragment.newInstance(ManualDocumentDetailFragment.class, data1);
                 showNextView(fmManualDocContract);
+
+//                SaleContractPrintFragment fmSaleContractPrint = BHFragment.newInstance(SaleContractPrintFragment.class);
+//                showNextView(fmSaleContractPrint);
                 break;
             default:
                 break;
