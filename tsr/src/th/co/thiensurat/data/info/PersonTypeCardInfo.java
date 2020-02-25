@@ -7,6 +7,8 @@ import th.co.bighead.utilities.BHParcelable;
 import th.co.thiensurat.data.controller.DebtorCustomerController;
 
 public class PersonTypeCardInfo extends BHParcelable {
+
+	public static int ff=0;
 	
 	public enum PersonTypeCardEnum {
 		PASSPORT, //หนังสือเดินทาง
@@ -76,6 +78,12 @@ public class PersonTypeCardInfo extends BHParcelable {
 
 				list.add(new PersonTypeCardInfo(PersonTypeCardEnum.DRIVINGLICENSE, "ใบขับขี่"));
 				list.add(new PersonTypeCardInfo(PersonTypeCardEnum.OFFICIALCARD, "บัตรข้าราชการ"));
+
+				if(ff==0){
+					//list.add(new PersonTypeCardInfo(PersonTypeCardEnum.IDCARD, "VIP"));
+
+				}
+
 				//list.add(new PersonTypeCardInfo(PersonTypeCardEnum.IDCARD_device, "เครื่องอ่านบัตร"));
 				break;
 			case FOREIGNER:

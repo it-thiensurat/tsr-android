@@ -41,6 +41,13 @@ public interface Service {
 
 
 
+
+
+
+    @GET("/api/api-vipsaleteam-uat.php")
+    Call<Object> check_vid(@Query("empid") String data);
+
+
 }
 
 

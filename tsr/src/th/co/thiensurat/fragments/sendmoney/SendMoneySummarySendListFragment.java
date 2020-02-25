@@ -184,8 +184,12 @@ public class SendMoneySummarySendListFragment extends BHFragment {
 
 					//vh.btnEdit.setVisibility(view.GONE);
 					if (transNO.equals("")){
-						vh.llAdd.setVisibility(View.VISIBLE);
-						vh.btnAdd.setVisibility(view.VISIBLE);
+
+						//vh.llAdd.setVisibility(View.VISIBLE);
+						//vh.btnAdd.setVisibility(view.VISIBLE);
+						vh.llAdd.setVisibility(View.GONE);         //  edit by assanee weanlor
+						vh.btnAdd.setVisibility(view.GONE);
+
 						//vh.btnEdit.setVisibility(view.GONE);
 						vh.txtSendDate.setText("");
 						/*** [START] - Fixed - [BHPROJ-0026-1033] :: เพิ่มการยกเลิกรายการส่งเงิน กรณียังไม่ได้ทำการรับเงิน ***/

@@ -2,10 +2,13 @@ package th.co.thiensurat.fragments.sales;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,6 +25,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -29,13 +33,25 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHBitmap;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHGeneral;
@@ -71,6 +87,9 @@ import th.co.thiensurat.data.info.PrefixInfo;
 import th.co.thiensurat.data.info.ProvinceInfo;
 import th.co.thiensurat.data.info.SalePaymentPeriodInfo;
 import th.co.thiensurat.data.info.SubDistrictInfo;
+import th.co.thiensurat.retrofit.api.Service;
+
+import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 
 public class New2SaleCustomerAddressCardFragment extends BHFragment {
 
@@ -84,6 +103,7 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
 
     private final String imageTypeCode = ContractImageController.ImageType.CUSTOMER.toString();
     private String imageID;
+    public int check_box_status=0;
 
 
    static public int select_read_card=0;
@@ -234,6 +254,10 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
     @InjectView
     EditText editTextEmail; // อีเมล์
     //endregion
+    @InjectView
+    CheckBox checkBoxvip;
+    @InjectView
+    LinearLayout li_checkbox;
 
     private static ContractInfo mainContractInfo;
     private static ContractImageInfo mainContractImageInfo;
@@ -634,6 +658,81 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
                     spinnerPerfix.setSelection(positionPrefixName != -1 ? positionPrefixName : 0);
 
                     editTextName.setText(mainDebtorCustomerInfo.CustomerName); //ชื่อ-สกุล
+
+
+
+
+                    if (isConnectingToInternet()) {
+                       // li_checkbox.setVisibility(View.VISIBLE);
+                        Log.e("empid",BHPreference.employeeID());
+                        load_data_check_vip(BHPreference.employeeID());
+                    }
+                    else {
+                        li_checkbox.setVisibility(View.GONE);
+
+                    }
+
+
+
+
+
+
+
+          /*          try {
+                        Log.e("UsedProductModelID",mainDebtorCustomerInfo.UsedProductModelID);
+
+                        if(status.equals("OK")) {
+
+                            if (mainDebtorCustomerInfo.UsedProductModelID.equals("VIP")) {
+
+                                // checkBoxvip.se(false);
+                                checkBoxvip.setChecked(true);
+                            } else {
+                                checkBoxvip.setChecked(false);
+
+                            }
+                        }
+                        else {
+
+                        }
+                    }
+                    catch (Exception ex){
+
+                    }*/
+
+
+
+
+                  //  CheckBox chk = (CheckBox) findViewById(R.id.chk1);
+                    checkBoxvip.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            boolean checked = ((CheckBox) v).isChecked();
+                            // Check which checkbox was clicked
+                            if (checked){
+                                Log.e("UsedProductModelID","ON");
+                                check_box_status=1;
+                            }
+                            else{
+                                Log.e("UsedProductModelID","OFF");
+                                check_box_status=0;
+
+                            }
+                        }
+                    });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                     if (mainDebtorCustomerInfo.Brithday != null) {
                         final Calendar c = Calendar.getInstance();
@@ -2318,7 +2417,11 @@ catch (Exception ex){
                         break;
                 }
 
+
                 cust.OrganizationCode = BHPreference.organizationCode();
+                //cust.UsedProductModelID = "VIP";// ชื่อกรรมการผู้มีอำนาจ
+
+
                 Calendar c = Calendar.getInstance();
                 PrefixInfo prefixInfo = new PrefixInfo();
                 switch (mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonType) {
@@ -2342,7 +2445,31 @@ catch (Exception ex){
                             cust.AuthorizedName = null;// ชื่อกรรมการผู้มีอำนาจ
 
 
-                            if (select_read_card == 1) {
+                        if(status.equals("OK")){
+                            //cust.OrganizationCode = "3";// ชื่อกรรมการผู้มีอำนาจ
+
+                            if(check_box_status==1){
+                                cust.UsedProductModelID = "VIP";// ชื่อกรรมการผู้มีอำนาจ
+
+                            }
+                            else {
+                                cust.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
+
+                            }
+
+
+                        }
+                        else {
+                            cust.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
+
+                            // cust.OrganizationCode = BHPreference.organizationCode();
+
+                        }
+
+
+
+
+                        if (select_read_card == 1) {
                                 try {
                                     cust.AuthorizedIDCard = mPersonal.getIssueDate() + "#" + mPersonal.getExpireDate(); // เลขบัตรกรรมการผู้มีอำนาจxcxaCsaxcsCs
                                 } catch (Exception ex) {
@@ -2430,7 +2557,7 @@ catch (Exception ex){
                     cust.HobbyCode = customerInfo.HobbyCode;
                     cust.HobbyDetail = customerInfo.CareerDetail;
                     cust.IsUsedProduct = customerInfo.IsUsedProduct;
-                    cust.UsedProductModelID = customerInfo.UsedProductModelID;
+                  //  cust.UsedProductModelID = customerInfo.UsedProductModelID;
                     cust.SuggestionCode = customerInfo.SuggestionCode;
                     cust.SuggestionDetail = customerInfo.SuggestionDetail;
                     cust.CreateDate = customerInfo.CreateDate;
@@ -2446,7 +2573,7 @@ catch (Exception ex){
                     cust.HobbyCode = "";
                     cust.HobbyDetail = "";
                     cust.IsUsedProduct = false;
-                    cust.UsedProductModelID = "";
+                   // cust.UsedProductModelID = "";
                     cust.SuggestionCode = "";
                     cust.SuggestionDetail = "";
                     cust.CreateDate = new Date();
@@ -3399,4 +3526,129 @@ catch (Exception ex){
             }
         } );
     }
+
+
+
+
+
+
+    public boolean isConnectingToInternet() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        return isConnected;
+    }
+
+
+    private void load_data_check_vip(String EMPID) {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.check_vid(EMPID);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson = new Gson();
+                    try {
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+
+                        JSON_PARSE_DATA_AFTER_WEBCALL22(jsonObject.getJSONArray("data"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("data", "22");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("data", "2");
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("data", "3");
+        }
+    }
+
+
+
+String status="";
+    public void JSON_PARSE_DATA_AFTER_WEBCALL22(JSONArray array) {
+        if (array.length() == 0) {
+            li_checkbox.setVisibility(View.GONE);
+
+        } else {
+
+
+            JSONObject json = null;
+
+            for (int i = 0; i < array.length(); i++) {
+                try {
+
+                    json = array.getJSONObject(i);
+                     status = json.getString("status") + "";
+
+
+                } catch (Exception ex) {
+
+                    //    Log.e("catch", ex.getLocalizedMessage());
+
+                }
+            }
+
+
+         //   Log.e("statusstatus",status);
+
+            if(status.equals("OK")){
+                li_checkbox.setVisibility(View.VISIBLE);
+
+
+
+
+
+
+
+
+                try {
+                    Log.e("UsedProductModelID",mainDebtorCustomerInfo.UsedProductModelID);
+
+                    if(status.equals("OK")) {
+
+                        if (mainDebtorCustomerInfo.UsedProductModelID.equals("VIP")) {
+
+                            // checkBoxvip.se(false);
+                            checkBoxvip.setChecked(true);
+                        } else {
+                            checkBoxvip.setChecked(false);
+
+                        }
+                    }
+                    else {
+
+                    }
+                }
+                catch (Exception ex){
+
+                }
+
+
+
+
+            }
+            else {
+                li_checkbox.setVisibility(View.GONE);
+
+            }
+
+
+        }
+    }
+
 }
