@@ -1,6 +1,7 @@
 package th.co.thiensurat.fragments.sales;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -28,6 +29,9 @@ import th.co.thiensurat.data.info.HabitatTypeInfo;
 import th.co.thiensurat.data.info.HobbyInfo;
 import th.co.thiensurat.data.info.SuggestionInfo;
 import th.co.thiensurat.fragments.credit.Audit.CheckCustomersMainFragment;
+
+import static th.co.thiensurat.fragments.sales.New2SaleCustomerAddressCardFragment.check_box_status;
+import static th.co.thiensurat.fragments.sales.New2SaleCustomerAddressCardFragment.status;
 
 public class SaleMoreDetailAddress extends BHFragment {
 
@@ -108,6 +112,9 @@ public class SaleMoreDetailAddress extends BHFragment {
         txtNumber4.setText("10");
         txtNumber5.setText("11");
         txtNumber5.setBackgroundResource(R.drawable.circle_number_sale_color_red);
+
+
+        Log.e("vvvv","final");
 
         BindingSpinner();
         GetContractData();
@@ -451,7 +458,51 @@ public class SaleMoreDetailAddress extends BHFragment {
                 debcustomer.HobbyCode = HobbyCode;
                 debcustomer.HobbyDetail = editTextHobby.getText().toString();
                 debcustomer.IsUsedProduct = false;
-                debcustomer.UsedProductModelID = "";
+
+              //  debcustomer.UsedProductModelID = "";
+
+
+
+                try {
+                    if (debcustomer.UsedProductModelID.equals("VIP")) {
+
+                        // checkBoxvip.se(false);
+                        debcustomer.UsedProductModelID = "VIP";// ชื่อกรรมการผู้มีอำนาจ
+                    } else {
+                        debcustomer.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
+
+                    }
+                }
+                catch (Exception ex){
+
+                }
+
+
+
+
+        /*        if(status.equals("OK")){
+                    //cust.OrganizationCode = "3";// ชื่อกรรมการผู้มีอำนาจ
+
+                    if(check_box_status==1){
+                        debcustomer.UsedProductModelID = "VIP";// ชื่อกรรมการผู้มีอำนาจ
+
+                    }
+                    else {
+                        debcustomer.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
+
+                    }
+
+
+                }
+                else {
+                    debcustomer.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
+
+                    // cust.OrganizationCode = BHPreference.organizationCode();
+
+                }*/
+
+
+
                 debcustomer.SuggestionCode = SuggestionCode;
                 debcustomer.SuggestionDetail = editTextSuggestion.getText().toString();
 

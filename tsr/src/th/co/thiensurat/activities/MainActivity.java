@@ -64,8 +64,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -95,11 +93,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 //import th.co.bighead.utilities.BHActivity;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHActivity;
+import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHArrayAdapter;
 import th.co.bighead.utilities.BHBluetoothPrinter.BHBluetoothPrinter;
 import th.co.bighead.utilities.BHFragment;
@@ -209,6 +204,9 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
     //variable for print version 2
     public static final int REQUEST_ENABLE_BT = 2;
     public static final int REQUEST_CONNECT_DEVICE = 1;
+
+
+    public  static  String EMPID="";
     //********************************************************************************//
     //*************************** BLUE TOOTH CONNECTION ******************************//
     //********************************************************************************//
@@ -339,6 +337,9 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         /*** [END] :: offset statusBar ***/
 
         String userProfileString = String.format("รหัสพนักงาน: %s \nชื่อ: %s \nตำแหน่ง: %s", BHPreference.employeeID(), BHPreference.userFullName(), BHPreference.PositionName());
+
+
+
 
         userProfileString = String.format("%s\nRun on : %s", userProfileString, BHGeneral.SERVICE_MODE.toString());
         tvUserDetail.setText(userProfileString);

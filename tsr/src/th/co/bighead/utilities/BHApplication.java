@@ -27,15 +27,32 @@ import org.acra.sender.HttpSender;
 public class BHApplication extends Application {
 	private static Context context;
 
+
+
+
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		ACRA.init(this);
 		BHApplication.context = getApplicationContext();
 		FirebaseApp.initializeApp(this);
+
+
 	}
 
 	public static Context getContext() {
 		return BHApplication.context;
 	}
+
+
+
+
+
+
+
+
+
+
+
 }

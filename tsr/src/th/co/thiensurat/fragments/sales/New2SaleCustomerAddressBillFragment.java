@@ -69,6 +69,8 @@ import th.co.thiensurat.data.info.SalePaymentPeriodInfo;
 import th.co.thiensurat.data.info.SubDistrictInfo;
 import th.co.thiensurat.fragments.contracts.change.ChangeContractResultFragment;
 
+import static th.co.thiensurat.fragments.sales.New2SaleCustomerAddressCardFragment.check_box_status;
+import static th.co.thiensurat.fragments.sales.New2SaleCustomerAddressCardFragment.status;
 import static th.co.thiensurat.fragments.sales.New2SaleCustomerAddressCardFragment.mPersonal;
 import static th.co.thiensurat.fragments.sales.New2SaleCustomerAddressCardFragment.select_read_card;
 
@@ -2143,12 +2145,47 @@ public class New2SaleCustomerAddressBillFragment extends BHFragment {
                         cust.AuthorizedName = null;// ชื่อกรรมการผู้มีอำนาจ
 
 
-                      /*  if(select_read_card==1){
-                            cust.AuthorizedIDCard = mPersonal.getIssueDate()+"#"+mPersonal.getExpireDate(); // เลขบัตรกรรมการผู้มีอำนาจxcxaCsaxcsCs
+
+
+                        try {
+                            if (mainDebtorCustomerInfo.UsedProductModelID.equals("VIP")) {
+
+                                // checkBoxvip.se(false);
+                                cust.UsedProductModelID = "VIP";// ชื่อกรรมการผู้มีอำนาจ
+                            } else {
+                                cust.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
+
+                            }
+                        }
+                        catch (Exception ex){
+
+                        }
+
+
+
+                   /*     if(status.equals("OK")){
+                            //cust.OrganizationCode = "3";// ชื่อกรรมการผู้มีอำนาจ
+
+                            if(check_box_status==1){
+                                cust.UsedProductModelID = "VIP";// ชื่อกรรมการผู้มีอำนาจ
+
+                            }
+                            else {
+                                cust.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
+
+                            }
+
+
                         }
                         else {
-                            cust.AuthorizedIDCard = null; // เลขบัตรกรรมการผู้มีอำนาจ
+                            cust.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
+
+                            // cust.OrganizationCode = BHPreference.organizationCode();
+
                         }*/
+
+
+
 
 
                         if(select_read_card==1){
@@ -2199,6 +2236,28 @@ public class New2SaleCustomerAddressBillFragment extends BHFragment {
                         cust.Brithday = c.getTime();
 
                         cust.Sex = null;// เพศ
+
+
+
+                        try {
+                            if (mainDebtorCustomerInfo.UsedProductModelID.equals("VIP")) {
+
+                                // checkBoxvip.se(false);
+                                cust.UsedProductModelID = "VIP";// ชื่อกรรมการผู้มีอำนาจ
+                            } else {
+                                cust.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
+
+                            }
+                        }
+                        catch (Exception ex){
+
+                        }
+
+
+
+
+
+
                         break;
 
                     case FOREIGNER://บุคคลต่างชาติ
@@ -2224,6 +2283,27 @@ public class New2SaleCustomerAddressBillFragment extends BHFragment {
                         cust.Brithday = c.getTime();
 
                         cust.Sex = spinnerSex.getSelectedItem().toString();// เพศ
+
+
+
+                        try {
+                            if (mainDebtorCustomerInfo.UsedProductModelID.equals("VIP")) {
+
+                                // checkBoxvip.se(false);
+                                cust.UsedProductModelID = "VIP";// ชื่อกรรมการผู้มีอำนาจ
+                            } else {
+                                cust.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
+
+                            }
+                        }
+                        catch (Exception ex){
+
+                        }
+
+
+
+
+
                         break;
                 }
 
@@ -2239,7 +2319,7 @@ public class New2SaleCustomerAddressBillFragment extends BHFragment {
                     cust.HobbyCode = customerInfo.HobbyCode;
                     cust.HobbyDetail = customerInfo.CareerDetail;
                     cust.IsUsedProduct = customerInfo.IsUsedProduct;
-                    cust.UsedProductModelID = customerInfo.UsedProductModelID;
+                  //  cust.UsedProductModelID = customerInfo.UsedProductModelID;
                     cust.SuggestionCode = customerInfo.SuggestionCode;
                     cust.SuggestionDetail = customerInfo.SuggestionDetail;
                     cust.CreateDate = customerInfo.CreateDate;
@@ -2255,7 +2335,7 @@ public class New2SaleCustomerAddressBillFragment extends BHFragment {
                     cust.HobbyCode = "";
                     cust.HobbyDetail = "";
                     cust.IsUsedProduct = false;
-                    cust.UsedProductModelID = "";
+                 //   cust.UsedProductModelID = "";
                     cust.SuggestionCode = "";
                     cust.SuggestionDetail = "";
                     cust.CreateDate = new Date();

@@ -41,8 +41,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -52,6 +50,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHBitmap;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHGeneral;
@@ -71,6 +70,7 @@ import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.controller.ContractImageController;
 import th.co.thiensurat.data.controller.DatabaseHelper;
+import th.co.thiensurat.data.controller.EmployeeDetailController;
 import th.co.thiensurat.data.info.AddressInfo;
 import th.co.thiensurat.data.info.AssignInfo;
 import th.co.thiensurat.data.info.ChangeContractInfo;
@@ -78,6 +78,7 @@ import th.co.thiensurat.data.info.ContractImageInfo;
 import th.co.thiensurat.data.info.ContractInfo;
 import th.co.thiensurat.data.info.DebtorCustomerInfo;
 import th.co.thiensurat.data.info.DistrictInfo;
+import th.co.thiensurat.data.info.EmployeeDetailInfo;
 import th.co.thiensurat.data.info.GenderInfo;
 import th.co.thiensurat.data.info.MonthInfo;
 import th.co.thiensurat.data.info.PaymentInfo;
@@ -97,13 +98,19 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
     private int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     private static int MEDIA_TYPE_IMAGE = 1;
     private static String IMAGE_DIRECTORY_NAME = BHPreference.RefNo();
+
+
+    private static String EMPID = BHPreference.employeeID();
+    public  static String status="";
+
+
     private Uri fileUri;
     private static String Parth;
     private GPSTracker gps;
 
     private final String imageTypeCode = ContractImageController.ImageType.CUSTOMER.toString();
     private String imageID;
-    public int check_box_status=0;
+    public static int check_box_status=0;
 
 
    static public int select_read_card=0;
@@ -366,6 +373,49 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
         data = getData();
+
+
+
+
+       // List<EmployeeDetailInfo> empinfo = new EmployeeDetailController().getEmployeeDetail();
+        BHPreference bhPreference =new BHPreference();
+        bhPreference.employeeID();
+
+
+Log.e("EMPIDEMPID",bhPreference.employeeID());
+        if (isConnectingToInternet()) {
+           // li_checkbox.setVisibility(View.VISIBLE);
+
+            load_data_check_vip(bhPreference.employeeID());
+
+        }
+        else {
+            li_checkbox.setVisibility(View.GONE);
+
+        }
+
+
+
+        //  CheckBox chk = (CheckBox) findViewById(R.id.chk1);
+        checkBoxvip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean checked = ((CheckBox) v).isChecked();
+                // Check which checkbox was clicked
+                if (checked){
+                    Log.e("UsedProductModelID","ON");
+                    check_box_status=1;
+
+                }
+                else{
+                    Log.e("UsedProductModelID","OFF");
+                    check_box_status=0;
+
+                }
+            }
+        });
+
+
 
         /*** [START] :: Permission ***/
         /*gps = new GPSTracker(getActivity());
@@ -659,18 +709,9 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
 
                     editTextName.setText(mainDebtorCustomerInfo.CustomerName); //ชื่อ-สกุล
 
+                //  String EMPID= BHApplication.getInstance().getPrefManager().getPreferrence("EMPID");
 
 
-
-                    if (isConnectingToInternet()) {
-                       // li_checkbox.setVisibility(View.VISIBLE);
-                        Log.e("empid",BHPreference.employeeID());
-                        load_data_check_vip(BHPreference.employeeID());
-                    }
-                    else {
-                        li_checkbox.setVisibility(View.GONE);
-
-                    }
 
 
 
@@ -701,25 +742,6 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
                     }*/
 
 
-
-
-                  //  CheckBox chk = (CheckBox) findViewById(R.id.chk1);
-                    checkBoxvip.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            boolean checked = ((CheckBox) v).isChecked();
-                            // Check which checkbox was clicked
-                            if (checked){
-                                Log.e("UsedProductModelID","ON");
-                                check_box_status=1;
-                            }
-                            else{
-                                Log.e("UsedProductModelID","OFF");
-                                check_box_status=0;
-
-                            }
-                        }
-                    });
 
 
 
@@ -782,6 +804,27 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
                     // เพศ
                     ArrayAdapter sexAdapter = (ArrayAdapter) spinnerSex.getAdapter();
                     spinnerSex.setSelection(sexAdapter.getPosition(mainDebtorCustomerInfo.Sex));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     break;
 
                 case CORPORATION://นิติบุคคล
@@ -2445,7 +2488,7 @@ catch (Exception ex){
                             cust.AuthorizedName = null;// ชื่อกรรมการผู้มีอำนาจ
 
 
-                        if(status.equals("OK")){
+                       // if(status.equals("OK")){
                             //cust.OrganizationCode = "3";// ชื่อกรรมการผู้มีอำนาจ
 
                             if(check_box_status==1){
@@ -2458,13 +2501,13 @@ catch (Exception ex){
                             }
 
 
-                        }
-                        else {
+                       // }
+                     /*   else {
                             cust.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
 
                             // cust.OrganizationCode = BHPreference.organizationCode();
 
-                        }
+                        }*/
 
 
 
@@ -2517,6 +2560,20 @@ catch (Exception ex){
                         cust.Brithday = c.getTime();
 
                         cust.Sex = null;// เพศ
+
+
+                        if(check_box_status==1){
+                            cust.UsedProductModelID = "VIP";// ชื่อกรรมการผู้มีอำนาจ
+
+                        }
+                        else {
+                            cust.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
+
+                        }
+
+
+
+
                         break;
 
                     case FOREIGNER://บุคคลต่างชาติ
@@ -2542,6 +2599,23 @@ catch (Exception ex){
                         cust.Brithday = c.getTime();
 
                         cust.Sex = spinnerSex.getSelectedItem().toString();// เพศ
+
+
+
+
+
+                        if(check_box_status==1){
+                            cust.UsedProductModelID = "VIP";// ชื่อกรรมการผู้มีอำนาจ
+
+                        }
+                        else {
+                            cust.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
+
+                        }
+
+
+
+
                         break;
                 }
 
@@ -3579,7 +3653,7 @@ catch (Exception ex){
 
 
 
-String status="";
+
     public void JSON_PARSE_DATA_AFTER_WEBCALL22(JSONArray array) {
         if (array.length() == 0) {
             li_checkbox.setVisibility(View.GONE);
@@ -3616,25 +3690,22 @@ String status="";
 
 
 
-                try {
-                    Log.e("UsedProductModelID",mainDebtorCustomerInfo.UsedProductModelID);
 
-                    if(status.equals("OK")) {
+         try {
+             if (mainDebtorCustomerInfo.UsedProductModelID.equals("VIP")) {
 
-                        if (mainDebtorCustomerInfo.UsedProductModelID.equals("VIP")) {
+                 check_box_status=1;
 
-                            // checkBoxvip.se(false);
-                            checkBoxvip.setChecked(true);
-                        } else {
-                            checkBoxvip.setChecked(false);
+                 // checkBoxvip.se(false);
+                 checkBoxvip.setChecked(true);
+             } else {
+                 check_box_status=0;
+                 checkBoxvip.setChecked(false);
 
-                        }
-                    }
-                    else {
-
-                    }
+             }
                 }
                 catch (Exception ex){
+                    check_box_status=0;
 
                 }
 
