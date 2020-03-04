@@ -1032,18 +1032,10 @@ public class SaleReceiptPayment_new extends BHFragment {
 
                     if(payments.get(position).status_online==1){
                         tvBalancesOfPeriod.setText(payments.get(position).PeriodTotalPrice+bahtLabel);
-
-
-                    }
-                    else {
+                    } else {
                         tvBalancesOfPeriod.setText(BHUtilities.numericFormat(payments.get(position).BalancesOfPeriod) + bahtLabel);
-
                     }
-
-
-
                 }
-
 
                 /**ยอดคงเหลือของงวดถัดไป**/
                 LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
@@ -1072,23 +1064,11 @@ public class SaleReceiptPayment_new extends BHFragment {
                             }
                         }*/
 
-
-
-
-
                         if(payments.get(position).status_online==1){
                             tvBalanceAmountLabel.setText("คงเหลืองวดที่ xx-xx");
-
-                        }
-                      else {
+                        } else {
                             tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d - %d", payments.get(position).PaymentPeriodNumber + 1, payments.get(position).MODE));
-
                         }
-
-
-
-
-
                     }
 
                     if(payments.get(position).status_online==1){

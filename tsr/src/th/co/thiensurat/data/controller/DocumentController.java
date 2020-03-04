@@ -25,6 +25,7 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -69,8 +70,8 @@ import th.co.thiensurat.data.info.SendDocumentInfo;
 import th.co.thiensurat.data.info.SendMoneyInfo;
 import th.co.thiensurat.data.info.ShortReceiptInfo;
 
-import static android.graphics.Color.BLACK;
-import static android.graphics.Color.WHITE;
+//import static android.graphics.Color.BLACK;
+//import static android.graphics.Color.WHITE;
 
 public class DocumentController {
 
@@ -80,6 +81,9 @@ public class DocumentController {
     private static int LINE_FEED = 250;
     private static int LAYOUT_WIDTH = 1080;
     private static int PRINTER_LAYOUT_WIDTH = 580;
+
+    private static final int WHITE = 0xFFFFFFFF;
+    private static final int BLACK = 0xFF000000;
 
     private static String[] getText(String text, Paint p, float width) {
         String[] texts = text.split("\\s+");
@@ -4296,31 +4300,31 @@ public class DocumentController {
         receiptBuilder.addImage(shortHeaderPrint());
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
-//        receiptBuilder.setTextSize(24);
-//        receiptBuilder.addText("ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ");
-//        receiptBuilder.addParagraph();
+        receiptBuilder.setTextSize(24);
+        receiptBuilder.addText("ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ");
+        receiptBuilder.addParagraph();
 
-        Bitmap imgTitle = Bitmap.createBitmap(RECEIPT_WIDTH, 65, Config.RGBA_F16);
-        imgTitle.setHasAlpha(true);
-        Canvas cvTitle = new Canvas(imgTitle);
-        cvTitle.drawColor(BLACK);
-        Paint rect = new Paint();
-        rect.setColor(BLACK);
-        rect.setStyle(Style.FILL);
-        rect.setAntiAlias(true);
-        cvTitle.drawBitmap(backgroundTitle(), 0, 0, null);
-        Paint pTitle = new Paint();
-        pTitle.setTypeface(Typeface.DEFAULT_BOLD);
-        pTitle.setTextSize(26);
-        pTitle.setTextAlign(Align.CENTER);
-        pTitle.setColor(WHITE);
-        pTitle.setStyle(Style.FILL);
-        pTitle.setAntiAlias(true);
-        cvTitle.drawText("ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ", RECEIPT_WIDTH / 2, 42, pTitle);
-        Bitmap title = Bitmap.createBitmap(RECEIPT_WIDTH, 65, Config.RGBA_F16);
-        Canvas cvTitle2 = new Canvas(title);
-        cvTitle2.drawBitmap(imgTitle, 0, 0, null);
-        receiptBuilder.addImage(imgTitle);
+//        Bitmap imgTitle = Bitmap.createBitmap(RECEIPT_WIDTH, 65, Config.ARGB_8888);
+//        imgTitle.setHasAlpha(true);
+//        Canvas cvTitle = new Canvas(imgTitle);
+//        cvTitle.drawColor(BLACK);
+//        Paint rect = new Paint();
+//        rect.setColor(BLACK);
+//        rect.setStyle(Style.FILL);
+//        rect.setAntiAlias(true);
+//        cvTitle.drawBitmap(backgroundTitle(), 0, 0, null);
+//        Paint pTitle = new Paint();
+//        pTitle.setTypeface(Typeface.DEFAULT_BOLD);
+//        pTitle.setTextSize(26);
+//        pTitle.setTextAlign(Align.CENTER);
+//        pTitle.setColor(WHITE);
+//        pTitle.setStyle(Style.FILL);
+//        pTitle.setAntiAlias(true);
+//        cvTitle.drawText("ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ", RECEIPT_WIDTH / 2, 42, pTitle);
+//        Bitmap title = Bitmap.createBitmap(RECEIPT_WIDTH, 65, Config.ARGB_8888);
+//        Canvas cvTitle2 = new Canvas(title);
+//        cvTitle2.drawBitmap(imgTitle, 0, 0, null);
+//        receiptBuilder.addImage(imgTitle);
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
 
@@ -4612,7 +4616,13 @@ public class DocumentController {
             receiptBuilder.setAlign(Paint.Align.CENTER);
             String SendMoneyBarcode = String.format("|010755600021300" + CR + "%s" + CR + "%s" + CR + "%s", sendMoney.Reference1, "", BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", ""));
 
-            Bitmap bmp = BHBarcode.generateCode128(SendMoneyBarcode, 580, 80);
+//            Bitmap bmp = BHBarcode.generateCode128(SendMoneyBarcode, 725, 95);
+
+            Bitmap bmpQR = createQRCode(SendMoneyBarcode);
+            receiptBuilder.addImage(bmpQR);
+            receiptBuilder.addBlankSpace(20);
+//            Bitmap bmp = createBarcode128(SendMoneyBarcode);
+            Bitmap bmp = BHBarcode.generateCode128(SendMoneyBarcode, 725, 95);
             receiptBuilder.addImage(bmp);
             receiptBuilder.addParagraph();
 
@@ -4674,12 +4684,18 @@ public class DocumentController {
     }
 
     public static Bitmap createBarcode128(String contents) {
+        String contentsToEncode = contents;
         EnumMap<EncodeHintType, Object> hint = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
-        hint.put(EncodeHintType.MARGIN, 5);
+        hint.put(EncodeHintType.MARGIN, 4);
         hint.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+        String encoding = guessAppropriateEncoding(contentsToEncode);
+        if (encoding != null) {
+            hint = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+            hint.put(EncodeHintType.CHARACTER_SET, encoding);
+        }
         BitMatrix result = null;
         try {
-            result = new MultiFormatWriter().encode(contents, BarcodeFormat.CODE_128, 800, 120, hint);
+            result = new MultiFormatWriter().encode(contents, BarcodeFormat.CODE_128, 780, 100, hint);
         } catch (WriterException e) {
             e.printStackTrace();
         }
@@ -4695,6 +4711,60 @@ public class DocumentController {
         Bitmap bit = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         bit.setPixels(pixels, 0, w, 0, 0, w, h);
         return bit;
+    }
+
+    public static Bitmap createQRCode(String contents) {
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(contents, BarcodeFormat.QR_CODE,250,250);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            return bitmap;
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static String guessAppropriateEncoding(CharSequence contents) {
+        // Very crude at the moment
+        for (int i = 0; i < contents.length(); i++) {
+            if (contents.charAt(i) > 0xFF) {
+                return "UTF-8";
+            }
+        }
+        return null;
+    }
+
+    public static Bitmap createBarcodeByLibrary(String content) {
+        Bitmap bitmap = null;
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        File barcode = new File(getAlbumStorageDir("barcode"), "barcode.jpg");
+//
+//        BarCode code128 = new BarCode();
+//        code128.setCodeToEncode(content);
+//        code128.setSymbology(IBarCode.CODE128);
+//        code128.setX(2);
+//        code128.setY(50);
+//        code128.setRightMargin(0);
+//        code128.setLeftMargin(0);
+//        code128.setTopMargin(0);
+//        code128.setBottomMargin(0);
+//        code128.setChecksumEnabled(false);
+//        code128.setFnc1(IBarCode.FNC1_NONE);
+//
+//        try
+//        {
+//            code128.draw(barcode.getAbsolutePath());
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        bitmap = BitmapFactory.decodeFile(barcode.getAbsolutePath(), bmOptions);
+
+//        Code128 code128 = new Code128();
+        return bitmap;
     }
 
     /**

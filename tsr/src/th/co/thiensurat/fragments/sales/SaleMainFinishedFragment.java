@@ -94,16 +94,12 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 						//-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป (Comment ตัวนี้ไปใช้ getContractStatusFinishForCreditBySearch แทน)
 						//contractList = TSRController.getContractStatusFinishForCredit(BHPreference.organizationCode(), ContractStatusName.COMPLETED.toString());
 						contractList = TSRController.getContractStatusFinishForCreditBySearch(BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%");
-
-
 						//Log.e("user",contractList.toString());
 						//Log.e("1111","1111");
 					} else {
-
 						if (BHPreference.IsSaleForCRD()) {
 							if (isContractDetails) {
 								contractList = TSRController.getContractStatusFinishForCreditBySearch(BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%");
-
 								//Log.e("1111","2222");
 							} else {
 								contractList = TSRController.getContractStatusFinishForCRD(BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
@@ -114,18 +110,10 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 							//Log.e("1111","4444");
 						}
 					}
-
 					//Log.e("TEST_SPEED","1111");
-
                    Log.e("contractList_SI",contractList.size()+"");
-
-
-
-
-
-
-
-
+				} catch (NullPointerException ex) {
+					ex.printStackTrace();
 				} catch (Exception e) {
 					// TODO: handle exception
 					e.printStackTrace();
@@ -134,33 +122,31 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 			@Override
 			protected void after() {
 				// TODO Auto-generated method stub
-				if (contractList != null) {
-					//Log.e("TEST_SPEED","222222");
-
-					if (isConnectingToInternet()) {
-
-
-						String SOU=	BHPreference.sourceSystem();
-						if(SOU.equals("Credit")){
-
-							dialog = ProgressDialog.show(activity, "",
-									"Loading...", true);
-
-
-							//new PaymentController().deletePaymentByRefNo(BHPreference.RefNo());
-
-							load_data();
-						}
-						else {
+				try {
+					if (contractList != null) {
+						//Log.e("TEST_SPEED","222222");
+						if (isConnectingToInternet()) {
+							String SOU = BHPreference.sourceSystem();
+							if(SOU.equals("Credit")){
+								dialog = ProgressDialog.show(activity, "", "Loading...", true);
+								//new PaymentController().deletePaymentByRefNo(BHPreference.RefNo());
+								load_data();
+							} else {
+								bindContractList();
+							}
+						} else {
 							bindContractList();
 						}
-
+					} else {
+						listViewFinish.setVisibility(View.GONE);
+						textViewFinish.setVisibility(View.VISIBLE);
+						if(isCredit){
+							textViewFinish.setText("Finished List");
+						} else {
+							textViewFinish.setText("Finished Sales List");
+						}
 					}
-					else {
-						bindContractList();
-					}
-
-				} else {
+				} catch (NullPointerException ex) {
 					listViewFinish.setVisibility(View.GONE);
 					textViewFinish.setVisibility(View.VISIBLE);
 					if(isCredit){
@@ -175,7 +161,6 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 
 	public boolean isConnectingToInternet() {
 		ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 		boolean isConnected = activeNetwork != null &&
 				activeNetwork.isConnectedOrConnecting();
@@ -184,10 +169,7 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 	}
 
 	private void load_data() {
-
 		try {
-
-
 			Retrofit retrofit = new Retrofit.Builder()
 					.baseUrl(BASE_URL)
 					.addConverterFactory(GsonConverterFactory.create())
@@ -197,56 +179,35 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 			call.enqueue(new Callback() {
 				@Override
 				public void onResponse(Call call, retrofit2.Response response) {
-
 					Gson gson=new Gson();
 					try {
 						JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
-
 //						Log.e("data","1");
 //						Log.e("jsonObject",jsonObject.toString());
 						JSON_PARSE_DATA_AFTER_WEBCALL(jsonObject.getJSONArray("data"));
 					} catch (JSONException e) {
 						e.printStackTrace();
 						Log.e("data","22");
-
-
-
 					}
-
-
 				}
 
 				@Override
 				public void onFailure(Call call, Throwable t) {
 					Log.e("data","2");
-
-
 				}
 			});
-
 		} catch (Exception e) {
 			Log.e("data","3");
 		}
 	}
 
-
-
 	public void JSON_PARSE_DATA_AFTER_WEBCALL(JSONArray array) {
 //		Log.e("array.length()", valueOf(array.length()));
-
-
 		for (int i = 0; i < array.length(); i++) {
-
 			//GetData GetDataAdapter2 = new GetData();
-
 			JSONObject json = null;
 			try {
 				json = array.getJSONObject(i);
-
-
-
-
-
 				String CONTNO=json.getString("CONTNO")+"";
 				String RefNo=json.getString("RefNo")+"";
 
@@ -306,8 +267,6 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 				String IsMigrate=json.getString("IsMigrate")+"";
 				String PayStatus=json.getString("PayStatus")+"";
 
-
-
 				String Payment_PaymentID=json.getString("Payment_PaymentID")+"";
 				String Payment_OrganizationCode=json.getString("Payment_OrganizationCode")+"";
 				String Payment_SendMoneyID=json.getString("Payment_SendMoneyID")+"";
@@ -335,12 +294,6 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 				String Payment_CreateBy=json.getString("Payment_CreateBy")+"";
 				String Payment_LastUpdateBy=json.getString("Payment_LastUpdateBy")+"";
 
-
-
-
-
-
-
 				String EFFDATE=json.getJSONObject("EFFDATE").getString("date")+"";
 				String InstallDate=json.getJSONObject("InstallDate").getString("date")+"";
 				String todate=json.getJSONObject("todate").getString("date")+"";
@@ -356,9 +309,6 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 
 				if(!CONTNO.equals("null")){
 					updateAssignForPostpone(PayStatus,CONTNO);
-
-
-
 					try {
 						addContract(RefNo,CONTNO,CustomerID, OrganizationCode, STATUS, StatusCode,SALES,
 								TotalPrice, EFFDATE, HasTradeIn,TradeInProductCode, TradeInBrandCode,
@@ -372,11 +322,6 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 					catch (Exception ex){
 
 					}
-
-
-
-
-
 					try {
 						addPayment(Payment_PaymentID, Payment_OrganizationCode, Payment_SendMoneyID, Payment_PaymentType, Payment_PayPartial, Payment_BankCode,
 								Payment_ChequeNumber, Payment_ChequeBankBranch, Payment_ChequeDate, Payment_CreditCardNumber, Payment_CreditCardApproveCode,
@@ -387,58 +332,28 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 					catch (Exception ex){
 
 					}
-
-
-
-
 				}
-
-
 			} catch (JSONException e) {
 				//Log.e("Exception", e.getLocalizedMessage());
 				e.printStackTrace();
-
-
-
 			}
 		}
 
 		try {
 			dialog.dismiss();
-		}
-		catch (Exception ex){
+		} catch (Exception ex){
 
 		}
-
-
-
-
-
-
-
-
-
 		bindContractList();
 	}
 
-
-
-
-
-
-
-
-
-
 	private SQLiteDatabase database = null;
 	public void updateAssignForPostpone(String STATUSNAME,String CONTNO) {
-
 		String sql = "update Contract set [svcontno] = ? WHERE CONTNO =?";
 		//  String sql = "UPDATE Assign SET [Order] = ? WHERE AssignID = ?";
 		executeNonQuery2(sql, new String[]{STATUSNAME, CONTNO});
 	}
 	public void updateAssignForPostpone_DatePayment(String STATUSNAME,String REFNO) {
-
 		String sql = "update Contract set [svcontno] = ? WHERE CONTNO =?";
 		//  String sql = "UPDATE Assign SET [Order] = ? WHERE AssignID = ?";
 		executeNonQuery2(sql, new String[]{STATUSNAME, REFNO});
@@ -449,15 +364,9 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 
 
 		executeNonQuery3(sql, new String[]{CONTNO,CustomerID, OrganizationCode, STATUS,StatusCode,valueOf(SALES), valueOf(TotalPrice)});*/
-
-
 		String sql = "INSERT INTO Contract (RefNo,CONTNO, CustomerID, OrganizationCode, STATUS)"
 				+ "VALUES( ?, ?, ?, ?)";
-
-
 		executeNonQuery3(sql, new String[]{RefNo,CONTNO,CustomerID, OrganizationCode, STATUS});
-
-
 	}
 
 	public void addContract(String RefNo,String CONTNO, String CustomerID,String OrganizationCode,
@@ -478,8 +387,6 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 				+ "torefno, CreateDate,  CreateBy, LastUpdateDate, LastUpdateBy, SyncedDate, SaleSubTeamCode, TradeInReturnFlag, IsReadyForSaleAudit, ContractReferenceNo, IsMigrate)"
 				+ "VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-
-
 		executeNonQuery3(sql, new String[]{RefNo,CONTNO,CustomerID, OrganizationCode, STATUS, StatusCode,valueOf(SALES),
 				valueOf(TotalPrice), valueOf(EFFDATE), valueOf(HasTradeIn),TradeInProductCode, TradeInBrandCode,
 				TradeInProductModel, valueOf(TradeInDiscount), PreSaleSaleCode, PreSaleEmployeeCode, PreSaleEmployeeName, PreSaleTeamCode, SaleCode,
@@ -490,7 +397,6 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 				SaleSubTeamCode, valueOf(TradeInReturnFlag), valueOf(IsReadyForSaleAudit), ContractReferenceNo, valueOf(IsMigrate)});
 	}
 
-
 	public void addPayment(String Payment_PaymentID,String Payment_OrganizationCode,String Payment_SendMoneyID,String Payment_PaymentType,String Payment_PayPartial,String Payment_BankCode,
 						   String Payment_ChequeNumber,String Payment_ChequeBankBranch,String Payment_ChequeDate,String Payment_CreditCardNumber,String Payment_CreditCardApproveCode,
 						   String Payment_CreditEmployeeLevelPath,String Payment_TripID,String Payment_Status,String Payment_RefNo,String Payment_PayPeriod,String Payment_PayDate,String Payment_PAYAMT,
@@ -500,8 +406,6 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 				+ "ChequeDate, CreditCardNumber, CreditCardApproveCode, CreditEmployeeLevelPath, TripID, Status, RefNo, PayPeriod, PayDate, PAYAMT, CashCode, EmpID, TeamCode, "
 				+ "receiptkind, Kind, BookNo, ReceiptNo, CreateDate, CreateBy, LastUpdateDate, LastUpdateBy, SyncedDate)"
 				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-
 
 		executeNonQuery2(sql, new String[]{Payment_PaymentID,
 				Payment_OrganizationCode, Payment_SendMoneyID, Payment_PaymentType,
@@ -515,7 +419,6 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 				Payment_CreateBy, valueOf(Payment_LastUpdateDate), Payment_LastUpdateBy,
 				valueOf(Payment_SyncedDate)});
 	}
-
 
 	protected void executeNonQuery2(String sql, String[] args) {
 		openDatabase2();
@@ -533,6 +436,7 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 			closeDatabase2();
 		}
 	}
+
 	private void openDatabase2() {
 		database = DatabaseManager.getInstance().openDatabase();
 	}
@@ -540,19 +444,11 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 		closeDatabase2(false);
 	}
 	private void closeDatabase2(boolean force) {
-
-
-
 		if(force)
 			DatabaseManager.getInstance().forceCloseDatabase();
 		else
 			DatabaseManager.getInstance().closeDatabase();
 	}
-
-
-
-
-
 
 	protected void executeNonQuery3(String sql, String[] args) {
 		openDatabase3();
@@ -570,6 +466,7 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 			closeDatabase3();
 		}
 	}
+
 	private void openDatabase3() {
 		database = DatabaseManager.getInstance().openDatabase();
 	}
@@ -577,17 +474,11 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 		closeDatabase3(false);
 	}
 	private void closeDatabase3(boolean force) {
-
-
-
 		if(force)
 			DatabaseManager.getInstance().forceCloseDatabase();
 		else
 			DatabaseManager.getInstance().closeDatabase();
 	}
-
-
-
 
 	public static class ContractAdapter extends BHArrayAdapter<ContractInfo> {
 		public ContractAdapter(Context context, int resource, List<ContractInfo> objects) {
@@ -607,39 +498,28 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 		protected void onViewItem(final int position, View view, Object holder, final ContractInfo info) {
 			// TODO Auto-generated method stub
 			ViewHolder vh = (ViewHolder) holder;
-
-
             gg++;
-
             Log.e("position",position+","+gg);
             if(gg>148){
                 Log.e("info.CONTNO",info.CONTNO);
-
 				Log.e("info.svcontno",info.svcontno+"");
-
             }
 
 			vh.textViewContractnumber.setText("เลขที่สัญญา  :  "+ info.CONTNO);
 			vh.textViewName.setText	         ("ชื่อลูกค้า        :  "+ BHUtilities.trim(info.CustomerFullName) +" "+ BHUtilities.trim(info.CompanyName));
 			vh.textViewStatus.setText        ("สถานะ           :  "+ info.StatusName);
-
-
-		String SOU=	BHPreference.sourceSystem();
+			String SOU=	BHPreference.sourceSystem();
 			if(SOU.equals("Credit")){
 				vh.textViewStatus2.setVisibility(View.VISIBLE);
 				String DDD =info.svcontno+"";
 				if(DDD.equals("null")){
 					vh.textViewStatus2.setText        ("ชำระเงิน           :  "+ "เครดิต");
-				}
-				else {
+				} else {
 					vh.textViewStatus2.setText        ("ชำระเงิน           :  "+ info.svcontno+"");
 				}
-			}
-			else {
+			} else {
 				vh.textViewStatus2.setVisibility(View.GONE);
 			}
-
-
 
 			vh.imageDelete.setVisibility(View.GONE);
 
@@ -650,7 +530,6 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 				}
 			});
 		}
-
 	}
 
 	private void bindContractList() {
@@ -695,7 +574,7 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 					}.start();
 					/*** [END] :: Fixed - [BHPROJ-0026-3277][Android-รายละเอียดสัญญา] ในเมนูนี้ เหมือนว่าต้องการจะทำให้สามารถค้นหาสัญญาใด ๆ ก็ได้ แต่ปัจจุบันค้นหาได้เฉพาะสัญญาของตนเองเท่านั้น ***/
 
-				} catch (Exception e) {
+				} catch (NullPointerException e) {
 					// TODO: handle exception
 					e.printStackTrace();
 				}

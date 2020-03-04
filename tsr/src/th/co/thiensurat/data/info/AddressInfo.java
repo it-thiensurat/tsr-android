@@ -285,13 +285,14 @@ public class AddressInfo extends BHParcelable implements Serializable {
     }
 
     public static int addrCheckMultiLine(String addr) {
-        int soi = addr.indexOf("ซ.");
-        int road = addr.indexOf("ถ.");
-        if (soi > -1 || road > -1) {
-            return 3;
-        } else {
-            return 2;
-        }
+//        int soi = addr.indexOf("ซ.");
+//        int road = addr.indexOf("ถ.");
+//        if (soi > -1 || road > -1) {
+//            return 3;
+//        } else {
+//            return 2;
+//        }
+        return 3;
     }
 
     public static String addr1(String addr) {

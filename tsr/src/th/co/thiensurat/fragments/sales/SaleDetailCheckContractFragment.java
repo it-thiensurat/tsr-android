@@ -1,5 +1,7 @@
 package th.co.thiensurat.fragments.sales;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -363,7 +365,42 @@ public class SaleDetailCheckContractFragment extends BHFragment {
                     contract.StatusCode = "07";
                     contract.STATUS = ContractStatus.NORMAL.toString();
                     contract.EFFDATE = new Date();
-                    contract.FortnightID = fortnight.FortnightID;
+
+                    /**
+                     *
+                     * Edit by Teerayut Klinsa ga
+                     * 03/03/2022
+                     *
+                     */
+                    try {
+                        contract.FortnightID = fortnight.FortnightID;
+                    } catch (NullPointerException ex) {
+                        AlertDialog.Builder setupAlert;
+                        setupAlert = new AlertDialog.Builder(activity)
+                                .setTitle("พบข้อผิดพลาด")
+                                .setMessage("ไม่พบข้อมูลปักษ์\n("+ ex.getLocalizedMessage() +")")
+                                .setCancelable(false);
+
+                        setupAlert = setupAlert.setPositiveButton("ดำเนินการต่อ", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dialog.cancel();
+                            }
+                        }).setNeutralButton("ยกเลิกการทำรายการนี้", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                                showLastView();
+                            }
+                        });
+
+                        setupAlert.show();
+                    }
+                    /**
+                     *
+                     * End
+                     *
+                     */
+
                     /*** [START] :: Fixed - [BHPROJ-0024-3070] :: [Android-บันทึกข้อมูลสัญญา] แก้ไขในส่วนของการบันทึกข้อมูลสัญญาใน Field ContractReferenceNo ให้ถูกต้อง ***/
                     contract.ContractReferenceNo = String.valueOf(manualDoc.ManualRunningNo);
                     /*** [END] :: Fixed - [BHPROJ-0024-3070] :: [Android-บันทึกข้อมูลสัญญา] แก้ไขในส่วนของการบันทึกข้อมูลสัญญาใน Field ContractReferenceNo ให้ถูกต้อง ***/

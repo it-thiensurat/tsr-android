@@ -43,6 +43,8 @@ import java.util.Date;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import th.co.bighead.utilities.BHGeneral;
 import th.co.bighead.utilities.BHLoading;
@@ -634,13 +636,25 @@ public class ZJMiniThemalPrint {
                         }
                     };
                 } else {
+                    Timer timer = new Timer();
                     mJob = new Runnable() {
                         @Override
                         public void run() {
                             try {
                                 for (int i = 0; i < bmp.length; i++) {
-                                    printCustomBitmap(bmp[i], i, receiptType);
-                                    handler.onBackgroundPrinting(i);
+                                    if (i > 0) {
+                                        int j = i;
+                                        timer.schedule(new TimerTask() {
+                                            @Override
+                                            public void run() {
+                                                printCustomBitmap(bmp[j], j, receiptType);
+                                                handler.onBackgroundPrinting(j);
+                                            }
+                                        }, 5000);
+                                    } else {
+                                        printCustomBitmap(bmp[i], i, receiptType);
+                                        handler.onBackgroundPrinting(i);
+                                    }
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
