@@ -302,14 +302,16 @@ public class AddressInfo extends BHParcelable implements Serializable {
         int province = -1;
         int district = -1;
         int subdistrict = -1;
-        int line = addrCheckMultiLine(addr);
+        int moo = -1;
+//        int line = addrCheckMultiLine(addr);
 
-        if (line == 2) {
-            index = addr.indexOf("อ.");
-            if (index == -1) {
-                index = addr.indexOf("เขต");
-            }
-        } else {
+//        if (line == 2) {
+//            index = addr.indexOf("อ.");
+//            if (index == -1) {
+//                index = addr.indexOf("เขต");
+//            }
+//        } else {
+            moo = addr.indexOf("ม.");
             soi = addr.indexOf("ซ.");
             road = addr.indexOf("ถ.");
             subdistrict = addr.indexOf("ต.");
@@ -319,16 +321,20 @@ public class AddressInfo extends BHParcelable implements Serializable {
 
             if (soi > -1) {
                 if (road > -1) {
-                    index = road;
+                    index = moo; //มีซอย มีถนน
                 } else {
-                    index = subdistrict;
+                    index = soi; //มีซอย ไม่มีถนน
                 }
             } else {
                 if (road > -1) {
-                    index = road;
+                    index = road; // ไม่มีซอย มีถนน
+                } else {
+                    index = moo; // ไม่ีมีซอย ไม่มีถนน
                 }
             }
-        }
+//        }
+
+
         Log.e("addr1", addr.substring(0, index));
         return addr.substring(0, index);
     }
@@ -341,15 +347,18 @@ public class AddressInfo extends BHParcelable implements Serializable {
         int province = -1;
         int district = -1;
         int subdistrict = -1;
-        int line = addrCheckMultiLine(addr);
+        int moo = -1;
 
-        if (line == 2) {
-            index1 = addr.indexOf("อ.");
-            if (index1 == -1) {
-                index1 = addr.indexOf("เขต");
-            }
-            index2 = addr.length();
-        } else {
+        moo = addr.indexOf("ม.");
+//        int line = addrCheckMultiLine(addr);
+
+//        if (line == 2) {
+//            index1 = addr.indexOf("อ.");
+//            if (index1 == -1) {
+//                index1 = addr.indexOf("เขต");
+//            }
+//            index2 = addr.length();
+//        } else {
             soi = addr.indexOf("ซ.");
             road = addr.indexOf("ถ.");
 
@@ -358,26 +367,44 @@ public class AddressInfo extends BHParcelable implements Serializable {
                 subdistrict = addr.indexOf("แขวง");
             }
 
-            if (soi > -1) {
-                if (road > -1) {
-                    index1 = road;
-                } else {
-                    index1 = subdistrict;
-                }
+//            if (soi > -1) {
+//                if (road > -1) {
+//                    index1 = road;
+//                } else {
+//                    index1 = subdistrict;
+//                }
+//            } else {
+//                if (road > -1) {
+//                    index1 = soi;
+//                } else {
+//                    index1 = road;
+//                }
+//            }
+        if (soi > -1) {
+            if (road > -1) {
+                index1 = moo; //มีซอย มีถนน
             } else {
-                if (road > -1) {
-                    index1 = road;
-                }
+                index1 = soi; //มีซอย ไม่มีถนน
             }
-
-            province = addr.indexOf("จ.");
-            if (province == -1) {
-                province = addr.indexOf("กรุงเทพมหานคร");
-//                Log.e("province", String.valueOf(province));
+        } else {
+            if (road > -1) {
+                index1 = road; // ไม่มีซอย มีถนน
+            } else {
+                index1 = moo; // ไม่ีมีซอย ไม่มีถนน
             }
-            index2 = province;
-//            Log.e("addr2", addr.substring(index1, index2));
         }
+
+//            province = addr.indexOf("จ.");
+//            if (province == -1) {
+//                province = addr.indexOf("กรุงเทพมหานคร");
+//            }
+//            index2 = province;
+            district = addr.indexOf("อ.");
+            if (district == -1) {
+                district = addr.indexOf("เขต");
+            }
+            index2 = district;
+//        }
         Log.e("index1", String.valueOf(index1));
         Log.e("index2", String.valueOf(index2));
         Log.e("addr2", addr.substring(index1, index2));
@@ -386,11 +413,17 @@ public class AddressInfo extends BHParcelable implements Serializable {
 
     public static String addr3(String addr) {
         int province = -1;
+        int district = -1;
         province = addr.indexOf("จ.");
         if (province == -1) {
             province = addr.indexOf("กรุงเทพมหานคร");
         }
-        Log.e("addr3", addr.substring(province, addr.length()));
-        return addr.substring(province, addr.length());
+
+        district = addr.indexOf("อ.");
+        if (district == -1) {
+            district = addr.indexOf("เขต");
+        }
+        Log.e("addr3", addr.substring(district, addr.length()));
+        return addr.substring(district, addr.length());
     }
 }

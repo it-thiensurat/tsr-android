@@ -83,7 +83,7 @@ public class SaleContractPrintFragment extends BHFragment {
     // public static String FRAGMENT_SALE_CONTRACT_PRINT_TAG =
     // "sale_first_payment_tag";
     private static final String STATUS_CODE = "07";
-    private static String TSR_COMMITTEE_NAME = "นายวิรัช  วงศ์นิรันดร์";
+    private static String TSR_COMMITTEE_NAME = "";
     SQLiteDatabase sqLiteDatabase;
     Cursor cursor;
     private List<PaymentInfo> payments;
@@ -189,20 +189,12 @@ public class SaleContractPrintFragment extends BHFragment {
     /*** [START] :: Fixed - [BHPROJ-0024-3080] :: [Android-รายละเอียดสัญญา] แก้ไขให้แสดงค่า 'เลขที่อ้างอิง' โดยเปลี่ยนให้ดึงมาจากค่าข้อมูลใน [Contract].ContractReferenceNo แทน ***/
     //ManualDocumentInfo manual;
     /*** [END] :: Fixed - [BHPROJ-0024-3080] :: [Android-รายละเอียดสัญญา] แก้ไขให้แสดงค่า 'เลขที่อ้างอิง' โดยเปลี่ยนให้ดึงมาจากค่าข้อมูลใน [Contract].ContractReferenceNo แทน ***/
-
-
-
-//    List<GET_data_payment_online> get_data_payment_onlines;
-//    GET_data_payment_online get_data_payment_online;
-
     private Data data;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         payments=new ArrayList<>();
-
         data = getData();
     }
 
@@ -240,24 +232,15 @@ public class SaleContractPrintFragment extends BHFragment {
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
-
         if (BHPreference.ProcessType().equals(ProcessType.Sale.toString())) {
             saveStatusCode();
         }
-
-//        get_data_payment_onlines = new ArrayList<>();
-
         loadData();
-
-
-
         linearLayoutPayment.setVisibility(View.GONE);
     }
 
     private void loadData() {
         (new BackgroundProcess(activity) {
-
-
             @Override
             protected void calling() {
                 // TODO Auto-generated method stub
@@ -383,7 +366,6 @@ public class SaleContractPrintFragment extends BHFragment {
 //                    sqLiteDatabase.execSQL("DELETE FROM " + SQLiteHelper.TABLE_NAME + "");
 
 
-
                     load_data(BHUtilities.trim(contract.CONTNO));
 
                     if (contract.MODE == 1) {
@@ -408,7 +390,6 @@ public class SaleContractPrintFragment extends BHFragment {
                         linearLayoutCash.setVisibility(View.VISIBLE);
                         linearLayoutCredit.setVisibility(View.GONE);
                         txtCustomer.setText(String.format("(%s%s)", BHUtilities.trim(contract.CustomerFullName), BHUtilities.trim(contract.CompanyName)));
-
                     } else {
                         // YIM Dummy Signature image into view
                         /*
@@ -430,17 +411,33 @@ public class SaleContractPrintFragment extends BHFragment {
 
                         // txtCustomerName.setText(BHUtilities.trim("("
                         // + contract.CustomerFullName + ")"));
-                        txtSaleLeaderName.setText(BHUtilities.trim("("
-                                + ((contract.upperEmployeeName == null || contract.upperEmployeeName.isEmpty()) ? "" : contract.upperEmployeeName) + ")"));
-                        txtSaleEmpName.setText(BHUtilities.trim("(" + contract.SaleEmployeeName + ")"));
-                        txtSaleTeamName.setText(BHUtilities.trim(""
-                                + ((contract.SaleTeamName == null || contract.SaleTeamName.isEmpty()) ? "" : contract.SaleTeamName)));
+                        try {
+                            txtSaleLeaderName.setText(BHUtilities.trim("("
+                                    + ((contract.upperEmployeeName == null || contract.upperEmployeeName.isEmpty()) ? "" : contract.upperEmployeeName) + ")"));
+                            txtSaleTeamName.setText(BHUtilities.trim(""
+                                    + ((contract.SaleTeamName == null || contract.SaleTeamName.isEmpty()) ? "" : contract.SaleTeamName)));
+                            /**
+                             *
+                             * Edit by Teerayut Klinsanga
+                             * 2020-03-10
+                             *
+                             */
+                            if (contract.SaleEmployeeName.equals(contract.upperEmployeeName)) {
+                                txtSaleEmpName.setText("(                   )");
+                                txtSaleEmpID.setText(BHUtilities.trim("รหัส "));
+                            } else {
+                                txtSaleEmpName.setText(BHUtilities.trim("(" + contract.SaleEmployeeName + ")"));
+                                txtSaleEmpID.setText(BHUtilities.trim("รหัส " + contract.SaleCode));
+                            }
+                            /**
+                             *
+                             * End
+                             *
+                             */
+                        } catch (NullPointerException ex) {
 
-                        txtSaleEmpID.setText(BHUtilities.trim("รหัส " + contract.SaleCode));
-
+                        }
                     }
-
-
                     txtFirstPaymentAmount.setText(BHUtilities.numericFormat(contract.PaymentAmount - contract.TradeInDiscount));
 
 
@@ -505,11 +502,9 @@ public class SaleContractPrintFragment extends BHFragment {
                     }
 
                     btnVoidContract.setVisibility(View.GONE);
-
                     Calendar c = Calendar.getInstance();
                     SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
                     String currentDate = df.format(c.getTime());
-
 
                     try {
                         String ContractDate = df.format(contract.EFFDATE);
@@ -520,10 +515,6 @@ public class SaleContractPrintFragment extends BHFragment {
                     catch (Exception rr){
 
                     }
-
-
-
-
 
                     btnVoidContract.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -574,10 +565,7 @@ public class SaleContractPrintFragment extends BHFragment {
                             imgSignature.setEnabled(false);
                         }
                     }
-//                    if (!contract.STATUS.equals("VOID") && Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract) {
-//                        signature_layout.setVisibility(View.GONE);
-//                    }
-//
+
                     if (contract.EFFDATE != null) {
                         Calendar cEFFDATE = Calendar.getInstance();
                         cEFFDATE.setTime(contract.EFFDATE);
@@ -595,7 +583,6 @@ public class SaleContractPrintFragment extends BHFragment {
                         cEndDate.set(Calendar.MILLISECOND, 999);
 
                         if (cEFFDATE.before(cStartDate) || cEFFDATE.after(cEndDate)) {
-//                            signature_layout.setVisibility(View.GONE);
                             btnSignature.setVisibility(View.GONE);
                             editTextSign.setVisibility(View.GONE);
 
@@ -607,16 +594,6 @@ public class SaleContractPrintFragment extends BHFragment {
                             }
                         }
                     }
-////
-////
-//                    if (!customerSign.exists()) {
-//                        btnSignature.setVisibility(View.VISIBLE);
-//                    } else {
-//                        bitmap = BitmapFactory.decodeFile(customerSign.getAbsolutePath(), bmOptions);
-//                        bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
-//                        btnSignature.setVisibility(View.GONE);
-//                        imgSignature.setImageBitmap(getResizedBitmap(bitmap, 250, 80));
-//                    }
 
                     imgSignature.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -635,32 +612,21 @@ public class SaleContractPrintFragment extends BHFragment {
                             startActivityForResult(intent, 999);
                         }
                     });
-
-
                     /**
                      *
                      * End
                      *
                      */
-
-
                 } else {
                     scrollView1.setVisibility(View.GONE);
                     showMessage("ไม่พบข้อมูล");
                 }
-
             }
         }).start();
-
-
-
-
-
     }
 
     private void doVoidContract(final String RefNo, final String ContractNo, final String ProductSerialNumber){
         // ทำการยกเลิกสัญญา
-
         (new BackgroundProcess(activity) {
             ProductStockInfo ps = null;
 
@@ -669,7 +635,6 @@ public class SaleContractPrintFragment extends BHFragment {
                 // TODO Auto-generated method stub
 
                 TSRController.voidContract(RefNo, ContractNo,BHPreference.employeeID(), true);
-
                 ps = getProductStock(ProductSerialNumber, ProductStockController.ProductStockStatus.SOLD);
                 if (ps !=null) {
                     ps.ProductSerialNumber = ProductSerialNumber;
@@ -705,16 +670,8 @@ public class SaleContractPrintFragment extends BHFragment {
     }
 
 
-
-
-
-
-
     private void load_data(String CONCON) {
-
         try {
-
-
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -735,19 +692,12 @@ public class SaleContractPrintFragment extends BHFragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                         Log.e("data","22");
-
-
-
                     }
-
-
                 }
 
                 @Override
                 public void onFailure(Call call, Throwable t) {
                     Log.e("data","2");
-
-
                 }
             });
 
@@ -755,8 +705,6 @@ public class SaleContractPrintFragment extends BHFragment {
             Log.e("data","3");
         }
     }
-
-
 
     String ReceiptCode="";
     String CONTNO="";
@@ -773,11 +721,6 @@ public class SaleContractPrintFragment extends BHFragment {
     String PeriodTotalPrice="";
     String EFFDATE="";
     String DatePayment="";
-
-
-
-
-
     String SalePaymentPeriod_SalePaymentPeriodID="";
     String SalePaymentPeriod_RefNo="";
     String SalePaymentPeriod_PaymentPeriodNumber="";
@@ -795,9 +738,6 @@ public class SaleContractPrintFragment extends BHFragment {
     String SalePaymentPeriod_LastUpdateDate="";
     String SalePaymentPeriod_SyncedDate="";
     String DatePayment1="";
-    String paymentID="";
-
-
     String PaymentID="";
     String OrganizationCode="";
     String SendMoneyID="";
@@ -829,19 +769,12 @@ public class SaleContractPrintFragment extends BHFragment {
     String LastUpdateBy="";
     String SyncedDate="";
 
-
-
     public void JSON_PARSE_DATA_AFTER_WEBCALL(JSONArray array) {
         Log.e("array.length()", valueOf(array.length()));
         if(array.length()==0){
             sizee=0;
-        }
-        else {
+        } else {
             sizee=array.length();
-
-//            SQLiteDataBaseBuild();
-//            SQLiteTableBuild();
-
         }
 
         for (int i = 0; i < array.length(); i++) {
@@ -850,12 +783,9 @@ public class SaleContractPrintFragment extends BHFragment {
 
         //    final GET_data_payment_online GetDataAdapter2 = new GET_data_payment_online();
             final PaymentInfo GetDataAdapter2 = new PaymentInfo();
-
             JSONObject json = null;
             try {
                 json = array.getJSONObject(i);
-
-
                 ReceiptCode=json.getString("ReceiptCode")+"";
                 CONTNO=json.getString("CONTNO")+"";
                 CustomerName=json.getString("CustomerName")+"";
@@ -871,13 +801,6 @@ public class SaleContractPrintFragment extends BHFragment {
                 PeriodTotalPrice=json.getString("PeriodTotalPrice")+"";
                 EFFDATE=json.getString("EFFDATE")+"";
                 DatePayment=json.getString("DatePayment")+"";
-
-
-
-
-
-
-
                  SalePaymentPeriod_SalePaymentPeriodID=json.getString("SalePaymentPeriod_SalePaymentPeriodID")+"";
                  SalePaymentPeriod_RefNo=json.getString("SalePaymentPeriod_RefNo")+"";
                  SalePaymentPeriod_PaymentPeriodNumber=json.getString("SalePaymentPeriod_PaymentPeriodNumber")+"";
@@ -889,11 +812,6 @@ public class SaleContractPrintFragment extends BHFragment {
                  SalePaymentPeriod_CreateBy=json.getString("SalePaymentPeriod_CreateBy")+"";
                  SalePaymentPeriod_LastUpdateBy=json.getString("SalePaymentPeriod_LastUpdateBy")+"";
                  SalePaymentPeriod_CloseAccountDiscountAmount=json.getString("SalePaymentPeriod_CloseAccountDiscountAmount")+"";
-
-
-              //  paymentID=json.getString("DatePayment")+"";
-
-
                 PaymentID=json.getString("Payment_paymentID")+"";
                 OrganizationCode=json.getString("Payment_OrganizationCode")+"";
                 SendMoneyID=json.getString("Payment_SendMoneyID")+"";
@@ -918,53 +836,25 @@ public class SaleContractPrintFragment extends BHFragment {
                 Kind=json.getString("Payment_Kind")+"";
                 BookNo=json.getString("Payment_BookNo")+"";
                 ReceiptNo=json.getString("Payment_ReceiptNo")+"";
-
-
                 CreateBy=json.getString("Payment_CreateBy")+"";
                 LastUpdateBy=json.getString("Payment_LastUpdateBy")+"";
-
                 CreateDate=json.getJSONObject("Payment_CreateDate").getString("date")+"";
-
                 LastUpdateDate=json.getJSONObject("Payment_LastUpdateDate").getString("date")+"";
-
-
-
                 PayDate=json.getJSONObject("Payment_PayDate").getString("date")+"";
                 SyncedDate=json.getJSONObject("Payment_SyncedDate").getString("date")+"";
                 DatePayment1=json.getJSONObject("DatePayment1").getString("date")+"";
-
-
                 SalePaymentPeriod_CreateDate=json.getJSONObject("SalePaymentPeriod_CreateDate").getString("date")+"";
                  SalePaymentPeriod_PaymentDueDate=json.getJSONObject("SalePaymentPeriod_PaymentDueDate").getString("date")+"";
                  SalePaymentPeriod_PaymentAppointmentDate=json.getJSONObject("SalePaymentPeriod_PaymentAppointmentDate").getString("date")+"";
                  SalePaymentPeriod_LastUpdateDate=json.getJSONObject("SalePaymentPeriod_LastUpdateDate").getString("date")+"";
                  SalePaymentPeriod_SyncedDate=json.getJSONObject("SalePaymentPeriod_SyncedDate").getString("date")+"";
 
-
-       /*         GetDataAdapter2.setReceiptCode(json.getString("ReceiptCode"));
-                GetDataAdapter2.setCONTNO(json.getString("CONTNO"));
-                GetDataAdapter2.setCustomerName(json.getString("CustomerName"));
-                GetDataAdapter2.setIDCard(json.getString("IDCard"));
-
-
-                GetDataAdapter2.setProductName(json.getString("ProductName"));
-                GetDataAdapter2.setMODEL(json.getString("MODEL"));
-                GetDataAdapter2.setProductSerialNumber(json.getString("ProductSerialNumber"));
-*/
-
-
-
-                  // update_payment(DatePayment1,paymentID);
-
                 try {
                     addPayment(PaymentID, OrganizationCode, SendMoneyID, PaymentType, PayPartial, BankCode, ChequeNumber, ChequeBankBranch,
                             ChequeDate, CreditCardNumber, CreditCardApproveCode, CreditEmployeeLevelPath, TripID, Status, RefNo, PayPeriod, PayDate, PAYAMT, CashCode, EmpID, TeamCode, receiptkind, Kind, BookNo, ReceiptNo, CreateDate, CreateBy, LastUpdateDate, LastUpdateBy, SyncedDate);
+                } catch (Exception exx){
 
                 }
-                catch (Exception exx){
-
-                }
-
 
                 try {
                     addSalePaymentPeriod( SalePaymentPeriod_SalePaymentPeriodID, SalePaymentPeriod_RefNo, SalePaymentPeriod_PaymentPeriodNumber,
@@ -972,71 +862,15 @@ public class SaleContractPrintFragment extends BHFragment {
                             SalePaymentPeriod_PaymentDueDate, SalePaymentPeriod_PaymentAppointmentDate, SalePaymentPeriod_TripID,
                             SalePaymentPeriod_CreateDate, SalePaymentPeriod_CreateBy, SalePaymentPeriod_LastUpdateDate,
                             SalePaymentPeriod_LastUpdateBy, SalePaymentPeriod_SyncedDate, SalePaymentPeriod_CloseAccountDiscountAmount);
-                }
-                catch (Exception ex){
+                } catch (Exception ex){
 
                 }
-
-
-
             } catch (JSONException e) {
-                //Log.e("Exception", e.getLocalizedMessage());
                 e.printStackTrace();
-
             }
-            //get_data_payment_onlines.add(GetDataAdapter2);
             payments.add(GetDataAdapter2);
         }
-
-//        size_ww = get_data_payment_onlines.size();
-
-
-
-
-
-
-
-
-
-
-//        cursor = sqLiteDatabase.rawQuery("SELECT ReceiptCode,CONTNO,CustomerName,IDCard,AddressInstall,ProductName,MODEL,ProductSerialNumber,MaxPaymentPeriodNumber,TotalPayment,TotalPaymentText,PeriodTotal,PeriodTotalPrice,EFFDATE,DatePayment FROM "+ SQLiteHelper.TABLE_NAME+""  +" order  by ReceiptCode ASC"   , null);
-//        if (cursor.moveToFirst()) {
-//            do {
-//
-//
-//
-//
-//                String Table_ReceiptCode = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ReceiptCode));
-//                String Table_CONTNO = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_CONTNO));
-//                String Table_CustomerName = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_CustomerName));
-//                String Table_IDCard = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_IDCard));
-//                String Table_AddressInstall = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_AddressInstall));
-//                String Table_ProductName = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ProductName));
-//
-//                String Table_MODEL = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_MODEL));
-//                String Table_ProductSerialNumber = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_ProductSerialNumber));
-//                String Table_MaxPaymentPeriodNumber = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_MaxPaymentPeriodNumber));
-//                String Table_TotalPayment = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_TotalPayment));
-//
-//
-//                String Table_TotalPaymentText = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_TotalPaymentText));
-//                String Table_PeriodTotal = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_PeriodTotal));
-//                String Table_PeriodTotalPrice = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_PeriodTotalPrice));
-//                String Table_EFFDATE = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_EFFDATE));
-//                String Table_DatePayment = cursor.getString(cursor.getColumnIndex(SQLiteHelper.Table_DatePayment));
-//
-//                Log.e("Table_ReceiptCode", Table_ReceiptCode);
-//
-//
-//
-//
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-
         paymentPeriodOutput = new SalePaymentPeriodController().getSalePaymentPeriodByRefNoORDERBYPaymentPeriodNumber(BHPreference.RefNo());
-
-
     }
 
 
@@ -1111,30 +945,12 @@ public class SaleContractPrintFragment extends BHFragment {
         closeDatabase2(false);
     }
     private void closeDatabase2(boolean force) {
-
-
-
         if(force)
             DatabaseManager.getInstance().forceCloseDatabase();
         else
             DatabaseManager.getInstance().closeDatabase();
     }
 
-
-
-//    public void SQLiteDataBaseBuild(){
-//
-//        sqLiteDatabase = getActivity().openOrCreateDatabase(SQLiteHelper.DATABASE_NAME, Context.MODE_PRIVATE, null);
-//
-//    }
-//
-//    public void SQLiteTableBuild(){
-//
-//
-//        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS "+SQLiteHelper.TABLE_NAME+"("+ SQLiteHelper.Table_Column_ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+SQLiteHelper.Table_ReceiptCode+" VARCHAR, "+SQLiteHelper.Table_CONTNO+" VARCHAR, "+SQLiteHelper.Table_CustomerName+" VARCHAR, "+SQLiteHelper.Table_IDCard+" VARCHAR, "+SQLiteHelper.Table_AddressInstall+" VARCHAR, "+SQLiteHelper.Table_ProductName+" VARCHAR, "+SQLiteHelper.Table_MODEL+" VARCHAR, "+SQLiteHelper.Table_ProductSerialNumber+" VARCHAR, "+SQLiteHelper.Table_MaxPaymentPeriodNumber+" VARCHAR, "+SQLiteHelper.Table_TotalPayment+" VARCHAR, "+SQLiteHelper.Table_TotalPaymentText+" VARCHAR, "+SQLiteHelper.Table_PeriodTotal+" VARCHAR, "+SQLiteHelper.Table_PeriodTotalPrice+" VARCHAR, "+SQLiteHelper.Table_EFFDATE+" VARCHAR, "+SQLiteHelper.Table_DatePayment+" VARCHAR);");
-//
-//
-//    }
     @Override
     public void onProcessButtonClicked(int buttonID) {
         // TODO Auto-generated method stub
@@ -1172,7 +988,6 @@ public class SaleContractPrintFragment extends BHFragment {
 
                 /*** [END] :: Fixed - [BHPROJ-0024-3080] :: [Android-รายละเอียดสัญญา] แก้ไขให้แสดงค่า 'เลขที่อ้างอิง' โดยเปลี่ยนให้ดึงมาจากค่าข้อมูลใน [Contract].ContractReferenceNo แทน ***/
 
-//                printDocument();
                 break;
             case R.string.button_print:
                 if (contract != null){
@@ -1184,7 +999,6 @@ public class SaleContractPrintFragment extends BHFragment {
                     showMessage("ไม่พบข้อมูล");
                 }
                 break;
-
             case R.string.button_receipt:
                 if (data != null && data.resTitle != 0 && Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract) {
 /*                    SaleReceiptPayment.Data input = new SaleReceiptPayment.Data();

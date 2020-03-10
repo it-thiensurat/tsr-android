@@ -4224,6 +4224,11 @@ public class DocumentController {
             String saleteamname = "(" + BHUtilities.trim(contract.upperEmployeeName != null ? contract.upperEmployeeName : "") + ")";
             String saleteamcode = "" + BHUtilities.trim(contract.SaleTeamName != null ? contract.SaleTeamName : "");
 
+            if (contract.SaleEmployeeName.equals(contract.upperEmployeeName)) {
+                salename = "";
+                salecode = "";
+            }
+
             cv.drawText(String.format("%sพยาน", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("พยาน", pSignature) + 50))), RECEIPT_WIDTH / 4, yy, pSignature);
             cv.drawText(String.format("%sพยาน", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("พยาน", pSignature) + 50))), (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
 

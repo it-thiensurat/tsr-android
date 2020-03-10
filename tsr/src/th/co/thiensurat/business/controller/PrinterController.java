@@ -190,7 +190,7 @@ public class PrinterController {
                 super.onPrintCompleted();
 //                ZJMiniThemalPrint.setBarcodeString(barcode);
             }
-        }, "Barcode");
+        });
 
         /**
          * End
@@ -427,16 +427,11 @@ public class PrinterController {
          * Date 2019-08-21 10:35
          *
          */
-//        PaymentInfo paymentInfo = payments.get(0);
-
-
         if(withInterrupt) {
             mainActivity.printTextWithInterrupt(document, handler);
         }else{
-//            mainActivity.printText(document, handler);
-            mainActivity.printImageNew(bitmapList.toArray(new Bitmap[bitmapList.size()]), document, handler, "");
+            mainActivity.printImageNew(bitmapList.toArray(new Bitmap[bitmapList.size()]), document, handler);
         }
-
         /**
          * End
          */
@@ -1125,7 +1120,6 @@ public class PrinterController {
      *
      */
     public static void printNewImageContract(final ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
-
         DocumentHistoryInfo checkExist = TSRController.getDocumentHistoryByDocumentNumber(contract.RefNo, DocumentHistoryController.DocumentType.Contract.toString());
         List<List<PrintTextInfo>> documents = new ArrayList<>();
         List<Bitmap> bitmapList = new ArrayList<>();
@@ -1133,16 +1127,12 @@ public class PrinterController {
         for (int x = 0; x < limit; x++) {
             List<PrintTextInfo> document = DocumentController.getTextContract(contract, defaultAddress, installAddress);
             documents.add(document);
-
             bitmapList.add(DocumentController.getNewContactImage(contract, defaultAddress, installAddress));
         }
-
-        Log.e("Document size", documents.size() + "");
 
         mainActivity.printImageNew(bitmapList.toArray(new Bitmap[bitmapList.size()]), documents, new MainActivity.PrintHandler(){
             @Override
             public void onBackgroundPrinting(int index) {
-//                Log.e("Printing index", String.valueOf(index));
                 DocumentHistoryInfo docHist = new DocumentHistoryInfo();
                 DocumentHistoryInfo Hist;
 
@@ -1178,7 +1168,7 @@ public class PrinterController {
 
                 TSRController.addDocumentHistory(docHist, true);
             }
-        }, "");
+        });
     }
 
     /**

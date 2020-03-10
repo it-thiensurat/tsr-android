@@ -634,14 +634,6 @@
                             android:text="@string/change_contract_witness" />
 
                         <TextView
-                            android:id="@+id/txtSaleEmpName"
-                            style="@style/TextView.Value"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="" />
-
-                        <TextView
                             android:id="@+id/txtSaleEmpID"
                             style="@style/TextView.Value"
                             android:layout_width="match_parent"
@@ -729,5 +721,13 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/txtSaleEmpName"
+        style="@style/TextView.Value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="" />
 
 </LinearLayout>

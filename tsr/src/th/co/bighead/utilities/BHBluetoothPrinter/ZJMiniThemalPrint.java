@@ -598,7 +598,7 @@ public class ZJMiniThemalPrint {
      *
      */
 
-    public void connect(final String address, final Bitmap[] bmp, final List<List<PrintTextInfo>> detailPrint, final MainActivity.PrintHandler handler, boolean isWithInterrupt, String receiptType) {
+    public void connect(final String address, final Bitmap[] bmp, final List<List<PrintTextInfo>> detailPrint, final MainActivity.PrintHandler handler, boolean isWithInterrupt) {
         final ProgressDialog dialog = new ProgressDialog(mBHBluetoothPrinter.mActivity);
         dialog.setTitle("Plait wait");
         dialog.setMessage("Connecting");
@@ -647,12 +647,12 @@ public class ZJMiniThemalPrint {
                                         timer.schedule(new TimerTask() {
                                             @Override
                                             public void run() {
-                                                printCustomBitmap(bmp[j], j, receiptType);
+                                                printCustomBitmap(bmp[j], j);
                                                 handler.onBackgroundPrinting(j);
                                             }
                                         }, 5000);
                                     } else {
-                                        printCustomBitmap(bmp[i], i, receiptType);
+                                        printCustomBitmap(bmp[i], i);
                                         handler.onBackgroundPrinting(i);
                                     }
                                 }
@@ -667,14 +667,14 @@ public class ZJMiniThemalPrint {
                 Log.e("Check service", mService.getState() + "");
             }
         } finally {
-            if ("Barcode".equals(receiptType)) {
-                handler.onPrintCompleted();
-            }
+//            if ("Barcode".equals(receiptType)) {
+//                handler.onPrintCompleted();
+//            }
             dialog.dismiss();
         }
     }
 
-    public void printCustomBitmap(Bitmap bitmap, int index, String receiptType) {
+    public void printCustomBitmap(Bitmap bitmap, int index) {
         int nMode = 0;
         //paperWidth = 384, 576;
         String path = "";
