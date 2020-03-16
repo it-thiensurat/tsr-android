@@ -176,15 +176,12 @@ public class SaleReceiptPayment_new extends BHFragment {
                 ret = new int[]{R.string.button_print, R.string.button_save_manual_receipt, R.string.button_end};
                 break;
         }
-
         return ret;
     }
-
 
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
         data = getData();
-
         switch (Enum.valueOf(SaleFirstPaymentChoiceFragment.ProcessType.class, BHPreference.ProcessType())) {
             case FirstPayment:
                 lblTitle.setText(R.string.caption_payment_first);
@@ -215,7 +212,6 @@ public class SaleReceiptPayment_new extends BHFragment {
         } catch (NullPointerException ex) {
 
         }
-
     }
 
     private void saveStatusCode() {
@@ -653,14 +649,10 @@ public class SaleReceiptPayment_new extends BHFragment {
         public Object instantiateItem(ViewGroup container, final int position) {
             layoutInflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = layoutInflater.inflate(R.layout.view_sale_receipt_payment_item, container, false);
-
             PaymentInfo info = payments.get(position);
 //            Log.e("Log test", info.ReceiptCode);
 //            Log.e("Log test2", info.PaymentID);
 //            get_data_payment_onlines = new ArrayList<>();
-
-
-
 
             String bahtLabel = " บาท";
 //    try {
@@ -670,26 +662,17 @@ public class SaleReceiptPayment_new extends BHFragment {
             AddressInfo addressInfo = TSRController.getAddress(payments.get(position).RefNo, AddressInfo.AddressType.AddressInstall);
             //EmployeeInfo employeeInfo = TSRController.getEmployeeByEmployeeIDAndPositionCodeSaleAndCerdit(BHPreference.organizationCode(), payments.get(position).CreateBy);
             //EmployeeInfo employeeInfo = TSRController.getEmployeeByTreeHistoryIDAndEmployeeID(BHPreference.organizationCode(), payments.get(position).CreditEmployeeLevelPath, payments.get(position).CreateBy);
-
-
             TextView txtReceiptHeadTitle = (TextView) view.findViewById(R.id.txtReceiptHeadTitle);
 
             try {
                 if(payments.get(position).status_online==1){
                     txtReceiptHeadTitle.setText(txtReceiptHeadTitle.getText() + (payments.get(position).VoidStatus == true ? "  (QR PAYMENT)" : ""));
-                }
-                else {
+                } else {
                     txtReceiptHeadTitle.setText(txtReceiptHeadTitle.getText() + (payments.get(position).VoidStatus == true ? "  (ใบเสร็จถูกยกเลิก)" : ""));
-
                 }
-
-
-
             } catch (Exception e) {
 
             }
-
-
             TextView tvReceiptDate = (TextView) view.findViewById(R.id.tvReceiptDate); //วันที่รับเงิน
             tvReceiptDate.setText(BHUtilities.dateFormat(payments.get(position).PayDate));
 
@@ -723,7 +706,6 @@ public class SaleReceiptPayment_new extends BHFragment {
 
             }
 
-
             try {
                 tvCustomerName.setText(debtorCustomerInfo.CustomerFullName());
             } catch (Exception ex) {
@@ -736,13 +718,11 @@ public class SaleReceiptPayment_new extends BHFragment {
                 tvCitizenNo.setText(payments.get(position).IDCard);
             }
 
-
             try {
                 tvCustomerAddress.setText(addressInfo.Address());
             } catch (Exception ex) {
 
             }
-
 
             tvProductName.setText(payments.get(position).ProductName);
             textViewModel.setText(payments.get(position).MODEL);
@@ -752,75 +732,43 @@ public class SaleReceiptPayment_new extends BHFragment {
             /**ส่วนลดตัดสด**/
             LinearLayout llDiscount = (LinearLayout) view.findViewById(R.id.llDiscount); //ส่วนลดตัดสด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
             if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
-
-
-
                 if (payments.get(position).status_online == 1) {
-
                     llDiscount.setVisibility(View.GONE);
-
-                }
-                else {
+                } else {
                     llDiscount.setVisibility(View.VISIBLE);
                 }
-
-
-
                 TextView tvCloseAccountOutstandingAmountLabel = (TextView) view.findViewById(R.id.tvCloseAccountOutstandingAmountLabel); //ชำระงวดที่ 2-n
                 TextView tvCloseAccountOutstandingAmount = (TextView) view.findViewById(R.id.tvCloseAccountOutstandingAmount); //ชำระงวดที่ 2-n จำนวน
                 TextView tvDiscountAmount = (TextView) view.findViewById(R.id.tvDiscountAmount); //ส่วนลดตัดสด
                 LinearLayout sss = (LinearLayout) view.findViewById(R.id.sss); //ส่วนลดตัดสด
-
-
                 if (payments.get(position).status_online == 1) {
-
-
                     if(ssss!=0){
                         if(ssss>1){
                             tvCloseAccountOutstandingAmountLabel.setText("ชำระงวดที่ "+payments.get(position).PeriodTotal+ "\n (ชำระบางส่วน)");
-                        }
-                        else {
-
+                        } else {
                             tvCloseAccountOutstandingAmountLabel.setText("ชำระงวดที่ "+payments.get(position).PeriodTotal);
                         }
                     }
 
-                   tvCloseAccountOutstandingAmountLabel.setVisibility(View.GONE);
-
-
+                    tvCloseAccountOutstandingAmountLabel.setVisibility(View.GONE);
                   // tvCloseAccountOutstandingAmount.setText(TotalPayment+bahtLabel);
-
-
                     final SpannableString text = new SpannableString(payments.get(position).TotalPayment + bahtLabel);
                     text.setSpan(new StyleSpan(Typeface.BOLD), 0, text.length() - 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     text.setSpan(new ForegroundColorSpan(Color.RED), 0, text.length() - 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     tvCloseAccountOutstandingAmount.setText(text);
-
-
                     tvCloseAccountOutstandingAmount.setVisibility(View.GONE);
-
-
                     tvDiscountAmount.setText("xxxxxxxx b"+ bahtLabel);
-                   tvDiscountAmount.setVisibility(View.GONE);
+                    tvDiscountAmount.setVisibility(View.GONE);
                     sss.setVisibility(View.GONE);
-                }
-                else {
+                } else {
                     tvCloseAccountOutstandingAmountLabel.setText(String.format("ชำระงวดที่ %d-%d", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
                     tvCloseAccountOutstandingAmount.setText(BHUtilities.numericFormat(payments.get(position).CloseAccountOutstandingAmount) + bahtLabel);
-
-
-
                     tvDiscountAmount.setText(BHUtilities.numericFormat(payments.get(position).CloseAccountDiscountAmount) + bahtLabel);
                     tvDiscountAmount.setVisibility(View.VISIBLE);
                 }
-
-
-
-
             } else {
                 llDiscount.setVisibility(View.GONE);
             }
-
 
             /**ยอดเงินที่จ่ายมาตามใบเสร็จ**/
             TextView tvPeriodAmountLabel = (TextView) view.findViewById(R.id.tvPeriodAmountLabel); //ค่างวดเงินสด หรือ ค่างวดที่ 1/n ((ชำระบางส่วน) ถ้าชำระไม่ครบตามงวด)
@@ -835,38 +783,24 @@ public class SaleReceiptPayment_new extends BHFragment {
                 }
             } else {
                 if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
-
-
                     if(payments.get(position).status_online==1){
-
-
                         if(ssss!=0){
                             if(ssss>1){
                                 tvPeriodAmountLabel.setText("ค่างวดที่ "+payments.get(position).PeriodTotal+ "\n (ชำระบางส่วน)");
-                            }
-                            else {
-
+                            } else {
                                 tvPeriodAmountLabel.setText("ค่างวดที่ "+payments.get(position).MaxPaymentPeriodNumber);
                             }
                         }
-
                       //  tvPeriodAmountLabel.setText("ค่างวดที่ ");
-
                         final SpannableString text = new SpannableString(payments.get(position).TotalPayment + bahtLabel);
                         text.setSpan(new StyleSpan(Typeface.BOLD), 0, text.length() - 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         text.setSpan(new ForegroundColorSpan(Color.RED), 0, text.length() - 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                         tvPeriodAmount.setText(text);
+                    } else {
 
                     }
-                    else {
-
-                    }
-
-
                     //tvPeriodAmountLabel.setVisibility(View.GONE);   // แก้ไหม่
-
-
                 } else {
                     if (payments.get(position).BalancesOfPeriod == 0) {
                         String txtPeriodAmountLabel = "";
@@ -878,34 +812,13 @@ public class SaleReceiptPayment_new extends BHFragment {
                         tvPeriodAmountLabel.setText(String.format(txtPeriodAmountLabel, payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
                     } else {
                         if (payments.get(position).Amount == 0) {
-
-
                             if(payments.get(position).status_online==1){
                                 tvPeriodAmountLabel.setText("ค่างวดที่ xxxxxxxxx");
-
-                            }
-                            else {
+                            } else {
                                 tvPeriodAmountLabel.setText(String.format("ค่างวดที่ %d/%d\n", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
-
                             }
-
-
-
                         } else {
-
-
-
-
-                                tvPeriodAmountLabel.setText(String.format("ค่างวดที่ %d/%d\n(ชำระบางส่วน)", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
-
-
-
-
-
-
-
-
-
+                            tvPeriodAmountLabel.setText(String.format("ค่างวดที่ %d/%d\n(ชำระบางส่วน)", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
                         }
                     }
                 }
@@ -918,11 +831,9 @@ public class SaleReceiptPayment_new extends BHFragment {
                 periodAmount.setSpan(new StyleSpan(Typeface.BOLD), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//ตัวหนา
                 periodAmount.setSpan(new TextAppearanceSpan(activity, R.style.TextView_Value2), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//ขนาดตัว
 
-
                 if(payments.get(position).status_online==1) {
                     txtThaiBaht.setText(payments.get(position).TotalPaymentText+" บาทถ้วน");
                     //txtThaiBaht.setVisibility(View.GONE);
-
                 }
                 else {
                     tvPeriodAmount.setText(periodAmount, TextView.BufferType.SPANNABLE);
@@ -934,45 +845,31 @@ public class SaleReceiptPayment_new extends BHFragment {
                 periodAmount.setSpan(new ForegroundColorSpan(Color.RED), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//สี
                 periodAmount.setSpan(new StyleSpan(Typeface.BOLD), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//ตัวหนา
                 periodAmount.setSpan(new TextAppearanceSpan(activity, R.style.TextView_Value2), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//ขนาดตัว
-
-
-
                 if(payments.get(position).status_online==1) {
                     txtThaiBaht.setText(payments.get(position).TotalPaymentText+" บาทถ้วน");
                     txtThaiBaht.setVisibility(View.GONE);
-                }
-                else {
+                } else {
                     txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(payments.get(position).Amount)));
                     txtThaiBaht.setVisibility(View.VISIBLE);
                     tvPeriodAmount.setText(periodAmount, TextView.BufferType.SPANNABLE);
                 }
-
             }
 
             try {
-
-
                 if(payments.get(position).status_online==1){
                     //tvPeriodAmount.setVisibility(View.GONE);   // แก้ไข ฮาดโค้ด
                    // tvPeriodAmount.setText(BHUtilities.numericFormat(payments.get(position).Amount) + bahtLabel);
-                }
-                else {
+                } else {
                    // tvPeriodAmount.setVisibility(View.VISIBLE);   // แก้ไข ฮาดโค้ด
                     txtThaiBaht.setVisibility(payments.get(position).VoidStatus ? View.GONE : View.VISIBLE);
                     tvPeriodAmount.setText(payments.get(position).VoidStatus ? "ยกเลิกการชำระเงิน" : tvPeriodAmount.getText());
                 }
-
-
-
             } catch (Exception e) {
 
             }
 
-
             //tvPeriodAmount.setText(BHUtilities.numericFormat(payments.get(position).Amount) + bahtLabel);
             /*** [END] :: Fixed - [BHPROJ-0026-751] :: แก้ไขการแสดงผลในส่วนของ ยอดชำระเงิน ให้เป็นตัวสีแดง + ตัวหนา + เพิ่มขนาดตัวหนังสือมา 1 ระดับ***/
-
-
             //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
             if ((payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) || payments.get(position).VoidStatus) {
                 LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
@@ -983,12 +880,9 @@ public class SaleReceiptPayment_new extends BHFragment {
                     tvBalancesOfPeriod.setText(payments.get(position).PeriodTotalPrice+bahtLabel);
 
                     tvBalancesOfPeriodLabel.setText("คงเหลืองวดที่ "+payments.get(position).PeriodTotal);
-               }
-                else {
+                } else {
                     llBalancesOfPeriod.setVisibility(View.GONE);
                 }
-
-
                 LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
 
 
@@ -1007,28 +901,15 @@ public class SaleReceiptPayment_new extends BHFragment {
                 TextView tvBalancesOfPeriod = (TextView) view.findViewById(R.id.tvBalancesOfPeriod); //จำนวนเงินคงเหลือของงวด
 
                 if (payments.get(position).BalancesOfPeriod == 0) {
-
-
-
-                        llBalancesOfPeriod.setVisibility(View.GONE);
-
-
-
-
-
+                    llBalancesOfPeriod.setVisibility(View.GONE);
                 } else {
                     llBalancesOfPeriod.setVisibility(View.VISIBLE);
                     if (payments.get(position).MODE == 1) {
                         tvBalancesOfPeriodLabel.setText("คงเหลือเงินสด");
                     } else {
-
                         tvBalancesOfPeriodLabel.setText(String.format("คงเหลืองวดที่ %d", payments.get(position).PaymentPeriodNumber));
-
-
                        // tvBalancesOfPeriodLabel.setText("คงเหลืองวดที่ xx-xx");
                     }
-
-
 
                     if(payments.get(position).status_online==1){
                         tvBalancesOfPeriod.setText(payments.get(position).PeriodTotalPrice+bahtLabel);
@@ -1073,20 +954,12 @@ public class SaleReceiptPayment_new extends BHFragment {
 
                     if(payments.get(position).status_online==1){
                         tvBalanceAmount.setText(payments.get(position).TotalPaymentText+ bahtLabel);
-
-
-                    }
-                    else {
+                    } else {
                         tvBalanceAmount.setText(BHUtilities.numericFormat(payments.get(position).Balances - payments.get(position).BalancesOfPeriod) + bahtLabel);
-
                     }
-
-
-
                 }
 
             }
-
 
             /**ชำระโดยบัตรเครดิต**/
             LinearLayout llCreditAmount = (LinearLayout) view.findViewById(R.id.llCreditAmount); //ชำระโดยบัตรเครดิต ถ้าไม่ใช่ให้ซ่อน (แสดง/ซ่อน LinearLayout)
@@ -1135,9 +1008,6 @@ public class SaleReceiptPayment_new extends BHFragment {
             TextView txtSaleEmpName = (TextView) view.findViewById(R.id.txtSaleEmpName); //ชื่อเต็มของพนักงานที่ออกใบเสร็จ
             TextView txtSaleTeamName = (TextView) view.findViewById(R.id.txtSaleTeamName); //ทีมของพนักงานที่ออกใบเสร็จ
 
-
-
-
             if(payments.get(position).status_online==1){
                 //txtSaleEmpName.setText(String.format("(%s)", payments.get(position).SaleEmployeeName != null ? payments.get(position).SaleEmployeeName : ""));
                 //txtSaleTeamName.setText(String.format("(ทีม %s)", payments.get(position).TeamCode != null ? payments.get(position).TeamCode : ""));
@@ -1150,10 +1020,6 @@ public class SaleReceiptPayment_new extends BHFragment {
 
                 txtSaleTeamName.setVisibility(View.VISIBLE);
             }
-
-
-
-
 
                 /*if(employeeInfo != null) {
                     txtSaleEmpName.setText(String.format("(%s)", employeeInfo.SaleEmployeeName != null ? employeeInfo.SaleEmployeeName : ""));
@@ -1215,7 +1081,6 @@ public class SaleReceiptPayment_new extends BHFragment {
 
 
             TextView txtHeader = (TextView) view.findViewById(R.id.txtReceiptHeadTitle);
-
 
             if (!(!payments.get(position).EmpID.equals(BHPreference.employeeID()) || payments.get(position).VoidStatus == true)) {
                 txtHeader.setOnClickListener(new View.OnClickListener() {

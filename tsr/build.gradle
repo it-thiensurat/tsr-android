@@ -7,8 +7,8 @@ android {
     buildToolsVersion '28.0.3'
 
     def versionCodes = { ->
-//        return 150   //<-- current version
-        return 151   //<-- New version
+//        return 152   //<-- current version
+        return 153   //<-- New version
     }
 
     def tsrAppVersion = { ->
@@ -27,8 +27,8 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode   versionCodes()
-//        versionName "1.0.0.61" //<-- current version
-        versionName "1.0.0.62" //<-- New version
+//        versionName "1.0.0.63" //<-- current version
+        versionName "1.0.0.64" //<-- New version
         resValue 'string', 'tsr_app_version', tsrAppVersion()
     }
 
@@ -150,9 +150,6 @@ dependencies {
     //compile 'com.google.maps.android:android-maps-utils:0.3+'
     //implementation project(':maps-utils-master-library')
     //compile 'com.google.android.gms:play-services:6.5.87'
-
-
-
     implementation project(':drag-sort-listview-jayh5')
     implementation project(':floating-group-expandable-list-view')
     implementation project(':pinned-section-listview')
@@ -165,6 +162,7 @@ dependencies {
     implementation 'com.android.support:support-v13:21.0.3'
     implementation 'com.google.maps.android:android-maps-utils:0.5'
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.google.firebase:firebase-core:16.0.4'
     implementation 'com.google.firebase:firebase-iid:17.0.4'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'

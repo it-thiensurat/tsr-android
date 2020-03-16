@@ -311,25 +311,41 @@ public class AddressInfo extends BHParcelable implements Serializable {
 //                index = addr.indexOf("เขต");
 //            }
 //        } else {
-            moo = addr.indexOf("ม.");
-            soi = addr.indexOf("ซ.");
-            road = addr.indexOf("ถ.");
-            subdistrict = addr.indexOf("ต.");
+            moo = addr.indexOf(" ม.");
+            soi = addr.indexOf(" ซ.");
+            road = addr.indexOf(" ถ.");
+            subdistrict = addr.indexOf(" ต.");
             if (subdistrict == -1) {
                 subdistrict = addr.indexOf("แขวง");
             }
 
             if (soi > -1) {
                 if (road > -1) {
-                    index = moo; //มีซอย มีถนน
+                    if (moo > -1) {
+                        index = moo;
+                    } else {
+                        index = road;
+                    }
                 } else {
-                    index = soi; //มีซอย ไม่มีถนน
+                    if (moo > -1) {
+                        index = moo;
+                    } else {
+                        index = soi;
+                    }
                 }
             } else {
                 if (road > -1) {
-                    index = road; // ไม่มีซอย มีถนน
+                    if (moo > -1) {
+                        index = moo;
+                    } else {
+                        index = road;
+                    }
                 } else {
-                    index = moo; // ไม่ีมีซอย ไม่มีถนน
+                    if (moo > -1) {
+                        index = moo;
+                    } else {
+                        index =subdistrict;
+                    }
                 }
             }
 //        }
@@ -349,7 +365,7 @@ public class AddressInfo extends BHParcelable implements Serializable {
         int subdistrict = -1;
         int moo = -1;
 
-        moo = addr.indexOf("ม.");
+        moo = addr.indexOf(" ม.");
 //        int line = addrCheckMultiLine(addr);
 
 //        if (line == 2) {
@@ -359,10 +375,10 @@ public class AddressInfo extends BHParcelable implements Serializable {
 //            }
 //            index2 = addr.length();
 //        } else {
-            soi = addr.indexOf("ซ.");
-            road = addr.indexOf("ถ.");
+            soi = addr.indexOf(" ซ.");
+            road = addr.indexOf(" ถ.");
 
-            subdistrict = addr.indexOf("ต.");
+            subdistrict = addr.indexOf(" ต.");
             if (subdistrict == -1) {
                 subdistrict = addr.indexOf("แขวง");
             }
@@ -380,17 +396,47 @@ public class AddressInfo extends BHParcelable implements Serializable {
 //                    index1 = road;
 //                }
 //            }
+//        if (soi > -1) {
+//            if (road > -1) {
+//                index1 = moo; //มีซอย มีถนน
+//            } else {
+//                index1 = soi; //มีซอย ไม่มีถนน
+//            }
+//        } else {
+//            if (road > -1) {
+//                index1 = road; // ไม่มีซอย มีถนน
+//            } else {
+//                index1 = moo; // ไม่ีมีซอย ไม่มีถนน
+//            }
+//        }
+
         if (soi > -1) {
             if (road > -1) {
-                index1 = moo; //มีซอย มีถนน
+                if (moo > -1) {
+                    index1 = moo;
+                } else {
+                    index1 = road;
+                }
             } else {
-                index1 = soi; //มีซอย ไม่มีถนน
+                if (moo > -1) {
+                    index1 = moo;
+                } else {
+                    index1 = soi;
+                }
             }
         } else {
             if (road > -1) {
-                index1 = road; // ไม่มีซอย มีถนน
+                if (moo > -1) {
+                    index1 = moo;
+                } else {
+                    index1 = road;
+                }
             } else {
-                index1 = moo; // ไม่ีมีซอย ไม่มีถนน
+                if (moo > -1) {
+                    index1 = moo;
+                } else {
+                    index1 = subdistrict;
+                }
             }
         }
 
@@ -399,7 +445,7 @@ public class AddressInfo extends BHParcelable implements Serializable {
 //                province = addr.indexOf("กรุงเทพมหานคร");
 //            }
 //            index2 = province;
-            district = addr.indexOf("อ.");
+            district = addr.indexOf(" อ.");
             if (district == -1) {
                 district = addr.indexOf("เขต");
             }
@@ -414,14 +460,14 @@ public class AddressInfo extends BHParcelable implements Serializable {
     public static String addr3(String addr) {
         int province = -1;
         int district = -1;
-        province = addr.indexOf("จ.");
+        province = addr.indexOf(" จ.");
         if (province == -1) {
             province = addr.indexOf("กรุงเทพมหานคร");
         }
 
-        district = addr.indexOf("อ.");
+        district = addr.indexOf(" อ.");
         if (district == -1) {
-            district = addr.indexOf("เขต");
+            district = addr.indexOf(" เขต");
         }
         Log.e("addr3", addr.substring(district, addr.length()));
         return addr.substring(district, addr.length());

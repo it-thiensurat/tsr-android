@@ -134,6 +134,8 @@ public class SaleContractPrintFragment extends BHFragment {
     @InjectView
     private TextView txtTSRCommittee;
     @InjectView
+    private TextView txtCommitteeCash;
+    @InjectView
     private TextView txtCustomer;
     @InjectView
     private TextView txtCustomerName;
@@ -389,6 +391,7 @@ public class SaleContractPrintFragment extends BHFragment {
                     if (contract.MODE == 1) {
                         linearLayoutCash.setVisibility(View.VISIBLE);
                         linearLayoutCredit.setVisibility(View.GONE);
+                        txtCommitteeCash.setText(BHUtilities.trim("(" + TSR_COMMITTEE_NAME + ")"));
                         txtCustomer.setText(String.format("(%s%s)", BHUtilities.trim(contract.CustomerFullName), BHUtilities.trim(contract.CompanyName)));
                     } else {
                         // YIM Dummy Signature image into view

@@ -1,5 +1,6 @@
 package th.co.thiensurat.activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -15,21 +16,26 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -53,6 +59,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.zj.btsdk.BluetoothService;
@@ -64,6 +77,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -92,9 +107,11 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-//import th.co.bighead.utilities.BHActivity;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHActivity;
-import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHArrayAdapter;
 import th.co.bighead.utilities.BHBluetoothPrinter.BHBluetoothPrinter;
 import th.co.bighead.utilities.BHFragment;
@@ -171,7 +188,7 @@ import th.co.thiensurat.fragments.sales.EditContractsMainFragment;
 import th.co.thiensurat.fragments.sales.SaleMainFragment;
 import th.co.thiensurat.fragments.sendmoney.SendMoneySummaryMainFragment;
 import th.co.thiensurat.fragments.synchronize.SynchronizeMainFragment;
-//import th.co.thiensurat.retrofit.api.Service;
+import th.co.thiensurat.retrofit.api.Service;
 import th.co.thiensurat.service.SynchronizeService;
 import th.co.thiensurat.service.TSRService;
 import th.co.thiensurat.service.TimeOutLoginService;
@@ -187,6 +204,12 @@ import th.co.thiensurat.service.data.CheckSoapOutputInfo;
 import th.co.thiensurat.service.data.DeleteContractInputInfo;
 import th.co.thiensurat.service.data.GetDepartmentSignatureImageInputInfo;
 import th.co.thiensurat.service.data.GetDepartmentSignatureImageOutputInfo;
+
+import static th.co.bighead.utilities.BHApplication.getContext;
+import static th.co.thiensurat.retrofit.api.client.GIS_BASE_URL;
+
+//import th.co.bighead.utilities.BHActivity;
+//import th.co.thiensurat.retrofit.api.Service;
 
 //import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 
@@ -313,8 +336,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         actionBar.setCustomView(R.layout.actionbar_title);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
-
-
         menu = new SlidingMenu(this);
         menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
         menu.setShadowWidthRes(R.dimen.shadow_width);
@@ -337,9 +358,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         /*** [END] :: offset statusBar ***/
 
         String userProfileString = String.format("รหัสพนักงาน: %s \nชื่อ: %s \nตำแหน่ง: %s", BHPreference.employeeID(), BHPreference.userFullName(), BHPreference.PositionName());
-
-
-
 
         userProfileString = String.format("%s\nRun on : %s", userProfileString, BHGeneral.SERVICE_MODE.toString());
         tvUserDetail.setText(userProfileString);
@@ -566,6 +584,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
             }
             //checkLogin();
         }
+        getLastLocation();
         lvMainMenu.setEnabled(true);
     }
 
@@ -827,6 +846,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
         activity = MainActivity.this;
         BHFragment.setActivity(MainActivity.this);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         if (savedInstanceState != null) {
             Intent intent = new Intent(this, SplashActivity.class);
@@ -940,8 +960,13 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        new BHPermissions().onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_ID) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Granted. Start getting the location information
+            }
+        } else {
+            new BHPermissions().onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+        }
     }
 
     private boolean checkDatabase() {
@@ -3319,12 +3344,25 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                         delegate.postResult(result.ResultDescription);
                     }
 
+                    /**
+                     *
+                     * Edit by Teerayut Klinsanga
+                     *
+                     * Created: 2019-08-02 09:00.00
+                     *
+                     * == Print with image ==
+                     *
+                     */
+                    getLastLocation();
+
                     Intent i = context.getPackageManager().getLaunchIntentForPackage("com.gps_tracking");
                     if (i != null) {
                         Intent in = new Intent(Intent.ACTION_VIEW, Uri.parse("gis://empid/" + BHPreference.employeeID() + "/BH"));
-//                      i.putExtra("empid", BHPreference.employeeID());
                       context.startActivity(in);
                     }
+                    /**
+                     * End
+                     */
                 }
             } else {
                 /*if (fileDB.exists()) {
@@ -3474,6 +3512,199 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         if (bhBluetoothPrinter != null) {
             bhBluetoothPrinter.SetPrintWithBitmap(bmp, detailPrint, handler);
         }
+    }
+
+    static int PERMISSION_ID = 44;
+    static FusedLocationProviderClient mFusedLocationClient;
+    private static boolean checkPermissions() {
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        return false;
+    }
+
+    private static void requestPermissions() {
+        ActivityCompat.requestPermissions(
+                activity,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                PERMISSION_ID
+        );
+    }
+
+    private static boolean isLocationEnabled() {
+        LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+                LocationManager.NETWORK_PROVIDER
+        );
+    }
+
+    @SuppressLint("MissingPermission")
+    public static void getLastLocation(){
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+                mFusedLocationClient.getLastLocation().addOnCompleteListener(
+                        new OnCompleteListener<Location>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Location> task) {
+                                Location location = task.getResult();
+                                if (location == null) {
+                                    requestNewLocationData();
+                                } else {
+//                                    latTextView.setText(location.getLatitude()+"");
+//                                    lonTextView.setText(location.getLongitude()+"");
+                                    Log.e("Current Latitude1", location.getLatitude()+"");
+                                    Log.e("Current Longitude1", location.getLongitude()+"");
+                                    updateLocation(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+                                }
+                            }
+                        }
+                );
+            } else {
+//                Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();
+//                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                startActivity(intent);
+            }
+        } else {
+            requestPermissions();
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private static void requestNewLocationData(){
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(0);
+        mLocationRequest.setFastestInterval(0);
+        mLocationRequest.setNumUpdates(1);
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
+        mFusedLocationClient.requestLocationUpdates(
+                mLocationRequest, mLocationCallback,
+                Looper.myLooper()
+        );
+    }
+
+    private static LocationCallback mLocationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            Location mLastLocation = locationResult.getLastLocation();
+            Log.e("Current Latitude2", mLastLocation.getLatitude()+"");
+            Log.e("Current Longitude2", mLastLocation.getLongitude()+"");
+            updateLocation(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
+        }
+    };
+
+    private static void updateLocation(String lat, String lon) {
+        try {
+//            gisBody body = new gisBody();
+//            body.setLat(lat);
+//            body.setLon(lon);
+//            body.setSpeed("0");
+//            body.setSource("BH");
+//            body.setEmpID(BHPreference.employeeID());
+//            body.setDeviceID(BHPreference.userDeviceId());
+
+//            String json = new Gson().toJson(body);
+            String android_id = Settings.Secure.getString(getContext().getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(GIS_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.updateGIS(lat, lon, android_id, BHPreference.employeeID(), "0", "BH");
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson = new Gson();
+                    try {
+                        Log.e("Update curent gis", String.valueOf(response.body()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e("update gis(exception)", e.getLocalizedMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("update curent gis(fail)", "onFailure");
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("Exception", e.getLocalizedMessage());
+        }
+    }
+
+    public static class gisBody {
+        private static String lat;
+        private static String lon;
+        private static String deviceID;
+        private static String empID;
+        private static String source;
+        private static String speed;
+
+        public gisBody(String lat, String lon, String deviceID, String empID, String source, String speed) {
+            this.lat = lat;
+            this.lon = lon;
+            this.deviceID = deviceID;
+            this.empID = empID;
+            this.source = source;
+            this.speed = speed;
+        }
+
+//        public gisBody() {
+//
+//        }
+//
+//        public String getLat() {
+//            return lat;
+//        }
+//
+//        public String getLon() {
+//            return lon;
+//        }
+//
+//        public String getDeviceID() {
+//            return deviceID;
+//        }
+//
+//        public String getEmpID() {
+//            return empID;
+//        }
+//
+//        public String getSource() {
+//            return source;
+//        }
+//
+//        public String getSpeed() {
+//            return speed;
+//        }
+//
+//        public static void setLat(String lat) {
+//            gisBody.lat = lat;
+//        }
+//
+//        public static void setLon(String lon) {
+//            gisBody.lon = lon;
+//        }
+//
+//        public static void setDeviceID(String deviceID) {
+//            gisBody.deviceID = deviceID;
+//        }
+//
+//        public static void setEmpID(String empID) {
+//            gisBody.empID = empID;
+//        }
+//
+//        public static void setSource(String source) {
+//            gisBody.source = source;
+//        }
+//
+//        public static void setSpeed(String speed) {
+//            gisBody.speed = speed;
+//        }
     }
 
     /**
