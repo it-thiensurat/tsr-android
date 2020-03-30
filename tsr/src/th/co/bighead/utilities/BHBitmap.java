@@ -74,7 +74,7 @@ public class BHBitmap {
         int newWidth = (int)(width * ratio);
         int newHeight = (int)(height * ratio);
         Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
-        bitmap.recycle();
+//        bitmap.recycle();
 
         return newBitmap;
     }

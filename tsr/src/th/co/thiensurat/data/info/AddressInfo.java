@@ -380,7 +380,7 @@ public class AddressInfo extends BHParcelable implements Serializable {
 
             subdistrict = addr.indexOf(" ต.");
             if (subdistrict == -1) {
-                subdistrict = addr.indexOf("แขวง");
+                subdistrict = addr.indexOf(" แขวง");
             }
 
 //            if (soi > -1) {
@@ -447,7 +447,7 @@ public class AddressInfo extends BHParcelable implements Serializable {
 //            index2 = province;
             district = addr.indexOf(" อ.");
             if (district == -1) {
-                district = addr.indexOf("เขต");
+                district = addr.indexOf(" เขต");
             }
             index2 = district;
 //        }

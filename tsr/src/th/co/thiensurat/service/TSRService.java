@@ -87,6 +87,18 @@ public class TSRService extends BHService {
                 if (imageFile.isFile()) {
                     Bitmap bm = BHBitmap.decodeSampledBitmapFromImagePathForUploadToServer(imageFile.getAbsolutePath(), 800);
                     Bitmap bitmap = null;
+                    /**
+                     * Edit by: Teerayut Klinsanga
+                     *
+                     * Bug fix
+                     */
+                    if (bitmap != null) {
+                        bitmap.recycle();
+                        bitmap = null;
+                    }
+                    /**
+                     * End
+                     */
 
                     if (bm != null) {
                         if (!info.ImageTypeCode.equals(ContractImageController.ImageType.MAP.toString()) && !info.ImageTypeCode.equals(ContractImageController.ImageType.MAPPAYMENT.toString())) {
