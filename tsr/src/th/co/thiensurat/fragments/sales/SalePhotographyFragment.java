@@ -352,14 +352,6 @@ public class SalePhotographyFragment extends BHFragment {
     private static final String[] REQUIRED_SDK_PERMISSIONS = new String[] {
             Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE };
 
-
-
-
-
-
-
-
-
     private String STATUS_CODE = "11";
     private int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     private static final int MEDIA_TYPE_IMAGE = 1;
@@ -606,11 +598,7 @@ public class SalePhotographyFragment extends BHFragment {
                 fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
 
                 Uri photoURI = FileProvider.getUriForFile(getActivity(),getActivity().getApplicationContext().getPackageName() + ".provider", new File(fileUri.getPath()));
-
-
-
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-
 
                 startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
             }
@@ -655,12 +643,6 @@ public class SalePhotographyFragment extends BHFragment {
         if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 AddContractImage();
-
-
-
-
-
-
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "User cancelled image capture", Toast.LENGTH_SHORT).show();
             } else {
@@ -669,31 +651,12 @@ public class SalePhotographyFragment extends BHFragment {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
     public Uri getOutputMediaFileUri(int type) {
         return Uri.fromFile(getOutputMediaFile(type));
     }
 
 
-
-
-
-
-
-
     private File getOutputMediaFile(int type) {
-
-
-
         File mediaStorageDir = new File(Parth + "/" + IMAGE_DIRECTORY_NAME + "/" + imageTypeCode);
        // File mediaStorageDir = new File("/sdcard/Android/data/"+activity.getApplicationContext().getPackageName()+"/files/pictures/"  + IMAGE_DIRECTORY_NAME + "/" + imageTypeCode);
         if (!mediaStorageDir.exists()) {
@@ -703,28 +666,15 @@ public class SalePhotographyFragment extends BHFragment {
             }
         }
 
-
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator + imageID + ".jpg");
-
         } else {
             return null;
         }
         return mediaFile ;
 
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     /* Checks if external storage is available for read and write */
@@ -736,9 +686,6 @@ public class SalePhotographyFragment extends BHFragment {
         return false;
     }
 
-
-
-
 String DD="",NAME_IMAGE="",IMAGE_TYPE="";
     private void AddContractImage() {
         // TODO Auto-generated method stub
@@ -748,36 +695,18 @@ String DD="",NAME_IMAGE="",IMAGE_TYPE="";
             @Override
             protected void before() {
                 // TODO Auto-generated method stub
-
-
-
-
-
-
                 input.ImageID = imageID;
                 input.RefNo = BHPreference.RefNo();
                 input.ImageName = imageID + ".jpg";
                 input.ImageTypeCode = imageTypeCode;
                 input.SyncedDate = new Date();
 
-
-
-
                 DD="/sdcard/Android/data/"+activity.getApplicationContext().getPackageName()+"/files/pictures/"+IMAGE_DIRECTORY_NAME + "/"+ input.ImageTypeCode+ "/" +input.ImageName;
-                 NAME_IMAGE=input.ImageName;
+                NAME_IMAGE=input.ImageName;
                 IMAGE_TYPE=input.ImageTypeCode;
 
-
-
                 checkPermissions();
-
-
-
             }
-
-
-
-
 
             @Override
             protected void calling() {
@@ -788,16 +717,8 @@ String DD="",NAME_IMAGE="",IMAGE_TYPE="";
             @Override
             protected void after() {
                 // TODO Auto-generated method stub
-
             }
         }).start();
-
-
-
-
-
-
-
     }
 
     protected void checkPermissions() {
@@ -822,8 +743,6 @@ String DD="",NAME_IMAGE="",IMAGE_TYPE="";
         }
     }
 
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
@@ -831,30 +750,18 @@ String DD="",NAME_IMAGE="",IMAGE_TYPE="";
             case REQUEST_CODE_ASK_PERMISSIONS:
                 for (int index = permissions.length - 1; index >= 0; --index) {
                     if (grantResults[index] != PackageManager.PERMISSION_GRANTED) {
-
                         return;
                     }
                 }
 
-
                 File file21 = new File(DD);
-
                 String filePath = file21.getPath();
                 Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-
                 save_image_to_gallery.getResizedBiBitmaptmap(bitmap,NAME_IMAGE,IMAGE_TYPE);
              //  getResizedBiBitmaptmap(bitmap,NAME_IMAGE,IMAGE_TYPE);
-
-
                 break;
         }
     }
-
-
-
-
-
-
 
     @Override
     public void onProcessButtonClicked(int buttonID) {

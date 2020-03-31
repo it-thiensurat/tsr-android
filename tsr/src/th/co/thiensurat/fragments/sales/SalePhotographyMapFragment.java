@@ -1,6 +1,7 @@
 package th.co.thiensurat.fragments.sales;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -38,6 +39,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -195,6 +197,7 @@ public class SalePhotographyMapFragment extends BHFragment {
         /*** [START] :: Permission ***/
         new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
 
+            @SuppressLint("MissingPermission")
             @Override
             public void onSuccess(BHPermissions bhPermissions) {
                 if (isNetwork) {
@@ -359,9 +362,12 @@ public class SalePhotographyMapFragment extends BHFragment {
                             File dir = new File(Parth + "/" + IMAGE_DIRECTORY_NAME + "/" + imageTypeCode + "/" + imagename + ".jpg");
                             FileOutputStream out = new FileOutputStream(dir);
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                            bitmap.recycle();
-
+                            out.flush();
+                            out.close();
+//                            bitmap.recycle();
                         } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
