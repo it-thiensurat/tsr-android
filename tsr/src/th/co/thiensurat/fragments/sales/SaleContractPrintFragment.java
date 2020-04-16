@@ -283,39 +283,42 @@ public class SaleContractPrintFragment extends BHFragment {
             @Override
             protected void after() {
                 if (contract != null) {
+                    try {
+                        /*** [START] :: Fixed - [BHPROJ-0025-815] :: [Android-Reprint ใบสัญญา+ใบเสร็จ] กรณีเป็นฝ่ายเก็บเงินจะ Re-Print ได้เฉพาะใบเสร็จรับเงินที่เค้าเป็นคนเก็บเท่านั้น จะไม่สามารถกลับไป Re-Print ใบสัญญา หรือ ใบเสร็จรับเงินของคนอื่นได้  ***/
+                        if (!contract.CreateBy.equals(BHPreference.employeeID())) {
+                            List<Integer> listId = new ArrayList<Integer>();
+                            listId.add(R.string.button_print);
 
-                    /*** [START] :: Fixed - [BHPROJ-0025-815] :: [Android-Reprint ใบสัญญา+ใบเสร็จ] กรณีเป็นฝ่ายเก็บเงินจะ Re-Print ได้เฉพาะใบเสร็จรับเงินที่เค้าเป็นคนเก็บเท่านั้น จะไม่สามารถกลับไป Re-Print ใบสัญญา หรือ ใบเสร็จรับเงินของคนอื่นได้  ***/
-                    if(!contract.CreateBy.equals(BHPreference.employeeID())){
-                        List<Integer> listId = new ArrayList<Integer>();
-                        listId.add(R.string.button_print);
+                            activity.setViewProcessButtons(listId, View.GONE);
+                        } else {
+                            /*** [START] :: Fixed - [BHPROJ-1036-8796] - ไม่ให้แก้ไขชื่อ ที่อยู่ และภาพถ่าย ข้ามวัน ให้แก้ไขได้ภายในวันที่ทำสัญญาเท่านั้น รวมทั้งการพิมพ์สัญญาต้องพิมพ์ข้ามวันไม่ได้ด้วย ***/
+                            if (contract.EFFDATE != null) {
+                                Calendar cEFFDATE = Calendar.getInstance();
+                                cEFFDATE.setTime(contract.EFFDATE);
 
-                        activity.setViewProcessButtons(listId, View.GONE);
-                    } else {
-                        /*** [START] :: Fixed - [BHPROJ-1036-8796] - ไม่ให้แก้ไขชื่อ ที่อยู่ และภาพถ่าย ข้ามวัน ให้แก้ไขได้ภายในวันที่ทำสัญญาเท่านั้น รวมทั้งการพิมพ์สัญญาต้องพิมพ์ข้ามวันไม่ได้ด้วย ***/
-                        if (contract.EFFDATE != null) {
-                            Calendar cEFFDATE = Calendar.getInstance();
-                            cEFFDATE.setTime(contract.EFFDATE);
+                                Calendar cStartDate = Calendar.getInstance();
+                                cStartDate.set(Calendar.HOUR_OF_DAY, 0);
+                                cStartDate.set(Calendar.MINUTE, 0);
+                                cStartDate.set(Calendar.SECOND, 0);
+                                cStartDate.set(Calendar.MILLISECOND, 0);
 
-                            Calendar cStartDate = Calendar.getInstance();
-                            cStartDate.set(Calendar.HOUR_OF_DAY, 0);
-                            cStartDate.set(Calendar.MINUTE, 0);
-                            cStartDate.set(Calendar.SECOND, 0);
-                            cStartDate.set(Calendar.MILLISECOND, 0);
+                                Calendar cEndDate = Calendar.getInstance();
+                                cEndDate.set(Calendar.HOUR_OF_DAY, 23);
+                                cEndDate.set(Calendar.MINUTE, 59);
+                                cEndDate.set(Calendar.SECOND, 59);
+                                cEndDate.set(Calendar.MILLISECOND, 999);
 
-                            Calendar cEndDate = Calendar.getInstance();
-                            cEndDate.set(Calendar.HOUR_OF_DAY, 23);
-                            cEndDate.set(Calendar.MINUTE, 59);
-                            cEndDate.set(Calendar.SECOND, 59);
-                            cEndDate.set(Calendar.MILLISECOND, 999);
+                                if (cEFFDATE.before(cStartDate) || cEFFDATE.after(cEndDate)) {
+                                    List<Integer> listId = new ArrayList<Integer>();
+                                    listId.add(R.string.button_print);
 
-                            if (cEFFDATE.before(cStartDate) || cEFFDATE.after(cEndDate)) {
-                                List<Integer> listId = new ArrayList<Integer>();
-                                listId.add(R.string.button_print);
-
-                                activity.setViewProcessButtons(listId, View.GONE);
+                                    activity.setViewProcessButtons(listId, View.GONE);
+                                }
                             }
+                            /*** [END] :: Fixed - [BHPROJ-1036-8796] - ไม่ให้แก้ไขชื่อ ที่อยู่ และภาพถ่าย ข้ามวัน ให้แก้ไขได้ภายในวันที่ทำสัญญาเท่านั้น รวมทั้งการพิมพ์สัญญาต้องพิมพ์ข้ามวันไม่ได้ด้วย  ***/
                         }
-                        /*** [END] :: Fixed - [BHPROJ-1036-8796] - ไม่ให้แก้ไขชื่อ ที่อยู่ และภาพถ่าย ข้ามวัน ให้แก้ไขได้ภายในวันที่ทำสัญญาเท่านั้น รวมทั้งการพิมพ์สัญญาต้องพิมพ์ข้ามวันไม่ได้ด้วย  ***/
+                    } catch (NullPointerException ne) {
+
                     }
 
                     if(contract.STATUS.equals("VOID")) {

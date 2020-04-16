@@ -2,10 +2,15 @@ package th.co.thiensurat.fragments.sales;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -143,6 +148,7 @@ public class SaleScanEmployeesFragment extends BHFragment {
         // showSelectedEmployee();
         // }
 
+
         ibScanBarcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -216,6 +222,7 @@ public class SaleScanEmployeesFragment extends BHFragment {
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_dropdown_item_1line, strList);
                     autoCompletePreSaleEmployeeCode.setThreshold(0);
                     autoCompletePreSaleEmployeeCode.setAdapter(adapter);
+                    autoCompletePreSaleEmployeeCode.setDropDownHeight(LinearLayout.LayoutParams.MATCH_PARENT);
                 }
 
             }
@@ -229,6 +236,9 @@ public class SaleScanEmployeesFragment extends BHFragment {
                 if (str != null) {
                     PreSaleEmployeeName.setText(str);
                 }
+
+                InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                in.hideSoftInputFromWindow(autoCompletePreSaleEmployeeCode.getWindowToken(), 0);
             }
         });
 
@@ -257,27 +267,27 @@ public class SaleScanEmployeesFragment extends BHFragment {
             }
         });
 
-/*
-        autoCompletePreSaleEmployeeCode.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String provinceCode = getProvinceCode();
-                if (!provinceCode.equals("")) {
-                    bindDistrict(provinceCode);
-                }
-            }
-        });
-*/
+//        autoCompletePreSaleEmployeeCode.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                in.hideSoftInputFromWindow(autoCompletePreSaleEmployeeCode.getWindowToken(), 0);
+////                String provinceCode = getProvinceCode();
+////                if (!provinceCode.equals("")) {
+////                    bindDistrict(provinceCode);
+////                }
+//            }
+//        });
 
         autoCompletePreSaleEmployeeCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
