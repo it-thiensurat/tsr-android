@@ -551,6 +551,7 @@ public class SaleScanEmployeesFragment extends BHFragment {
                 contract.PreSaleEmployeeCode =  autoCompletePreSaleEmployeeCode.getText().toString(); // รหัสพนักงานผู้แนะนำ
                 contract.PreSaleEmployeeName =  PreSaleEmployeeName.getText().toString(); // ชื่อ-นามสกุลผู้แนะนำ
                 contract.SaleEmployeeLevelPath = BHPreference.currentTreeHistoryID();
+               // contract.ser
             }
 
             @Override

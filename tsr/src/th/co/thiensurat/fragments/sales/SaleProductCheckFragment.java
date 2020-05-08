@@ -18,6 +18,7 @@ import th.co.thiensurat.data.info.ProductInfo;
 import th.co.thiensurat.data.info.ProductStockInfo;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,6 +29,12 @@ public class SaleProductCheckFragment extends BHFragment {
     public static class Data extends BHParcelable {
         public String productSerialNumber;
         public String productID;
+        public String productSerialNumber2;
+    }
+
+    public static class Data2 extends BHParcelable {
+        public String productSerialNumber;
+
     }
 
     private Data data;
@@ -104,6 +111,9 @@ public class SaleProductCheckFragment extends BHFragment {
                 // Toast.LENGTH_SHORT).show();
                 // }
 
+
+                Log.e("productSerialNumber2",data.productSerialNumber2);
+
                 textShowScan.setText(data.productSerialNumber);
                 if (product != null) {
                     textShowType.setText(product.ProductName);
@@ -161,7 +171,8 @@ public class SaleProductCheckFragment extends BHFragment {
                     cont.TotalPrice = 0;
                     cont.EFFDATE = new Date();
                     cont.HasTradeIn = 0;
-                    cont.TradeInProductCode = "";
+                 cont.TradeInProductCode = "";
+                  //  cont.TradeInProductCode = data.productSerialNumber2;   // ทดสอบ ส่งค่า เข้าฐานข้อมูล
                     cont.TradeInBrandCode = "";
                     cont.TradeInProductModel = "";
                     cont.TradeInDiscount = 0;
@@ -183,7 +194,7 @@ public class SaleProductCheckFragment extends BHFragment {
 
                     cont.MODE = 0;
                     cont.FortnightID = fortnightID;
-                    cont.ProblemID = "";
+                    cont.ProblemID =  data.productSerialNumber2;   // ทดสอบ ส่งค่า เข้าฐานข้อมูล
                     cont.svcontno = "";
                     cont.isActive = true;
                     cont.MODEL = "";

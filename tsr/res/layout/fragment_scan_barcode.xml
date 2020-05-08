@@ -9,37 +9,102 @@
         android:id="@id/vwTitle"
         style="@style/ViewTitle" />
 
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/ibScanBarcode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/barcode" />
 
-        <TextView
-            android:id="@+id/tvDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="กดเพื่อสแกนบาร์โค้ด" >
-        </TextView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/edtBarcode"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="" />
-    </LinearLayout>
+                <ImageButton
+                    android:id="@+id/ibScanBarcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/barcode" />
+
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="กดสแกนสินค้า" >
+                </TextView>
+
+                <EditText
+                    android:id="@+id/edtBarcode"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="" />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/li_scan2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/ibScanBarcode2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/barcode" />
+
+                <TextView
+                    android:id="@+id/tvDescription2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="กดเพื่อสแกนเครื่องกรอง" >
+                </TextView>
+
+                <EditText
+                    android:id="@+id/edtBarcode2"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="" />
+            </LinearLayout>
+
+
+
+
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
+
+
+
+
+
+
+
 
 </LinearLayout>

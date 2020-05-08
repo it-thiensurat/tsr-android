@@ -141,7 +141,7 @@ public class BHPreference {
     private static final String POSITION_NAME_KEY = "POSITION_NAME";
 
     private static final String LAST_LOGIN_ID_KEY = "LASTLOGIN_ID";
-    
+
     private static final String REFNO_KEY = "REFNO";
 
     private static final String ASSIGNEE_EMPID_KEY = "ASSIGNEE_EMPID";
@@ -155,6 +155,7 @@ public class BHPreference {
     private static final String PROCESS_TYPE_KEY = "PROCESS_TYPE";
 
     private static final String PRODUCT_SERIAL_NUMBER_KEY = "PRODUCT_SERIAL_NUMBER";
+    private static final String PRODUCT_SERIAL_NUMBER_KEY2 = "PRODUCT_SERIAL_NUMBER2";
 
     private static final String CUSTOMER_ID_KEY = "CUSTOMER_TD";
 
@@ -203,7 +204,7 @@ public class BHPreference {
     public static String serviceMode() {
         return pref.getString(SERVICE_MODE_KEY, null);
     }
-    
+
     /** UserID **/
     public static void setUserID(String userID) {
         synchronized (editor) {
@@ -416,7 +417,7 @@ public class BHPreference {
     public static String teamCode() {
         return pref.getString(TEAM_CODE_KEY, null);
     }
-    
+
     /** SubTeamCode **/
     public static void setSubTeamCode(String subTeamCode) {
         synchronized (editor) {
@@ -428,7 +429,7 @@ public class BHPreference {
     	return pref.getString(SUBTEAM_CODE_KEY, null);
     	/*
     	String tmpSubTeam = pref.getString(SUBTEAM_CODE_KEY, null);
-    	
+
     	if (tmpSubTeam != null)
     	{
     		if (tmpSubTeam.equals(teamCode() + "00"))
@@ -441,7 +442,7 @@ public class BHPreference {
     	}
     	*/
     }
-    
+
     public static String dataStorage() {
         try {
             return pref.getString(DATA_STORAGE_KEY, null);
@@ -467,7 +468,7 @@ public class BHPreference {
             editor.commit();
         }
     }
-    
+
     public static int fortnightYear() {
         return pref.getInt(FORTNIGHT_YEAR_KEY, 0);
     }
@@ -478,7 +479,7 @@ public class BHPreference {
             editor.commit();
         }
     }
-    
+
     public static int fortnightNumber() {
         return pref.getInt(FORTNIGHT_NUMBER_KEY, 0);
     }
@@ -504,13 +505,31 @@ public class BHPreference {
     public static void setProductSerialNumber(String activeProductSerialNumber) {
         synchronized (editor) {
             editor.putString(PRODUCT_SERIAL_NUMBER_KEY, activeProductSerialNumber);
+
             editor.commit();
         }
     }
 
     public static String ProductSerialNumber() {
         return pref.getString(PRODUCT_SERIAL_NUMBER_KEY, null);
+
     }
+
+
+
+   public static void setProductSerialNumber2(String activeProductSerialNumber) {
+        synchronized (editor) {
+            editor.putString(PRODUCT_SERIAL_NUMBER_KEY2, activeProductSerialNumber);
+            editor.commit();
+        }
+    }
+
+    public static String ProductSerialNumber2() {
+        return pref.getString(PRODUCT_SERIAL_NUMBER_KEY2, null);
+    }
+
+
+
 
     public static void setCustomerID(String customerID) {
         synchronized (editor) {

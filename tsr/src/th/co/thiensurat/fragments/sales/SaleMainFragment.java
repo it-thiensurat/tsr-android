@@ -23,9 +23,11 @@ import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessTy
 import th.co.thiensurat.fragments.share.BarcodeScanFragment;
 import th.co.thiensurat.fragments.share.BarcodeScanFragment.ScanCallBack;
 
+import static th.co.thiensurat.fragments.share.BarcodeScanFragment.barcode2;
+
 public class SaleMainFragment extends BHFragment {
 
-    private ProductStockInfo productInfo;
+    private ProductStockInfo productInfo,productInfo2;
 
     @InjectView
     private ViewPager vpSaleMain;
@@ -148,6 +150,7 @@ public class SaleMainFragment extends BHFragment {
             public void onResult(BHParcelable data) {
                 // TODO Auto-generated method stub
                 final BarcodeScanFragment.Result barcodeResult = (BarcodeScanFragment.Result) data;
+               // final BarcodeScanFragment.Result2 barcodeResult2 = (BarcodeScanFragment.Result2) data;
 
                 (new BackgroundProcess(activity) {
                     @Override
@@ -161,6 +164,7 @@ public class SaleMainFragment extends BHFragment {
                             productInfo = getProductStockSerialNumberForCRD(barcodeResult.barcode, BHPreference.employeeID());
                         } else {
                             productInfo = getProductStockSerialNumber(barcodeResult.barcode);
+                          //  productInfo2 =barcodeResult.barcode2;
                         }
                         /*** [END] :: Fixed - [BHPROJ-1036-7663] - ในระบบขายของธุรกิจต่อเนื่อง เมื่อทำการขายครบทุกขั้นตอนแล้ว จะเห็นสัญญาของพนักงานคนอื่นในทีมขึ้นมาด้วย  ***/
                     }
@@ -179,48 +183,55 @@ public class SaleMainFragment extends BHFragment {
                         // TODO Auto-generated method
                         if (productInfo != null) {
                             String status = productInfo.Status;
-                            switch (status) {
-                                case "CHECKED":
-                                    UpdateProductStockStatus(barcodeResult.barcode);
-                                    break;
-                                case "OVER":
-                                    title = "กรุณาตรวจสอบสินค้า";
-                                    message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้าเกิน");
-                                    showWarningDialog(title, message);
-                                    break;
-                                case "RETURN":
-                                    title = "กรุณาตรวจสอบสินค้า";
-                                    message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้ารีเทิร์น");
-                                    showWarningDialog(title, message);
-                                    break;
-                                case "SOLD":
-                                    title = "กรุณาตรวจสอบสินค้า";
-                                    message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้าถูกขาย");
-                                    showWarningDialog(title, message);
-                                    break;
-                                case "WAIT":
-                                    title = "กรุณาตรวจสอบสินค้า";
-                                    message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้ารอการตรวจสอบ");
-                                    showWarningDialog(title, message);
-                                    break;
-                                case "DAMAGE":
-                                    title = "กรุณาตรวจสอบสินค้า";
-                                    message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "เครื่องชำรุด");
-                                    showWarningDialog(title, message);
-                                    break;
-                                case "TEAM_DESTROY":
-                                    title = "กรุณาตรวจสอบสินค้า";
-                                    message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "ถูกยุบทีมขาย");
-                                    showWarningDialog(title, message);
-                                    break;
-                                case "WAIT_RETURN":
-                                    title = "กรุณาตรวจสอบสินค้า";
-                                    message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้านี้ถูกส่งคืนเข้าระบบ");
-                                    showWarningDialog(title, message);
-                                    break;
-                                default:
-                                    break;
-                            }
+
+
+                                        switch (status) {
+                                            case "CHECKED":
+
+                                                    UpdateProductStockStatus(barcodeResult.barcode);
+
+
+                                                break;
+                                            case "OVER":
+                                                title = "กรุณาตรวจสอบสินค้า";
+                                                message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้าเกิน");
+                                                showWarningDialog(title, message);
+                                                break;
+                                            case "RETURN":
+                                                title = "กรุณาตรวจสอบสินค้า";
+                                                message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้ารีเทิร์น");
+                                                showWarningDialog(title, message);
+                                                break;
+                                            case "SOLD":
+                                                title = "กรุณาตรวจสอบสินค้า";
+                                                message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้าถูกขาย");
+                                                showWarningDialog(title, message);
+                                                break;
+                                            case "WAIT":
+                                                title = "กรุณาตรวจสอบสินค้า";
+                                                message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้ารอการตรวจสอบ");
+                                                showWarningDialog(title, message);
+                                                break;
+                                            case "DAMAGE":
+                                                title = "กรุณาตรวจสอบสินค้า";
+                                                message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "เครื่องชำรุด");
+                                                showWarningDialog(title, message);
+                                                break;
+                                            case "TEAM_DESTROY":
+                                                title = "กรุณาตรวจสอบสินค้า";
+                                                message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "ถูกยุบทีมขาย");
+                                                showWarningDialog(title, message);
+                                                break;
+                                            case "WAIT_RETURN":
+                                                title = "กรุณาตรวจสอบสินค้า";
+                                                message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้านี้ถูกส่งคืนเข้าระบบ");
+                                                showWarningDialog(title, message);
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+
                         } else {
                             title = "กรุณาตรวจสอบสินค้า";
                             message = String.format("ไม่พบรหัสสินค้า  %s อยู่ในระบบ", barcodeResult.barcode);
@@ -250,6 +261,7 @@ public class SaleMainFragment extends BHFragment {
                 productInfo.OrganizationCode = BHPreference.organizationCode();
                 productInfo.ScanByTeam = BHPreference.selectTeamCodeOrSubTeamCode();//BHPreference.teamCode();
                 productInfo.ScanDate = new Date();
+               // productInfo.
             }
 
             ;
@@ -265,9 +277,21 @@ public class SaleMainFragment extends BHFragment {
                 // TODO Auto-generated method stub
                 super.after();
                 BHPreference.setProductSerialNumber(productInfo.ProductSerialNumber);
+                BHPreference.setProductSerialNumber2(barcode2);
+
+
                 SaleProductCheckFragment.Data data = new SaleProductCheckFragment.Data();
                 data.productID = productInfo.ProductID;
                 data.productSerialNumber = productInfo.ProductSerialNumber;
+                data.productSerialNumber2 = barcode2;
+
+
+  /*              BHPreference.setProductSerialNumber2(productInfo2.ProductSerialNumber);
+                SaleProductCheckFragment.Data2 data2 = new SaleProductCheckFragment.Data2();
+                data2.productSerialNumber = productInfo2.ProductSerialNumber;
+*/
+
+                //    data.
                 SaleProductCheckFragment fm = BHFragment.newInstance(SaleProductCheckFragment.class, data);
                 showNextView(fm);
             }

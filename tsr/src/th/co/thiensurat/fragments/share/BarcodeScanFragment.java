@@ -3,9 +3,11 @@ package th.co.thiensurat.fragments.share;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 //import com.google.zxing.client.android.CaptureActivity;
@@ -28,10 +30,12 @@ public class BarcodeScanFragment extends BHFragment {
 	}
 
 	public static class Result extends BHParcelable {
-		public String barcode;
+		public String barcode,barcode2;
 
-		private Result(String barcode) {
+		private Result(String barcode,String barcode2) {
 			this.barcode = barcode;
+			this.barcode2 = barcode2;
+
 		}
 	}
 
@@ -45,14 +49,24 @@ public class BarcodeScanFragment extends BHFragment {
 
 	private static final String FRAGMENT_DATA = "th.co.thiensurat.barcode.data";
 	private static final int REQUEST_QR_SCAN = 2468;
-	@InjectView
+    private static final int REQUEST_QR_SCAN2 = 2469;
+
+    public  static String barcode2 = "";
+
+
+    @InjectView
 	private ViewTitle vwTitle;
 	@InjectView
-	private ImageButton ibScanBarcode;
+	private ImageButton ibScanBarcode,ibScanBarcode2;
 	@InjectView
 	private TextView tvDescription;
 	@InjectView
-	private EditText edtBarcode;
+	private EditText edtBarcode,edtBarcode2;
+
+    @InjectView
+    private LinearLayout li_scan2;
+
+
 
 	private Data data = new Data();
 
@@ -92,8 +106,10 @@ public class BarcodeScanFragment extends BHFragment {
 //			}
 			
 			String barcode = edtBarcode.getText().toString();
-			Result result = new Result(barcode);
-			setResult(result);				
+            String barcode2 = edtBarcode2.getText().toString();
+
+            Result result = new Result(barcode,barcode2);
+			setResult(result);
 			break;
 
 		default:
@@ -142,6 +158,40 @@ public class BarcodeScanFragment extends BHFragment {
 
 			}
 		});
+        ibScanBarcode2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent intent = new Intent(activity, CaptureActivity.class);
+
+                /*** [START] :: Permission ***/
+
+				/*Intent intent = new IntentIntegrator(activity).createScanIntent();
+				startActivityForResult(intent, REQUEST_QR_SCAN);*/
+
+                new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
+
+                    @Override
+                    public void onSuccess(BHPermissions bhPermissions) {
+                        Intent intent = new IntentIntegrator(activity).createScanIntent();
+                        startActivityForResult(intent, REQUEST_QR_SCAN2);
+                    }
+
+                    @Override
+                    public void onNotSuccess(BHPermissions bhPermissions) {
+                        bhPermissions.openAppSettings(getActivity());
+                    }
+
+                    @Override
+                    public void onShouldShowRequest(BHPermissions bhPermissions, BHPermissions.PermissionType... permissionType) {
+                        bhPermissions.showMessage(getActivity(), permissionType);
+                    }
+
+                }, BHPermissions.PermissionType.CAMERA);
+                /*** [END] :: Permission ***/
+
+
+            }
+        });
 
 		if (data != null) {
 			if (data.viewTitle != null) {
@@ -188,11 +238,71 @@ public class BarcodeScanFragment extends BHFragment {
 				showMessage("ยังไม่ได้ทำการสแกน กรุณาทำการสแกนอีกครั้ง");
 			} else if (resultCode == Activity.RESULT_OK) {
 				String barcode = intent.getStringExtra(Intents.Scan.RESULT);
+
+                Log.e("barcode",barcode);
 				edtBarcode.setText(barcode);
-				Result result = new Result(barcode);
-				setResult(result);
+
+
+
+                String substring_ProductSerialNumber = barcode.substring(0, 1);
+              //  String substring_ProductSerialNumber = barcode;
+
+
+                if(substring_ProductSerialNumber.equals("F")){  //F
+                    li_scan2.setVisibility(View.VISIBLE);
+                }
+                else {
+
+
+
+                    Result result = new Result(barcode,"");
+                    setResult(result);
+
+                }
+
+
 			}
 		}
+       else if (requestCode == REQUEST_QR_SCAN2) {
+            if (resultCode == Activity.RESULT_CANCELED) {
+                showMessage("ยังไม่ได้ทำการสแกน กรุณาทำการสแกนอีกครั้ง");
+            } else if (resultCode == Activity.RESULT_OK) {
+                 barcode2 = intent.getStringExtra(Intents.Scan.RESULT);
+                String barcode = edtBarcode.getText().toString();
+
+                Log.e("barcode",barcode2);
+
+
+                String substring_barcode2 = barcode2.substring(0, 1);
+
+
+                      if((substring_barcode2.equals("R"))|(substring_barcode2.equals("S"))|
+                        (substring_barcode2.equals("A"))|(substring_barcode2.equals("U"))|
+                              (substring_barcode2.equals("I"))|(substring_barcode2.equals("E"))|
+                              (substring_barcode2.equals("G"))|(substring_barcode2.equals("B"))|
+                              (substring_barcode2.equals("N"))|(substring_barcode2.equals("M"))|
+                              (substring_barcode2.equals("P"))|(substring_barcode2.equals("W"))|
+                              (substring_barcode2.equals("C"))|(substring_barcode2.equals("L"))){
+
+
+                          edtBarcode2.setText(barcode2);
+                          Result result = new Result(barcode,barcode2);
+                          setResult(result);
+                        }
+                        else {
+
+
+                          edtBarcode2.setText("Serial Number เครื่องไม่ถูกต้อง!");
+                        //  Result result = new Result(barcode,barcode2);
+                        //  setResult(result);
+
+                        }
+
+
+
+
+            }
+        }
 	}
 
 	public void setTitle(int titleResID) {
