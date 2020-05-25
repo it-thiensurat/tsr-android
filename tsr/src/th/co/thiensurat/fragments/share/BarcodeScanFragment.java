@@ -297,7 +297,7 @@ public class BarcodeScanFragment extends BHFragment {
 
                 if(substring_ProductSerialNumber.equals("F")){  //F
                     li_scan2.setVisibility(View.VISIBLE);
-					li_scan3.setVisibility(View.VISIBLE);
+
 					barcode2="";
 					barcode3="";
                 }
@@ -336,6 +336,7 @@ public class BarcodeScanFragment extends BHFragment {
 
 
                           edtBarcode2.setText(barcode2);
+						  li_scan3.setVisibility(View.VISIBLE);
                          // Result result = new Result(barcode,barcode2,"");
                         //  setResult(result);
                         }
