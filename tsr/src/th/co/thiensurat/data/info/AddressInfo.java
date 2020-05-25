@@ -316,7 +316,13 @@ public class AddressInfo extends BHParcelable implements Serializable {
             road = addr.indexOf(" ถ.");
             subdistrict = addr.indexOf(" ต.");
             if (subdistrict == -1) {
-                subdistrict = addr.indexOf("แขวง");
+                subdistrict = addr.indexOf(" แขวง");
+                if (subdistrict == -1) {
+                    subdistrict = addr.indexOf(" อ.");
+                    if (subdistrict == -1) {
+                        subdistrict = addr.indexOf(" เขต");
+                    }
+                }
             }
 
             if (soi > -1) {
@@ -344,7 +350,7 @@ public class AddressInfo extends BHParcelable implements Serializable {
                     if (moo > -1) {
                         index = moo;
                     } else {
-                        index =subdistrict;
+                        index = subdistrict;
                     }
                 }
             }
@@ -381,6 +387,12 @@ public class AddressInfo extends BHParcelable implements Serializable {
             subdistrict = addr.indexOf(" ต.");
             if (subdistrict == -1) {
                 subdistrict = addr.indexOf(" แขวง");
+                if (subdistrict == -1) {
+                    subdistrict = addr.indexOf(" อ.");
+                    if (subdistrict == -1) {
+                        subdistrict = addr.indexOf(" เขต");
+                    }
+                }
             }
 
 //            if (soi > -1) {
