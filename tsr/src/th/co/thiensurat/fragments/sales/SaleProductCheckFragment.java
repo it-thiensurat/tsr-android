@@ -26,10 +26,12 @@ public class SaleProductCheckFragment extends BHFragment {
     private String STATUS_CODE = "01";
     private ContractInfo contract = null;
 
+    String productSerialNumber_all="";
     public static class Data extends BHParcelable {
         public String productSerialNumber;
         public String productID;
         public String productSerialNumber2;
+        public String productSerialNumber3;
     }
 
     public static class Data2 extends BHParcelable {
@@ -113,6 +115,26 @@ public class SaleProductCheckFragment extends BHFragment {
 
 
                 Log.e("productSerialNumber2",data.productSerialNumber2);
+                Log.e("productSerialNumber3",data.productSerialNumber3);
+
+                try {
+                    if(((data.productSerialNumber2.isEmpty())|(data.productSerialNumber2.equals("null")))&((data.productSerialNumber3.isEmpty())|(data.productSerialNumber3.equals("null")))) {
+                        productSerialNumber_all="";
+                    }
+                    else if((data.productSerialNumber3.isEmpty())|(data.productSerialNumber3.equals("null"))){
+                        productSerialNumber_all=data.productSerialNumber2+"_";
+                    }
+                    else {
+                        productSerialNumber_all=data.productSerialNumber2+"_"+data.productSerialNumber3;
+
+                    }
+
+                }
+                catch (Exception ex){
+                   // productSerialNumber_all=data.productSerialNumber2+"_";
+
+                }
+
 
                 textShowScan.setText(data.productSerialNumber);
                 if (product != null) {
@@ -194,7 +216,7 @@ public class SaleProductCheckFragment extends BHFragment {
 
                     cont.MODE = 0;
                     cont.FortnightID = fortnightID;
-                    cont.ProblemID =  data.productSerialNumber2;   // ทดสอบ ส่งค่า เข้าฐานข้อมูล
+                    cont.ProblemID =  productSerialNumber_all;   // ทดสอบ ส่งค่า เข้าฐานข้อมูล
                     cont.svcontno = "";
                     cont.isActive = true;
                     cont.MODEL = "";

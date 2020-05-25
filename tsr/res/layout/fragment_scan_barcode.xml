@@ -12,22 +12,25 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:orientation="vertical">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
                 android:orientation="vertical" >
 
                 <ImageButton
                     android:id="@+id/ibScanBarcode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="200sp"
+                    android:layout_height="80sp"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:padding="1dp"
@@ -64,8 +67,8 @@
 
                 <ImageButton
                     android:id="@+id/ibScanBarcode2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="200sp"
+                    android:layout_height="80sp"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:padding="1dp"
@@ -91,6 +94,59 @@
                     android:gravity="center"
                     android:text="" />
             </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+            <LinearLayout
+                android:id="@+id/li_scan3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/ibScanBarcode3"
+                    android:layout_width="200sp"
+                    android:layout_height="80sp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:padding="1dp"
+
+                    android:src="@drawable/barcode" />
+
+                <TextView
+                    android:id="@+id/tvDescription3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="กดเพื่อสแกนสารกรองเดิม" >
+                </TextView>
+
+                <EditText
+                    android:id="@+id/edtBarcode3"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="" />
+            </LinearLayout>
+
+
+
+
+
+
 
 
 

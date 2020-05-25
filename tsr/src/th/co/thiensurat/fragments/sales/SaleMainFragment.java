@@ -24,10 +24,12 @@ import th.co.thiensurat.fragments.share.BarcodeScanFragment;
 import th.co.thiensurat.fragments.share.BarcodeScanFragment.ScanCallBack;
 
 import static th.co.thiensurat.fragments.share.BarcodeScanFragment.barcode2;
+import static th.co.thiensurat.fragments.share.BarcodeScanFragment.barcode3;
 
 public class SaleMainFragment extends BHFragment {
 
     private ProductStockInfo productInfo,productInfo2;
+
 
     @InjectView
     private ViewPager vpSaleMain;
@@ -276,14 +278,19 @@ public class SaleMainFragment extends BHFragment {
             protected void after() {
                 // TODO Auto-generated method stub
                 super.after();
+
                 BHPreference.setProductSerialNumber(productInfo.ProductSerialNumber);
-                BHPreference.setProductSerialNumber2(barcode2);
+              //  BHPreference.setProductSerialNumber2(barcode2);
 
 
                 SaleProductCheckFragment.Data data = new SaleProductCheckFragment.Data();
                 data.productID = productInfo.ProductID;
                 data.productSerialNumber = productInfo.ProductSerialNumber;
                 data.productSerialNumber2 = barcode2;
+                data.productSerialNumber3 = barcode3;
+
+
+
 
 
   /*              BHPreference.setProductSerialNumber2(productInfo2.ProductSerialNumber);
