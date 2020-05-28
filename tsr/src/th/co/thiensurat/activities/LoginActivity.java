@@ -299,6 +299,8 @@ public class LoginActivity extends BHActivity {
 //                                                BHPreference.setFortnightNumber(outputGetCurrentFortnight.Info.FortnightNumber);
 //                                            }
 
+                                            Log.e("Send user info", String.valueOf(result.Info));
+
                                             if (menus != null) {
                                                 BHPreference.setUserMenus(menus.Info);
                                             }

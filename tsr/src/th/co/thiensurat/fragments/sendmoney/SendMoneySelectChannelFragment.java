@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -605,6 +606,11 @@ public class SendMoneySelectChannelFragment extends BHFragment {
 		} else {
 			ret = String.format("%s%04d", BHPreference.getSendMoneyYearFormatGenerate(), BHPreference.getRunningNumberReference1() + 1);
 		}
+
+		Log.e("Send money year fm: ", BHPreference.getSendMoneyYearFormatGenerate());
+		Log.e("Send money num ref: ", BHPreference.getRunningNumberReference1() + "");
+
+		Log.e("Send money ref1: ", BHPreference.getSendMoneyReference1FormatGenerate() + "");
 
 		ret = String.format("%s%s", ret, BHPreference.getSendMoneyReference1FormatGenerate());
 		return ret;

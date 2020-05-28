@@ -3825,12 +3825,11 @@ public class DocumentController {
 
     private static int RECEIPT_WIDTH = 576;
     public static  Bitmap getNewContactImage(ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
-        ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
+        ReceiptBuilder receiptBuilder = new ReceiptBuilder(RECEIPT_WIDTH);
         receiptBuilder.setMargin(5, 0);
         receiptBuilder.setTextSize(24);
         receiptBuilder.setAlign(Align.LEFT);
         receiptBuilder.setColor(Color.BLACK);
-//        receiptBuilder.addImage(headerPrint());
         receiptBuilder.addText("บริษัท เธียรสุรัตน์ จำกัด (มหาชน)", true);
         receiptBuilder.addParagraph();
         receiptBuilder.addText("43/9 หมู่ 7 ซ.ชูชาติอนุสรณ์ 4 ต.บางตลาด", true);
@@ -3874,6 +3873,44 @@ public class DocumentController {
         receiptBuilder.setAlign(Paint.Align.RIGHT);
         receiptBuilder.addText(BHUtilities.trim(contract.IDCard), true);
 
+        Bitmap img = Bitmap.createBitmap(RECEIPT_WIDTH, 300, Config.ARGB_8888);
+        img.setHasAlpha(true);
+
+        Bitmap imgAddress = Bitmap.createBitmap(RECEIPT_WIDTH, 300, Config.ARGB_8888);
+        img.setHasAlpha(true);
+
+        Bitmap imgInstall = Bitmap.createBitmap(RECEIPT_WIDTH, 300, Config.ARGB_8888);
+        img.setHasAlpha(true);
+
+        float yy = 19;
+        Canvas cv = new Canvas(img);
+        cv.drawColor(Color.WHITE);
+
+        Canvas cvAddr = new Canvas(imgAddress);
+        cvAddr.drawColor(Color.WHITE);
+
+        Canvas cvInstall = new Canvas(imgInstall);
+        cvInstall.drawColor(Color.WHITE);
+
+        Paint p = new Paint();
+        p.setColor(Color.BLACK);
+        p.setStyle(Style.FILL_AND_STROKE);
+        p.setAntiAlias(true);
+
+        float fontSize = 23;
+        float lineSpace = 10;
+
+        Paint pTitle = new Paint(p);
+        pTitle.setTypeface(Typeface.MONOSPACE);
+        pTitle.setTextSize(fontSize);
+        pTitle.setTextAlign(Align.LEFT);
+
+        Paint pValue = new Paint(pTitle);
+        pValue.setColor(Color.BLACK);
+        pValue.setTextAlign(Align.RIGHT);
+        pValue.setTypeface(null);
+
+        Bitmap result = null;
         switch (contract.CustomerType) {
             case "0":
             case "2":
@@ -3883,29 +3920,53 @@ public class DocumentController {
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("ที่อยู่บัตร", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
-                    receiptBuilder.addText(AddressInfo.addr1(defaultAddress.Address()), true);
-                    receiptBuilder.addParagraph();
-                    receiptBuilder.setAlign(Paint.Align.RIGHT);
-                    receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
-                    receiptBuilder.addParagraph();
-                    if (AddressInfo.addrCheckMultiLine(defaultAddress.Address()) == 3) {
-                        receiptBuilder.setAlign(Paint.Align.RIGHT);
-                        receiptBuilder.addText(AddressInfo.addr3(defaultAddress.Address()), true);
-                        receiptBuilder.addParagraph();
+                    String[] texts = getText(defaultAddress.Address(), pValue, RECEIPT_WIDTH / 2);
+                    for (int ii = 0; ii < texts.length; ii++) {
+                        cvAddr.drawText(texts[ii], RECEIPT_WIDTH / 2, yy, pValue);
+                        yy += fontSize + lineSpace;
                     }
+
+                    Bitmap result1 = Bitmap.createBitmap(RECEIPT_WIDTH, (int)yy, Config.ARGB_8888);
+                    cvAddr = new Canvas(result1);
+                    cvAddr.drawBitmap(imgAddress, RECEIPT_WIDTH / 2, 0, null);
+                    imgAddress.recycle();
+                    receiptBuilder.addImage(result1);
+                    receiptBuilder.addParagraph();
+//                    receiptBuilder.addText(AddressInfo.addr1(defaultAddress.Address()), true);
+//                    receiptBuilder.addParagraph();
+//                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+//                    receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
+//                    receiptBuilder.addParagraph();
+//                    if (AddressInfo.addrCheckMultiLine(defaultAddress.Address()) == 3) {
+//                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+//                        receiptBuilder.addText(AddressInfo.addr3(defaultAddress.Address()), true);
+//                        receiptBuilder.addParagraph();
+//                    }
+                    yy = 19;
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("ที่ติดตั้ง", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
-                    receiptBuilder.addText(AddressInfo.addr1(installAddress.Address()), true);
-                    receiptBuilder.addParagraph();
-                    receiptBuilder.setAlign(Paint.Align.RIGHT);
-                    receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
-                    receiptBuilder.addParagraph();
-                    if (AddressInfo.addrCheckMultiLine(installAddress.Address()) == 3) {
-                        receiptBuilder.setAlign(Paint.Align.RIGHT);
-                        receiptBuilder.addText(AddressInfo.addr3(installAddress.Address()), true);
-                        receiptBuilder.addParagraph();
+                    String[] textsInstall = getText(installAddress.Address(), pValue, RECEIPT_WIDTH / 2);
+                    for (int ii = 0; ii < textsInstall.length; ii++) {
+                        cvInstall.drawText(textsInstall[ii], RECEIPT_WIDTH / 2, yy, pValue);
+                        yy += fontSize + lineSpace;
                     }
+
+                    Bitmap result2 = Bitmap.createBitmap(RECEIPT_WIDTH, (int)yy, Config.ARGB_8888);
+                    cvInstall = new Canvas(result2);
+                    cvInstall.drawBitmap(imgInstall, RECEIPT_WIDTH / 2, 0, null);
+                    imgInstall.recycle();
+                    receiptBuilder.addImage(result2);
+//                    receiptBuilder.addText(AddressInfo.addr1(installAddress.Address()), true);
+//                    receiptBuilder.addParagraph();
+//                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+//                    receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
+//                    receiptBuilder.addParagraph();
+//                    if (AddressInfo.addrCheckMultiLine(installAddress.Address()) == 3) {
+//                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+//                        receiptBuilder.addText(AddressInfo.addr3(installAddress.Address()), true);
+//                        receiptBuilder.addParagraph();
+//                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -3915,16 +3976,28 @@ public class DocumentController {
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("ที่อยู่บัตร", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
-                    receiptBuilder.addText(AddressInfo.addr1(defaultAddress.Address()), true);
-                    receiptBuilder.addParagraph();
-                    receiptBuilder.setAlign(Paint.Align.RIGHT);
-                    receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
-                    receiptBuilder.addParagraph();
-                    if (AddressInfo.addrCheckMultiLine(defaultAddress.Address()) == 3) {
-                        receiptBuilder.setAlign(Paint.Align.RIGHT);
-                        receiptBuilder.addText(AddressInfo.addr3(defaultAddress.Address()), true);
-                        receiptBuilder.addParagraph();
+                    String[] texts = getText(defaultAddress.Address(), pValue, RECEIPT_WIDTH / 2);
+                    for (int ii = 0; ii < texts.length; ii++) {
+                        cvAddr.drawText(texts[ii], RECEIPT_WIDTH / 2, yy, pValue);
+                        yy += fontSize + lineSpace;
                     }
+
+                    Bitmap result1 = Bitmap.createBitmap(RECEIPT_WIDTH, (int)yy, Config.ARGB_8888);
+                    cvAddr = new Canvas(result1);
+                    cvAddr.drawBitmap(imgAddress, RECEIPT_WIDTH / 2, 0, null);
+                    imgAddress.recycle();
+                    receiptBuilder.addImage(result1);
+                    receiptBuilder.addParagraph();
+//                    receiptBuilder.addText(AddressInfo.addr1(defaultAddress.Address()), true);
+//                    receiptBuilder.addParagraph();
+//                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+//                    receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
+//                    receiptBuilder.addParagraph();
+//                    if (AddressInfo.addrCheckMultiLine(defaultAddress.Address()) == 3) {
+//                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+//                        receiptBuilder.addText(AddressInfo.addr3(defaultAddress.Address()), true);
+//                        receiptBuilder.addParagraph();
+//                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -3933,16 +4006,31 @@ public class DocumentController {
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("ที่ติดตั้ง", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
-                    receiptBuilder.addText(AddressInfo.addr1(installAddress.Address()), true);
-                    receiptBuilder.addParagraph();
+                    yy = 19;
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("ที่ติดตั้ง", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
-                    receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
-                    receiptBuilder.addParagraph();
-                    if (AddressInfo.addrCheckMultiLine(installAddress.Address()) == 3) {
-                        receiptBuilder.setAlign(Paint.Align.RIGHT);
-                        receiptBuilder.addText(AddressInfo.addr3(installAddress.Address()), true);
-                        receiptBuilder.addParagraph();
+                    String[] textsInstall = getText(installAddress.Address(), pValue, RECEIPT_WIDTH / 2);
+                    for (int ii = 0; ii < textsInstall.length; ii++) {
+                        cvInstall.drawText(textsInstall[ii], RECEIPT_WIDTH / 2, yy, pValue);
+                        yy += fontSize + lineSpace;
                     }
+
+                    Bitmap result2 = Bitmap.createBitmap(RECEIPT_WIDTH, (int)yy, Config.ARGB_8888);
+                    cvInstall = new Canvas(result2);
+                    cvInstall.drawBitmap(imgInstall, RECEIPT_WIDTH / 2, 0, null);
+                    imgInstall.recycle();
+                    receiptBuilder.addImage(result2);
+//                    receiptBuilder.addText(AddressInfo.addr1(installAddress.Address()), true);
+//                    receiptBuilder.addParagraph();
+//                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+//                    receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
+//                    receiptBuilder.addParagraph();
+//                    if (AddressInfo.addrCheckMultiLine(installAddress.Address()) == 3) {
+//                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+//                        receiptBuilder.addText(AddressInfo.addr3(installAddress.Address()), true);
+//                        receiptBuilder.addParagraph();
+//                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -3955,29 +4043,56 @@ public class DocumentController {
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("ที่อยู่บัตร", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
-                    receiptBuilder.addText(AddressInfo.addr1(defaultAddress.Address()), true);
-                    receiptBuilder.addParagraph();
-                    receiptBuilder.setAlign(Paint.Align.RIGHT);
-                    receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
-                    receiptBuilder.addParagraph();
-                    if (AddressInfo.addrCheckMultiLine(defaultAddress.Address()) == 3) {
-                        receiptBuilder.setAlign(Paint.Align.RIGHT);
-                        receiptBuilder.addText(AddressInfo.addr3(defaultAddress.Address()), true);
-                        receiptBuilder.addParagraph();
+                    String[] texts = getText(defaultAddress.Address(), pValue, RECEIPT_WIDTH / 2);
+                    for (int ii = 0; ii < texts.length; ii++) {
+                        cvAddr.drawText(texts[ii], RECEIPT_WIDTH / 2, yy, pValue);
+                        yy += fontSize + lineSpace;
                     }
+
+                    Bitmap result1 = Bitmap.createBitmap(RECEIPT_WIDTH, (int)yy, Config.ARGB_8888);
+                    cvAddr = new Canvas(result1);
+                    cvAddr.drawBitmap(imgAddress, RECEIPT_WIDTH / 2, 0, null);
+                    imgAddress.recycle();
+                    receiptBuilder.addImage(result1);
+                    receiptBuilder.addParagraph();
+//                    receiptBuilder.addText(AddressInfo.addr1(defaultAddress.Address()), true);
+//                    receiptBuilder.addParagraph();
+//                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+//                    receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
+//                    receiptBuilder.addParagraph();
+//                    if (AddressInfo.addrCheckMultiLine(defaultAddress.Address()) == 3) {
+//                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+//                        receiptBuilder.addText(AddressInfo.addr3(defaultAddress.Address()), true);
+//                        receiptBuilder.addParagraph();
+//                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("ที่ติดตั้ง", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
-                    receiptBuilder.addText(AddressInfo.addr1(installAddress.Address()), true);
-                    receiptBuilder.addParagraph();
+                    yy = 19;
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("ที่ติดตั้ง", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
-                    receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
-                    receiptBuilder.addParagraph();
-                    if (AddressInfo.addrCheckMultiLine(installAddress.Address()) == 3) {
-                        receiptBuilder.setAlign(Paint.Align.RIGHT);
-                        receiptBuilder.addText(AddressInfo.addr3(installAddress.Address()), true);
-                        receiptBuilder.addParagraph();
+                    String[] textsInstall = getText(installAddress.Address(), pValue, RECEIPT_WIDTH / 2);
+                    for (int ii = 0; ii < textsInstall.length; ii++) {
+                        cvInstall.drawText(textsInstall[ii], RECEIPT_WIDTH / 2, yy, pValue);
+                        yy += fontSize + lineSpace;
                     }
+
+                    Bitmap result2 = Bitmap.createBitmap(RECEIPT_WIDTH, (int)yy, Config.ARGB_8888);
+                    cvInstall = new Canvas(result2);
+                    cvInstall.drawBitmap(imgInstall, RECEIPT_WIDTH / 2, 0, null);
+                    imgInstall.recycle();
+                    receiptBuilder.addImage(result2);
+//                    receiptBuilder.addText(AddressInfo.addr1(installAddress.Address()), true);
+//                    receiptBuilder.addParagraph();
+//                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+//                    receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
+//                    receiptBuilder.addParagraph();
+//                    if (AddressInfo.addrCheckMultiLine(installAddress.Address()) == 3) {
+//                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+//                        receiptBuilder.addText(AddressInfo.addr3(installAddress.Address()), true);
+//                        receiptBuilder.addParagraph();
+//                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -3987,16 +4102,28 @@ public class DocumentController {
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("ที่อยู่บัตร", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
-                    receiptBuilder.addText(AddressInfo.addr1(defaultAddress.Address()), true);
-                    receiptBuilder.addParagraph();
-                    receiptBuilder.setAlign(Paint.Align.RIGHT);
-                    receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
-                    receiptBuilder.addParagraph();
-                    if (AddressInfo.addrCheckMultiLine(defaultAddress.Address()) == 3) {
-                        receiptBuilder.setAlign(Paint.Align.RIGHT);
-                        receiptBuilder.addText(AddressInfo.addr3(defaultAddress.Address()), true);
-                        receiptBuilder.addParagraph();
+                    String[] texts = getText(defaultAddress.Address(), pValue, RECEIPT_WIDTH / 2);
+                    for (int ii = 0; ii < texts.length; ii++) {
+                        cvAddr.drawText(texts[ii], RECEIPT_WIDTH / 2, yy, pValue);
+                        yy += fontSize + lineSpace;
                     }
+
+                    Bitmap result1 = Bitmap.createBitmap(RECEIPT_WIDTH, (int)yy, Config.ARGB_8888);
+                    cvAddr = new Canvas(result1);
+                    cvAddr.drawBitmap(imgAddress, RECEIPT_WIDTH / 2, 0, null);
+                    imgAddress.recycle();
+                    receiptBuilder.addImage(result1);
+                    receiptBuilder.addParagraph();
+//                    receiptBuilder.addText(AddressInfo.addr1(defaultAddress.Address()), true);
+//                    receiptBuilder.addParagraph();
+//                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+//                    receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
+//                    receiptBuilder.addParagraph();
+//                    if (AddressInfo.addrCheckMultiLine(defaultAddress.Address()) == 3) {
+//                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+//                        receiptBuilder.addText(AddressInfo.addr3(defaultAddress.Address()), true);
+//                        receiptBuilder.addParagraph();
+//                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -4005,16 +4132,27 @@ public class DocumentController {
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("ที่ติดตั้ง", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
-                    receiptBuilder.addText(AddressInfo.addr1(installAddress.Address()), true);
-                    receiptBuilder.addParagraph();
-                    receiptBuilder.setAlign(Paint.Align.RIGHT);
-                    receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
-                    receiptBuilder.addParagraph();
-                    if (AddressInfo.addrCheckMultiLine(installAddress.Address()) == 3) {
-                        receiptBuilder.setAlign(Paint.Align.RIGHT);
-                        receiptBuilder.addText(AddressInfo.addr3(installAddress.Address()), true);
-                        receiptBuilder.addParagraph();
+                    String[] textsInstall = getText(installAddress.Address(), pValue, RECEIPT_WIDTH / 2);
+                    for (int ii = 0; ii < textsInstall.length; ii++) {
+                        cvInstall.drawText(textsInstall[ii], RECEIPT_WIDTH / 2, yy, pValue);
+                        yy += fontSize + lineSpace;
                     }
+
+                    Bitmap result2 = Bitmap.createBitmap(RECEIPT_WIDTH, (int)yy, Config.ARGB_8888);
+                    cvInstall = new Canvas(result2);
+                    cvInstall.drawBitmap(imgInstall, RECEIPT_WIDTH / 2, 0, null);
+                    imgInstall.recycle();
+                    receiptBuilder.addImage(result2);
+//                    receiptBuilder.addText(AddressInfo.addr1(installAddress.Address()), true);
+//                    receiptBuilder.addParagraph();
+//                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+//                    receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
+//                    receiptBuilder.addParagraph();
+//                    if (AddressInfo.addrCheckMultiLine(installAddress.Address()) == 3) {
+//                        receiptBuilder.setAlign(Paint.Align.RIGHT);
+//                        receiptBuilder.addText(AddressInfo.addr3(installAddress.Address()), true);
+//                        receiptBuilder.addParagraph();
+//                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -4085,28 +4223,13 @@ public class DocumentController {
 
         String customer = String.format("(%s%s)", BHUtilities.trim(contract.CustomerFullName), BHUtilities.trim(contract.CompanyName));
 
-        Bitmap img = Bitmap.createBitmap(RECEIPT_WIDTH, 500, Config.ARGB_8888);
+        img = Bitmap.createBitmap(RECEIPT_WIDTH, 500, Config.ARGB_8888);
         img.setHasAlpha(true);
 
-        float yy = 0;
-        Canvas cv = new Canvas(img);
+        yy = 0;
+        cv = new Canvas(img);
         cv.drawColor(Color.WHITE);
 
-        Paint p = new Paint();
-        p.setColor(Color.BLACK);
-        p.setStyle(Style.FILL_AND_STROKE);
-        p.setAntiAlias(true);
-
-        float fontSize = 22;
-        float lineSpace = fontSize / 2;
-        Paint pTitle = new Paint(p);
-        pTitle.setTypeface(Typeface.DEFAULT);
-        pTitle.setTextSize(fontSize);
-        pTitle.setTextAlign(Align.LEFT);
-
-        Paint pValue = new Paint(pTitle);
-        pValue.setTypeface(null);
-        pValue.setTextAlign(Align.LEFT);
         Paint pSignature = new Paint(pValue);
         pSignature.setTextAlign(Align.CENTER);
 
@@ -4128,8 +4251,6 @@ public class DocumentController {
         } else {
             contractSign = signature;
         }
-
-        String[] texts = null;
 
         if (contract.MODE == 1) {
             if (customeSign != null) {
@@ -4172,7 +4293,7 @@ public class DocumentController {
                 }
             }
 
-            Bitmap result = Bitmap.createBitmap(RECEIPT_WIDTH, 120, Config.ARGB_8888);
+            result = Bitmap.createBitmap(RECEIPT_WIDTH, 120, Config.ARGB_8888);
             cv = new Canvas(result);
             cv.drawBitmap(img, 0, 0, null);
             img.recycle();
@@ -4255,7 +4376,7 @@ public class DocumentController {
             cv.drawText(saleteamcode, RECEIPT_WIDTH / 4, yy, pSignature);
             cv.drawText(salecode, (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
 
-            Bitmap result = Bitmap.createBitmap(RECEIPT_WIDTH, 300, Config.ARGB_8888);
+            result = Bitmap.createBitmap(RECEIPT_WIDTH, 300, Config.ARGB_8888);
             cv = new Canvas(result);
             cv.drawBitmap(img, 0, 0, null);
             img.recycle();
