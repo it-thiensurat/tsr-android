@@ -22,6 +22,8 @@ import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import static th.co.thiensurat.fragments.share.BarcodeScanFragment.oncick;
+
 public class SaleProductCheckFragment extends BHFragment {
     private String STATUS_CODE = "01";
     private ContractInfo contract = null;
@@ -79,6 +81,8 @@ public class SaleProductCheckFragment extends BHFragment {
 
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
+
+        oncick=0;
 
         if (BHPreference.ProcessType().equals(ProcessType.Sale.toString())) {
             txtNumber1.setBackgroundResource(R.drawable.circle_number_sale_color_red);

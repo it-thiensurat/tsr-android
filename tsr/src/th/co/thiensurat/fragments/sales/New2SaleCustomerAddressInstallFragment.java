@@ -878,7 +878,7 @@ public class New2SaleCustomerAddressInstallFragment extends BHFragment {
         linearLayoutCorporation.setVisibility(View.GONE);
         textViewTypeCard.setVisibility(View.VISIBLE);
         spinnerTypeCard.setVisibility(View.VISIBLE);
-        textViewHeadAddress.setText("ที่อยู่ตามบัตร");
+        textViewHeadAddress.setText("ที่อยู่ติดตั้ง");
         linearLayoutcorporationPhone.setVisibility(View.GONE);
         linearLayoutPhone.setVisibility(View.VISIBLE);
         imageButtoncheckIDCard.setVisibility(View.GONE);
@@ -910,7 +910,7 @@ public class New2SaleCustomerAddressInstallFragment extends BHFragment {
         linearLayoutCardNo.setVisibility(View.VISIBLE);
         linearLayoutPerson.setVisibility(View.VISIBLE);
         linearLayoutCorporation.setVisibility(View.GONE);
-        textViewHeadAddress.setText("ที่อยู่ตามบัตร");
+        textViewHeadAddress.setText("ที่อยู่ติดตั้ง");
         linearLayoutcorporationPhone.setVisibility(View.GONE);
         linearLayoutPhone.setVisibility(View.VISIBLE);
         imageButtoncheckIDCard.setVisibility(View.GONE);

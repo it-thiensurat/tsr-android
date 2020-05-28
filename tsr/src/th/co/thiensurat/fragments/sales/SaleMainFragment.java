@@ -25,11 +25,14 @@ import th.co.thiensurat.fragments.share.BarcodeScanFragment.ScanCallBack;
 
 import static th.co.thiensurat.fragments.share.BarcodeScanFragment.barcode2;
 import static th.co.thiensurat.fragments.share.BarcodeScanFragment.barcode3;
+import static th.co.thiensurat.fragments.share.BarcodeScanFragment.oncick;
+import static th.co.thiensurat.fragments.share.BarcodeScanFragment.select_baecode;
 
 public class SaleMainFragment extends BHFragment {
 
-    private ProductStockInfo productInfo,productInfo2;
+    private ProductStockInfo productInfo;
 
+    static public String status = "";
 
     @InjectView
     private ViewPager vpSaleMain;
@@ -37,6 +40,7 @@ public class SaleMainFragment extends BHFragment {
     private TabPageIndicator tabSaleMain;
     private String title;
     private String message;
+    String BAR="";
 
     @Override
     protected int[] processButtons() {
@@ -144,7 +148,7 @@ public class SaleMainFragment extends BHFragment {
         }
     }
 
-    private void BarcodeScan() {
+    public void BarcodeScan() {
         // TODO Auto-generated method stub
         BarcodeScanFragment fm = BHFragment.newInstance(BarcodeScanFragment.class, new ScanCallBack() {
 
@@ -152,7 +156,6 @@ public class SaleMainFragment extends BHFragment {
             public void onResult(BHParcelable data) {
                 // TODO Auto-generated method stub
                 final BarcodeScanFragment.Result barcodeResult = (BarcodeScanFragment.Result) data;
-               // final BarcodeScanFragment.Result2 barcodeResult2 = (BarcodeScanFragment.Result2) data;
 
                 (new BackgroundProcess(activity) {
                     @Override
@@ -162,10 +165,41 @@ public class SaleMainFragment extends BHFragment {
                         /*** [START] :: Fixed - [BHPROJ-1036-7663] - ในระบบขายของธุรกิจต่อเนื่อง เมื่อทำการขายครบทุกขั้นตอนแล้ว จะเห็นสัญญาของพนักงานคนอื่นในทีมขึ้นมาด้วย ***/
                         //productInfo = getProductStockSerialNumber(barcodeResult.barcode);
 
+
+                       // Log.e("barcodeResult",barcodeResult.barcode);
+                   //     Log.e("barcodeResult2",barcodeResult.barcode2);
+
+
+                        Log.e("select_baecode", String.valueOf(select_baecode));
                         if(BHPreference.IsSaleForCRD()) {
-                            productInfo = getProductStockSerialNumberForCRD(barcodeResult.barcode, BHPreference.employeeID());
+                            //if(select_baecode==0){
+                                productInfo = getProductStockSerialNumberForCRD(barcodeResult.barcode, BHPreference.employeeID());
+                                BAR=barcodeResult.barcode;
+                   /*         }
+                            else if(select_baecode==1){
+                                productInfo = getProductStockSerialNumberForCRD(barcodeResult.barcode2, BHPreference.employeeID());
+                                BAR=barcodeResult.barcode2;
+                            }
+                            else if(select_baecode==2){
+                                productInfo = getProductStockSerialNumberForCRD(barcodeResult.barcode3, BHPreference.employeeID());
+                                BAR=barcodeResult.barcode3;
+                            }*/
+
                         } else {
-                            productInfo = getProductStockSerialNumber(barcodeResult.barcode);
+
+                            //if(select_baecode==0){
+                                productInfo = getProductStockSerialNumber(barcodeResult.barcode);
+                                BAR=barcodeResult.barcode;
+                     /*       }
+                            else if(select_baecode==1){
+                                productInfo = getProductStockSerialNumber(barcodeResult.barcode2);
+                                BAR=barcodeResult.barcode2;
+                            }
+                            else if(select_baecode==2){
+                                productInfo = getProductStockSerialNumber(barcodeResult.barcode3);
+                                BAR=barcodeResult.barcode3;
+                            }*/
+
                           //  productInfo2 =barcodeResult.barcode2;
                         }
                         /*** [END] :: Fixed - [BHPROJ-1036-7663] - ในระบบขายของธุรกิจต่อเนื่อง เมื่อทำการขายครบทุกขั้นตอนแล้ว จะเห็นสัญญาของพนักงานคนอื่นในทีมขึ้นมาด้วย  ***/
@@ -183,60 +217,70 @@ public class SaleMainFragment extends BHFragment {
                     @Override
                     protected void after() {
                         // TODO Auto-generated method
-                        if (productInfo != null) {
-                            String status = productInfo.Status;
+
+                            if (productInfo != null) {
+                                 status = productInfo.Status;
 
 
-                                        switch (status) {
-                                            case "CHECKED":
+                                switch (status) {
+                                    case "CHECKED":
 
-                                                    UpdateProductStockStatus(barcodeResult.barcode);
+                                        if(oncick==1){
+                                            UpdateProductStockStatus(barcodeResult.barcode);
 
-
-                                                break;
-                                            case "OVER":
-                                                title = "กรุณาตรวจสอบสินค้า";
-                                                message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้าเกิน");
-                                                showWarningDialog(title, message);
-                                                break;
-                                            case "RETURN":
-                                                title = "กรุณาตรวจสอบสินค้า";
-                                                message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้ารีเทิร์น");
-                                                showWarningDialog(title, message);
-                                                break;
-                                            case "SOLD":
-                                                title = "กรุณาตรวจสอบสินค้า";
-                                                message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้าถูกขาย");
-                                                showWarningDialog(title, message);
-                                                break;
-                                            case "WAIT":
-                                                title = "กรุณาตรวจสอบสินค้า";
-                                                message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้ารอการตรวจสอบ");
-                                                showWarningDialog(title, message);
-                                                break;
-                                            case "DAMAGE":
-                                                title = "กรุณาตรวจสอบสินค้า";
-                                                message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "เครื่องชำรุด");
-                                                showWarningDialog(title, message);
-                                                break;
-                                            case "TEAM_DESTROY":
-                                                title = "กรุณาตรวจสอบสินค้า";
-                                                message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "ถูกยุบทีมขาย");
-                                                showWarningDialog(title, message);
-                                                break;
-                                            case "WAIT_RETURN":
-                                                title = "กรุณาตรวจสอบสินค้า";
-                                                message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้านี้ถูกส่งคืนเข้าระบบ");
-                                                showWarningDialog(title, message);
-                                                break;
-                                            default:
-                                                break;
                                         }
 
 
-                        } else {
+
+                                        break;
+                                    case "OVER":
+                                        title = "กรุณาตรวจสอบสินค้า";
+                                        message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้าเกิน");
+                                        showWarningDialog(title, message);
+                                        break;
+                                    case "RETURN":
+                                        title = "กรุณาตรวจสอบสินค้า";
+                                        message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้ารีเทิร์น");
+                                        showWarningDialog(title, message);
+                                        break;
+                                    case "SOLD":
+                                        title = "กรุณาตรวจสอบสินค้า";
+                                        message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้าถูกขาย");
+                                        showWarningDialog(title, message);
+                                        break;
+                                    case "WAIT":
+                                        title = "กรุณาตรวจสอบสินค้า";
+                                        message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้ารอการตรวจสอบ");
+                                        showWarningDialog(title, message);
+                                        break;
+                                    case "DAMAGE":
+                                        title = "กรุณาตรวจสอบสินค้า";
+                                        message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "เครื่องชำรุด");
+                                        showWarningDialog(title, message);
+                                        break;
+                                    case "TEAM_DESTROY":
+                                        title = "กรุณาตรวจสอบสินค้า";
+                                        message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "ถูกยุบทีมขาย");
+                                        showWarningDialog(title, message);
+                                        break;
+                                    case "WAIT_RETURN":
+                                        title = "กรุณาตรวจสอบสินค้า";
+                                        message = String.format("รหัสสินค้า %s สถานะ  %s", productInfo.ProductSerialNumber, "สินค้านี้ถูกส่งคืนเข้าระบบ");
+                                        showWarningDialog(title, message);
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+
+                            }
+
+
+
+
+                        else {
                             title = "กรุณาตรวจสอบสินค้า";
-                            message = String.format("ไม่พบรหัสสินค้า  %s อยู่ในระบบ", barcodeResult.barcode);
+                            message = String.format("ไม่พบรหัสสินค้า  %s อยู่ในระบบ", BAR);
                             showWarningDialog(title, message);
                         }
                     }
@@ -253,7 +297,7 @@ public class SaleMainFragment extends BHFragment {
         showNextView(fm);
     }
 
-    private void UpdateProductStockStatus(final String barcode) {
+    public void UpdateProductStockStatus(final String barcode) {
         // TODO Auto-generated method stub
         (new BackgroundProcess(activity) {
             @Override

@@ -19,8 +19,12 @@ import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHGeneral;
 import th.co.bighead.utilities.BHParcelable;
 import th.co.bighead.utilities.BHPermissions;
+import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
+import th.co.thiensurat.business.controller.TSRController;
+import th.co.thiensurat.data.info.ProductStockInfo;
+import th.co.thiensurat.fragments.sales.SaleMainFragment;
 import th.co.thiensurat.views.ViewTitle;
 
 public class BarcodeScanFragment extends BHFragment {
@@ -57,8 +61,17 @@ public class BarcodeScanFragment extends BHFragment {
     public  static String barcode2 = "";
 	public  static String barcode3 = "";
 
+	public  static int select_baecode = 0,oncick=0;
+	SaleMainFragment saleMainFragment;
 
-    @InjectView
+
+	private ProductStockInfo productInfo;
+	TSRController controller;
+	private String title;
+	private String message;
+
+
+	@InjectView
 	private ViewTitle vwTitle;
 	@InjectView
 	private ImageButton ibScanBarcode,ibScanBarcode2,ibScanBarcode3;
@@ -111,7 +124,10 @@ public class BarcodeScanFragment extends BHFragment {
 //				Result result = new Result(barcode);
 //				setResult(result);				
 //			}
-			
+
+			select_baecode=0;
+             oncick=1;
+
 			String barcode = edtBarcode.getText().toString();
             String barcode2 = edtBarcode2.getText().toString();
 			String barcode3 = edtBarcode3.getText().toString();
@@ -119,6 +135,16 @@ public class BarcodeScanFragment extends BHFragment {
 
 			Result result = new Result(barcode,barcode2,barcode3);
 			setResult(result);
+
+
+
+		/*	if(saleMainFragment.status.equals("CHECKED")){
+			//	saleMainFragment=new SaleMainFragment();
+			//	saleMainFragment.UpdateProductStockStatus(barcode);
+			}*/
+
+
+
 			break;
 
 		default:
@@ -289,6 +315,8 @@ public class BarcodeScanFragment extends BHFragment {
                 Log.e("barcode",barcode);
 				edtBarcode.setText(barcode);
 
+				select_baecode=0;
+
 
 
                 String substring_ProductSerialNumber = barcode.substring(0, 1);
@@ -300,15 +328,27 @@ public class BarcodeScanFragment extends BHFragment {
 
 					barcode2="";
 					barcode3="";
+					oncick=0;
                 }
                 else {
 
-
+					oncick=1;
 
                     // Result result = new Result(barcode,"","");
                    // setResult(result);
 
                 }
+
+
+
+				String barcode1 = edtBarcode.getText().toString();
+				String barcode2 = edtBarcode2.getText().toString();
+				String barcode3 = edtBarcode3.getText().toString();
+
+
+				Result result = new Result(barcode1,barcode2,barcode3);
+				setResult(result);
+
 
 
 			}
@@ -321,6 +361,7 @@ public class BarcodeScanFragment extends BHFragment {
                 String barcode = edtBarcode.getText().toString();
 
                 Log.e("barcode",barcode2);
+				select_baecode=1;
 
 
                 String substring_barcode2 = barcode2.substring(0, 1);
@@ -346,8 +387,11 @@ public class BarcodeScanFragment extends BHFragment {
                           edtBarcode2.setText("Serial Number เครื่องไม่ถูกต้อง!");
                         //  Result result = new Result(barcode,barcode2);
                         //  setResult(result);
+						  showWarningDialog("", "Serial Number เครื่องไม่ถูกต้อง!");
 
                         }
+
+
 
 
 
@@ -362,17 +406,12 @@ public class BarcodeScanFragment extends BHFragment {
 				//String barcode = edtBarcode.getText().toString();
 				//String barcode2 = edtBarcode2.getText().toString();
 
+				select_baecode=2;
 
 				String substring_barcode3 = barcode3.substring(0, 1);
 
 
-				if((substring_barcode3.equals("R"))|(substring_barcode3.equals("S"))|
-						(substring_barcode3.equals("A"))|(substring_barcode3.equals("U"))|
-						(substring_barcode3.equals("I"))|(substring_barcode3.equals("E"))|
-						(substring_barcode3.equals("G"))|(substring_barcode3.equals("B"))|
-						(substring_barcode3.equals("N"))|(substring_barcode3.equals("M"))|
-						(substring_barcode3.equals("P"))|(substring_barcode3.equals("W"))|
-						(substring_barcode3.equals("C"))|(substring_barcode3.equals("L"))){
+				if(substring_barcode3.equals("F")){
 
 
 					edtBarcode3.setText(barcode3);
@@ -385,8 +424,14 @@ public class BarcodeScanFragment extends BHFragment {
 					edtBarcode3.setText("Serial Number เครื่องไม่ถูกต้อง!");
 					//  Result result = new Result(barcode,barcode2);
 					//  setResult(result);
+					showWarningDialog("", "Serial Number เครื่องไม่ถูกต้อง!");
 
 				}
+
+
+
+
+
 
 
 			}
@@ -415,5 +460,10 @@ public class BarcodeScanFragment extends BHFragment {
 	public void setDescription(String description) {
 		data.description = description;
 	}
-	
+
+
+
+
+
+
 }
