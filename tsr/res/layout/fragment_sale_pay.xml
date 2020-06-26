@@ -280,10 +280,23 @@
 
                     <EditText
                         android:id="@+id/editTextBrandNumber"
-                        android:layout_width="wrap_content"
+                        android:layout_width="180dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/padding_normal"
                         android:ems="10" />
+
+
+
+
+                    <ImageButton
+                        android:id="@+id/ibScanBarcode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+
+                        android:background="@drawable/scan"/>
+
+
                 </LinearLayout>
             </LinearLayout>
 

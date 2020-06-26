@@ -61,7 +61,7 @@ public class BarcodeScanFragment extends BHFragment {
     public  static String barcode2 = "";
 	public  static String barcode3 = "";
 
-	public  static int select_baecode = 0,oncick=0;
+	public  static int select_baecode = 0,oncick=0,check_scan2=0;
 	SaleMainFragment saleMainFragment;
 
 
@@ -362,7 +362,7 @@ public class BarcodeScanFragment extends BHFragment {
 
                 Log.e("barcode",barcode2);
 				select_baecode=1;
-
+                check_scan2=1;
 
                 String substring_barcode2 = barcode2.substring(0, 1);
 
@@ -377,7 +377,7 @@ public class BarcodeScanFragment extends BHFragment {
 
 
                           edtBarcode2.setText(barcode2);
-						  li_scan3.setVisibility(View.VISIBLE);
+						 // li_scan3.setVisibility(View.VISIBLE);
                          // Result result = new Result(barcode,barcode2,"");
                         //  setResult(result);
                         }

@@ -513,7 +513,9 @@ public class AssignController extends BaseController {
          //       "                    FROM SalePaymentPeriodPayment " +
          //       "                     GROUP BY SalePaymentPeriodID" +
          //       "                    ) AS sppSum ON sppSum.SalePaymentPeriodID  = spp.SalePaymentPeriodID" +
-                "       INNER JOIN Contract c ON c.RefNo = a.RefNo AND c.IsActive = 1 AND c.Status = 'NORMAL'" +
+
+            //    "       INNER JOIN Contract c ON c.RefNo = a.RefNo AND c.IsActive = 1 AND c.Status = 'NORMAL'" +
+                "       INNER JOIN Contract c ON c.RefNo = a.RefNo AND c.IsActive = 1 AND (c.Status = 'NORMAL' or c.Status = 'R') " +
                 "       INNER JOIN DebtorCustomer dc ON dc.CustomerID = c.CustomerID" +
 
                 //-- Fixed-[BHPROJ-1036-7383] Comment 2 lined ด้านล่าง

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -126,6 +127,9 @@ public class SaleScanEmployeesFragment extends BHFragment {
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
 
+        Log.e("xxxxxx2","xxxxx");
+
+
         if (BHPreference.ProcessType().equals(ProcessType.Sale.toString())) {
             saveStatusCode();
             txtNumber2.setBackgroundResource(R.drawable.circle_number_sale_color_red);
@@ -196,6 +200,15 @@ public class SaleScanEmployeesFragment extends BHFragment {
 
                     bindSelectedEmployee(empID, BHPreference.teamCode());
                 }
+           /*     else {
+
+                    bindSelectedEmployee(BHPreference.employeeID(), BHPreference.teamCode());
+
+
+                }
+*/
+
+
             }
 
             @Override
@@ -333,7 +346,16 @@ public class SaleScanEmployeesFragment extends BHFragment {
             @Override
             protected void calling() {
                 // TODO Auto-generated method stub
-                employee = getEmpByempID(empID, teamCode);
+                //if(BHPreference.sourceSystem().equals("Credit")) {
+                    employee = getEmpByempID_for_credit(empID, teamCode);
+                //}
+            /*    else {
+                    employee = getEmpByempID(empID, teamCode);
+
+                }*/
+
+
+
             }
 
             @Override
@@ -349,9 +371,11 @@ public class SaleScanEmployeesFragment extends BHFragment {
                         int empPosition = empAdapter.getPosition(empFullName);
                         spinnerEmp.setSelection(empPosition);
                     }
-                    // } else {
-                    // showMessage("null");
+
+
                 }
+
+
             }
 
         }).start();
@@ -413,18 +437,36 @@ public class SaleScanEmployeesFragment extends BHFragment {
 
                 if (employeeList != null) {
                 	for (int i = employeeList.size()-1; i >= 0; i--) {
-        				if (employeeList.get(i).PositionCode == null || !employeeList.get(i).PositionCode.equals("Sale") || employeeList.get(i).SaleCode == null) {
-        					employeeList.remove(i);
-        				}
+
+                	/*    if(BHPreference.sourceSystem().equals("Credit")) {
+                            if (!employeeList.get(i).PositionCode.equals("Credit")) {
+
+                                employeeList.remove(i);
+                            }
+                        }*/
+                	   // else {
+                            if (employeeList.get(i).PositionCode == null || !employeeList.get(i).PositionCode.equals("Sale") || employeeList.get(i).SaleCode == null) {
+
+                                employeeList.remove(i);
+                            }
+                       // }
+
+
+
         			}
+
+
                     bindEmployeeList();
                 }
+
+
 
                 if (contract != null) {
                     if (contract.InstallerEmployeeCode != null) {
                         // ScanEmploy(contract.InstallerEmployeeCode);
                         bindSelectedEmployee(contract.InstallerEmployeeCode, contract.SaleTeamCode);
                     }
+
 
                     if(contract.PreSaleEmployeeCode != null){
                         //PreSaleEmployeeCode.setText(contract.PreSaleEmployeeCode);
@@ -457,6 +499,7 @@ public class SaleScanEmployeesFragment extends BHFragment {
 
                 employeeListTemp.add(item);
             }
+
 
         }
         BHSpinnerAdapter<String> arrayemp = new BHSpinnerAdapter<String>(activity, emp);

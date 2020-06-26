@@ -22,6 +22,7 @@ import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import static th.co.thiensurat.fragments.share.BarcodeScanFragment.check_scan2;
 import static th.co.thiensurat.fragments.share.BarcodeScanFragment.oncick;
 
 public class SaleProductCheckFragment extends BHFragment {
@@ -126,7 +127,14 @@ public class SaleProductCheckFragment extends BHFragment {
                         productSerialNumber_all="";
                     }
                     else if((data.productSerialNumber3.isEmpty())|(data.productSerialNumber3.equals("null"))){
-                        productSerialNumber_all=data.productSerialNumber2+"_";
+                        if(check_scan2==1){
+                            productSerialNumber_all=data.productSerialNumber2+"_1";
+
+                        }
+                        else {
+                            productSerialNumber_all=data.productSerialNumber2+"_";
+
+                        }
                     }
                     else {
                         productSerialNumber_all=data.productSerialNumber2+"_"+data.productSerialNumber3;

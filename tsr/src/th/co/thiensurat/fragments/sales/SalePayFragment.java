@@ -7,6 +7,7 @@ import java.util.List;
 
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHParcelable;
+import th.co.bighead.utilities.BHPermissions;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHSpinnerAdapter;
 import th.co.bighead.utilities.BHUtilities;
@@ -30,10 +31,13 @@ import th.co.thiensurat.data.info.TradeInBrandInfo;
 import th.co.thiensurat.data.info.TripInfo;
 import th.co.thiensurat.fragments.contracts.change.ChangeContractResultFragment;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
+import th.co.thiensurat.fragments.share.BarcodeScanFragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -43,9 +47,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.zxing.client.android.Intents;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import static th.co.thiensurat.business.controller.TSRController.addSalePaymentPeriod;
 import static th.co.thiensurat.business.controller.TSRController.updateContract;
@@ -126,9 +134,17 @@ public class SalePayFragment extends BHFragment {
     @InjectView
     private TextView txtNumber5;
 
+    @InjectView
+    private ImageButton ibScanBarcode;
+
+
     private List<TradeInBrandInfo> TradeInBrandList = null;
     private List<PackagePeriodDetailInfo> pkgPeriod = new ArrayList<PackagePeriodDetailInfo>();
     private List<SalePaymentPeriodInfo> outputSPP = new ArrayList<SalePaymentPeriodInfo>();
+
+    private static final int REQUEST_QR_SCAN = 2469;
+
+    int check_scan=0;
 
     @Override
     protected int titleID() {
@@ -199,6 +215,40 @@ public class SalePayFragment extends BHFragment {
         SumPrice();
 
         DiscountChange_onFocus();
+
+
+
+
+        ibScanBarcode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
+
+                    @Override
+                    public void onSuccess(BHPermissions bhPermissions) {
+                        Intent intent = new IntentIntegrator(activity).createScanIntent();
+                        startActivityForResult(intent, REQUEST_QR_SCAN);
+                    }
+
+                    @Override
+                    public void onNotSuccess(BHPermissions bhPermissions) {
+                        bhPermissions.openAppSettings(getActivity());
+                    }
+
+                    @Override
+                    public void onShouldShowRequest(BHPermissions bhPermissions, BHPermissions.PermissionType... permissionType) {
+                        bhPermissions.showMessage(getActivity(), permissionType);
+                    }
+
+                }, BHPermissions.PermissionType.CAMERA);
+                /*** [END] :: Permission ***/
+
+            }
+        });
+
+
     }
 
     private void saveStatusCode() {
@@ -210,6 +260,27 @@ public class SalePayFragment extends BHFragment {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putParcelableArrayList(SALEPAY_TRADE_LIST, (ArrayList<TradeInBrandInfo>) TradeInBrandList);
         super.onSaveInstanceState(savedInstanceState);
+    }
+
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == REQUEST_QR_SCAN) {
+            if (resultCode == Activity.RESULT_CANCELED) {
+                showMessage("ยังไม่ได้ทำการสแกน กรุณาทำการสแกนอีกครั้ง");
+            } else if (resultCode == Activity.RESULT_OK) {
+                String barcode = intent.getStringExtra(Intents.Scan.RESULT);
+
+                Log.e("barcode", barcode);
+
+                editTextBrandNumber.setText(barcode);
+                check_scan=1;
+
+
+            }
+        }
     }
 
     private void ContactDB(final String ref) {
@@ -507,7 +578,16 @@ public class SalePayFragment extends BHFragment {
                         Contract.RefNo = data.newContract.RefNo;
 
                         if (Contract.HasTradeIn == 1) {
-                            Contract.TradeInProductCode = editTextBrandNumber.getText().toString();
+
+                            if(check_scan==1){
+                                Contract.TradeInProductCode = editTextBrandNumber.getText().toString()+"_1";
+
+                            }
+                            else {
+                                Contract.TradeInProductCode = editTextBrandNumber.getText().toString();
+
+                            }
+
                             Contract.TradeInBrandCode = TradeInBrandList.get(spinnerBrand.getSelectedItemPosition()).TradeInBrandCode;
                             Contract.TradeInProductModel = editTextBrand.getText().toString();
                         } else {
@@ -828,7 +908,17 @@ public class SalePayFragment extends BHFragment {
         Contract.HasTradeIn = HasTradein;
         if (HasTradein == 1) {
             Contract.TradeInReturnFlag = false;     //Contract.HasTradeIn = 1 = มีเครื่องเทิร์น
-            Contract.TradeInProductCode = editTextBrandNumber.getText().toString();
+
+            if(check_scan==1){
+                Contract.TradeInProductCode = editTextBrandNumber.getText().toString()+"_1";
+
+            }
+            else {
+                Contract.TradeInProductCode = editTextBrandNumber.getText().toString();
+
+            }
+
+          //  Contract.TradeInProductCode = editTextBrandNumber.getText().toString();
             Contract.TradeInBrandCode = TradeInBrandList.get(spinnerBrand.getSelectedItemPosition()).TradeInBrandCode;
             Contract.TradeInProductModel = editTextBrand.getText().toString();
 

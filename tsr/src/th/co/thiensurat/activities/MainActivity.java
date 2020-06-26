@@ -362,6 +362,9 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         userProfileString = String.format("%s\nRun on : %s", userProfileString, BHGeneral.SERVICE_MODE.toString());
         tvUserDetail.setText(userProfileString);
 
+
+
+
         menusInfo = BHPreference.getUserMenus();
         mainMenuAdapter = new MainMenuAdapter(MainActivity.this, R.layout.list_main_menu, menusInfo);
         lvMainMenu.setAdapter(mainMenuAdapter);

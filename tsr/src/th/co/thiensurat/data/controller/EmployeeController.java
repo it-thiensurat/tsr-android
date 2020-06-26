@@ -2,6 +2,7 @@ package th.co.thiensurat.data.controller;
 
 import java.util.List;
 
+import th.co.bighead.utilities.BHPreference;
 import th.co.thiensurat.data.info.EmployeeInfo;
 
 public class EmployeeController extends BaseController {
@@ -328,10 +329,16 @@ public class EmployeeController extends BaseController {
     }
 
     public EmployeeInfo getEmpByEmpID(String empID, String teamCode) {
-        final String QUERY_EMPLOYEE_GET_BY_ID = "SELECT Employee .* ,EmployeeDetail.* FROM Employee INNER JOIN EmployeeDetail on Employee.EmpID = EmployeeDetail.EmployeeCode WHERE (EmpID = ?) AND (PositionCode='Sale')" +
-                " AND EmployeeDetail.TeamCode = ?";
-        return executeQueryObject(QUERY_EMPLOYEE_GET_BY_ID, new String[]{empID, teamCode}, EmployeeInfo.class);
+         String QUERY_EMPLOYEE_GET_BY_ID = "SELECT Employee .* ,EmployeeDetail.* FROM Employee INNER JOIN EmployeeDetail on Employee.EmpID = EmployeeDetail.EmployeeCode WHERE (EmpID = ?)";
+         return executeQueryObject(QUERY_EMPLOYEE_GET_BY_ID, new String[]{empID, teamCode}, EmployeeInfo.class);
+
     }
+    public EmployeeInfo getEmpByEmpID_for_credit(String empID, String teamCode) {
+        String QUERY_EMPLOYEE_GET_BY_ID = "SELECT Employee .* ,EmployeeDetail.* FROM Employee INNER JOIN EmployeeDetail on Employee.EmpID = EmployeeDetail.EmployeeCode WHERE (EmpID = ?)";
+        return executeQueryObject(QUERY_EMPLOYEE_GET_BY_ID, new String[]{empID}, EmployeeInfo.class);
+
+    }
+
 
     public void deleteEmployeeByID(String empid) {
         String sql = "DELETE FROM Employee where EmpID=?";
