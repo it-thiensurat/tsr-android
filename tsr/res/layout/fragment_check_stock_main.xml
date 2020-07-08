@@ -66,7 +66,9 @@
             android:layout_marginLeft="@dimen/check_stock_left"
             android:layout_marginTop="@dimen/check_stock_top"
             android:text="@string/button_check"
-             />
+             />
+
+
         -->
 
         <Button
@@ -109,7 +111,7 @@
     <ListView
         android:id="@+id/lvProductStock"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/padding_normal"
         android:layout_marginRight="@dimen/padding_normal" >
     </ListView>
@@ -122,6 +124,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="100dp"
         android:gravity="center"
+        android:visibility="gone"
         android:text="ไม่มีสินค้ารอการตรวจสอบ  กดปุ่มนำเข้าสินค้าเพื่อรายการอ่านข้อมูลสินค้าเข้าระบบ "
         android:textAppearance="?android:attr/textAppearanceLarge" />
 

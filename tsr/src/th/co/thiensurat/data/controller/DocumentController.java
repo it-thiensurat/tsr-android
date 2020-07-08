@@ -872,7 +872,7 @@ public class DocumentController {
 
             /****/
             yy += 200;
-            String TSR = "(นายวิรัช วงศ์นิรันดร์)";
+            String TSR = "";
             // YIM Change TSR_COMMITTEE_NAME
             if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
                 EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
@@ -1073,7 +1073,7 @@ public class DocumentController {
             listText.add(new PrintTextInfo("signature"));
             listText.addAll(getTextLeftRightAlignCenter("......................", ".....................", "EN"));
             listText.addAll(getTextLeftRightAlignCenter("           ผู้ขาย       ", "          ผู้ซื้อ        "));
-            String TSR = "(นายวิรัช วงศ์นิรันดร์)";
+            String TSR = "";
             // YIM Change TSR_COMMITTEE_NAME
             if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
                 EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
@@ -1144,7 +1144,7 @@ public class DocumentController {
         p.setTextSize(fontSize);
         p.setTextAlign(Align.CENTER);
         yy += fontSize + LINE_SPACE;
-        cv.drawText("ใบเสร็จรับเงิน", LAYOUT_WIDTH / 2, yy, p);
+        cv.drawText("ใบรับเงิน", LAYOUT_WIDTH / 2, yy, p);
 
         fontSize = 42;
         float lineSpace = fontSize / 2;
@@ -1478,7 +1478,7 @@ public class DocumentController {
         p.setTextSize(fontSize);
         p.setTextAlign(Align.CENTER);
         yy += fontSize + LINE_SPACE;
-        cv.drawText("ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ", LAYOUT_WIDTH / 2, yy, p);
+        cv.drawText("ใบรับเงิน", LAYOUT_WIDTH / 2, yy, p);
 
 
 
@@ -1649,12 +1649,12 @@ public class DocumentController {
 
         /*shortReceiptInfo.listTxt.add("บริษัท เธียรสุรัตน์ จำกัด (มหาชน)");
         shortReceiptInfo.listTxt.add("เลขประจำตัวผู้เสียภาษี 0107556000213");
-        shortReceiptInfo.listTxt.add("ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ");*/
+        shortReceiptInfo.listTxt.add("ใบรับเงิน");*/
 
 
         shortReceiptInfo.listTxt.add(ThemalPrintController.calculateCenter("บริษัท เธียรสุรัตน์ จำกัด (มหาชน)"));
         shortReceiptInfo.listTxt.add(ThemalPrintController.calculateCenter("เลขประจำตัวผู้เสียภาษี 0107556000213"));
-        shortReceiptInfo.listTxt.add(ThemalPrintController.calculateCenter("ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ"));
+        shortReceiptInfo.listTxt.add(ThemalPrintController.calculateCenter("ใบรับเงิน"));
 
         shortReceiptInfo.listTxt.add(ThemalPrintController.getBetweenSpace("เลขที่ใบเสร็จ", paymentInfo.ReceiptCode + " (รวม Vat)"));
         shortReceiptInfo.listTxt.add(ThemalPrintController.getBetweenSpace("วันที่รับเงิน", (BHUtilities.dateFormat(paymentInfo.PayDate) + "")));
@@ -1767,7 +1767,7 @@ public class DocumentController {
         listText.add(new PrintTextInfo("selectPageMode"));
         //listText.add(new PrintTextInfo("setPageRegion(0, 0, 570, 650 ,alignLeft)"));
         listText.add(new PrintTextInfo("beginPage(0, 4)"));
-        listText.addAll(getTextAlignCenter("ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ", PrintTextInfo.FontType.Bold));
+        listText.addAll(getTextAlignCenter("ใบรับเงิน", PrintTextInfo.FontType.Bold));
         listText.add(new PrintTextInfo("printTitleBackground(0, 0, 570, 64)"));
         listText.add(new PrintTextInfo("beginPage(0, 66)"));
         //listText.add(new PrintTextInfo("printFrame(0, 0, 570, 650)"));
@@ -1882,7 +1882,7 @@ public class DocumentController {
         p.setTextAlign(Align.CENTER);
 
         yy += fontSize * 2;
-        cv.drawText("ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ", LAYOUT_WIDTH / 2, yy, p);
+        cv.drawText("ใบรับเงิน", LAYOUT_WIDTH / 2, yy, p);
 
 
         float lineSpace = fontSize;//fontSize / 2;
@@ -3588,7 +3588,7 @@ public class DocumentController {
             listText.add(new PrintTextInfo("signature"));
             listText.addAll(getTextLeftRightAlignCenter("......................", ".....................", "EN"));
             listText.addAll(getTextLeftRightAlignCenter("       ผู้ให้เช่าซื้อ       ", "       ผู้เช่าซื้อ        "));
-            String TSR = "(นายวิรัช วงศ์นิรันดร์)";
+            String TSR = "";
             // YIM Change TSR_COMMITTEE_NAME
             if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
                 EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
@@ -4427,7 +4427,7 @@ public class DocumentController {
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
         receiptBuilder.setTextSize(24);
-        receiptBuilder.addText("ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ");
+        receiptBuilder.addText("ใบรับเงิน");
         receiptBuilder.addParagraph();
 
 //        Bitmap imgTitle = Bitmap.createBitmap(RECEIPT_WIDTH, 65, Config.ARGB_8888);
@@ -4446,7 +4446,7 @@ public class DocumentController {
 //        pTitle.setColor(WHITE);
 //        pTitle.setStyle(Style.FILL);
 //        pTitle.setAntiAlias(true);
-//        cvTitle.drawText("ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ", RECEIPT_WIDTH / 2, 42, pTitle);
+//        cvTitle.drawText("ใบรับเงิน", RECEIPT_WIDTH / 2, 42, pTitle);
 //        Bitmap title = Bitmap.createBitmap(RECEIPT_WIDTH, 65, Config.ARGB_8888);
 //        Canvas cvTitle2 = new Canvas(title);
 //        cvTitle2.drawBitmap(imgTitle, 0, 0, null);

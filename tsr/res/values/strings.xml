@@ -57,7 +57,7 @@
     <string name="button_pay">ดำเนินการชำระเงิน</string>
     <string name="button_camera">ถ่ายรูป</string>
     <string name="button_more">ข้อมูลลูกค้าเพิ่มเติม</string>
-    <string name="button_receipt">ข้อมูลใบเสร็จรับเงิน</string>
+    <string name="button_receipt">ข้อมูลใบรับเงิน</string>
     <string name="button_update_list">ปรับปรุงรายการ</string>
     <string name="button_save">บันทึก</string>
     <string name="button_confirm">ยืนยัน</string>
@@ -264,7 +264,7 @@
     <string name="label_balance_amount">คงเหลือ</string>
     <string name="label_payment_amount">เงินที่ต้องชำระ</string>
     <string name="label_baht">บาท</string>
-    <string name="label_receipt">ใบเสร็จรับเงิน</string>
+    <string name="label_receipt">ใบรับเงิน</string>
     <string name="label_receipt_date">วันที่รับเงิน</string>
     <string name="label_receipt_no">เลขที่</string>
     <string name="label_reference_no">เลขที่อ้างอิง</string>
