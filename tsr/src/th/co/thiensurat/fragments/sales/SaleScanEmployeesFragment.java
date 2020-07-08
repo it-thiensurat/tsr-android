@@ -347,14 +347,14 @@ public class SaleScanEmployeesFragment extends BHFragment {
             protected void calling() {
                 // TODO Auto-generated method stub
                 //if(BHPreference.sourceSystem().equals("Credit")) {
-                    employee = getEmpByempID_for_credit(empID, teamCode);
+                  //  employee = getEmpByempID_for_credit(empID, teamCode);
                 //}
             /*    else {
                     employee = getEmpByempID(empID, teamCode);
 
                 }*/
 
-
+                employee = getEmpByempID(empID, teamCode);
 
             }
 

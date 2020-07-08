@@ -40,6 +40,15 @@ public interface Service {
     @GET("Production/GIS/TrackingLocation")
     Call<Object> updateGIS(@Query("latitude") String data1, @Query("longitude") String data2, @Query("deviceId") String data3, @Query("empId") String data4, @Query("speed") String data5, @Query("source") String data6);
 
+
+
+
+    @GET("/api/api-gis-Receipt.php")
+    Call<Object> getgps(@Query("ReceiptID") String ReceiptID, @Query("EmpID") String EmpID, @Query("Latitude") String Latitude, @Query("Longitude") String Longitude);
+
+
+
+
 }
 
 

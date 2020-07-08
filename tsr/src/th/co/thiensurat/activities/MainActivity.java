@@ -189,6 +189,7 @@ import th.co.thiensurat.fragments.sales.SaleMainFragment;
 import th.co.thiensurat.fragments.sendmoney.SendMoneySummaryMainFragment;
 import th.co.thiensurat.fragments.synchronize.SynchronizeMainFragment;
 import th.co.thiensurat.retrofit.api.Service;
+import th.co.thiensurat.service.GetCurrentLocation;
 import th.co.thiensurat.service.SynchronizeService;
 import th.co.thiensurat.service.TSRService;
 import th.co.thiensurat.service.TimeOutLoginService;
@@ -263,6 +264,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
     private boolean isFragmentBackStack = false;
     private BHParcelable fragmentResultData = null;
     private MyBroadcastReceiver receiver;
+    GetCurrentLocation currentLoc;
 
 
     /**********************************************************************************************/
@@ -893,6 +895,13 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
 
 
+        try {
+            currentLoc = new GetCurrentLocation(this);
+
+        }
+        catch (Exception ex){
+
+        }
 
     }
 
@@ -919,10 +928,27 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
     }
 
+
+
+    @Override
+    public void onStart() {
+        try {
+            super.onStart();
+        }
+        catch (Exception ex){
+
+        }
+
+        currentLoc.connectGoogleApi();
+    }
+
+
+
     @Override
     protected void onStop() {
         super.onStop();
 
+        currentLoc.disConnectGoogleApi();
 
     }
 

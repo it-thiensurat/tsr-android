@@ -2376,9 +2376,11 @@ public class TSRController {
     public static EmployeeInfo getEmpByempID(String empID, String teamCode) {
         return new EmployeeController().getEmpByEmpID(empID, teamCode);
     }
+/*
     public static EmployeeInfo getEmpByempID_for_credit(String empID, String teamCode) {
         return new EmployeeController().getEmpByEmpID_for_credit(empID, teamCode);
     }
+*/
 
     public static EmployeeInfo getEmployeeDetailByEmployeeIDAndPositionCode(String OrganizationCode, String empID, String PositionCode, String teamCode) {
         return new EmployeeController().getEmployeeByEmployeeIDAndPositionCode(OrganizationCode, empID, PositionCode, teamCode);

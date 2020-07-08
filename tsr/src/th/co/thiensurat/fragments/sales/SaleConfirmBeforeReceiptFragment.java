@@ -1,23 +1,41 @@
 package th.co.thiensurat.fragments.sales;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHParcelable;
+import th.co.bighead.utilities.BHPermissions;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHUtilities;
 import th.co.bighead.utilities.annotation.InjectView;
@@ -39,7 +57,11 @@ import th.co.thiensurat.data.info.SalePaymentPeriodInfo;
 import th.co.thiensurat.data.info.SalePaymentPeriodPaymentInfo;
 import th.co.thiensurat.data.info.TripInfo;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
+import th.co.thiensurat.retrofit.api.Service;
+import th.co.thiensurat.service.GetCurrentLocation;
 import th.co.thiensurat.views.ViewTitle;
+
+import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 
 public class SaleConfirmBeforeReceiptFragment extends BHFragment {
 
@@ -78,6 +100,9 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
     }
 
     private Data data;
+
+    GetCurrentLocation currentLoc;
+
 
     // private PaymentInfo payment = null;
     private AddressInfo address = null;
@@ -131,6 +156,9 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
         }
 
         loadData();
+
+        currentLoc = new GetCurrentLocation(getActivity());
+
     }
 
     @Override
@@ -152,7 +180,29 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
         Builder setupAlert;
         setupAlert = new AlertDialog.Builder(activity).setTitle(title).setMessage(message).setPositiveButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                savePaymentData();
+                Log.e("GPS","12345678");
+
+                if(currentLoc.check_gps_open==1){
+                   // currentLoc = new GetCurrentLocation(getActivity());
+                  //  currentLoc = new GetCurrentLocation(getActivity());
+                 //   currentLoc.connectGoogleApi();
+
+                    String latitude2 = currentLoc.latitude;
+                    String longitude2 = currentLoc.longitude;
+                    Log.e("latlong_M",latitude2+","+longitude2);
+
+                    Log.e("GPS","OPEN");
+                    save_gps(data.receiptCode,BHPreference.employeeID() ,latitude2,longitude2);
+                    savePaymentData();
+
+                }
+                else {
+
+                        currentLoc = new GetCurrentLocation(getActivity());
+                        currentLoc.connectGoogleApi();
+                    Log.e("GPS","OFF");
+
+                }
             }
         }).setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -586,4 +636,89 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
 
         return layout;
     }
+
+
+
+
+
+
+
+    @Override
+    public void onStart() {
+        try {
+            super.onStart();
+        }
+        catch (Exception ex){
+
+        }
+
+        currentLoc.connectGoogleApi();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        currentLoc.disConnectGoogleApi();
+    }
+
+
+
+
+
+
+
+    private void save_gps(String ReceiptID,String EmpID,String Latitude,String Longitude) {
+
+        try {
+
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.getgps(ReceiptID,EmpID,Latitude,Longitude);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+
+         /*           Gson gson=new Gson();
+                    try {
+                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+
+                        Log.e("jsonObject",jsonObject.toString());
+                        JSON_PARSE_DATA_AFTER_WEBCALL_test(jsonObject.getJSONArray("data"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+
+
+
+                    }*/
+
+
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+
+
+                }
+            });
+
+        } catch (Exception e) {
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 }
