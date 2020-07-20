@@ -3710,11 +3710,30 @@ public class DocumentController {
     }
 
     public static Bitmap mergeSignature(Bitmap bmp1, Bitmap bmp2, File path) {
-        Bitmap result = Bitmap.createBitmap((bmp1.getWidth() + bmp2.getWidth()), bmp1.getHeight(), Bitmap.Config.RGB_565 );
+        Bitmap result = Bitmap.createBitmap((bmp1.getWidth() + bmp2.getWidth()), bmp1.getHeight(), Config.ARGB_8888 );
         Canvas canvas = new Canvas(result);
         canvas.drawColor(Color.WHITE);
         canvas.drawBitmap(bmp1, 0, 0, null);
-        canvas.drawBitmap(bmp2, bmp1.getWidth(), 0, null);
+        canvas.drawBitmap(bmp2, bmp1.getWidth(), 10, null);
+        OutputStream stream = null;
+        try {
+            stream = new FileOutputStream(path);
+            result.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+            stream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static Bitmap mergeBMP(Bitmap bmp1, Bitmap bmp2, File path) {
+        Bitmap result = Bitmap.createBitmap(RECEIPT_WIDTH, bmp1.getHeight(), Config.ARGB_8888 );
+        Canvas canvas = new Canvas(result);
+        canvas.drawColor(Color.WHITE);
+        canvas.drawBitmap(bmp1, 0, 0, null);
+        canvas.drawBitmap(bmp2, (bmp1.getWidth() + 300), 15, null);
         OutputStream stream = null;
         try {
             stream = new FileOutputStream(path);
@@ -4418,39 +4437,12 @@ public class DocumentController {
         receiptBuilder.setAlign(Align.CENTER);
         receiptBuilder.setColor(Color.BLACK);
         receiptBuilder.setTextSize(26);
-//        receiptBuilder.addText("บริษัท เธียรสุรัตน์ จำกัด (มหาชน)", true);
-//        receiptBuilder.addParagraph();
-//        receiptBuilder.addText("เลขประจำตัวผู้เสียภาษี 0107556000213", true);
-//        receiptBuilder.addParagraph();
-//        receiptBuilder.addText("โทร. 1210", true);
         receiptBuilder.addImage(shortHeaderPrint());
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
         receiptBuilder.setTextSize(24);
         receiptBuilder.addText("ใบรับเงิน");
         receiptBuilder.addParagraph();
-
-//        Bitmap imgTitle = Bitmap.createBitmap(RECEIPT_WIDTH, 65, Config.ARGB_8888);
-//        imgTitle.setHasAlpha(true);
-//        Canvas cvTitle = new Canvas(imgTitle);
-//        cvTitle.drawColor(BLACK);
-//        Paint rect = new Paint();
-//        rect.setColor(BLACK);
-//        rect.setStyle(Style.FILL);
-//        rect.setAntiAlias(true);
-//        cvTitle.drawBitmap(backgroundTitle(), 0, 0, null);
-//        Paint pTitle = new Paint();
-//        pTitle.setTypeface(Typeface.DEFAULT_BOLD);
-//        pTitle.setTextSize(26);
-//        pTitle.setTextAlign(Align.CENTER);
-//        pTitle.setColor(WHITE);
-//        pTitle.setStyle(Style.FILL);
-//        pTitle.setAntiAlias(true);
-//        cvTitle.drawText("ใบรับเงิน", RECEIPT_WIDTH / 2, 42, pTitle);
-//        Bitmap title = Bitmap.createBitmap(RECEIPT_WIDTH, 65, Config.ARGB_8888);
-//        Canvas cvTitle2 = new Canvas(title);
-//        cvTitle2.drawBitmap(imgTitle, 0, 0, null);
-//        receiptBuilder.addImage(imgTitle);
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
 
@@ -4647,10 +4639,22 @@ public class DocumentController {
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
 
-        receiptBuilder.setAlign(Align.RIGHT);
-        receiptBuilder.addImage(logoTelesale());
+        receiptBuilder.setAlign(Paint.Align.CENTER);
+        String qrcode = String.format("|010755600021301" + CR + "%s" + CR + "%s" + CR + "%s", debtorCustomerInfo.IDCard.replace("-", ""), paymentInfo.CONTNO, "0");
+        Bitmap bmpQR = createQRCodeForReceipt(qrcode);
+        File file = new File(getAlbumStorageDir(paymentInfo.CONTNO), String.format("bottomreceipt_%s.jpg", paymentInfo.CONTNO));
+        Bitmap bottomReceipt = mergeBMP(bmpQR, logoTelesale(), file);
+
+        Bitmap resultReceipt = Bitmap.createBitmap(RECEIPT_WIDTH, 160, Config.ARGB_8888);
+        Canvas cc = new Canvas(resultReceipt);
+        cc.drawBitmap(bottomReceipt, 0, 0, null);
+        bottomReceipt.recycle();
+
+        receiptBuilder.addImage(resultReceipt);
+        receiptBuilder.setAlign(Paint.Align.LEFT);
+        receiptBuilder.addText("สำหรับชำระค่างวด", false);
         receiptBuilder.addParagraph();
-        receiptBuilder.addBlankSpace(10);
+        receiptBuilder.addBlankSpace(25);
 
         return receiptBuilder.build();
     }
@@ -4843,6 +4847,19 @@ public class DocumentController {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
             BitMatrix bitMatrix = multiFormatWriter.encode(contents, BarcodeFormat.QR_CODE,250,250);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            return bitmap;
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Bitmap createQRCodeForReceipt(String contents) {
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(contents, BarcodeFormat.QR_CODE,150,150);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             return bitmap;
