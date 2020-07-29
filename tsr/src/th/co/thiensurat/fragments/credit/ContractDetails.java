@@ -81,6 +81,7 @@ public class ContractDetails extends BHFragment {
                 searchContractList();
             }
         });
+
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

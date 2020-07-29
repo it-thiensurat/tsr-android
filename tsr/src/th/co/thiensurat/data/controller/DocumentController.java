@@ -4650,11 +4650,32 @@ public class DocumentController {
         cc.drawBitmap(bottomReceipt, 0, 0, null);
         bottomReceipt.recycle();
 
+        receiptBuilder.setTextSize(20);
         receiptBuilder.addImage(resultReceipt);
         receiptBuilder.setAlign(Paint.Align.LEFT);
         receiptBuilder.addText("สำหรับชำระค่างวด", false);
         receiptBuilder.addParagraph();
-        receiptBuilder.addBlankSpace(25);
+        receiptBuilder.addBlankSpace(40);
+
+        receiptBuilder.setTextSize(24);
+        receiptBuilder.setAlign(Paint.Align.CENTER);
+        receiptBuilder.addText("TSR E-Survey", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.setTextSize(18);
+        receiptBuilder.setAlign(Paint.Align.CENTER);
+        receiptBuilder.addText("ขอเชิญร่วมแสดงความคิดเห็น เพื่อนำมาพัฒนาและปรับปรุงบริการของเรา", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Paint.Align.CENTER);
+        receiptBuilder.addText("เพื่อนำมาพัฒนาและปรับปรุงบริการของเรา", true);
+
+        receiptBuilder.setTextSize(26);
+        receiptBuilder.setAlign(Paint.Align.CENTER);
+        String qrcodeSurvey = "http://app.thiensurat.co.th/VerifySeller/index.php?EmpID=" + paymentInfo.EmpID;
+        Bitmap bmpSurvey = createQRCodeForSurvey(qrcodeSurvey);
+        receiptBuilder.addImage(bmpSurvey);
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.addBlankSpace(10);
 
         return receiptBuilder.build();
     }
@@ -4860,6 +4881,19 @@ public class DocumentController {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
             BitMatrix bitMatrix = multiFormatWriter.encode(contents, BarcodeFormat.QR_CODE,150,150);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            return bitmap;
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Bitmap createQRCodeForSurvey(String contents) {
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(contents, BarcodeFormat.QR_CODE,300,300);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             return bitmap;
