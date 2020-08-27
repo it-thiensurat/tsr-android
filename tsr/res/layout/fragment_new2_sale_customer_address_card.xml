@@ -958,6 +958,118 @@
             </LinearLayout>
 
 
+            <LinearLayout
+                style="@style/ItemLine"
+                android:id="@+id/li_date"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextView.Label"
+                    android:layout_width="@dimen/impound_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="วันที่นัดติดตั้ง" />
+
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5sp"
+                        android:layout_marginRight="20dp"
+                        android:orientation="horizontal"
+                        android:visibility="visible"
+
+                        >
+
+
+                        <ImageView
+                            android:id="@+id/image_date"
+                            android:layout_width="20sp"
+                            android:layout_height="20sp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/calendar"
+                            android:backgroundTint="@color/app_green"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/txt_s_date"
+                            android:layout_width="wrap_content"
+
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:ellipsize="end"
+                            android:lines="3"
+                            android:text="0000-00-00"
+                            android:layout_marginTop="5sp"
+
+
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5sp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal"
+                        android:visibility="visible"
+
+                        >
+
+
+                        <ImageView
+                            android:id="@+id/image_time"
+
+                            android:layout_width="20sp"
+                            android:layout_height="20sp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/stopwatch"
+                            android:backgroundTint="@color/app_green"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/txt_s_time"
+
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="5sp"
+
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:ellipsize="end"
+                            android:lines="3"
+                            android:text="00:00"
+
+
+
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+
+
+
+
+            </LinearLayout>
+
+
+
 
         </LinearLayout>
     </ScrollView>

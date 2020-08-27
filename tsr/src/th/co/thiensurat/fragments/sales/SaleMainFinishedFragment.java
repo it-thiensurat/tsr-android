@@ -100,14 +100,14 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 						if (BHPreference.IsSaleForCRD()) {
 							if (isContractDetails) {
 								contractList = TSRController.getContractStatusFinishForCreditBySearch(BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%");
-								//Log.e("1111","2222");
+								Log.e("1111","2222");
 							} else {
 								contractList = TSRController.getContractStatusFinishForCRD(BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
-							//	Log.e("1111","3333");
+								Log.e("1111","3333");
 							}
 						} else {
 							contractList = TSRController.getContractStatusFinish(BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString());
-							//Log.e("1111","4444");
+							Log.e("1111","4444");
 						}
 					}
 					//Log.e("TEST_SPEED","1111");

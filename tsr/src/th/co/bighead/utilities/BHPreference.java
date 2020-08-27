@@ -1003,6 +1003,8 @@ public class BHPreference {
     public final static String departmentSignaturePath = String.format("%s/%s/", BHStorage.getFolder(BHStorage.FolderType.Picture), "signature");
     public final static String departmentSignatureName = "signature.png";
 
+
+
     public static boolean hasDepartmentSignatureImage(){
         Bitmap signatureImage = BitmapFactory.decodeFile(BHPreference.departmentSignaturePath + BHPreference.departmentSignatureName);
         return (signatureImage != null);

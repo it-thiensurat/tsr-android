@@ -239,6 +239,9 @@ public class SaleContractPrintFragment extends BHFragment {
         }
         loadData();
         linearLayoutPayment.setVisibility(View.GONE);
+
+
+        Log.e("aaaa","zzzz");
     }
 
     private void loadData() {
@@ -332,7 +335,12 @@ public class SaleContractPrintFragment extends BHFragment {
                     if (paymentPeriodOutput != null) {
                         String title = paymentPeriodOutput.size() > 1 ? "" + getResources().getString(R.string.sale_contract_payment) : ""
                                 + getResources().getString(R.string.sale_contract_installment);
-                        txtCaption.setText(title + (contract.STATUS.equals("VOID") ? " (สัญญานี้ถูกยกเลิกแล้ว) " : ""));
+                       txtCaption.setText(title + (contract.STATUS.equals("VOID") ? " (สัญญานี้ถูกยกเลิกแล้ว) " : ""));
+
+
+
+                      //  txtCaption.setText("ใบจอง");
+
                         String titleLblCustomerFullName = paymentPeriodOutput.size() > 1 ? "" + getResources().getString(R.string.change_contract_customer_fullname) : ""
                                 + getResources().getString(R.string.change_contract_customer_fullname_cash);
                         lblCustomerFullName.setText(titleLblCustomerFullName);

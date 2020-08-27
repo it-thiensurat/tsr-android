@@ -95,6 +95,10 @@ public class SaleMoreDetailAddress extends BHFragment {
                 if (!BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.EditContract.toString())) {
                     TSRController.updateStatusCode(BHPreference.RefNo(), "12");
                 }
+                else {
+                    TSRController.updateStatusCode(BHPreference.RefNo(), "12");
+
+                }
             }
         }.start();
     }
@@ -125,7 +129,11 @@ public class SaleMoreDetailAddress extends BHFragment {
         // TODO Auto-generated method stub
         switch (buttonID) {
             case R.string.button_end:
+
+
                 UpDateDebCustomer();
+
+
                 break;
             case R.string.button_back:
                 showLastView();

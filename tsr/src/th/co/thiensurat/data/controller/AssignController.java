@@ -1,6 +1,7 @@
 package th.co.thiensurat.data.controller;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -536,10 +537,98 @@ public class AssignController extends BaseController {
                 "       AND IFNULL(dc.CustomerName, '') || IFNULL(dc.CompanyName, '') || IFNULL(c.ProductSerialNumber, '') || c.CONTNO LIKE ?" +
                 " ORDER BY a.[OrderExpect], c.CONTNO ASC";
         //return executeQueryList(sql, new String[]{OrganizationCode, AssigneeTeamCode, AssigneeEmpID,   AddressTypeCode , valueOf(new TripController().getDueDate()), OrganizationCode, AssigneeTeamCode, AssigneeEmpID,   search}, AssignInfo.class);
+
+
+
         return executeQueryList(sql, new String[]{OrganizationCode, AssigneeEmpID,   AddressTypeCode , valueOf(new TripController().getDueDate()), OrganizationCode, AssigneeEmpID,   search}, AssignInfo.class);
     }
 
 
+
+
+
+
+
+
+
+
+    public List<AssignInfo> getNewSalePaymentPeriodListForAssignCredit_PC(String OrganizationCode, String AssigneeTeamCode, String AssigneeEmpID, String search, String AddressTypeCode) {
+        /*** Fixed - [BHPROJ-0026-3280] :: [Android-ระบบเก็บเงินค่างวด] ในหน้าจอรายการสัญญาทั้งหมดของวัน AppointmentDate ที่ถูกเลือก การแสดงตัวเลขงวดเก็บเงิน ให้แสดงงวดต่ำสุด  ***/
+        String sql = "SELECT a.*" +
+                "       , spp.PaymentPeriodNumber, spp.NetAmount" +
+                "       , c.CONTNO" +
+                "       , IFNULL(dc.PrefixName, '') || IFNULL(dc.CustomerName, '') || IFNULL(dc.CompanyName, '') AS CustomerFullName" +
+                "       , IFNULL(sppCount.HoldSalePaymentPeriod, 0) AS HoldSalePaymentPeriod" +
+                //       "  , spp.NetAmount - IFNULL(sppSum.SumAmount, 0) AS OutStandingPayment" +
+                "       , spp.NetAmount as OutStandingPayment " +
+                "       , addr.AddressID, addr.AddressTypeCode, addr.AddressDetail, addr.AddressDetail2, addr.AddressDetail3, addr.AddressDetail4, addr.ProvinceCode" +
+                "       , addr.DistrictCode, addr.SubDistrictCode, addr.Zipcode, addr.AddressInputMethod, addr.TelHome, addr.TelMobile, addr.TelOffice, addr.EMail" +
+                "       , prov.ProvinceName, dt.DistrictName, sd.SubDistrictName, addr.Latitude, addr.Longitude, aMin.MinPaymentPeriodNumber" +
+                " FROM Assign a" +
+                "       INNER JOIN SalePaymentPeriod spp ON (spp.SalePaymentPeriodID = a.ReferenceID)" +
+                " 		                                AND (spp.RefNo = a.RefNo)     " +   //-- Fixed-[BHPROJ-1036-7383] เพิ่ม Join RefNo เพื่อ avoid งวดเก่าหลังทำ Change Package
+                "       INNER JOIN (" +
+                "					SELECT a.RefNo, DATE(spp.PaymentAppointmentDate) AS PaymentAppointmentDate, MAX(spp.PaymentPeriodNumber) AS PaymentPeriodNumber, MIN(spp.PaymentPeriodNumber) AS MinPaymentPeriodNumber" +
+                "					FROM Assign a" +
+                "						  INNER JOIN SalePaymentPeriod spp ON spp.SalePaymentPeriodID = a.ReferenceID" +
+                " 		                                                      AND (spp.RefNo = a.RefNo)     " +   // Fixed-[BHPROJ-1036-7383] เพิ่ม Join RefNo เพื่อ avoid งวดเก่าหลังทำ Change Package
+                "					WHERE a.OrganizationCode = ?" +
+                "						  AND a.TaskType = 'SalePaymentPeriod' " +
+                //"						  AND a.AssigneeTeamCode = ?" +
+                "						  AND a.AssigneeEmpID = ?" +
+                "						  AND spp.PaymentComplete = 0" +
+                "						  AND spp.PaymentPeriodNumber > 1" +
+                //       "                       AND (julianday(DATE(spp.PaymentAppointmentDate)) - julianday(DATE('now'))) <= (SELECT LimitMax FROM [Limit] WHERE (LimitType = 'ImportCreditDay') AND ((EmpID = ? ) OR (EmpID IS NULL)) ORDER BY EmpID DESC LIMIT 1) " +
+                "					GROUP BY a.RefNo, DATE(spp.PaymentAppointmentDate)" +
+                "                  ) AS aMin ON aMin.RefNo = a.RefNo AND aMin.PaymentPeriodNumber = spp.PaymentPeriodNumber" +
+                "       INNER JOIN Address addr ON addr.RefNo = a.RefNo AND addr.AddressTypeCode = ?" +
+                "       LEFT OUTER JOIN Province prov ON prov.ProvinceCode = addr.ProvinceCode" +
+                "       LEFT OUTER JOIN AddressType at ON at.AddressTypeCode = addr.AddressTypeCode" +
+                "       LEFT OUTER JOIN District dt ON dt.DistrictCode = addr.DistrictCode " +
+                "       LEFT OUTER JOIN SubDistrict sd ON sd.SubDistrictCode = addr.SubDistrictCode " +
+                "       LEFT OUTER JOIN (" +
+                "                         SELECT COUNT(*) AS HoldSalePaymentPeriod, sppCountDistinct.RefNo  " +
+                "                         FROM (" +
+                "                               SELECT DISTINCT spp.PaymentDueDate, spp.PaymentPeriodNumber, spp.RefNo" +
+                "                               FROM  SalePaymentPeriod spp " +
+                "                               WHERE DATE(spp.PaymentDueDate) < DATE(?)  " +
+                "                                     AND  spp.PaymentComplete = 0 " +
+                "                               ) AS sppCountDistinct" +
+                "                         GROUP BY sppCountDistinct.RefNo" +
+                "                      ) AS sppCount ON sppCount.RefNo = a.RefNo" +
+                //       "   LEFT OUTER JOIN (" +
+                //       "                    SELECT SUM(Amount) as SumAmount, SalePaymentPeriodID " +
+                //       "                    FROM SalePaymentPeriodPayment " +
+                //       "                     GROUP BY SalePaymentPeriodID" +
+                //       "                    ) AS sppSum ON sppSum.SalePaymentPeriodID  = spp.SalePaymentPeriodID" +
+
+                //    "       INNER JOIN Contract c ON c.RefNo = a.RefNo AND c.IsActive = 1 AND c.Status = 'NORMAL'" +
+                "       INNER JOIN Contract c ON c.RefNo = a.RefNo AND c.IsActive = 1 AND (c.Status = 'NORMAL' or c.Status = 'R') " +
+                "       INNER JOIN DebtorCustomer dc ON dc.CustomerID = c.CustomerID" +
+
+                //-- Fixed-[BHPROJ-1036-7383] Comment 2 lined ด้านล่าง
+
+                /*** [START] :: Fixed - [BHPROJ-1036-7510] - อัพเดทเวอร์ชั่นใหม่แล้ว (9/10/60) พบปัญหาแสดงค่างวดหลายๆงวดในหน้าระบบเก็บเงินค่างวด ***/
+                "     INNER JOIN (select RefNo, min(PaymentPeriodNumber) as MinPeriod from SalePaymentPeriod where  PaymentComplete = 0 group by Refno) " +
+                "                     as minPeriod on amin.RefNo = minPeriod.RefNo and amin.MinPaymentPeriodNumber = minPeriod.MinPeriod " +
+                /*** [END] :: Fixed - [BHPROJ-1036-7510] - อัพเดทเวอร์ชั่นใหม่แล้ว (9/10/60) พบปัญหาแสดงค่างวดหลายๆงวดในหน้าระบบเก็บเงินค่างวด ***/
+
+
+                " WHERE a.OrganizationCode = ?" +
+                "       AND a.TaskType = 'SalePaymentPeriod' " +
+                //"     AND a.AssigneeTeamCode = ?" +
+                "       AND a.AssigneeEmpID = ?" +
+                "       AND spp.PaymentComplete = 0 " +
+                "       AND spp.PaymentPeriodNumber > 1" +
+                //     "       AND (julianday(DATE(spp.PaymentAppointmentDate)) - julianday(DATE('now'))) <= (SELECT LimitMax FROM [Limit] WHERE (LimitType = 'ImportCreditDay') AND ((EmpID = ?) OR (EmpID IS NULL)) ORDER BY EmpID DESC LIMIT 1) " +
+                "       AND IFNULL(dc.CustomerName, '') || IFNULL(dc.CompanyName, '') || IFNULL(c.ProductSerialNumber, '') || c.CONTNO LIKE ?" +
+
+                "       AND spp.PaymentComplete = 1" +
+
+                " ORDER BY a.[OrderExpect], c.CONTNO ASC";
+        //return executeQueryList(sql, new String[]{OrganizationCode, AssigneeTeamCode, AssigneeEmpID,   AddressTypeCode , valueOf(new TripController().getDueDate()), OrganizationCode, AssigneeTeamCode, AssigneeEmpID,   search}, AssignInfo.class);
+        return executeQueryList(sql, new String[]{OrganizationCode, AssigneeEmpID,   AddressTypeCode , valueOf(new TripController().getDueDate()), OrganizationCode, AssigneeEmpID,   search}, AssignInfo.class);
+    }
 
 
 

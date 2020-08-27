@@ -166,10 +166,13 @@ public class SalePayFragment extends BHFragment {
     protected int[] processButtons() {
         // TODO Auto-generated method stub
         if (BHPreference.ProcessType().equals(ProcessType.ChangeContract.toString())) {
+            Log.e("page5","1111");
             return new int[]{R.string.button_back, R.string.button_next};
         } else if (BHPreference.ProcessType().equals(ProcessType.Sale.toString())) {
+            Log.e("page5","2222");
             return new int[]{R.string.button_back, R.string.button_detail_payment};
         }
+
         return null;
     }
 

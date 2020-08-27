@@ -18,6 +18,7 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
@@ -77,6 +78,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -150,7 +152,7 @@ import th.co.thiensurat.fragments.credit.Import.ImportAuditListFragment;
 import th.co.thiensurat.fragments.credit.Import.ImportCreditSelectDateFragment;
 import th.co.thiensurat.fragments.credit.SortOrderDefault.SortOrderDefaultForCreditMainFragment;
 import th.co.thiensurat.fragments.credit.SortOrderDefault.SortOrderDefaultMainFragment;
-import th.co.thiensurat.fragments.credit.credit.CreditListFragment;
+import th.co.thiensurat.fragments.credit.credit.CreditMainFragment_intro;
 import th.co.thiensurat.fragments.cutdivisor.contract.CutDivisorContractListFragment;
 import th.co.thiensurat.fragments.cutoff.contract.CutOffContractMainFragment;
 import th.co.thiensurat.fragments.document.DocumentHistoryMainFragment;
@@ -186,6 +188,9 @@ import th.co.thiensurat.fragments.report.ReportSummaryTradeProductMainFragment;
 import th.co.thiensurat.fragments.report.ReportSummaryWriteOffNPLMainFragment;
 import th.co.thiensurat.fragments.sales.EditContractsMainFragment;
 import th.co.thiensurat.fragments.sales.SaleMainFragment;
+import th.co.thiensurat.fragments.sales.preorder.SaleMainFragment_peoorder;
+import th.co.thiensurat.fragments.sales.preorder_setting.SaleMainFragment_preorder_setting;
+import th.co.thiensurat.fragments.sales.preorder_setting.SaleMainFragment_preorder_setting2;
 import th.co.thiensurat.fragments.sendmoney.SendMoneySummaryMainFragment;
 import th.co.thiensurat.fragments.synchronize.SynchronizeMainFragment;
 import th.co.thiensurat.retrofit.api.Service;
@@ -206,7 +211,9 @@ import th.co.thiensurat.service.data.DeleteContractInputInfo;
 import th.co.thiensurat.service.data.GetDepartmentSignatureImageInputInfo;
 import th.co.thiensurat.service.data.GetDepartmentSignatureImageOutputInfo;
 
+import static java.lang.String.valueOf;
 import static th.co.bighead.utilities.BHApplication.getContext;
+import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 import static th.co.thiensurat.retrofit.api.client.GIS_BASE_URL;
 
 //import th.co.bighead.utilities.BHActivity;
@@ -228,6 +235,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
     //variable for print version 2
     public static final int REQUEST_ENABLE_BT = 2;
     public static final int REQUEST_CONNECT_DEVICE = 1;
+    public static  int select_page_preorder=0;
 
 
     public  static  String EMPID="";
@@ -735,6 +743,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 btn.setText(id);
                 btn.setTextColor(getResources().getColor(R.color.font_color_white));
 
+
                 btn.measure(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT);
                 int width = btn.getMeasuredWidth();
                 maxWidth = Math.max(width, maxWidth);
@@ -844,10 +853,17 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         fragmentResultData = data;
     }
 
+    static String MODE="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+       MODE=  BHGeneral.SERVICE_MODE.toString();
+
+      Log.e("MODE",MODE);
+        //load_data_contact_online_preoder();
 
         activity = MainActivity.this;
         BHFragment.setActivity(MainActivity.this);
@@ -902,6 +918,9 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         catch (Exception ex){
 
         }
+
+
+
 
     }
 
@@ -1027,10 +1046,14 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 R.string.main_menu_report_credit_next_payment,
                 R.string.main_menu_report_credit_sendmoney,
                 R.string.main_menu_report_credit_contract_close_account,
+
+                R.string.main_menu_preorder,
+                R.string.main_menu_preorder_setting,
                 /*** [END] :: Fixed - [BHPROJ-0016-855] :: Revise Menu Report tobe SubMenu ***/
 
                 R.string.main_menu_checkstock,
                 R.string.main_menu_sales,
+                R.string.main_menu_preorder,
                 R.string.main_menu_first,
                 R.string.main_menu_next_period,
                 R.string.main_menu_money,
@@ -1284,8 +1307,22 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     break;
 
                 case R.string.main_menu_sales: // not require SaleCode
+                    select_page_preorder=0;
                     success = showView(BHFragment.newInstance(SaleMainFragment.class));
                     break;
+
+                case R.string.main_menu_preorder: // not require SaleCode
+                    select_page_preorder=1;
+                    success = showView(BHFragment.newInstance(SaleMainFragment_peoorder.class));
+                    break;
+
+                case R.string.main_menu_preorder_setting: // preorder stting
+
+                    success = showView(BHFragment.newInstance(SaleMainFragment_preorder_setting.class));
+                   //success = showView(BHFragment.newInstance(SaleMainFragment_preorder_setting2.class));
+
+                    break;
+
 
                 case R.string.main_menu_first: // not require SaleCode
                     success = showView(BHFragment.newInstance(FirstPaymentMainMenuFragment.class));
@@ -1371,18 +1408,35 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     success = showView(BHFragment.newInstance(ImportAuditListFragment.class));
                     break;
 
-                case R.string.main_menu_credit_audit_check_customers: //ระบบตรวจสอบลูกค้า credit // not require SaleCode
-                    success = showView(BHFragment.newInstance(CheckCustomersMainFragment.class));
+               case R.string.main_menu_credit_audit_check_customers: //ระบบตรวจสอบลูกค้า credit // not require SaleCode
+                  success = showView(BHFragment.newInstance(CheckCustomersMainFragment.class));
+
+
+
                     break;
+
+
+
+
 
                 case R.string.main_menu_credit_salepaymentperiod_credit_customers: // not require SaleCode
                     ///success = showView(BHFragment.newInstance(CreditMainFragment.class));
 
-                    CreditListFragment.Data input = new CreditListFragment.Data();
+
+
+                    success = showView(BHFragment.newInstance(CreditMainFragment_intro.class));
+
+
+
+/*                    CreditListFragment.Data input = new CreditListFragment.Data();
                     input.selectedDate =  Calendar.getInstance().getTime();
                     CreditListFragment fragment = BHFragment
                             .newInstance(CreditListFragment.class, input);
-                    success = showNextView(fragment);
+                    success = showNextView(fragment);*/
+
+
+
+
 
                     break;
                 case R.string.main_menu_credit_cut_off_contract://ระบบตัดสัญญาออกจากฟอร์ม // not require SaleCode
@@ -2282,11 +2336,15 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     put(r.getString(R.string.main_menu_report_change_product), R.drawable.ic_menu_report);                  // รายงานเปลี่ยนเครื่อง - ReportChangeProduct (SALE + CREDIT)
                     put(r.getString(R.string.main_menu_report_change_contract), R.drawable.ic_menu_report);                 // รายงานเปลี่ยนสัญญา - ReportChangeContract (SALE + CREDIT)
                     put(r.getString(R.string.main_menu_report_approved), R.drawable.ic_menu_report);                        // รายงานขออนุมัติ - ReportApproved  (SALE + CREDIT)
+
+                    //put(r.getString(R.string.main_menu_preorder), R.drawable.ic_menu_report);
                     /*** [END] :: Fixed - [BHPROJ-0024-2038 Save] :: [Android-MenuIcon-Report] เปลี่ยนรูป Menu icon ของรายงานต่าง ๆ ***/
 
                     put(r.getString(R.string.main_menu_team), R.drawable.ic_menu_team);
                     put(r.getString(R.string.main_menu_checkstock), R.drawable.ic_menu_checkstock);
                     put(r.getString(R.string.main_menu_sales), R.drawable.ic_menu_sales);
+                    put(r.getString(R.string.main_menu_preorder), R.drawable.ic_menu_sales);
+                    put(r.getString(R.string.main_menu_preorder_setting), R.drawable.ic_menu_sales);
                     put(r.getString(R.string.main_menu_money), R.drawable.ic_menu_money);
                     put(r.getString(R.string.main_menu_first), R.drawable.ic_menu_first);
                     put(r.getString(R.string.main_menu_other), R.drawable.ic_menu_fix_request);     //-- Fixed - [BHPROJ-0026-3184] :: Change ic_tsr_logo to be new menu icon
@@ -3425,6 +3483,16 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                         });
                 setupAlert.show();
             }
+
+
+
+
+
+
+
+
+            load_data_contact_online_preoder();
+
         }
     }
 
@@ -3739,4 +3807,580 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
     /**
      * End
      */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static void load_data_contact_online_preoder() {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call=null;
+            if(MODE.equals("UAT")){
+                 call = request.load_data_contact_online_preoder_UAT();
+
+            }
+            else {
+                 call = request.load_data_contact_online_preoder();
+
+            }
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson = new Gson();
+                    try {
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+                        Log.e("data", "331");
+                        JSON_PARSE_DATA_AFTER_WEBCALL_load_data_product(jsonObject.getJSONArray("data"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("data", "22");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("data", "2");
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("data", "3");
+        }
+    }
+
+
+    String ID_MAIN="";
+    public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_product(JSONArray array) {
+
+        for (int i = 0; i < array.length(); i++) {
+
+            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
+
+            JSONObject json = null;
+            try {
+                json = array.getJSONObject(i);
+
+
+
+                String RefNo =json.getString("RefNo");
+                String CONTNO=json.getString("CONTNO");
+                String CustomerID=json.getString("CustomerID");
+                String OrganizationCode=json.getString("OrganizationCode");
+                String STATUS=json.getString("STATUS");
+                String StatusCode=json.getString("StatusCode");
+                String SALES=json.getString("SALES");
+                String TotalPrice=json.getString("TotalPrice");
+                String HasTradeIn=json.getString("HasTradeIn");
+                String TradeInProductCode=json.getString("TradeInProductCode");
+                String TradeInBrandCode=json.getString("TradeInBrandCode");
+                String TradeInProductModel=json.getString("TradeInProductModel");
+                String TradeInDiscount=json.getString("TradeInDiscount");
+                String PreSaleSaleCode=json.getString("PreSaleSaleCode");
+                String PreSaleEmployeeCode=json.getString("PreSaleEmployeeCode");
+                String PreSaleEmployeeName=json.getString("PreSaleEmployeeName");
+                String PreSaleTeamCode=json.getString("PreSaleTeamCode");
+
+                String  SaleCode=json.getString("SaleCode");
+
+                String SaleEmployeeCode=json.getString("SaleEmployeeCode");
+
+                String SaleTeamCode=json.getString("SaleTeamCode");
+                String InstallerSaleCode=json.getString("InstallerSaleCode");
+                String InstallerEmployeeCode=json.getString("InstallerEmployeeCode");
+                String InstallerTeamCode=json.getString("InstallerTeamCode");
+
+                String ProductSerialNumber=json.getString("ProductSerialNumber");
+                String ProductID=json.getString("ProductID");
+                String SaleEmployeeLevelPath=json.getString("SaleEmployeeLevelPath");
+                String MODE=json.getString("MODE");
+                String FortnightID=json.getString("FortnightID");
+                String ProblemID=json.getString("ProblemID");
+                String svcontno=json.getString("svcontno");
+                String isActive=json.getString("isActive");
+                String MODEL=json.getString("MODEL");
+                String fromrefno=json.getString("fromrefno");
+                String fromcontno=json.getString("fromcontno");
+
+                String tocontno=json.getString("tocontno");
+                String torefno=json.getString("torefno");
+
+                String CreateBy=json.getString("CreateBy");
+
+                String LastUpdateBy=json.getString("LastUpdateBy");
+
+                String SaleSubTeamCode=json.getString("SaleSubTeamCode");
+                String TradeInReturnFlag=json.getString("TradeInReturnFlag");
+                String IsReadyForSaleAudit=json.getString("IsReadyForSaleAudit");
+                String ContractReferenceNo=json.getString("ContractReferenceNo");
+                String IsMigrate= json.getString("IsMigrate");
+
+
+
+                String EFFDATE=json.getJSONObject("EFFDATE").getString("date")+"";
+                String LastUpdateDate=json.getJSONObject("LastUpdateDate").getString("date")+"";
+                String CreateDate=json.getJSONObject("CreateDate").getString("date")+"";
+                String SyncedDate=json.getJSONObject("SyncedDate").getString("date")+"";
+                String InstallDate=json.getJSONObject("InstallDate").getString("date")+"";
+                String todate=json.getJSONObject("todate").getString("date")+"";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                String D_PrefixCode= json.getString("D_PrefixCode");
+                String D_PrefixName= json.getString("D_PrefixName");
+                String D_CustomerName= json.getString("D_CustomerName");
+                String D_CustomerType= json.getString("D_CustomerType");
+                String D_IDCardType= json.getString("D_IDCardType");
+                String D_IDCard= json.getString("D_IDCard");
+                String D_CompanyName= json.getString("D_CompanyName");
+                String D_AuthorizedName= json.getString("D_AuthorizedName");
+                String D_AuthorizedIDCard= json.getString("D_AuthorizedIDCard");
+                String D_Brithday= json.getJSONObject("D_Brithday").getString("date")+"";
+                String D_Sex= json.getString("D_Sex");
+                String D_DebtStatus= json.getString("D_DebtStatus");
+                String D_HabitatTypeCode= json.getString("D_HabitatTypeCode");
+                String D_HabitatDetail= json.getString("D_HabitatDetail");
+                String D_OccupyType= json.getString("D_OccupyType");
+                String D_CareerCode= json.getString("D_CareerCode");
+                String D_CareerDetail= json.getString("D_CareerDetail");
+
+                String D_HobbyCode= json.getString("D_HobbyCode");
+                String D_HobbyDetail= json.getString("D_HobbyDetail");
+                String D_IsUsedProduct= json.getString("D_IsUsedProduct");
+                String D_UsedProductModelID= json.getString("D_UsedProductModelID");
+                String D_SuggestionCode= json.getString("D_SuggestionCode");
+                String D_SuggestionDetail= json.getString("D_SuggestionDetail");
+                String D_CreateDate= json.getJSONObject("D_CreateDate").getString("date")+"";
+                String D_CreateBy= json.getString("D_CreateBy");
+                String D_LastUpdateDate= json.getJSONObject("D_LastUpdateDate").getString("date")+"";
+                String D_LastUpdateBy= json.getString("D_LastUpdateBy");
+                String D_SyncedDate=json.getJSONObject("D_SyncedDate").getString("date")+"";
+                String D_ReferencePersonName= json.getString("D_ReferencePersonName");
+                String D_ReferencePersonTelephone= json.getString("D_ReferencePersonTelephone");
+
+
+
+
+
+                String A_AddressIDCard= json.getString("A_AddressIDCard");
+                String A_AddressInstall= json.getString("A_AddressInstall");
+                String A_AddressPayment= json.getString("A_AddressPayment");
+
+                String ContractImage= json.getString("ContractImage");
+
+                JSONArray jsonArray  =  new JSONArray(A_AddressIDCard);
+                JSONArray jsonArray2  =  new JSONArray(A_AddressInstall);
+                JSONArray jsonArray3  =  new JSONArray(A_AddressPayment);
+                JSONArray jsonArray4  =  new JSONArray(ContractImage);
+
+
+
+                JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A1(jsonArray);
+                JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A2(jsonArray2);
+                JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A3(jsonArray3);
+                JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A4(jsonArray4);
+
+                //JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A1(jsonArray.getString(A_AddressIDCard));
+
+
+           //     String A_AddressIDCard_AddressID= jsonObject.getString("AddressID");
+
+             //   String A_AddressInstall= json.getString("A_AddressInstall");
+             //   String A_AddressPayment= json.getString("A_AddressPayment");
+
+
+
+
+                String date = D_Brithday.substring(0, 19);
+
+
+          //      Log.e("date_B",date);
+
+
+                try {
+                    addContract22(RefNo, CONTNO, CustomerID, OrganizationCode, STATUS, StatusCode, SALES, TotalPrice, EFFDATE, HasTradeIn,
+                            TradeInProductCode, TradeInBrandCode, TradeInProductModel, TradeInDiscount, PreSaleSaleCode, PreSaleEmployeeCode, PreSaleEmployeeName, PreSaleTeamCode,
+                            SaleCode, SaleEmployeeCode, SaleTeamCode, InstallerSaleCode, InstallerEmployeeCode, InstallerTeamCode, InstallDate, ProductSerialNumber,
+                            ProductID, SaleEmployeeLevelPath, MODE, FortnightID, ProblemID, svcontno, isActive, MODEL, fromrefno, fromcontno, todate, tocontno,
+                            torefno, CreateDate,  CreateBy, LastUpdateDate, LastUpdateBy, SyncedDate, SaleSubTeamCode, TradeInReturnFlag, IsReadyForSaleAudit, ContractReferenceNo, IsMigrate);
+                }
+                catch (Exception ex){
+
+                }
+
+
+
+
+
+
+
+
+                try {
+                    addDebtorCustomer(CustomerID, OrganizationCode, D_PrefixCode, D_PrefixName, D_CustomerName, D_CustomerType, D_IDCardType, D_IDCard,
+                            D_CompanyName, D_AuthorizedName, D_AuthorizedIDCard, date, D_Sex, D_DebtStatus, D_HabitatTypeCode, D_HabitatDetail, D_OccupyType, D_CareerCode,
+                            D_CareerDetail, D_HobbyCode, D_HobbyDetail, D_IsUsedProduct, D_UsedProductModelID, D_SuggestionCode, D_SuggestionDetail,
+                            D_CreateBy, D_CreateDate, D_LastUpdateBy, D_LastUpdateDate, D_SyncedDate);
+                }
+                catch (Exception ex){
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+
+        }
+
+
+    }
+
+
+
+    public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A1(JSONArray array) {
+
+        //Log.e("length1", String.valueOf(array.length()));
+        for (int i = 0; i < array.length(); i++) {
+
+            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
+
+            JSONObject json = null;
+            try {
+                json = array.getJSONObject(i);
+
+                String AddressID=json.getString("AddressID");
+                String RefNo=json.getString("RefNo");
+                String AddressTypeCode=json.getString("AddressTypeCode");
+                String AddressDetail=json.getString("AddressDetail");
+                String AddressDetail2=json.getString("AddressDetail2");
+                String AddressDetail3=json.getString("AddressDetail3");
+                String AddressDetail4=json.getString("AddressDetail4");
+                String ProvinceCode=json.getString("ProvinceCode");
+                String DistrictCode=json.getString("DistrictCode");
+
+                String SubDistrictCode=json.getString("SubDistrictCode");
+                String Zipcode=json.getString("Zipcode");
+                String Latitude=json.getString("Latitude");
+                String Longitude=json.getString("Longitude");
+                String AddressInputMethod=json.getString("AddressInputMethod");
+                String TelHome=json.getString("TelHome");
+
+                String TelMobile=json.getString("TelMobile");
+                String TelOffice=json.getString("TelOffice");
+                String EMail=json.getString("EMail");
+                String CreateDate=json.getJSONObject("CreateDate").getString("date")+"";
+                String CreateBy=json.getString("CreateBy");
+                String LastUpdateDate=json.getJSONObject("LastUpdateDate").getString("date")+"";
+                String LastUpdateBy=json.getString("LastUpdateBy");
+                String SyncedDate=json.getJSONObject("SyncedDate").getString("date")+"";
+
+                try {
+                    addAddress(AddressID, RefNo, AddressTypeCode, AddressDetail, AddressDetail2, AddressDetail3, AddressDetail4, ProvinceCode, DistrictCode, SubDistrictCode, Zipcode, Latitude, Longitude, AddressInputMethod, TelHome, TelMobile, TelOffice, EMail);
+
+                }
+                catch (Exception ex){
+
+                }
+
+          //      Log.e("A1_AddressID",AddressID);
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+        }
+    }
+    public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A2(JSONArray array) {
+
+        //Log.e("length1", String.valueOf(array.length()));
+        for (int i = 0; i < array.length(); i++) {
+
+            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
+
+            JSONObject json = null;
+            try {
+                json = array.getJSONObject(i);
+
+                String AddressID=json.getString("AddressID");
+                String RefNo=json.getString("RefNo");
+                String AddressTypeCode=json.getString("AddressTypeCode");
+                String AddressDetail=json.getString("AddressDetail");
+                String AddressDetail2=json.getString("AddressDetail2");
+                String AddressDetail3=json.getString("AddressDetail3");
+                String AddressDetail4=json.getString("AddressDetail4");
+                String ProvinceCode=json.getString("ProvinceCode");
+                String DistrictCode=json.getString("DistrictCode");
+
+                String SubDistrictCode=json.getString("SubDistrictCode");
+                String Zipcode=json.getString("Zipcode");
+                String Latitude=json.getString("Latitude");
+                String Longitude=json.getString("Longitude");
+                String AddressInputMethod=json.getString("AddressInputMethod");
+                String TelHome=json.getString("TelHome");
+
+                String TelMobile=json.getString("TelMobile");
+                String TelOffice=json.getString("TelOffice");
+                String EMail=json.getString("EMail");
+                String CreateDate=json.getJSONObject("CreateDate").getString("date")+"";
+                String CreateBy=json.getString("CreateBy");
+                String LastUpdateDate=json.getJSONObject("LastUpdateDate").getString("date")+"";
+                String LastUpdateBy=json.getString("LastUpdateBy");
+                String SyncedDate=json.getJSONObject("SyncedDate").getString("date")+"";
+
+
+                try {
+                    addAddress(AddressID, RefNo, AddressTypeCode, AddressDetail, AddressDetail2, AddressDetail3, AddressDetail4, ProvinceCode, DistrictCode, SubDistrictCode, Zipcode, Latitude, Longitude, AddressInputMethod, TelHome, TelMobile, TelOffice, EMail);
+
+                }
+                catch (Exception ex){
+
+                }
+
+         //       Log.e("A2_AddressID",AddressID);
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A3(JSONArray array) {
+
+       // Log.e("length1", String.valueOf(array.length()));
+        for (int i = 0; i < array.length(); i++) {
+
+            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
+
+            JSONObject json = null;
+            try {
+                json = array.getJSONObject(i);
+
+                String AddressID=json.getString("AddressID");
+                String RefNo=json.getString("RefNo");
+                String AddressTypeCode=json.getString("AddressTypeCode");
+                String AddressDetail=json.getString("AddressDetail");
+                String AddressDetail2=json.getString("AddressDetail2");
+                String AddressDetail3=json.getString("AddressDetail3");
+                String AddressDetail4=json.getString("AddressDetail4");
+                String ProvinceCode=json.getString("ProvinceCode");
+                String DistrictCode=json.getString("DistrictCode");
+
+                String SubDistrictCode=json.getString("SubDistrictCode");
+                String Zipcode=json.getString("Zipcode");
+                String Latitude=json.getString("Latitude");
+                String Longitude=json.getString("Longitude");
+                String AddressInputMethod=json.getString("AddressInputMethod");
+                String TelHome=json.getString("TelHome");
+
+                String TelMobile=json.getString("TelMobile");
+                String TelOffice=json.getString("TelOffice");
+                String EMail=json.getString("EMail");
+                String CreateDate=json.getJSONObject("CreateDate").getString("date")+"";
+                String CreateBy=json.getString("CreateBy");
+                String LastUpdateDate=json.getJSONObject("LastUpdateDate").getString("date")+"";
+                String LastUpdateBy=json.getString("LastUpdateBy");
+                String SyncedDate=json.getJSONObject("SyncedDate").getString("date")+"";
+
+                try {
+                    addAddress(AddressID, RefNo, AddressTypeCode, AddressDetail, AddressDetail2, AddressDetail3, AddressDetail4, ProvinceCode, DistrictCode, SubDistrictCode, Zipcode, Latitude, Longitude, AddressInputMethod, TelHome, TelMobile, TelOffice, EMail);
+
+                }
+                catch (Exception ex){
+
+                }
+
+               // Log.e("A3_AddressID",AddressID);
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A4(JSONArray array) {
+
+       // Log.e("length1", String.valueOf(array.length()));
+        for (int i = 0; i < array.length(); i++) {
+
+            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
+
+            JSONObject json = null;
+            try {
+                json = array.getJSONObject(i);
+
+                String IM_ImageID= json.getString("IM_ImageID");
+                String IM_RefNo= json.getString("IM_RefNo");
+                String IM_ImageName= json.getString("IM_ImageName");
+                String IM_ImageTypeCode= json.getString("IM_ImageTypeCode");
+                String IM_SyncedDate= json.getJSONObject("IM_SyncedDate").getString("date")+"";
+
+              //  Log.e("IM_ImageName",IM_ImageName);
+                try {
+                    addContractImage(IM_ImageID, IM_RefNo, IM_ImageName, IM_ImageTypeCode, IM_SyncedDate);
+                }
+                catch (Exception ex){
+
+                }
+
+              //  Log.e("A3_AddressID",AddressID);
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public static void addContract22(String RefNo,String CONTNO, String CustomerID,String OrganizationCode,
+                              String STATUS,String StatusCode,String SALES,String TotalPrice,String EFFDATE,
+                              String HasTradeIn,String TradeInProductCode,String TradeInBrandCode,String TradeInProductModel,
+                              String TradeInDiscount,String PreSaleSaleCode,String PreSaleEmployeeCode,
+                              String PreSaleEmployeeName,String PreSaleTeamCode,String SaleCode,String SaleEmployeeCode,
+                              String SaleTeamCode,String InstallerSaleCode,String InstallerEmployeeCode,String InstallerTeamCode,
+                              String InstallDate,String ProductSerialNumber,String ProductID,String SaleEmployeeLevelPath,
+                              String MODE,String FortnightID,String ProblemID,String svcontno,String isActive,String MODEL,
+                              String fromrefno,String fromcontno,String todate,String tocontno,String torefno,String CreateDate,
+                              String CreateBy,String LastUpdateDate,String LastUpdateBy,String SyncedDate,String SaleSubTeamCode,
+                              String TradeInReturnFlag,String IsReadyForSaleAudit,String ContractReferenceNo,String IsMigrate ) {
+        String sql = "INSERT INTO Contract (RefNo,CONTNO, CustomerID, OrganizationCode, STATUS, StatusCode, SALES, TotalPrice, EFFDATE, HasTradeIn, "
+                + "TradeInProductCode, TradeInBrandCode, TradeInProductModel, TradeInDiscount, PreSaleSaleCode, PreSaleEmployeeCode, PreSaleEmployeeName, PreSaleTeamCode, "
+                + "SaleCode, SaleEmployeeCode, SaleTeamCode, InstallerSaleCode, InstallerEmployeeCode, InstallerTeamCode, InstallDate, ProductSerialNumber, "
+                + "ProductID, SaleEmployeeLevelPath, MODE, FortnightID, ProblemID, svcontno, isActive, MODEL, fromrefno, fromcontno, todate, tocontno, "
+                + "torefno, CreateDate,  CreateBy, LastUpdateDate, LastUpdateBy, SyncedDate, SaleSubTeamCode, TradeInReturnFlag, IsReadyForSaleAudit, ContractReferenceNo, IsMigrate)"
+                + "VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        executeNonQuery4(sql, new String[]{RefNo,CONTNO,CustomerID, OrganizationCode, STATUS, StatusCode,valueOf(SALES),
+                valueOf(TotalPrice), valueOf(EFFDATE), valueOf(HasTradeIn),TradeInProductCode, TradeInBrandCode,
+                TradeInProductModel, valueOf(TradeInDiscount), PreSaleSaleCode, PreSaleEmployeeCode, PreSaleEmployeeName, PreSaleTeamCode, SaleCode,
+                SaleEmployeeCode, SaleTeamCode, InstallerSaleCode, InstallerEmployeeCode, InstallerTeamCode,
+                valueOf(InstallDate), ProductSerialNumber, ProductID, SaleEmployeeLevelPath, valueOf(MODE), FortnightID,
+                ProblemID, svcontno, valueOf(isActive), MODEL, fromrefno, fromcontno, valueOf(todate), tocontno,
+                torefno, valueOf(CreateDate), CreateBy, valueOf(LastUpdateDate), LastUpdateBy, valueOf(SyncedDate),
+                SaleSubTeamCode, valueOf(TradeInReturnFlag), valueOf(IsReadyForSaleAudit), ContractReferenceNo, valueOf(IsMigrate)});
+    }
+
+    public static void addDebtorCustomer(String CustomerID, String OrganizationCode,String PrefixCode,String PrefixName,
+                                  String CustomerName,String CustomerType,String IDCardType,String IDCard,
+                                  String CompanyName,String AuthorizedName,String AuthorizedIDCard,String Brithday,
+                                  String Sex,String DebtStatus,String HabitatTypeCode,String HabitatDetail,
+                                  String OccupyType,String CareerCode, String CareerDetail,String HobbyCode,
+                                  String HobbyDetail,String IsUsedProduct,String UsedProductModelID,String SuggestionCode,
+                                  String SuggestionDetail, String CreateBy,String CreateDate,String LastUpdateBy,String LastUpdateDate,String SyncedDate) {
+        String sql = "INSERT INTO DebtorCustomer(CustomerID, OrganizationCode, PrefixCode, PrefixName, CustomerName, CustomerType, IDCardType, IDCard, "
+                + "CompanyName, AuthorizedName, AuthorizedIDCard, Brithday, Sex, DebtStatus, HabitatTypeCode, HabitatDetail, OccupyType, CareerCode, "
+                + "CareerDetail, HobbyCode, HobbyDetail, IsUsedProduct, UsedProductModelID, SuggestionCode, SuggestionDetail, "
+                + "CreateBy, CreateDate, LastUpdateBy, LastUpdateDate, SyncedDate)"
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        executeNonQuery4(sql, new String[]{CustomerID, OrganizationCode, PrefixCode, PrefixName, CustomerName, CustomerType,
+                IDCardType, IDCard, CompanyName, AuthorizedName, AuthorizedIDCard, valueOf(Brithday), Sex,
+                valueOf(DebtStatus), HabitatTypeCode, HabitatDetail, OccupyType, CareerCode, CareerDetail, HobbyCode, HobbyDetail,
+                valueOf(IsUsedProduct), UsedProductModelID, SuggestionCode, SuggestionDetail, CreateBy, valueOf(CreateDate),
+                LastUpdateBy, valueOf(LastUpdateDate), valueOf(SyncedDate)});
+    }
+
+    public static void addAddress(String AddressID,String RefNo,String AddressTypeCode,String AddressDetail,String AddressDetail2,
+                                  String AddressDetail3,String AddressDetail4,String ProvinceCode,String DistrictCode,String SubDistrictCode,
+                                  String Zipcode,String Latitude,String Longitude,String AddressInputMethod,String TelHome,String TelMobile,
+                                  String TelOffice,String EMail) {
+        String sql = "INSERT INTO Address (AddressID, RefNo, AddressTypeCode, AddressDetail, AddressDetail2, AddressDetail3, AddressDetail4, ProvinceCode, DistrictCode, SubDistrictCode, Zipcode, Latitude, Longitude, AddressInputMethod, TelHome, TelMobile, TelOffice, EMail)"
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        executeNonQuery4(sql, new String[] { AddressID, RefNo, AddressTypeCode, AddressDetail, AddressDetail2, AddressDetail3,
+                AddressDetail4, ProvinceCode, DistrictCode, SubDistrictCode, Zipcode, valueOf(Latitude), valueOf(Longitude),
+                AddressInputMethod, TelHome, TelMobile, TelOffice, EMail });
+
+    }
+    public static void addContractImage(String ImageID,String RefNo,String ImageName,String ImageTypeCode,String SyncedDate) {
+        String sql = "INSERT INTO ContractImage (ImageID, RefNo, ImageName, ImageTypeCode, SyncedDate)" + "VALUES(?, ?, ?, ?, ?)";
+        executeNonQuery4(sql, new String[]{ImageID,RefNo, ImageName, ImageTypeCode, valueOf(SyncedDate)});
+    }
+
+    public static SQLiteDatabase database = null;
+    protected static void executeNonQuery4(String sql, String[] args) {
+        openDatabase4();
+        try {
+            if (args == null) {
+                database.execSQL(sql);
+            } else {
+                database.execSQL(sql, args);
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            closeDatabase4(false);
+        }
+    }
+
+    public static void openDatabase4() {
+        database = DatabaseManager.getInstance().openDatabase();
+    }
+    public static void closeDatabase4(boolean force) {
+
+
+        //  GetContractStatusFinish();
+
+        Log.e("555","6666");
+
+        if(force)
+            DatabaseManager.getInstance().forceCloseDatabase();
+        else
+            DatabaseManager.getInstance().closeDatabase();
+    }
 }

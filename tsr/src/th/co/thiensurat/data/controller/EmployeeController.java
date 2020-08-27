@@ -383,6 +383,17 @@ public class EmployeeController extends BaseController {
         return executeQueryList(sql, null, EmployeeInfo.class);
     }
 
+    public List<EmployeeInfo> getEmployeeForPreSale_SETTING(String EmployeeCode) {
+        String sql = "select ed.SaleCode, e.FirstName, e.LastName " +
+                "from Employee as e " +
+                "inner join EmployeeDetail as ed on ed.EmployeeCode = e.EmpID and ifnull(ed.SaleCode, '') <> '' " +
+                "where e.EmpID = ?  " +
+                "order by ed.SaleCode asc";
+
+        return executeQueryList(sql, new String[]{EmployeeCode}, EmployeeInfo.class);
+    }
+
+
     public EmployeeInfo getEmployeeSaleCodeByEmployeeCode(String EmployeeCode) {
         String sql = "SELECT e.*, ed.SaleCode " +
                 " FROM Employee e" +

@@ -60,6 +60,7 @@ import th.co.thiensurat.data.info.AddressInfo;
 import th.co.thiensurat.data.info.DebtorCustomerInfo;
 import th.co.thiensurat.data.info.PaymentInfo;
 import th.co.thiensurat.fragments.credit.credit.CreditListFragment;
+import th.co.thiensurat.fragments.credit.credit.CreditMainFragment_intro;
 import th.co.thiensurat.fragments.document.manual.ManualDocumentDetailFragment;
 import th.co.thiensurat.fragments.payment.first.FirstPaymentMainMenuFragment;
 import th.co.thiensurat.fragments.payment.next.NextPaymentListFragment;
@@ -318,10 +319,19 @@ public class SaleReceiptPayment_new extends BHFragment {
                 } else if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.Credit.toString())) {
                     //activity.showView(new CreditMainFragment());
 
-                    CreditListFragment.Data input = new CreditListFragment.Data();
+
+
+
+/*                    CreditListFragment.Data input = new CreditListFragment.Data();
                     input.selectedDate = data.selectedDate;
                     CreditListFragment fragment = BHFragment.newInstance(CreditListFragment.class, input);
-                    activity.showView(fragment);
+                    activity.showView(fragment);*/
+
+                    activity.showNextView(BHFragment.newInstance(CreditMainFragment_intro.class));
+
+
+
+
                 } else if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.NextPayment.toString())) {
                     activity.showView(new NextPaymentListFragment());
                 }
@@ -664,7 +674,7 @@ public class SaleReceiptPayment_new extends BHFragment {
             //EmployeeInfo employeeInfo = TSRController.getEmployeeByTreeHistoryIDAndEmployeeID(BHPreference.organizationCode(), payments.get(position).CreditEmployeeLevelPath, payments.get(position).CreateBy);
             TextView txtReceiptHeadTitle = (TextView) view.findViewById(R.id.txtReceiptHeadTitle);
 
-            try {
+ /*           try {
                 if(payments.get(position).status_online==1){
                     txtReceiptHeadTitle.setText(txtReceiptHeadTitle.getText() + (payments.get(position).VoidStatus == true ? "  (QR PAYMENT)" : ""));
                 } else {
@@ -673,6 +683,17 @@ public class SaleReceiptPayment_new extends BHFragment {
             } catch (Exception e) {
 
             }
+            */
+            try {
+                if(payments.get(position).status_online==1){
+                    txtReceiptHeadTitle.setText("ใบรับเงิน" + (payments.get(position).VoidStatus == true ? "  (QR PAYMENT)" : ""));
+                } else {
+                    txtReceiptHeadTitle.setText("ใบรับเงิน" + (payments.get(position).VoidStatus == true ? "  (ใบเสร็จถูกยกเลิก)" : ""));
+                }
+            } catch (Exception e) {
+
+            }
+
             TextView tvReceiptDate = (TextView) view.findViewById(R.id.tvReceiptDate); //วันที่รับเงิน
             tvReceiptDate.setText(BHUtilities.dateFormat(payments.get(position).PayDate));
 
@@ -1031,6 +1052,7 @@ public class SaleReceiptPayment_new extends BHFragment {
 
             /*Void Button*/
             Button voidBtn = (Button) view.findViewById(R.id.btnVoidReceipt);
+            voidBtn.setText("ยกเลิกใบรับเงิน");
             try {
                 voidBtn.setVisibility(payments.get(position).CanVoid ? view.VISIBLE : view.GONE);
                 voidBtn.setOnClickListener(new View.OnClickListener() {

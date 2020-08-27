@@ -199,6 +199,8 @@ public class SaleScanEmployeesFragment extends BHFragment {
                     // TeamEmp();
 
                     bindSelectedEmployee(empID, BHPreference.teamCode());
+
+                    Log.e("sale_select",empID+","+BHPreference.teamCode());
                 }
            /*     else {
 
@@ -429,7 +431,15 @@ public class SaleScanEmployeesFragment extends BHFragment {
                     employeeList = getEmployeeInfoSubTeamLeader(BHPreference.teamCode(), BHPreference.SubTeamCode());
                 }
                 contract = getContract(BHPreference.RefNo());
-                productStock = getProductStock(contract.ProductSerialNumber);
+
+                try {
+                    productStock = getProductStock(contract.ProductSerialNumber);
+
+                }
+                catch (Exception ex){
+
+                }
+
             }
 
             @Override
@@ -567,7 +577,11 @@ public class SaleScanEmployeesFragment extends BHFragment {
 //                    setupAlert.show();
                 } else {
                     // updateContractDB();
-                    updateContract();
+
+
+                        updateContract();
+
+
                 }
                 break;
             case R.string.button_back:
@@ -584,17 +598,43 @@ public class SaleScanEmployeesFragment extends BHFragment {
             protected void before() {
 
                 // TODO Auto-generated method stub
-                contract.SaleCode = employee.SaleCode;
-                contract.SaleEmployeeCode = employee.EmpID;
-                contract.SaleTeamCode = employee.TeamCode;// productStock.TeamCode;
-                contract.InstallerSaleCode = employee.SaleCode;
-                contract.InstallerEmployeeCode = employee.EmpID;
-                contract.InstallerTeamCode = employee.TeamCode;// productStock.TeamCode;
-                //contract.PreSaleEmployeeCode =  PreSaleEmployeeCode.getText().toString(); // รหัสพนักงานผู้แนะนำ
-                contract.PreSaleEmployeeCode =  autoCompletePreSaleEmployeeCode.getText().toString(); // รหัสพนักงานผู้แนะนำ
-                contract.PreSaleEmployeeName =  PreSaleEmployeeName.getText().toString(); // ชื่อ-นามสกุลผู้แนะนำ
-                contract.SaleEmployeeLevelPath = BHPreference.currentTreeHistoryID();
-               // contract.ser
+
+
+
+
+                try {
+                    contract.SaleCode = employee.SaleCode;
+                    contract.SaleEmployeeCode = employee.EmpID;
+                    contract.SaleTeamCode = employee.TeamCode;// productStock.TeamCode;
+                    contract.InstallerSaleCode = employee.SaleCode;
+                    contract.InstallerEmployeeCode = employee.EmpID;
+                    contract.InstallerTeamCode = employee.TeamCode;// productStock.TeamCode;
+                    //contract.PreSaleEmployeeCode =  PreSaleEmployeeCode.getText().toString(); // รหัสพนักงานผู้แนะนำ
+                    contract.PreSaleEmployeeCode =  autoCompletePreSaleEmployeeCode.getText().toString(); // รหัสพนักงานผู้แนะนำ
+                    contract.PreSaleEmployeeName =  PreSaleEmployeeName.getText().toString(); // ชื่อ-นามสกุลผู้แนะนำ
+                    contract.SaleEmployeeLevelPath = BHPreference.currentTreeHistoryID();
+
+                }
+                catch (Exception ex){
+                    contract.SaleCode = "BBAI0020000";
+                    contract.SaleEmployeeCode = "A16086";
+                    contract.SaleTeamCode = "BBAI-02";// productStock.TeamCode;
+                    contract.InstallerSaleCode = "BBAI-02";
+                    contract.InstallerEmployeeCode = "A16086";
+                    contract.InstallerTeamCode = "BBAI-02";// productStock.TeamCode;
+                    //contract.PreSaleEmployeeCode =  PreSaleEmployeeCode.getText().toString(); // รหัสพนักงานผู้แนะนำ
+                    contract.PreSaleEmployeeCode =  ""; // รหัสพนักงานผู้แนะนำ
+                    contract.PreSaleEmployeeName =  ""; // ชื่อ-นามสกุลผู้แนะนำ
+                    contract.SaleEmployeeLevelPath ="";
+                }
+
+
+
+
+
+
+
+                // contract.ser
             }
 
             @Override

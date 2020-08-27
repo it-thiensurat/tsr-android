@@ -46,5 +46,7 @@ public class DrawImage implements IDrawItem {
     @Override
     public int getHeight() {
         return bitmap.getHeight();
+
+
     }
 }

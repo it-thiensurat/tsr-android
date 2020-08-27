@@ -1,6 +1,7 @@
 package th.co.thiensurat.fragments.sales;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -27,7 +28,10 @@ import th.co.thiensurat.data.info.ProductInfo;
 import th.co.thiensurat.data.info.SalePaymentPeriodInfo;
 import th.co.thiensurat.fragments.contracts.change.ChangeContractResultFragment;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
+import th.co.thiensurat.fragments.sales.preorder.SaleDetailCheckContractFragment_preorder;
 import th.co.thiensurat.views.ViewTitle;
+
+import static th.co.thiensurat.activities.MainActivity.select_page_preorder;
 
 public class SaleDetailCheckFragment extends BHFragment {
 
@@ -228,7 +232,18 @@ public class SaleDetailCheckFragment extends BHFragment {
 		switch (buttonID) {
 		case R.string.button_detail_contract:
 			// UpdateContractDB();
-			showNextView(new SaleDetailCheckContractFragment());
+
+			Log.e("select_page_preorder", String.valueOf(select_page_preorder));
+			if(select_page_preorder==1){
+				showNextView(new SaleDetailCheckContractFragment_preorder());
+
+			}
+			else {
+				showNextView(new SaleDetailCheckContractFragment());
+
+			}
+
+
 			break;
 		case R.string.button_back:
             	showLastView();

@@ -18,6 +18,7 @@ import th.co.thiensurat.data.controller.DocumentController;
 import th.co.thiensurat.data.controller.DocumentHistoryController;
 import th.co.thiensurat.data.controller.EmployeeController;
 import th.co.thiensurat.data.controller.SalePaymentPeriodController;
+import th.co.thiensurat.data.controller.preorder.DocumentController_preorder;
 import th.co.thiensurat.data.info.AddressInfo;
 import th.co.thiensurat.data.info.ChangeContractInfo;
 import th.co.thiensurat.data.info.ChangeProductInfo;
@@ -204,6 +205,10 @@ public class PrinterController {
     /*** [START] :: Fixed - [BHPROJ-0026-3275] :: [Android-พิมพ์ใบเสร็จ] การพิมพ์ใบเสร็จกรณีเก็บเงินพร้อมกันหลายงวด  ***/
     public void newPrintReceipt(List<PaymentInfo> payments){
         newPrintReceipt(payments, false);
+    }
+
+    public void newPrintReceipt_preorder(List<PaymentInfo> payments){
+        newPrintReceipt_preorder(payments, false);
     }
 
     public void newPrintReceipt(List<PaymentInfo> payments,Boolean withInterrupt) {
@@ -438,6 +443,109 @@ public class PrinterController {
 
     }
     /*** [END] :: Fixed - [Android-พิมพ์ใบเสร็จ] การพิมพ์ใบเสร็จกรณีเก็บเงินพร้อมกันหลายงวด  ***/
+
+
+
+
+
+
+    public void newPrintReceipt_preorder(List<PaymentInfo> payments,Boolean withInterrupt) {
+          AddressInfo addressInfo = null;
+        DebtorCustomerInfo debtorCustomerInfo = null;
+        List<Bitmap> bitmapList = new ArrayList<>();
+        List<List<PrintTextInfo>> document = new ArrayList<>();
+        final List<PaymentInfo> paymentsForPrint = new ArrayList<>();
+
+        for (PaymentInfo info : payments) {
+            debtorCustomerInfo = TSRController.getDebCustometByID(info.CustomerID);
+            addressInfo = TSRController.getAddress(info.RefNo, AddressInfo.AddressType.AddressInstall);
+
+            document.add(DocumentController_preorder.getTextReceiptNew(info, debtorCustomerInfo, addressInfo));
+            paymentsForPrint.add(info);
+
+            bitmapList.add(DocumentController_preorder.getNewReceiptImage(info, debtorCustomerInfo, addressInfo));
+
+            //region RePrint
+            switch (Enum.valueOf(EmployeeController.SourceSystem.class, BHPreference.sourceSystem())) {
+                case Sale:
+//                    Bitmap bmp = DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo);
+                    DocumentHistoryInfo checkExist = TSRController.getDocumentHistoryByDocumentNumber(info.ReceiptID, DocumentHistoryController.DocumentType.Receipt.toString());
+                    if(checkExist == null){
+                        document.add(DocumentController_preorder.getTextReceiptNew(info, debtorCustomerInfo, addressInfo));
+                        paymentsForPrint.add(info);
+                        bitmapList.add(DocumentController_preorder.getNewReceiptImage(info, debtorCustomerInfo, addressInfo));
+                    }
+                    break;
+                default:
+                    break;
+            }
+            //endregion
+        }
+//        Log.e("PAYMENT FOR PRINT", String.valueOf(paymentsForPrint));
+
+        MainActivity.PrintHandler handler = new MainActivity.PrintHandler() {
+            @Override
+            public void onBackgroundPrinting(int index) {
+
+                DocumentHistoryInfo docHist = new DocumentHistoryInfo();
+                DocumentHistoryInfo Hist;
+
+                Hist = TSRController.getDocumentHistoryByDocumentNumber(paymentsForPrint.get(index).ReceiptID, DocumentHistoryController.DocumentType.Receipt.toString());
+
+                int num = 1;
+                if (Hist != null) {
+                    num = Hist.PrintOrder + 1;
+                }
+
+                docHist.PrintHistoryID = DatabaseHelper.getUUID();
+                docHist.OrganizationCode = BHPreference.organizationCode();
+                docHist.DatePrint = new Date();
+                docHist.DocumentType = DocumentHistoryController.DocumentType.Receipt.toString();
+                docHist.DocumentNumber = paymentsForPrint.get(index).ReceiptID;
+                docHist.SyncedDate = new Date();
+                docHist.CreateBy = BHPreference.employeeID();
+                docHist.CreateDate = new Date();
+                docHist.LastUpdateDate = null;
+                docHist.LastUpdateBy = "";
+                docHist.Selected = false;
+                docHist.Deleted = false;
+                docHist.PrintOrder = num;
+                docHist.Status = "";
+                docHist.SentDate = null;
+                docHist.SentEmpID = "";
+                docHist.SentSaleCode = "";
+                docHist.SentSubTeamCode = "";
+                docHist.SentTeamCode = "";
+                docHist.ReceivedDate = null;
+                docHist.ReceivedEmpID = "";
+
+                TSRController.addDocumentHistory(docHist, true);
+
+            }
+        };
+//        DocumentController.getTextReceipt(payments, debtorCustomerInfo, addressInfo);
+        /**
+         *
+         * modify by assanee
+         *
+         * Date 2020-08-09 10:35
+         *
+         */
+        if(withInterrupt) {
+            mainActivity.printTextWithInterrupt(document, handler);
+        }else{
+            mainActivity.printImageNew(bitmapList.toArray(new Bitmap[bitmapList.size()]), document, handler);
+        }
+        /**
+         * End
+         */
+
+    }
+
+
+
+
+
 
     public void newImagePrintReceipt(PaymentInfo info) {
         List<Bitmap> bitmap = new ArrayList<>();
@@ -1128,6 +1236,61 @@ public class PrinterController {
             List<PrintTextInfo> document = DocumentController.getTextContract(contract, defaultAddress, installAddress);
             documents.add(document);
             bitmapList.add(DocumentController.getNewContactImage(contract, defaultAddress, installAddress));
+        }
+
+        mainActivity.printImageNew(bitmapList.toArray(new Bitmap[bitmapList.size()]), documents, new MainActivity.PrintHandler(){
+            @Override
+            public void onBackgroundPrinting(int index) {
+                DocumentHistoryInfo docHist = new DocumentHistoryInfo();
+                DocumentHistoryInfo Hist;
+
+                Hist = TSRController.getDocumentHistoryByDocumentNumber(contract.RefNo,
+                        DocumentHistoryController.DocumentType.Contract.toString());
+
+                int num = 1;
+                if (Hist != null) {
+                    num = Hist.PrintOrder + 1;
+                }
+
+                docHist.PrintHistoryID = DatabaseHelper.getUUID();
+                docHist.OrganizationCode = BHPreference.organizationCode();
+                docHist.DatePrint = new Date();
+                docHist.DocumentType = DocumentHistoryController.DocumentType.Contract.toString();
+                docHist.DocumentNumber = contract.RefNo;
+                docHist.SyncedDate = new Date();
+                docHist.CreateBy = BHPreference.employeeID();
+                docHist.CreateDate = new Date();
+                docHist.LastUpdateDate = null;
+                docHist.LastUpdateBy = "";
+                docHist.Selected = false;
+                docHist.Deleted = false;
+                docHist.PrintOrder = num;
+                docHist.Status = "";
+                docHist.SentDate = null;
+                docHist.SentEmpID = "";
+                docHist.SentSaleCode = "";
+                docHist.SentSubTeamCode = "";
+                docHist.SentTeamCode = "";
+                docHist.ReceivedDate = null;
+                docHist.ReceivedEmpID = "";
+
+                TSRController.addDocumentHistory(docHist, true);
+            }
+        });
+    }
+
+
+
+
+    public static void printNewImageContract_preorder(final ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
+        DocumentHistoryInfo checkExist = TSRController.getDocumentHistoryByDocumentNumber(contract.RefNo, DocumentHistoryController.DocumentType.Contract.toString());
+        List<List<PrintTextInfo>> documents = new ArrayList<>();
+        List<Bitmap> bitmapList = new ArrayList<>();
+        int limit = checkExist != null ? 1 : 2;
+        for (int x = 0; x < limit; x++) {
+            List<PrintTextInfo> document = DocumentController_preorder.getTextContract(contract, defaultAddress, installAddress);
+            documents.add(document);
+            bitmapList.add(DocumentController_preorder.getNewContactImage(contract, defaultAddress, installAddress));
         }
 
         mainActivity.printImageNew(bitmapList.toArray(new Bitmap[bitmapList.size()]), documents, new MainActivity.PrintHandler(){
