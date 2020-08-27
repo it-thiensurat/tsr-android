@@ -44,6 +44,7 @@ import th.co.thiensurat.data.info.AddressInfo;
 import th.co.thiensurat.data.info.DebtorCustomerInfo;
 import th.co.thiensurat.data.info.PaymentInfo;
 import th.co.thiensurat.fragments.credit.credit.CreditListFragment;
+import th.co.thiensurat.fragments.credit.credit.CreditMainFragment_intro;
 import th.co.thiensurat.fragments.document.manual.ManualDocumentDetailFragment;
 import th.co.thiensurat.fragments.payment.first.FirstPaymentMainMenuFragment;
 import th.co.thiensurat.fragments.payment.next.NextPaymentListFragment;
@@ -273,10 +274,20 @@ public class SaleReceiptPayment_old extends BHFragment {
                 } else if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.Credit.toString())) {
                     //activity.showView(new CreditMainFragment());
 
-                    CreditListFragment.Data input = new CreditListFragment.Data();
+
+
+
+
+        /*            CreditListFragment.Data input = new CreditListFragment.Data();
                     input.selectedDate = data.selectedDate;
                     CreditListFragment fragment = BHFragment.newInstance(CreditListFragment.class, input);
-                    activity.showView(fragment);
+                    activity.showView(fragment);*/
+
+
+                    activity.showNextView(BHFragment.newInstance(CreditMainFragment_intro.class));
+
+
+
                 } else if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.NextPayment.toString())) {
                     activity.showView(new NextPaymentListFragment());
                 }
@@ -589,7 +600,10 @@ public class SaleReceiptPayment_old extends BHFragment {
 
             TextView txtReceiptHeadTitle = (TextView) view.findViewById(R.id.txtReceiptHeadTitle);
 
-            txtReceiptHeadTitle.setText(txtReceiptHeadTitle.getText() + (payments.get(position).VoidStatus == true ? "  (ใบเสร็จถูกยกเลิก)" : ""));
+            //txtReceiptHeadTitle.setText(txtReceiptHeadTitle.getText() + (payments.get(position).VoidStatus == true ? "  (ใบเสร็จถูกยกเลิก)" : ""));
+            txtReceiptHeadTitle.setText("ใบรับเงิน" + (payments.get(position).VoidStatus == true ? "  (ใบเสร็จถูกยกเลิก)" : ""));
+
+
 
             TextView tvReceiptDate = (TextView) view.findViewById(R.id.tvReceiptDate); //วันที่รับเงิน
             tvReceiptDate.setText(BHUtilities.dateFormat(payments.get(position).PayDate));
@@ -831,7 +845,7 @@ public class SaleReceiptPayment_old extends BHFragment {
             /*Void Button*/
             Button voidBtn = (Button) view.findViewById(R.id.btnVoidReceipt);
             voidBtn.setVisibility(payments.get(position).CanVoid ? view.VISIBLE : view.GONE);
-
+            voidBtn.setText("ยกเลิกใบรับเงิน");
             voidBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

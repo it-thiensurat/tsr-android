@@ -17,6 +17,8 @@ import th.co.thiensurat.data.info.FortnightInfo;
 import th.co.thiensurat.data.info.ProductInfo;
 import th.co.thiensurat.data.info.ProductStockInfo;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
+import th.co.thiensurat.fragments.sales.preorder.SaleMainFinishedFragment_preorder;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
@@ -119,8 +121,8 @@ public class SaleProductCheckFragment extends BHFragment {
                 // }
 
 
-                Log.e("productSerialNumber2",data.productSerialNumber2);
-                Log.e("productSerialNumber3",data.productSerialNumber3);
+               // Log.e("productSerialNumber2",data.productSerialNumber2);
+               // Log.e("productSerialNumber3",data.productSerialNumber3);
 
                 try {
                     if(((data.productSerialNumber2.isEmpty())|(data.productSerialNumber2.equals("null")))&((data.productSerialNumber3.isEmpty())|(data.productSerialNumber3.equals("null")))) {
@@ -282,7 +284,12 @@ public class SaleProductCheckFragment extends BHFragment {
             @Override
             protected void after() {
                 // TODO Auto-generated method stub
+
                 showNextView(new SaleScanEmployeesFragment());
+                //showNextView(new SaleMainFinishedFragment_preorder());
+
+
+
             }
         }).start();
     }

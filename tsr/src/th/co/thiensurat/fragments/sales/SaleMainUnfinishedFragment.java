@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,6 +41,8 @@ public class SaleMainUnfinishedFragment extends BHPagerFragment {
 
 	@InjectView
 	private TextView textViewUnfinished;
+
+
 	@InjectView
 	private ListView listViewUnfinish;
 	private List<ContractInfo> contractList;
@@ -131,31 +134,45 @@ public class SaleMainUnfinishedFragment extends BHPagerFragment {
 				public TextView textViewName;
 				public TextView textViewStatus;
 				public ImageView imageDelete;
+				public  LinearLayout aaa;
 			}
 
 			@Override
 			protected void onViewItem(final int position, View view, Object holder, final ContractInfo info) {
 				// TODO Auto-generated method stub
 				ViewHolder vh = (ViewHolder) holder;
-				if(info.CONTNO.equals(info.RefNo)) {
-					vh.textViewContractnumber.setText("หมายเลขเครื่อง  :  " + info.ProductSerialNumber);
-				} else {
-					vh.textViewContractnumber.setText("เลขที่สัญญา  :  " + info.CONTNO);
+
+
+
+	/*			if(!info.ProductSerialNumber.equals("-")) {
+					vh.aaa.setVisibility(View.VISIBLE);
+
 				}
-				
-				vh.textViewName.setText          ("ชื่อลูกค้า        :  "+ BHUtilities.trim(info.CustomerFullName) +" "+ BHUtilities.trim(info.CompanyName));
-				vh.textViewStatus.setText        ("สถานะ           :  "+ info.StatusName);
-				if ((info.StatusCode != null) && (!info.StatusCode.equals("")))
-				{
-					if (Integer.parseInt(info.StatusCode) >= 7) {
-						vh.imageDelete.setVisibility(View.GONE);
-					}else{
-						vh.imageDelete.setVisibility(View.VISIBLE);
+				else {
+					vh.aaa.setVisibility(View.GONE);
+				}*/
+
+
+
+
+				if (info.CONTNO.equals(info.RefNo)) {
+						vh.textViewContractnumber.setText("หมายเลขเครื่อง  :  " + info.ProductSerialNumber);
+					} else {
+						vh.textViewContractnumber.setText("เลขที่สัญญา  :  " + info.CONTNO);
 					}
-				}
-				vh.imageDelete.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
+
+					vh.textViewName.setText("ชื่อลูกค้า        :  " + BHUtilities.trim(info.CustomerFullName) + " " + BHUtilities.trim(info.CompanyName));
+					vh.textViewStatus.setText("สถานะ           :  " + info.StatusName);
+					if ((info.StatusCode != null) && (!info.StatusCode.equals(""))) {
+						if (Integer.parseInt(info.StatusCode) >= 7) {
+							vh.imageDelete.setVisibility(View.GONE);
+						} else {
+							vh.imageDelete.setVisibility(View.VISIBLE);
+						}
+					}
+					vh.imageDelete.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
 
 
 
@@ -166,56 +183,57 @@ public class SaleMainUnfinishedFragment extends BHPagerFragment {
 						*/
 
 
-
-						LayoutInflater layoutInflaterAndroid = LayoutInflater.from(activity);
-						View mView = layoutInflaterAndroid.inflate(R.layout.custom_dialog_delete, null);
-						AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(activity);
-						alertDialogBuilderUserInput.setView(mView);
-
-
-						final TextView dialogTitle2 = (TextView) mView.findViewById(R.id.dialogTitle2);
-						final EditText userInputDialogEditText = (EditText) mView.findViewById(R.id.userInputDialog);
-
-						dialogTitle2.setText("คุณต้องการลบข้อมูลสัญญา(" + info.CONTNO + ") ของการขายหมายเลขเครื่อง " + info.ProductSerialNumber + " หรือไม่?");
+							LayoutInflater layoutInflaterAndroid = LayoutInflater.from(activity);
+							View mView = layoutInflaterAndroid.inflate(R.layout.custom_dialog_delete, null);
+							AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(activity);
+							alertDialogBuilderUserInput.setView(mView);
 
 
+							final TextView dialogTitle2 = (TextView) mView.findViewById(R.id.dialogTitle2);
+							final EditText userInputDialogEditText = (EditText) mView.findViewById(R.id.userInputDialog);
 
-						alertDialogBuilderUserInput
-								.setCancelable(false)
-								.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialogBox, int id) {
+							dialogTitle2.setText("คุณต้องการลบข้อมูลสัญญา(" + info.CONTNO + ") ของการขายหมายเลขเครื่อง " + info.ProductSerialNumber + " หรือไม่?");
 
-										 String OK  =userInputDialogEditText.getText().toString();
-										 if(OK.equals("ตกลง")){
 
-											 deleteContract(info);
-											 Log.e("status","ok");
+							alertDialogBuilderUserInput
+									.setCancelable(false)
+									.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialogBox, int id) {
 
-										 }
-										 else {
-											 Log.e("status","error");
-										 }
+											String OK = userInputDialogEditText.getText().toString();
+											if (OK.equals("ตกลง")) {
 
-										// ToDo get user input here
-									}
-								})
+												deleteContract(info);
+												Log.e("status", "ok");
 
-								.setNegativeButton("ยกเลิก",
-										new DialogInterface.OnClickListener() {
-											public void onClick(DialogInterface dialogBox, int id) {
-												dialogBox.cancel();
+											} else {
+												Log.e("status", "error");
 											}
-										});
 
-						AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
-						alertDialogAndroid.show();
+											// ToDo get user input here
+										}
+									})
+
+									.setNegativeButton("ยกเลิก",
+											new DialogInterface.OnClickListener() {
+												public void onClick(DialogInterface dialogBox, int id) {
+													dialogBox.cancel();
+												}
+											});
+
+							AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
+							alertDialogAndroid.show();
 
 
-						
-						
-						
-					}
-				});
+						}
+					});
+
+
+				//}
+
+
+
+
 			}
 		};
 		

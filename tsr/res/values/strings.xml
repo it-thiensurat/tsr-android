@@ -118,6 +118,11 @@
     <string name="main_menu_report_credit_next_payment">3117DEED82F14F5192BEDBCA65FD0E39</string>
     <string name="main_menu_report_credit_sendmoney">05B89C725A324DD4BC178E1CD7EDCEC7</string>
     <string name="main_menu_report_credit_contract_close_account">7DD266E717B74201A33B793345B94594</string>
+
+
+    <string name="main_menu_preorder">6C18CAD5E7D345379E6E15720FFEE318</string>
+    <string name="main_menu_preorder_setting">9C8A3CEB21C14AA38CABB655F472B0C1</string>
+
     <!-- [START] :: Fixed - [BHPROJ-0016-855] :: Revise Menu Report tobe SubMenu -->
 
     <string name="main_menu_team">E9328B14D4CA4B18AB36E0FA8FA2A1F3</string>
@@ -406,6 +411,9 @@
 
     <!-- Sale Unfinished Menu // before contract -->
     <string name="sale_unfinished_scan_product">สแกนสินค้า</string>
+
+    <string name="sale_unfinished_scan_product_preorder">เลือกสินค้าจอง</string>
+
     <string name="sale_unfinished_employee">เลือกพนักงานขาย</string>
     <string name="sale_unfinished_customer">ข้อมูลลูกค้า</string>
     <string name="sale_unfinished_package">เลือกแบบชำระเงิน</string>
@@ -423,7 +431,10 @@
 
     <!-- Sale Contract -->
     <string name="sale_contract_installment">ใบสัญญาซื้อขาย</string>
+
+
     <string name="sale_contract_payment">ใบสัญญาเช่าซื้อ</string>
+    <string name="sale_contract_preorder">ใบจอง</string>
 
     <!-- Manual Document -->
     <string name="manual_document_detail_title">บันทึกใบเสร็จมือ</string>

@@ -61,6 +61,7 @@ public class UpdateContractInputInfo extends BHParcelable {
         UpdateContractInputInfo info = new UpdateContractInputInfo();
         info.RefNo = contract.RefNo;
         info.CONTNO = contract.CONTNO;
+       // info.CONTNO = "1234";
         info.CustomerID = contract.CustomerID;
         info.OrganizationCode = contract.OrganizationCode;
         info.STATUS = contract.STATUS;

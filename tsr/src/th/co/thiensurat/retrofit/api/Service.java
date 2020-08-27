@@ -49,6 +49,32 @@ public interface Service {
 
 
 
+
+
+
+    @GET("/api/api-setInsertInstallDate.php")
+    Call<Object> InsertInstallDate(@Query("RefNo") String RefNo,@Query("InstallDate") String InstallDate,@Query("Empid") String Empid);
+
+
+
+
+    @GET("/api/api-productListBooking.php")
+    Call<Object> product(@Query("Empid") String Empid);
+
+    @GET("/api/api-booking-contract.php")
+    Call<Object> load_data_contact_online_preoder();
+
+
+    @GET("/api/api-productListBooking_UAT.php")
+    Call<Object> product_UAT(@Query("Empid") String Empid);
+
+    @GET("/api/api-booking-contract_UAT.php")
+    Call<Object> load_data_contact_online_preoder_UAT();
+
+
+
+
+
 }
 
 

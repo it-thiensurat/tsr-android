@@ -85,6 +85,7 @@ public class SaleListPackagePaymentFragment extends BHFragment {
 			txtNumber4.setBackgroundResource(R.drawable.circle_number_sale_color_red);
 
 		}
+
 		model = null;
 		saleprice = 0;
 		MODE = null;

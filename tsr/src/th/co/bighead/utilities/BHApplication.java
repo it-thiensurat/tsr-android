@@ -6,6 +6,7 @@ package th.co.bighead.utilities;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.http.RequestQueue;
 
 import com.google.firebase.FirebaseApp;
 
@@ -31,6 +32,19 @@ public class BHApplication extends Application {
 
 
 
+
+
+	public static final String TAG = BHApplication.class
+			.getSimpleName();
+	private RequestQueue mRequestQueue;
+	private static BHApplication mInstance;
+	private MyPreferenceManager pref;
+
+
+
+
+
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -38,7 +52,7 @@ public class BHApplication extends Application {
 		BHApplication.context = getApplicationContext();
 		FirebaseApp.initializeApp(this);
 
-
+		mInstance = this;
 	}
 
 	public static Context getContext() {
@@ -50,6 +64,16 @@ public class BHApplication extends Application {
 
 
 
+
+	public static synchronized BHApplication getInstance() {
+		return mInstance;
+	}
+	public MyPreferenceManager getPrefManager() {
+		if (pref == null) {
+			pref = new MyPreferenceManager(this);
+		}
+		return pref;
+	}
 
 
 

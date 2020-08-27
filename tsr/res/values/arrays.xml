@@ -26,6 +26,7 @@
         <item>@string/main_menu_team</item>
         <item>@string/main_menu_checkstock</item>
         <item>@string/main_menu_sales</item>
+        <item>@string/main_menu_preorder</item>
         <item>@string/main_menu_money</item>
         <item>@string/main_menu_remove</item>
         <item>@string/main_menu_change</item>
@@ -44,6 +45,7 @@
         <item>@drawable/ic_tsr_logo</item>
         <item>@drawable/ic_menu_team</item>
         <item>@drawable/ic_menu_checkstock</item>
+        <item>@drawable/ic_menu_sales</item>
         <item>@drawable/ic_menu_sales</item>
         <item>@drawable/ic_menu_money</item>
         <item>@drawable/ic_menu_remove</item>
@@ -177,6 +179,25 @@
         <item>@string/sale_unfinished_photo</item>
         <item>@string/sale_unfinished_more</item>
     </array>
+
+
+
+    <array name="sale_unfinished_menu_preorder">
+        <item>@string/sale_unfinished_scan_product_preorder</item>
+        <item>@string/sale_unfinished_employee</item>
+        <item>@string/sale_unfinished_customer</item>
+        <item>@string/sale_unfinished_package</item>
+        <item>@string/sale_unfinished_discount</item>
+        <item>@string/sale_unfinished_detail_contract</item>
+        <item>@string/sale_unfinished_contract</item>
+        <item>@string/sale_unfinished_payment</item>
+        <item>@string/sale_unfinished_receipt</item>
+        <item>@string/sale_unfinished_photo</item>
+        <item>@string/sale_unfinished_more</item>
+    </array>
+
+
+
     <array name="sale_photo">
         <item>@string/sale_photo_home</item>
         <item>@string/sale_photo_id</item>

@@ -206,6 +206,10 @@ public abstract class BHFragment extends Fragment {
 
 		if (!BHPagerFragment.class.isAssignableFrom(getClass())) {
 			activity.setupProcessButtons(this, processButtons());
+
+			//activity.setupProcessButtons(this, processButtons());
+
+
 			activity.setupTitle(titleID());
 		}
 

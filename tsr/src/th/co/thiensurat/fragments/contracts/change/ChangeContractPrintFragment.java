@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -177,9 +178,16 @@ public class ChangeContractPrintFragment extends BHFragment {
 
     private void bindContract() {
 
+        Log.e("aaaaa","23232");
+
         String titleCaption = contract.MODE > 1 ? "" + getResources().getString(R.string.sale_contract_payment) : ""
                 + getResources().getString(R.string.sale_contract_installment);
-        txtCaption.setText(titleCaption);
+
+        //String titleCaption = "ใบจอง";
+
+
+
+        txtCaption.setText("aaaaa");
         String titleLblCustomerFullName = contract.MODE > 1 ? "" + getResources().getString(R.string.change_contract_customer_fullname) : ""
                 + getResources().getString(R.string.change_contract_customer_fullname_cash);
         lblCustomerFullName.setText(titleLblCustomerFullName);

@@ -122,6 +122,13 @@ public class ProductStockController extends BaseController {
 		return executeQueryObject(QUERY_PRODUCTSTOCK_GET_BY_SERIAL, new String[] { productSerialNumber }, ProductStockInfo.class);
 	}
 
+	public ProductStockInfo getProductStock_xxx() {
+		final String QUERY_PRODUCTSTOCK_GET_BY_SERIAL = "SELECT ps.*, p.ProductName FROM ProductStock as ps left outer join Product as p on ps.ProductID=p.ProductID ";
+		return executeQueryObject(QUERY_PRODUCTSTOCK_GET_BY_SERIAL, new String[] { }, ProductStockInfo.class);
+	}
+
+
+
 	public ProductStockInfo getProductStockForCRD(String productSerialNumber, String EmployeeID) {
 		final String QUERY_PRODUCTSTOCK_GET_BY_SERIAL = "SELECT ps.*, p.ProductName FROM ProductStock as ps left outer join Product as p on ps.ProductID=p.ProductID WHERE ps.ProductSerialNumber = ? AND ps.CreateBy = ?";
 		return executeQueryObject(QUERY_PRODUCTSTOCK_GET_BY_SERIAL, new String[] { productSerialNumber, EmployeeID }, ProductStockInfo.class);
@@ -144,7 +151,14 @@ public class ProductStockController extends BaseController {
 		String sql = "SELECT * FROM ProductStock WHERE OrganizationCode = ? AND ProductSerialNumber = ? ";
 		return executeQueryObject(sql, new String[] {organizationCode, productSerialNumber}, ProductStockInfo.class);
 	}
-	
+
+
+	public ProductStockInfo getProductStockByProductSerialNumberzzzz(String organizationCode) {
+		String sql = "SELECT * FROM ProductStock WHERE OrganizationCode = ?  ";
+		return executeQueryObject(sql, new String[] {organizationCode}, ProductStockInfo.class);
+	}
+
+
 	// For test
 	public void checkedProducts() {
 		final String QUERY_PRODUCTSTOCK_CHECKED = "UPDATE ProductStock SET Status = 'CHECKED' WHERE Status = 'WAIT'";
@@ -152,9 +166,16 @@ public class ProductStockController extends BaseController {
 	}
 
 	public ProductStockInfo getCheckedProductStock() {
-		final String QUERY_GET_FIRST_CHECKED = "SELECT * FROM ProductStock WHERE Status = 'CHECKED'";
+		final String QUERY_GET_FIRST_CHECKED = "SELECT * FROM ProductStock WHERE Status = 'CHECKED' ";
 		return executeQueryObject(QUERY_GET_FIRST_CHECKED, null, ProductStockInfo.class);
 	}
+
+
+	public ProductStockInfo getCheckedProductStock_preorder() {
+		final String QUERY_GET_FIRST_CHECKED = "SELECT * FROM ProductStock ";
+		return executeQueryObject(QUERY_GET_FIRST_CHECKED, null, ProductStockInfo.class);
+	}
+
 	
 	public List<ProductStockInfo> getProductStock(String organizationCode, String teamCode) {
 		return executeQueryList("select *from ProductStock where OrganizationCode=? and TeamCode=?", new String[]{organizationCode, teamCode}, ProductStockInfo.class);

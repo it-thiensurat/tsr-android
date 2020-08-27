@@ -88,8 +88,12 @@ public class SaleUnfinishedFragment extends BHFragment {
 				switch (titleID) {
 					case R.string.sale_unfinished_scan_product:
 						if (intStatuscode <= 6) {
+
+
 							if (intStatuscode >= 1) {
+
 								BarcodeScan();
+
 							} else {
 								showMessage("สถานะการทำงานของท่านยังมาไม่ถึง");
 							}

@@ -1,16 +1,15 @@
 package th.co.thiensurat.data.controller;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import th.co.bighead.utilities.BHApplication;
 import th.co.thiensurat.data.info.ContractInfo;
 import th.co.thiensurat.data.info.GCMProdStkAndContractInfo;
 
-import static android.provider.CalendarContract.Instances.BEGIN;
+import static th.co.thiensurat.fragments.sales.preorder_setting.SaleMainFragment_preorder_setting.select_page_s;
 
 public class ContractController extends BaseController {
 
@@ -243,7 +242,7 @@ public class ContractController extends BaseController {
                 + "     SalePaymentPeriod as spp on Cont.RefNo=spp.RefNo left outer join	"
                 + "     (select SalePaymentPeriodID, ifnull(sum(Amount),0) as SummaryPaymentAmount" + " from SalePaymentPeriodPayment"
                 + "         group by SalePaymentPeriodID) as sumperiodpayamt" + "	on spp.SalePaymentPeriodID=sumperiodpayamt.SalePaymentPeriodID "
-                + " WHERE  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.RefNo = ?) AND (spp.PaymentPeriodNumber=?)";
+                + " WHERE (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.RefNo = ?) AND (spp.PaymentPeriodNumber=?)   ";
 
         ret = executeQueryObject(sql, new String[]{organizationCode, refNO, paymentPeriodNumber}, ContractInfo.class);
         return ret;
@@ -355,11 +354,101 @@ public class ContractController extends BaseController {
                 + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
                 + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
                 + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
-                + " WHERE     (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
+                + " WHERE  (Cont.ProductSerialNumber != '-') AND   (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
                 + " ORDER BY Cont.CONTNO ASC";
 
         return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName}, ContractInfo.class);
     }
+
+
+    public List<ContractInfo> getContractStatusFinish_ContractInfo_preorder(String organizationCode, String saleTeamCode, String StatusName) {
+        final String sql =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT distinct Cont.*,"
+                " SELECT distinct Cont.[RefNo],Cont.[CONTNO],Cont.[CustomerID],Cont.[OrganizationCode],Cont.[STATUS],Cont.[StatusCode],Cont.[SALES],Cont.[TotalPrice],Cont.[EFFDATE],Cont.[HasTradeIn]"
+                        + "     ,Cont.[TradeInProductCode],Cont.[TradeInBrandCode],Cont.[TradeInProductModel],Cont.[TradeInDiscount]"
+                        + "     ,Cont.[PreSaleSaleCode],Cont.[PreSaleEmployeeCode],Cont.[PreSaleTeamCode],Cont.[SaleCode],Cont.[SaleEmployeeCode],Cont.[SaleTeamCode] "
+                        + "     ,Cont.[InstallerSaleCode],Cont.[InstallerEmployeeCode],Cont.[InstallerTeamCode],Cont.[InstallDate],ifnull(Cont.[ProductSerialNumber],'') AS ProductSerialNumber,Cont.[ProductID]"
+                        + "     ,Cont.[SaleEmployeeLevelPath],Cont.[MODE],Cont.[FortnightID],Cont.[ProblemID],Cont.[svcontno],Cont.[isActive],Cont.[MODEL]"
+                        + "     ,Cont.[fromrefno],Cont.[fromcontno],Cont.[todate],Cont.[tocontno],Cont.[torefno],Cont.[CreateDate],Cont.[CreateBy],Cont.[LastUpdateDate],Cont.[LastUpdateBy],Cont.[SyncedDate]"
+                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate]"
+                        /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
+
+                        + " 			,Cust.PrefixName || IFNULL(Cust.CustomerName,'') AS CustomerFullName, Cust.CompanyName, Cust.IDCard,"
+                        + " 			 Prod.ProductName, Sale.FirstName || '  ' || Sale.LastName AS SaleEmployeeName,"
+                        + " 			 ContST.StatusName"
+                        + " FROM            Contract AS Cont INNER JOIN"
+                        + "                         DebtorCustomer AS Cust ON Cont.OrganizationCode = Cust.OrganizationCode AND Cont.CustomerID = Cust.CustomerID INNER JOIN"
+                        + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
+                        + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
+                        + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
+                        + " WHERE   (Cont.ProductSerialNumber = '-') AND  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
+                        + " ORDER BY Cont.CONTNO ASC";
+
+        return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName}, ContractInfo.class);
+    }
+
+
+    public List<ContractInfo> getContractStatusFinish_ContractInfo_preorder_setting2(String organizationCode, String saleTeamCode, String StatusName) {
+        final String sql =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT distinct Cont.*,"
+                " SELECT distinct Cont.[RefNo],Cont.[CONTNO],Cont.[CustomerID],Cont.[OrganizationCode],Cont.[STATUS],Cont.[StatusCode],Cont.[SALES],Cont.[TotalPrice],Cont.[EFFDATE],Cont.[HasTradeIn]"
+                        + "     ,Cont.[TradeInProductCode],Cont.[TradeInBrandCode],Cont.[TradeInProductModel],Cont.[TradeInDiscount]"
+                        + "     ,Cont.[PreSaleSaleCode],Cont.[PreSaleEmployeeCode],Cont.[PreSaleTeamCode],Cont.[SaleCode],Cont.[SaleEmployeeCode],Cont.[SaleTeamCode] "
+                        + "     ,Cont.[InstallerSaleCode],Cont.[InstallerEmployeeCode],Cont.[InstallerTeamCode],Cont.[InstallDate],ifnull(Cont.[ProductSerialNumber],'') AS ProductSerialNumber,Cont.[ProductID]"
+                        + "     ,Cont.[SaleEmployeeLevelPath],Cont.[MODE],Cont.[FortnightID],Cont.[ProblemID],Cont.[svcontno],Cont.[isActive],Cont.[MODEL]"
+                        + "     ,Cont.[fromrefno],Cont.[fromcontno],Cont.[todate],Cont.[tocontno],Cont.[torefno],Cont.[CreateDate],Cont.[CreateBy],Cont.[LastUpdateDate],Cont.[LastUpdateBy],Cont.[SyncedDate]"
+                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate]"
+                        /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
+
+                        + " 			,Cust.PrefixName || IFNULL(Cust.CustomerName,'') AS CustomerFullName, Cust.CompanyName, Cust.IDCard,"
+                        + " 			 Prod.ProductName, Sale.FirstName || '  ' || Sale.LastName AS SaleEmployeeName,"
+                        + " 			 ContST.StatusName"
+                        + " FROM            Contract AS Cont INNER JOIN"
+                        + "                         DebtorCustomer AS Cust ON Cont.OrganizationCode = Cust.OrganizationCode AND Cont.CustomerID = Cust.CustomerID INNER JOIN"
+                        + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
+                        + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
+                        + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
+                        + " WHERE   substr(Cont.ProductSerialNumber,1, 2) ='WO'  AND  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
+                        + " ORDER BY Cont.CONTNO ASC";
+
+        return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName}, ContractInfo.class);
+    }
+
+    public List<ContractInfo> getContractStatusFinish_ContractInfo_preorder_SETTING() {
+        final String sql =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT distinct Cont.*,"
+                " SELECT distinct Cont.[RefNo],Cont.[CONTNO],Cont.[CustomerID],Cont.[OrganizationCode],Cont.[STATUS],Cont.[StatusCode],Cont.[SALES],Cont.[TotalPrice],Cont.[EFFDATE],Cont.[HasTradeIn]"
+                        + "     ,Cont.[TradeInProductCode],Cont.[TradeInBrandCode],Cont.[TradeInProductModel],Cont.[TradeInDiscount]"
+                        + "     ,Cont.[PreSaleSaleCode],Cont.[PreSaleEmployeeCode],Cont.[PreSaleTeamCode],Cont.[SaleCode],Cont.[SaleEmployeeCode],Cont.[SaleTeamCode] "
+                        + "     ,Cont.[InstallerSaleCode],Cont.[InstallerEmployeeCode],Cont.[InstallerTeamCode],Cont.[InstallDate],ifnull(Cont.[ProductSerialNumber],'') AS ProductSerialNumber,Cont.[ProductID]"
+                        + "     ,Cont.[SaleEmployeeLevelPath],Cont.[MODE],Cont.[FortnightID],Cont.[ProblemID],Cont.[svcontno],Cont.[isActive],Cont.[MODEL]"
+                        + "     ,Cont.[fromrefno],Cont.[fromcontno],Cont.[todate],Cont.[tocontno],Cont.[torefno],Cont.[CreateDate],Cont.[CreateBy],Cont.[LastUpdateDate],Cont.[LastUpdateBy],Cont.[SyncedDate]"
+                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate]"
+                        /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
+
+                        + " 			,Cust.PrefixName || IFNULL(Cust.CustomerName,'') AS CustomerFullName, Cust.CompanyName, Cust.IDCard,"
+                        + " 			 Prod.ProductName, Sale.FirstName || '  ' || Sale.LastName AS SaleEmployeeName,"
+                        + " 			 ContST.StatusName"
+                      //  + " FROM            Contract AS Cont INNER JOIN"
+                        + " FROM            Contract AS Cont LEFT JOIN"
+
+                        + "                         DebtorCustomer AS Cust ON Cont.OrganizationCode = Cust.OrganizationCode AND Cont.CustomerID = Cust.CustomerID INNER JOIN"
+                        + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
+                        + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
+                        + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
+                       // + " WHERE   (Cont.ProductSerialNumber = '-') AND  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?)  AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
+                        + " WHERE   (Cont.ProductSerialNumber = '-') AND (Cont.StatusCode='13') "
+                       // + " WHERE   (Cont.ProductSerialNumber = '-') "
+
+
+                        + " ORDER BY Cont.CONTNO ASC";
+
+        return executeQueryList(sql, new String[]{}, ContractInfo.class);
+    }
+
 
     public List<ContractInfo> getContractStatusFinishForCRD(String organizationCode, String saleTeamCode, String StatusName, String EmployeeID) {
         final String sql =
@@ -382,11 +471,39 @@ public class ContractController extends BaseController {
                         + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
                         + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
                         + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
-                        + " WHERE     (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T') AND (Cont.CreateBy = ?)"
+                        + " WHERE  (Cont.ProductSerialNumber != '-') AND    (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T') AND (Cont.CreateBy = ?)"
                         + " ORDER BY Cont.CONTNO ASC";
 
         return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName, EmployeeID}, ContractInfo.class);
     }
+
+    public List<ContractInfo> getContractStatusFinishForCRD_ContractInfo_preorder(String organizationCode, String saleTeamCode, String StatusName, String EmployeeID) {
+        final String sql =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT distinct Cont.*,"
+                " SELECT distinct Cont.[RefNo],Cont.[CONTNO],Cont.[CustomerID],Cont.[OrganizationCode],Cont.[STATUS],Cont.[StatusCode],Cont.[SALES],Cont.[TotalPrice],Cont.[EFFDATE],Cont.[HasTradeIn]"
+                        + "     ,Cont.[TradeInProductCode],Cont.[TradeInBrandCode],Cont.[TradeInProductModel],Cont.[TradeInDiscount]"
+                        + "     ,Cont.[PreSaleSaleCode],Cont.[PreSaleEmployeeCode],Cont.[PreSaleTeamCode],Cont.[SaleCode],Cont.[SaleEmployeeCode],Cont.[SaleTeamCode] "
+                        + "     ,Cont.[InstallerSaleCode],Cont.[InstallerEmployeeCode],Cont.[InstallerTeamCode],Cont.[InstallDate],ifnull(Cont.[ProductSerialNumber],'') AS ProductSerialNumber,Cont.[ProductID]"
+                        + "     ,Cont.[SaleEmployeeLevelPath],Cont.[MODE],Cont.[FortnightID],Cont.[ProblemID],Cont.[svcontno],Cont.[isActive],Cont.[MODEL]"
+                        + "     ,Cont.[fromrefno],Cont.[fromcontno],Cont.[todate],Cont.[tocontno],Cont.[torefno],Cont.[CreateDate],Cont.[CreateBy],Cont.[LastUpdateDate],Cont.[LastUpdateBy],Cont.[SyncedDate]"
+                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate]"
+                        /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
+
+                        + " 			,Cust.PrefixName || IFNULL(Cust.CustomerName,'') AS CustomerFullName, Cust.CompanyName, Cust.IDCard,"
+                        + " 			 Prod.ProductName, Sale.FirstName || '  ' || Sale.LastName AS SaleEmployeeName,"
+                        + " 			 ContST.StatusName"
+                        + " FROM            Contract AS Cont INNER JOIN"
+                        + "                         DebtorCustomer AS Cust ON Cont.OrganizationCode = Cust.OrganizationCode AND Cont.CustomerID = Cust.CustomerID INNER JOIN"
+                        + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
+                        + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
+                        + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
+                        + " WHERE    (Cont.ProductSerialNumber = '-') AND (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T') AND (Cont.CreateBy = ?)"
+                        + " ORDER BY Cont.CONTNO ASC";
+
+        return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName, EmployeeID}, ContractInfo.class);
+    }
+
 
     public List<ContractInfo> getContractStatusFinishBySearch(String organizationCode, String saleTeamCode, String StatusName, String strSearch) {
         final String sql =
@@ -468,10 +585,42 @@ public class ContractController extends BaseController {
                 + "      INNER JOIN Employee AS Sale ON (Cont.OrganizationCode = Sale.OrganizationCode) AND (Cont.SaleEmployeeCode = Sale.EmpID) "
                 + "      INNER JOIN ContractStatus AS ContST ON (Cont.StatusCode = ContST.StatusCode) "
                 + "      LEFT OUTER JOIN (SELECT RefNo, MAX(PAYDATE) AS MaxPaymentDate FROM Payment GROUP BY RefNo) AS MaxPay ON (Cont.RefNo = MaxPay.RefNo) "  //-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป
-                + " WHERE (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
+                + " WHERE (Cont.ProductSerialNumber != '-') AND  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
                 //+ "            AND (Cont.CONTNO LIKE  ? OR Cont.ProductSerialNumber LIKE  ? OR CustomerFullName2 LIKE  ?)"
                 + "      AND (Cont.CONTNO LIKE  ? OR CustomerFullName2 LIKE  ?)"
                 + " ORDER BY MaxPay.MaxPaymentDate DESC, Cont.CONTNO ASC";  //-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป
+
+        return executeQueryList(sql, new String[]{organizationCode, StatusName, strSearch, strSearch}, ContractInfo.class);
+    }
+
+
+
+    public List<ContractInfo> getContractStatusFinishForCreditBySearch_ContractInfo_preorder(String organizationCode, String StatusName, String strSearch) {
+        final String sql =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT distinct Cont.*,"
+                " SELECT distinct Cont.[RefNo],Cont.[CONTNO],Cont.[CustomerID],Cont.[OrganizationCode],Cont.[STATUS],Cont.[StatusCode],Cont.[SALES],Cont.[TotalPrice],Cont.[EFFDATE],Cont.[HasTradeIn]"
+                        + "     ,Cont.[TradeInProductCode],Cont.[TradeInBrandCode],Cont.[TradeInProductModel],Cont.[TradeInDiscount]"
+                        + "     ,Cont.[PreSaleSaleCode],Cont.[PreSaleEmployeeCode],Cont.[PreSaleTeamCode],Cont.[SaleCode],Cont.[SaleEmployeeCode],Cont.[SaleTeamCode] "
+                        + "     ,Cont.[InstallerSaleCode],Cont.[InstallerEmployeeCode],Cont.[InstallerTeamCode],Cont.[InstallDate],ifnull(Cont.[ProductSerialNumber],'') AS ProductSerialNumber,Cont.[ProductID]"
+                        + "     ,Cont.[SaleEmployeeLevelPath],Cont.[MODE],Cont.[FortnightID],Cont.[ProblemID],Cont.[svcontno],Cont.[isActive],Cont.[MODEL]"
+                        + "     ,Cont.[fromrefno],Cont.[fromcontno],Cont.[todate],Cont.[tocontno],Cont.[torefno],Cont.[CreateDate],Cont.[CreateBy],Cont.[LastUpdateDate],Cont.[LastUpdateBy],Cont.[SyncedDate]"
+                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate]"
+                        /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
+                        + " 	,Cust.PrefixName || IFNULL(Cust.CustomerName,'') AS CustomerFullName, Cust.CompanyName, Cust.IDCard,"
+                        + " 	 Prod.ProductName, Sale.FirstName || '  ' || Sale.LastName AS SaleEmployeeName,"
+                        + " 	 ContST.StatusName, IFNULL(Cust.CustomerName,'') || IFNULL(Cust.CompanyName,'') AS CustomerFullName2"
+                        + " 	 , MaxPay.MaxPaymentDate"   //-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป
+                        + " FROM  Contract AS Cont "
+                        + "      INNER JOIN DebtorCustomer AS Cust ON (Cont.OrganizationCode = Cust.OrganizationCode) AND (Cont.CustomerID = Cust.CustomerID) "
+                        + "      INNER JOIN Product AS Prod ON (Cont.OrganizationCode = Prod.OrganizationCode) AND (Cont.ProductID = Prod.ProductID) "
+                        + "      INNER JOIN Employee AS Sale ON (Cont.OrganizationCode = Sale.OrganizationCode) AND (Cont.SaleEmployeeCode = Sale.EmpID) "
+                        + "      INNER JOIN ContractStatus AS ContST ON (Cont.StatusCode = ContST.StatusCode) "
+                        + "      LEFT OUTER JOIN (SELECT RefNo, MAX(PAYDATE) AS MaxPaymentDate FROM Payment GROUP BY RefNo) AS MaxPay ON (Cont.RefNo = MaxPay.RefNo) "  //-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป
+                        + " WHERE (Cont.ProductSerialNumber = '-') AND (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
+                        //+ "            AND (Cont.CONTNO LIKE  ? OR Cont.ProductSerialNumber LIKE  ? OR CustomerFullName2 LIKE  ?)"
+                        + "      AND (Cont.CONTNO LIKE  ? OR CustomerFullName2 LIKE  ?)"
+                        + " ORDER BY MaxPay.MaxPaymentDate DESC, Cont.CONTNO ASC";  //-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป
 
         return executeQueryList(sql, new String[]{organizationCode, StatusName, strSearch, strSearch}, ContractInfo.class);
     }
@@ -500,12 +649,72 @@ public class ContractController extends BaseController {
                 + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
                 + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
                 + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
-                + " WHERE     (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?)";
+                + " WHERE  substr(Cont.ProductSerialNumber,1, 2) !='WO'  AND (Cont.ProductSerialNumber != '-') AND   (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?)";
 
 
         //Log.e("xxxxx_moo_test",organizationCode+","+saleTeamCode+","+StatusName);
         return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName}, ContractInfo.class);
     }
+
+
+    public List<ContractInfo> getContractStatusUnFinish_SETTING(String organizationCode, String saleTeamCode, String StatusName) {
+        final String sql =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT distinct Cont.*,"
+                " SELECT distinct Cont.[RefNo],Cont.[CONTNO],Cont.[CustomerID],Cont.[OrganizationCode],Cont.[STATUS],Cont.[StatusCode],Cont.[SALES],Cont.[TotalPrice],Cont.[EFFDATE],Cont.[HasTradeIn]"
+                        + "     ,Cont.[TradeInProductCode],Cont.[TradeInBrandCode],Cont.[TradeInProductModel],Cont.[TradeInDiscount]"
+                        + "     ,Cont.[PreSaleSaleCode],Cont.[PreSaleEmployeeCode],Cont.[PreSaleTeamCode],Cont.[SaleCode],Cont.[SaleEmployeeCode],Cont.[SaleTeamCode] "
+                        + "     ,Cont.[InstallerSaleCode],Cont.[InstallerEmployeeCode],Cont.[InstallerTeamCode],Cont.[InstallDate],ifnull(Cont.[ProductSerialNumber],'') AS ProductSerialNumber,Cont.[ProductID]"
+                        + "     ,Cont.[SaleEmployeeLevelPath],Cont.[MODE],Cont.[FortnightID],Cont.[ProblemID],Cont.[svcontno],Cont.[isActive],Cont.[MODEL]"
+                        + "     ,Cont.[fromrefno],Cont.[fromcontno],Cont.[todate],Cont.[tocontno],Cont.[torefno],Cont.[CreateDate],Cont.[CreateBy],Cont.[LastUpdateDate],Cont.[LastUpdateBy],Cont.[SyncedDate]"
+                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate]"
+                        /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
+
+                        + " 			,Cust.PrefixName || IFNULL(Cust.CustomerName, '') AS CustomerFullName, Cust.CompanyName, Cust.IDCard,"
+                        + " 			 Prod.ProductName, Sale.FirstName || '  ' || Sale.LastName AS SaleEmployeeName,"
+                        + " 			 ContST.StatusName"
+                        + " FROM            Contract AS Cont LEFT OUTER JOIN"
+                        + "                         DebtorCustomer AS Cust ON Cont.OrganizationCode = Cust.OrganizationCode AND Cont.CustomerID = Cust.CustomerID INNER JOIN"
+                        + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
+                        + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
+                        + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
+                        + " WHERE substr(Cont.ProductSerialNumber,1, 2) ='WO' AND  (Cont.ProductSerialNumber != '-') AND   (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?)";
+
+
+        //Log.e("xxxxx_moo_test",organizationCode+","+saleTeamCode+","+StatusName);
+        return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName}, ContractInfo.class);
+    }
+
+
+
+    public List<ContractInfo> getContractStatusUnFinish_ContractInfo_preorder(String organizationCode, String saleTeamCode, String StatusName) {
+        final String sql =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT distinct Cont.*,"
+                " SELECT distinct Cont.[RefNo],Cont.[CONTNO],Cont.[CustomerID],Cont.[OrganizationCode],Cont.[STATUS],Cont.[StatusCode],Cont.[SALES],Cont.[TotalPrice],Cont.[EFFDATE],Cont.[HasTradeIn]"
+                        + "     ,Cont.[TradeInProductCode],Cont.[TradeInBrandCode],Cont.[TradeInProductModel],Cont.[TradeInDiscount]"
+                        + "     ,Cont.[PreSaleSaleCode],Cont.[PreSaleEmployeeCode],Cont.[PreSaleTeamCode],Cont.[SaleCode],Cont.[SaleEmployeeCode],Cont.[SaleTeamCode] "
+                        + "     ,Cont.[InstallerSaleCode],Cont.[InstallerEmployeeCode],Cont.[InstallerTeamCode],Cont.[InstallDate],ifnull(Cont.[ProductSerialNumber],'') AS ProductSerialNumber,Cont.[ProductID]"
+                        + "     ,Cont.[SaleEmployeeLevelPath],Cont.[MODE],Cont.[FortnightID],Cont.[ProblemID],Cont.[svcontno],Cont.[isActive],Cont.[MODEL]"
+                        + "     ,Cont.[fromrefno],Cont.[fromcontno],Cont.[todate],Cont.[tocontno],Cont.[torefno],Cont.[CreateDate],Cont.[CreateBy],Cont.[LastUpdateDate],Cont.[LastUpdateBy],Cont.[SyncedDate]"
+                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate]"
+                        /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
+
+                        + " 			,Cust.PrefixName || IFNULL(Cust.CustomerName, '') AS CustomerFullName, Cust.CompanyName, Cust.IDCard,"
+                        + " 			 Prod.ProductName, Sale.FirstName || '  ' || Sale.LastName AS SaleEmployeeName,"
+                        + " 			 ContST.StatusName"
+                        + " FROM            Contract AS Cont LEFT OUTER JOIN"
+                        + "                         DebtorCustomer AS Cust ON Cont.OrganizationCode = Cust.OrganizationCode AND Cont.CustomerID = Cust.CustomerID INNER JOIN"
+                        + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
+                        + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
+                        + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
+                        + " WHERE  substr(Cont.ProductSerialNumber,1, 2) !='WO' AND (Cont.ProductSerialNumber = '-') AND  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?)";
+
+
+        //Log.e("xxxxx_moo_test",organizationCode+","+saleTeamCode+","+StatusName);
+        return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName}, ContractInfo.class);
+    }
+
 
     public List<ContractInfo> getContractStatusUnFinishForCRD(String organizationCode, String saleTeamCode, String StatusName, String SaleEmployeeCode) {
         final String sql =
@@ -528,9 +737,64 @@ public class ContractController extends BaseController {
                         + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
                         + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
                         + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
-                        + " WHERE     (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?) AND (Cont.CreateBy = ?)";
+                        + " WHERE  substr(Cont.ProductSerialNumber,1, 2) !='WO'  AND (Cont.ProductSerialNumber != '-') AND   (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?) AND (Cont.CreateBy = ?)";
         return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName, SaleEmployeeCode}, ContractInfo.class);
     }
+
+
+
+    public List<ContractInfo> getContractStatusUnFinishForCRD_SETTING(String organizationCode, String saleTeamCode, String StatusName, String SaleEmployeeCode) {
+        final String sql =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT distinct Cont.*,"
+                " SELECT distinct Cont.[RefNo],Cont.[CONTNO],Cont.[CustomerID],Cont.[OrganizationCode],Cont.[STATUS],Cont.[StatusCode],Cont.[SALES],Cont.[TotalPrice],Cont.[EFFDATE],Cont.[HasTradeIn]"
+                        + "     ,Cont.[TradeInProductCode],Cont.[TradeInBrandCode],Cont.[TradeInProductModel],Cont.[TradeInDiscount]"
+                        + "     ,Cont.[PreSaleSaleCode],Cont.[PreSaleEmployeeCode],Cont.[PreSaleTeamCode],Cont.[SaleCode],Cont.[SaleEmployeeCode],Cont.[SaleTeamCode] "
+                        + "     ,Cont.[InstallerSaleCode],Cont.[InstallerEmployeeCode],Cont.[InstallerTeamCode],Cont.[InstallDate],ifnull(Cont.[ProductSerialNumber],'') AS ProductSerialNumber,Cont.[ProductID]"
+                        + "     ,Cont.[SaleEmployeeLevelPath],Cont.[MODE],Cont.[FortnightID],Cont.[ProblemID],Cont.[svcontno],Cont.[isActive],Cont.[MODEL]"
+                        + "     ,Cont.[fromrefno],Cont.[fromcontno],Cont.[todate],Cont.[tocontno],Cont.[torefno],Cont.[CreateDate],Cont.[CreateBy],Cont.[LastUpdateDate],Cont.[LastUpdateBy],Cont.[SyncedDate]"
+                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate]"
+                        /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
+
+                        + " 			,Cust.PrefixName || IFNULL(Cust.CustomerName, '') AS CustomerFullName, Cust.CompanyName, Cust.IDCard,"
+                        + " 			 Prod.ProductName, Sale.FirstName || '  ' || Sale.LastName AS SaleEmployeeName,"
+                        + " 			 ContST.StatusName"
+                        + " FROM            Contract AS Cont LEFT OUTER JOIN"
+                        + "                         DebtorCustomer AS Cust ON Cont.OrganizationCode = Cust.OrganizationCode AND Cont.CustomerID = Cust.CustomerID INNER JOIN"
+                        + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
+                        + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
+                        + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
+                        + " WHERE  substr(Cont.ProductSerialNumber,1, 2) ='WO' AND  (Cont.ProductSerialNumber != '-') AND  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?) AND (Cont.CreateBy = ?)";
+        return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName, SaleEmployeeCode}, ContractInfo.class);
+    }
+
+
+
+    public List<ContractInfo> getContractStatusUnFinishForCRD_ContractInfo_preorder(String organizationCode, String saleTeamCode, String StatusName, String SaleEmployeeCode) {
+        final String sql =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT distinct Cont.*,"
+                " SELECT distinct Cont.[RefNo],Cont.[CONTNO],Cont.[CustomerID],Cont.[OrganizationCode],Cont.[STATUS],Cont.[StatusCode],Cont.[SALES],Cont.[TotalPrice],Cont.[EFFDATE],Cont.[HasTradeIn]"
+                        + "     ,Cont.[TradeInProductCode],Cont.[TradeInBrandCode],Cont.[TradeInProductModel],Cont.[TradeInDiscount]"
+                        + "     ,Cont.[PreSaleSaleCode],Cont.[PreSaleEmployeeCode],Cont.[PreSaleTeamCode],Cont.[SaleCode],Cont.[SaleEmployeeCode],Cont.[SaleTeamCode] "
+                        + "     ,Cont.[InstallerSaleCode],Cont.[InstallerEmployeeCode],Cont.[InstallerTeamCode],Cont.[InstallDate],ifnull(Cont.[ProductSerialNumber],'') AS ProductSerialNumber,Cont.[ProductID]"
+                        + "     ,Cont.[SaleEmployeeLevelPath],Cont.[MODE],Cont.[FortnightID],Cont.[ProblemID],Cont.[svcontno],Cont.[isActive],Cont.[MODEL]"
+                        + "     ,Cont.[fromrefno],Cont.[fromcontno],Cont.[todate],Cont.[tocontno],Cont.[torefno],Cont.[CreateDate],Cont.[CreateBy],Cont.[LastUpdateDate],Cont.[LastUpdateBy],Cont.[SyncedDate]"
+                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate]"
+                        /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
+
+                        + " 			,Cust.PrefixName || IFNULL(Cust.CustomerName, '') AS CustomerFullName, Cust.CompanyName, Cust.IDCard,"
+                        + " 			 Prod.ProductName, Sale.FirstName || '  ' || Sale.LastName AS SaleEmployeeName,"
+                        + " 			 ContST.StatusName"
+                        + " FROM            Contract AS Cont LEFT OUTER JOIN"
+                        + "                         DebtorCustomer AS Cust ON Cont.OrganizationCode = Cust.OrganizationCode AND Cont.CustomerID = Cust.CustomerID INNER JOIN"
+                        + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
+                        + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
+                        + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
+                        + " WHERE    substr(Cont.ProductSerialNumber,1, 2) !='WO' AND (Cont.ProductSerialNumber = '-') AND (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?) AND (Cont.CreateBy = ?)";
+        return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName, SaleEmployeeCode}, ContractInfo.class);
+    }
+
 
     public List<ContractInfo> getContractStatusFinishByEFFDATE(String organizationCode, String saleTeamCode, String StatusName, Date StartDate, Date EndDate, boolean inDay) {
         if (inDay) {
@@ -693,6 +957,24 @@ public class ContractController extends BaseController {
                 info.SaleSubTeamCode, valueOf(info.TradeInReturnFlag), valueOf(info.IsReadyForSaleAudit), info.ContractReferenceNo, valueOf(info.IsMigrate)});
     }
 
+    public void addContract_PREORDER_SETTING(ContractInfo info) {
+        String sql = "INSERT INTO Contract (RefNo, CONTNO, CustomerID, OrganizationCode, STATUS, StatusCode, SALES, TotalPrice, EFFDATE, HasTradeIn, "
+                + "TradeInProductCode, TradeInBrandCode, TradeInProductModel, TradeInDiscount, PreSaleSaleCode, PreSaleEmployeeCode, PreSaleEmployeeName, PreSaleTeamCode, "
+                + "SaleCode, SaleEmployeeCode, SaleTeamCode, InstallerSaleCode, InstallerEmployeeCode, InstallerTeamCode, InstallDate, ProductSerialNumber, "
+                + "ProductID, SaleEmployeeLevelPath, MODE, FortnightID, ProblemID, svcontno, isActive, MODEL, fromrefno, fromcontno, todate, tocontno, "
+                + "torefno, CreateDate,  CreateBy, LastUpdateDate, LastUpdateBy, SyncedDate, SaleSubTeamCode, TradeInReturnFlag, IsReadyForSaleAudit, ContractReferenceNo, IsMigrate)"
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        executeNonQuery(sql, new String[]{info.RefNo, info.CONTNO, info.CustomerID, info.OrganizationCode, info.STATUS, info.StatusCode, valueOf(info.SALES),
+                valueOf(info.TotalPrice), valueOf(info.EFFDATE), valueOf(info.HasTradeIn), info.TradeInProductCode, info.TradeInBrandCode,
+                info.TradeInProductModel, valueOf(info.TradeInDiscount), info.PreSaleSaleCode, info.PreSaleEmployeeCode, info.PreSaleEmployeeName, info.PreSaleTeamCode, info.SaleCode,
+                info.SaleEmployeeCode, info.SaleTeamCode, info.InstallerSaleCode, info.InstallerEmployeeCode, info.InstallerTeamCode,
+                valueOf(info.InstallDate), info.ProductSerialNumber, info.ProductID, info.SaleEmployeeLevelPath, valueOf(info.MODE), info.FortnightID,
+                info.ProblemID, info.svcontno, valueOf(info.isActive), info.MODEL, info.fromrefno, info.fromcontno, valueOf(info.todate), info.tocontno,
+                info.torefno, valueOf(info.CreateDate), info.CreateBy, valueOf(info.LastUpdateDate), info.LastUpdateBy, valueOf(info.SyncedDate),
+                info.SaleSubTeamCode, valueOf(info.TradeInReturnFlag), valueOf(info.IsReadyForSaleAudit), info.ContractReferenceNo, valueOf(info.IsMigrate)  });
+    }
+
+
     public ContractInfo getContract(String refNo) {
         ContractInfo ret = null;
         final String QUERY_CONTRACT_GET_BY_ID =
@@ -709,6 +991,27 @@ public class ContractController extends BaseController {
 
                 + " FROM Contract AS Cont "
                 + " WHERE (Cont.RefNo = ?)";
+
+        ret = executeQueryObject(QUERY_CONTRACT_GET_BY_ID, new String[]{refNo}, ContractInfo.class);
+        return ret;
+    }
+
+    public ContractInfo getContract_ContractInfo_preorder(String refNo) {
+        ContractInfo ret = null;
+        final String QUERY_CONTRACT_GET_BY_ID =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT Cont.*,"
+                " SELECT distinct Cont.[RefNo],Cont.[CONTNO],Cont.[CustomerID],Cont.[OrganizationCode],Cont.[STATUS],Cont.[StatusCode],Cont.[SALES],Cont.[TotalPrice],Cont.[EFFDATE],Cont.[HasTradeIn]"
+                        + "     ,Cont.[TradeInProductCode],Cont.[TradeInBrandCode],Cont.[TradeInProductModel],Cont.[TradeInDiscount]"
+                        + "     ,Cont.[PreSaleSaleCode],Cont.[PreSaleEmployeeCode],Cont.[PreSaleTeamCode],Cont.[SaleCode],Cont.[SaleEmployeeCode],Cont.[SaleTeamCode] "
+                        + "     ,Cont.[InstallerSaleCode],Cont.[InstallerEmployeeCode],Cont.[InstallerTeamCode],Cont.[InstallDate],ifnull(Cont.[ProductSerialNumber],'') AS ProductSerialNumber,Cont.[ProductID]"
+                        + "     ,Cont.[SaleEmployeeLevelPath],Cont.[MODE],Cont.[FortnightID],Cont.[ProblemID],Cont.[svcontno],Cont.[isActive],Cont.[MODEL]"
+                        + "     ,Cont.[fromrefno],Cont.[fromcontno],Cont.[todate],Cont.[tocontno],Cont.[torefno],Cont.[CreateDate],Cont.[CreateBy],Cont.[LastUpdateDate],Cont.[LastUpdateBy],Cont.[SyncedDate]"
+                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate]"
+                        /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
+
+                        + " FROM Contract AS Cont "
+                        + " WHERE (Cont.RefNo = ?)";
 
         ret = executeQueryObject(QUERY_CONTRACT_GET_BY_ID, new String[]{refNo}, ContractInfo.class);
         return ret;
@@ -736,6 +1039,111 @@ public class ContractController extends BaseController {
 
 
         GCMProdStkAndContractInfo gcmProdStkAndContractInfo = new GCMProdStkAndContractController().getGCMProdStkAndContractByRefNo(info.OrganizationCode, info.RefNo);
+
+        if(gcmProdStkAndContractInfo != null) {
+            info.isActive = false;
+        }
+
+        final String QUERY_CONTRACT_UPDATE = "UPDATE Contract "
+                + " SET CONTNO = ?, CustomerID = ?, OrganizationCode = ?, STATUS = ?, StatusCode = ?, "
+                + "     SALES = ?, TotalPrice = ?, EFFDATE = ?, HasTradeIn = ?, TradeInProductCode = ?, TradeInBrandCode = ?, TradeInProductModel = ?, "
+                + "     TradeInDiscount = ?, PreSaleSaleCode = ?, PreSaleEmployeeCode = ?, PreSaleTeamCode = ?, SaleCode = ?, SaleEmployeeCode = ?, "
+                + "     SaleTeamCode = ?, InstallerSaleCode = ?, InstallerEmployeeCode = ?, InstallerTeamCode = ?, InstallDate = ?, ProductSerialNumber = ?, "
+                + "     ProductID = ?, SaleEmployeeLevelPath = ?, MODE = ?, FortnightID = ?, ProblemID = ?, svcontno = ?, isActive = ?, MODEL = ?, "
+                + "     todate = ?, tocontno = ?, torefno = ?, "
+                + "     CreateDate = ?,  CreateBy = ?, LastUpdateDate = ?, LastUpdateBy = ?, SyncedDate = ?, PreSaleEmployeeName = ?, TradeInReturnFlag = ?, ContractReferenceNo= ?, IsMigrate = ? "
+                + " WHERE (RefNo = ?)";
+        executeNonQuery(QUERY_CONTRACT_UPDATE, new String[]{info.CONTNO, info.CustomerID, info.OrganizationCode, info.STATUS, info.StatusCode,
+                valueOf(info.SALES), valueOf(info.TotalPrice), valueOf(info.EFFDATE), valueOf(info.HasTradeIn), info.TradeInProductCode, info.TradeInBrandCode,
+                info.TradeInProductModel, valueOf(info.TradeInDiscount), info.PreSaleSaleCode, info.PreSaleEmployeeCode, info.PreSaleTeamCode, info.SaleCode,
+                info.SaleEmployeeCode, info.SaleTeamCode, info.InstallerSaleCode, info.InstallerEmployeeCode, info.InstallerTeamCode,
+                valueOf(info.InstallDate), info.ProductSerialNumber, info.ProductID, info.SaleEmployeeLevelPath, valueOf(info.MODE), info.FortnightID,
+                info.ProblemID, info.svcontno, valueOf(info.isActive), info.MODEL, valueOf(info.todate), info.tocontno, info.torefno, valueOf(info.CreateDate), info.CreateBy, valueOf(info.LastUpdateDate),
+                info.LastUpdateBy, valueOf(info.SyncedDate), info.PreSaleEmployeeName, valueOf(info.TradeInReturnFlag), info.ContractReferenceNo, valueOf(info.IsMigrate), info.RefNo});
+    }
+
+    public void updateContract_set(ContractInfo info) {
+        /*** [START] :: Fixed - [BHPROJ-1036-9114] - เลขที่สัญญาไม่ถูกต้อง ***/
+
+        ContractInfo contractInfo = executeQueryObject("SELECT * FROM Contract WHERE (RefNo = ?)", new String[]{info.RefNo}, ContractInfo.class);
+        if (contractInfo != null) {
+            if (contractInfo.StatusCode != null && !contractInfo.StatusCode.isEmpty()
+                    && info.StatusCode != null && !info.StatusCode .isEmpty()) {
+
+                int oldStatusCode = Integer.parseInt(contractInfo.StatusCode);
+                int newStatusCode = Integer.parseInt(info.StatusCode );
+
+                if (oldStatusCode >= 7 && newStatusCode < 7) {
+                    return;
+                }
+
+            }
+        }
+        /*** [END] :: Fixed - [BHPROJ-1036-9114] - เลขที่สัญญาไม่ถูกต้อง ***/
+
+
+
+        GCMProdStkAndContractInfo gcmProdStkAndContractInfo = new GCMProdStkAndContractController().getGCMProdStkAndContractByRefNo(info.OrganizationCode, info.RefNo);
+
+        if(gcmProdStkAndContractInfo != null) {
+            info.isActive = false;
+        }
+
+        final String QUERY_CONTRACT_UPDATE = "UPDATE Contract "
+                + " SET CONTNO = ?, CustomerID = ?, OrganizationCode = ?, STATUS = ?, StatusCode = ?, "
+                + "     SALES = ?, TotalPrice = ?, EFFDATE = ?, HasTradeIn = ?, TradeInProductCode = ?, TradeInBrandCode = ?, TradeInProductModel = ?, "
+                + "     TradeInDiscount = ?, PreSaleSaleCode = ?, PreSaleEmployeeCode = ?, PreSaleTeamCode = ?, SaleCode = ?, SaleEmployeeCode = ?, "
+                + "     SaleTeamCode = ?, InstallerSaleCode = ?, InstallerEmployeeCode = ?, InstallerTeamCode = ?, InstallDate = ?, ProductSerialNumber = ?, "
+                + "     ProductID = ?, SaleEmployeeLevelPath = ?, MODE = ?, FortnightID = ?, ProblemID = ?, svcontno = ?, isActive = ?, MODEL = ?, "
+                + "     todate = ?, tocontno = ?, torefno = ?, "
+                + "     CreateDate = ?,  CreateBy = ?, LastUpdateDate = ?, LastUpdateBy = ?, SyncedDate = ?, PreSaleEmployeeName = ?, TradeInReturnFlag = ?, ContractReferenceNo= ?, IsMigrate = ? "
+                + " WHERE (RefNo = ?)";
+        executeNonQuery(QUERY_CONTRACT_UPDATE, new String[]{info.CONTNO, info.CustomerID, info.OrganizationCode, info.STATUS, info.StatusCode,
+                valueOf(info.SALES), valueOf(info.TotalPrice), valueOf(info.EFFDATE), valueOf(info.HasTradeIn), info.TradeInProductCode, info.TradeInBrandCode,
+                info.TradeInProductModel, valueOf(info.TradeInDiscount), info.PreSaleSaleCode, info.PreSaleEmployeeCode, info.PreSaleTeamCode, info.SaleCode,
+                info.SaleEmployeeCode, info.SaleTeamCode, info.InstallerSaleCode, info.InstallerEmployeeCode, info.InstallerTeamCode,
+                valueOf(info.InstallDate), info.ProductSerialNumber, info.ProductID, info.SaleEmployeeLevelPath, valueOf(info.MODE), info.FortnightID,
+                info.ProblemID, info.svcontno, valueOf(info.isActive), info.MODEL, valueOf(info.todate), info.tocontno, info.torefno, valueOf(info.CreateDate), info.CreateBy, valueOf(info.LastUpdateDate),
+                info.LastUpdateBy, valueOf(info.SyncedDate), info.PreSaleEmployeeName, valueOf(info.TradeInReturnFlag), info.ContractReferenceNo, valueOf(info.IsMigrate), info.RefNo});
+    }
+    public void updateContract_setting(ContractInfo info) {
+        /*** [START] :: Fixed - [BHPROJ-1036-9114] - เลขที่สัญญาไม่ถูกต้อง ***/
+
+       // ContractInfo contractInfo = executeQueryObject("SELECT * FROM Contract WHERE (RefNo = ?)", new String[]{info.RefNo}, ContractInfo.class);
+        ContractInfo contractInfo;
+        GCMProdStkAndContractInfo gcmProdStkAndContractInfo;
+
+        if(select_page_s==1){
+             contractInfo = executeQueryObject("SELECT * FROM Contract WHERE (RefNo = ?)", new String[]{BHApplication.getInstance().getPrefManager().getPreferrence("REFNO_R2")}, ContractInfo.class);
+             gcmProdStkAndContractInfo = new GCMProdStkAndContractController().getGCMProdStkAndContractByRefNo("0", BHApplication.getInstance().getPrefManager().getPreferrence("REFNO_R2"));
+
+        }
+        else {
+             contractInfo = executeQueryObject("SELECT * FROM Contract WHERE (RefNo = ?)", new String[]{BHApplication.getInstance().getPrefManager().getPreferrence("REFNO_R")}, ContractInfo.class);
+             gcmProdStkAndContractInfo = new GCMProdStkAndContractController().getGCMProdStkAndContractByRefNo("0", BHApplication.getInstance().getPrefManager().getPreferrence("REFNO_R"));
+
+        }
+
+
+  /*      if (contractInfo != null) {
+            if (contractInfo.StatusCode != null && !contractInfo.StatusCode.isEmpty()
+                    && info.StatusCode != null && !info.StatusCode .isEmpty()) {
+
+                int oldStatusCode = Integer.parseInt(contractInfo.StatusCode);
+                int newStatusCode = Integer.parseInt(info.StatusCode );
+
+                if (oldStatusCode >= 7 && newStatusCode < 7) {
+                    return;
+                }
+
+            }
+        }*/
+        /*** [END] :: Fixed - [BHPROJ-1036-9114] - เลขที่สัญญาไม่ถูกต้อง ***/
+
+
+
+     //   GCMProdStkAndContractInfo gcmProdStkAndContractInfo = new GCMProdStkAndContractController().getGCMProdStkAndContractByRefNo(info.OrganizationCode, info.RefNo);
+        //GCMProdStkAndContractInfo gcmProdStkAndContractInfo = new GCMProdStkAndContractController().getGCMProdStkAndContractByRefNo(info.OrganizationCode, info.RefNo);
 
         if(gcmProdStkAndContractInfo != null) {
             info.isActive = false;

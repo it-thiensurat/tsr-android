@@ -357,8 +357,14 @@ public class CreditListFragment extends BHFragment {
                     creditList.addAll(result);
                 }*/
 
+
+
                result = new AssignController().getNewSalePaymentPeriodListForAssignCredit(BHPreference.organizationCode(),
                         BHPreference.teamCode(), BHPreference.employeeID(), search, AddressInfo.AddressType.AddressPayment.toString());
+
+                Log.e("sqlsql",result.toString());
+
+
             }
 
             @Override

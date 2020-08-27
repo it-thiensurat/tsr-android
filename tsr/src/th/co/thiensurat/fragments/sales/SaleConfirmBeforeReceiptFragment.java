@@ -109,7 +109,7 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
     private SalePaymentPeriodInfo spp = null;
 
     @InjectView
-    private TextView txtPayDate, txtReceiptCode, txtCONTNO, txtEFFDATE, txtCustomerName, txtIDCard, txtAddress, txtProductName, txtProductSerialNumber, txtPAYAMT, txtBalance, txtBank, txtBankSeries, txtAuthorizationCode, txtBranch, txtChequeNumber, txtChequeDate, txtSaleEmpName, txtSaleTeamName, labelBalance, txtThaiBaht, txtThaiBahtNum, txtNumber1, txtNumber2, txtNumber3, txtNumber4, txtNumber5, textViewModel, txtContractCloseAccountDiscount, labelBalancesOfPeriod, txtBalancesOfPeriod;
+    private TextView txt_name_sale,txtPayDate, txtReceiptCode, txtCONTNO, txtEFFDATE, txtCustomerName, txtIDCard, txtAddress, txtProductName, txtProductSerialNumber, txtPAYAMT, txtBalance, txtBank, txtBankSeries, txtAuthorizationCode, txtBranch, txtChequeNumber, txtChequeDate, txtSaleEmpName, txtSaleTeamName, labelBalance, txtThaiBaht, txtThaiBahtNum, txtNumber1, txtNumber2, txtNumber3, txtNumber4, txtNumber5, textViewModel, txtContractCloseAccountDiscount, labelBalancesOfPeriod, txtBalancesOfPeriod;
     @InjectView
     private LinearLayout bankview, creditview, chequeview, linearLayoutPartlyPaid, ItemLineBalance, linearLayoutHeadNumber, viewContractCloseAccountDiscount, ItemLineBalancesOfPeriod;
     @InjectView
@@ -159,6 +159,7 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
 
         currentLoc = new GetCurrentLocation(getActivity());
 
+        txt_name_sale.setText("ใบรับเงิน");
     }
 
     @Override
