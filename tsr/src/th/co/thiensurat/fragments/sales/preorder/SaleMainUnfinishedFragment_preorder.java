@@ -49,7 +49,7 @@ public class SaleMainUnfinishedFragment_preorder extends BHPagerFragment {
 	@Override
 	protected int titleID() {
 		// TODO Auto-generated method stub
-		return R.string.title_sales;
+		return R.string.title_sales_preorder;
 	}
 
 	@Override

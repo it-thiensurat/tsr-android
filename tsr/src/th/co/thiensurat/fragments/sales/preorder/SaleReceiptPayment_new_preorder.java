@@ -44,7 +44,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHParcelable;
 import th.co.bighead.utilities.BHPreference;
@@ -60,7 +59,7 @@ import th.co.thiensurat.data.controller.PaymentController;
 import th.co.thiensurat.data.info.AddressInfo;
 import th.co.thiensurat.data.info.DebtorCustomerInfo;
 import th.co.thiensurat.data.info.PaymentInfo;
-import th.co.thiensurat.fragments.credit.credit.CreditMainFragment_intro;
+import th.co.thiensurat.fragments.credit.credit.CreditListFragment;
 import th.co.thiensurat.fragments.document.manual.ManualDocumentDetailFragment;
 import th.co.thiensurat.fragments.payment.first.FirstPaymentMainMenuFragment;
 import th.co.thiensurat.fragments.payment.next.NextPaymentListFragment;
@@ -132,10 +131,10 @@ public class SaleReceiptPayment_new_preorder extends BHFragment {
         int titleID1 = 0;
         switch (Enum.valueOf(SaleFirstPaymentChoiceFragment.ProcessType.class, BHPreference.ProcessType())) {
             case ViewCompletedContract:
-                titleID1 = (data != null && data.resTitle != 0) ? data.resTitle : R.string.title_sales;
+                titleID1 = (data != null && data.resTitle != 0) ? data.resTitle : R.string.title_sales_preorder;
                 break;
             case Sale:
-                titleID1 = R.string.title_sales;
+                titleID1 = R.string.title_sales_preorder;
                 break;
             case FirstPayment:
                 titleID1 = R.string.title_payment_first;
@@ -324,12 +323,12 @@ public class SaleReceiptPayment_new_preorder extends BHFragment {
 
 
 
-/*                    CreditListFragment.Data input = new CreditListFragment.Data();
+                   CreditListFragment.Data input = new CreditListFragment.Data();
                     input.selectedDate = data.selectedDate;
                     CreditListFragment fragment = BHFragment.newInstance(CreditListFragment.class, input);
-                    activity.showView(fragment);*/
+                    activity.showView(fragment);
 
-                    activity.showNextView(BHFragment.newInstance(CreditMainFragment_intro.class));
+                   // activity.showNextView(BHFragment.newInstance(CreditMainFragment_intro.class));
 
 
 

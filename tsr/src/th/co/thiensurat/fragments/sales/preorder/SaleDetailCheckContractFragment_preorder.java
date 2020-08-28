@@ -98,7 +98,7 @@ public class SaleDetailCheckContractFragment_preorder extends BHFragment {
     @Override
     protected int titleID() {
         // TODO Auto-generated method stub
-        return R.string.title_sales;
+        return R.string.title_sales_preorder;
     }
 
     @Override
@@ -110,7 +110,7 @@ public class SaleDetailCheckContractFragment_preorder extends BHFragment {
     @Override
     protected int[] processButtons() {
         //, R.string.button_confirm
-        return new int[]{R.string.button_back, R.string.button_save_manual_contract};
+        return new int[]{R.string.button_back, R.string.button_save_manual_contract_preorder};
     }
 
     @Override
@@ -328,7 +328,7 @@ public class SaleDetailCheckContractFragment_preorder extends BHFragment {
             case R.string.button_back:
                 showLastView();
                 break;
-            case R.string.button_save_manual_contract:
+            case R.string.button_save_manual_contract_preorder:
                 // Check Manual Document [Contract] ? EditMode or AddMode
 //                String CONTNO = null;
 //                if (contract.RefNo.equals(contract.CONTNO) && contract.STATUS.equals(ContractStatus.DRAFT.toString())) {

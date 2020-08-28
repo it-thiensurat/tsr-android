@@ -221,7 +221,7 @@ public class SaleFirstPaymentChoiceFragment_preorder extends BHFragment {
         } else if (Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.NextPayment) {
             return R.string.title_payment_next;
         } else {
-            return R.string.title_sales;
+            return R.string.title_sales_preorder;
         }
     }
 

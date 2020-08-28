@@ -55,13 +55,13 @@ public class CreditMainFragment extends BHFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
-/*                CreditListFragment.Data input = new CreditListFragment.Data();
+                CreditListFragment.Data input = new CreditListFragment.Data();
                 input.selectedDate = paymentAppointmentDateList.get(position).PaymentAppointmentDate;
                 CreditListFragment fragment = BHFragment
                         .newInstance(CreditListFragment.class, input);
-                showNextView(fragment);*/
+                showNextView(fragment);
 
-                 showNextView(BHFragment.newInstance(CreditMainFragment_intro.class));
+               //  showNextView(BHFragment.newInstance(CreditMainFragment_intro.class));
 
 
             }

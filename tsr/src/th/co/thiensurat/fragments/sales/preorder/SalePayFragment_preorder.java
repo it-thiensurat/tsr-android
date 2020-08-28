@@ -1,4 +1,25 @@
-package th.co.thiensurat.fragments.sales;
+package th.co.thiensurat.fragments.sales.preorder;
+
+import android.app.Activity;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.google.zxing.client.android.Intents;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -29,39 +50,14 @@ import th.co.thiensurat.data.info.PaymentInfo;
 import th.co.thiensurat.data.info.SalePaymentPeriodInfo;
 import th.co.thiensurat.data.info.TradeInBrandInfo;
 import th.co.thiensurat.data.info.TripInfo;
-import th.co.thiensurat.fragments.contracts.change.ChangeContractResultFragment;
+import th.co.thiensurat.fragments.sales.SaleDetailCheckFragment;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
-import th.co.thiensurat.fragments.sales.preorder.SaleDetailCheckContractFragment_preorder;
-import th.co.thiensurat.fragments.sales.preorder.SaleDetailCheckFragment_preorder;
-import th.co.thiensurat.fragments.share.BarcodeScanFragment;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-
-import com.google.zxing.client.android.Intents;
-import com.google.zxing.integration.android.IntentIntegrator;
 
 import static th.co.thiensurat.activities.MainActivity.select_page_preorder;
 import static th.co.thiensurat.business.controller.TSRController.addSalePaymentPeriod;
 import static th.co.thiensurat.business.controller.TSRController.updateContract;
 
-public class SalePayFragment extends BHFragment {
+public class SalePayFragment_preorder extends BHFragment {
 
     private String STATUS_CODE = "05";
     public static String FRAGMENT_SALE_PAY_TAG = "sale_pay_tag";
@@ -155,7 +151,7 @@ public class SalePayFragment extends BHFragment {
         if(BHPreference.ProcessType().equals(ProcessType.ChangeContract.toString())){
             return R.string.title_change_contract;
         } else {
-            return R.string.title_sales;
+            return R.string.title_sales_preorder;
         }
     }
 
@@ -769,7 +765,8 @@ public class SalePayFragment extends BHFragment {
             @Override
             protected void after() {
 
-                    showNextView(new SaleDetailCheckFragment());
+                    showNextView(new SaleDetailCheckFragment_preorder());
+
 
 
             }
@@ -976,7 +973,7 @@ public class SalePayFragment extends BHFragment {
 
     private void showNoticeDialogBox(final String title, final String message) {
         Builder setupAlert;
-        setupAlert = new AlertDialog.Builder(activity);
+        setupAlert = new Builder(activity);
         setupAlert.setTitle(title);
         setupAlert.setMessage(message);
         setupAlert.setPositiveButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {

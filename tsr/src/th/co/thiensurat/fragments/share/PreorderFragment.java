@@ -143,7 +143,7 @@ public class PreorderFragment extends BHFragment {
 	@Override
 	protected int titleID() {
 		// TODO Auto-generated method stub
-		return data.titleResID;
+		return R.string.title_sales_preorder;
 	}
 
 	@Override

@@ -364,7 +364,7 @@ public class SalePhotographyFragment_preorder extends BHFragment {
         if (BHPreference.ProcessType().equals(ProcessType.EditContract.toString())) {
             return R.string.title_edit_customer_details;
         } else {
-            return R.string.title_sales;
+            return R.string.title_sales_preorder;
         }
     }
 

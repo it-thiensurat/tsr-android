@@ -56,7 +56,7 @@ public class SaleMainFragment_peoorder extends BHFragment {
     @Override
     protected int titleID() {
         // TODO Auto-generated method stub
-        return R.string.title_sales;
+        return R.string.title_sales_preorder;
     }
 
     @Override

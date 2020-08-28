@@ -60,7 +60,6 @@ import th.co.thiensurat.data.info.AddressInfo;
 import th.co.thiensurat.data.info.DebtorCustomerInfo;
 import th.co.thiensurat.data.info.PaymentInfo;
 import th.co.thiensurat.fragments.credit.credit.CreditListFragment;
-import th.co.thiensurat.fragments.credit.credit.CreditMainFragment_intro;
 import th.co.thiensurat.fragments.document.manual.ManualDocumentDetailFragment;
 import th.co.thiensurat.fragments.payment.first.FirstPaymentMainMenuFragment;
 import th.co.thiensurat.fragments.payment.next.NextPaymentListFragment;
@@ -322,12 +321,12 @@ public class SaleReceiptPayment_new extends BHFragment {
 
 
 
-/*                    CreditListFragment.Data input = new CreditListFragment.Data();
+                    CreditListFragment.Data input = new CreditListFragment.Data();
                     input.selectedDate = data.selectedDate;
                     CreditListFragment fragment = BHFragment.newInstance(CreditListFragment.class, input);
-                    activity.showView(fragment);*/
+                    activity.showView(fragment);
 
-                    activity.showNextView(BHFragment.newInstance(CreditMainFragment_intro.class));
+                 //   activity.showNextView(BHFragment.newInstance(CreditMainFragment_intro.class));
 
 
 

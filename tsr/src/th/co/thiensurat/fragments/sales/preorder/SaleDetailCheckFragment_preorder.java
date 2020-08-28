@@ -1,4 +1,4 @@
-package th.co.thiensurat.fragments.sales;
+package th.co.thiensurat.fragments.sales.preorder;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -27,13 +27,13 @@ import th.co.thiensurat.data.info.PaymentInfo;
 import th.co.thiensurat.data.info.ProductInfo;
 import th.co.thiensurat.data.info.SalePaymentPeriodInfo;
 import th.co.thiensurat.fragments.contracts.change.ChangeContractResultFragment;
+import th.co.thiensurat.fragments.sales.SaleDetailCheckContractFragment;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
-import th.co.thiensurat.fragments.sales.preorder.SaleDetailCheckContractFragment_preorder;
 import th.co.thiensurat.views.ViewTitle;
 
 import static th.co.thiensurat.activities.MainActivity.select_page_preorder;
 
-public class SaleDetailCheckFragment extends BHFragment {
+public class SaleDetailCheckFragment_preorder extends BHFragment {
 
 	private String STATUS_CODE = "06";
 	public static float paymentFirst;
@@ -99,7 +99,7 @@ public class SaleDetailCheckFragment extends BHFragment {
 		if(BHPreference.ProcessType().equals(ProcessType.ChangeContract.toString())){
 			return R.string.title_change_contract;
 		} else {
-			return R.string.title_sales;
+			return R.string.title_sales_preorder;
 		}
 	}
 
@@ -115,7 +115,7 @@ public class SaleDetailCheckFragment extends BHFragment {
 		if (BHPreference.ProcessType().equals(ProcessType.ChangeContract.toString())) {
 			return new int[]{R.string.button_back, R.string.button_next};
 		} else {
-			return new int[] { R.string.button_back, R.string.button_detail_contract};
+			return new int[] { R.string.button_back, R.string.button_detail_contract_preorder};
 		}
 	}
 
@@ -230,16 +230,16 @@ public class SaleDetailCheckFragment extends BHFragment {
 	public void onProcessButtonClicked(int buttonID) {
 		// TODO Auto-generated method stub
 		switch (buttonID) {
-		case R.string.button_detail_contract:
+		case R.string.button_detail_contract_preorder:
 			// UpdateContractDB();
 
 			Log.e("select_page_preorder", String.valueOf(select_page_preorder));
-	/*		if(select_page_preorder==1){
+			//if(select_page_preorder==1){
 				showNextView(new SaleDetailCheckContractFragment_preorder());
 
-			}
-			else {*/
-				showNextView(new SaleDetailCheckContractFragment());
+		//	}
+		//	else {
+			//	showNextView(new SaleDetailCheckContractFragment());
 
 		//	}
 
