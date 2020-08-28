@@ -97,7 +97,7 @@ public class ManualDocumentDetailFragment_preorder2 extends BHFragment {
                 && dataManualDocument.processType != null
                 && (dataManualDocument.processType == SaleFirstPaymentChoiceFragment_preorder.ProcessType.Sale
                 || dataManualDocument.processType == SaleFirstPaymentChoiceFragment_preorder.ProcessType.ChangeContract))
-            return new int[]{R.string.button_back, R.string.button_contract_confirm};
+            return new int[]{R.string.button_back, R.string.button_contract_confirm_preorder};
         else if (dataManualDocument.DocumentType.equals(DocumentType.Receipt.toString()))
             return new int[]{R.string.button_back, R.string.button_save_manual_receipt};
         else if (dataManualDocument.DocumentType.equals(DocumentType.Contract.toString()))
@@ -130,7 +130,7 @@ public class ManualDocumentDetailFragment_preorder2 extends BHFragment {
             case R.string.button_save_manual_impound_product:
                 CheckSaveManualDocument();
                 break;
-            case R.string.button_contract_confirm:
+            case R.string.button_contract_confirm_preorder:
                 CheckSaveManualDocument();
                 break;
             default:

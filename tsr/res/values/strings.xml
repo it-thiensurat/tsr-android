@@ -54,6 +54,7 @@
     <string name="button_choice_payment">เลือกประเภทการชำระเงิน</string>
     <string name="button_detail_payment">แสดงรายละเอียดการซื้อ</string>
     <string name="button_detail_contract">แสดงรายละเอียดสัญญา</string>
+    <string name="button_detail_contract_preorder">แสดงรายละเอียดใบจอง</string>
     <string name="button_pay">ดำเนินการชำระเงิน</string>
     <string name="button_camera">ถ่ายรูป</string>
     <string name="button_more">ข้อมูลลูกค้าเพิ่มเติม</string>
@@ -63,9 +64,11 @@
     <string name="button_confirm">ยืนยัน</string>
     <string name="button_confirm_print">ยืนยัน/พิมพ์</string>
     <string name="button_contract_confirm">ยืนยันการออกสัญญา</string>
+    <string name="button_contract_confirm_preorder">ยืนยันการออกใบจอง</string>
     <string name="button_conclude">สรุป</string>
     <string name="button_save_manual_receipt">บันทึกใบเสร็จมือ</string>
     <string name="button_save_manual_contract">บันทึกใบสัญญามือ</string>
+    <string name="button_save_manual_contract_preorder">บันทึกใบจอง</string>
     <string name="button_save_manual_impound_product">บันทึกใบถอดเครื่องมือ</string>
     <string name="button_save_manual_change_product">บันทึกใบเปลี่ยนเครื่องมือ</string>
     <string name="button_synchronize_database">ปรับปรุงฐานข้อมูล</string>
@@ -172,6 +175,7 @@
     <!-- Title -->
     <!--<string name="title_main">ข้อมูลหลัก</string>-->
     <string name="title_sales">ขายสินค้า</string>
+    <string name="title_sales_preorder">จองสินค้า</string>
     <string name="title_check_stock">ตรวจสอบสินค้า</string>
     <string name="title_remove">ถอดเครื่อง</string>
     <string name="title_team">ทีมขาย</string>

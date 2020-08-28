@@ -2,20 +2,13 @@ package th.co.thiensurat.fragments.sales.preorder;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -23,57 +16,33 @@ import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.CheckBox;
-import android.widget.DatePicker;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.sql.Time;
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Timer;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHBitmap;
 import th.co.bighead.utilities.BHFragment;
-import th.co.bighead.utilities.BHGeneral;
 import th.co.bighead.utilities.BHParcelable;
 import th.co.bighead.utilities.BHPermissions;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHSpinnerAdapter;
 import th.co.bighead.utilities.BHStorage;
 import th.co.bighead.utilities.BHValidator;
-import th.co.bighead.utilities.ThaiNationalIDCard.BHThaiIDCard;
-import th.co.bighead.utilities.ThaiNationalIDCard.Personal;
-import th.co.bighead.utilities.ThaiNationalIDCard.ResultBHThaiIDCard;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
 import th.co.thiensurat.activities.MainActivity;
@@ -97,40 +66,34 @@ import th.co.thiensurat.data.info.PrefixInfo;
 import th.co.thiensurat.data.info.ProvinceInfo;
 import th.co.thiensurat.data.info.SalePaymentPeriodInfo;
 import th.co.thiensurat.data.info.SubDistrictInfo;
+import th.co.thiensurat.fragments.contracts.change.ChangeContractResultFragment;
+import th.co.thiensurat.fragments.sales.EditContractsMainFragment;
 import th.co.thiensurat.fragments.sales.GPSTracker;
+import th.co.thiensurat.fragments.sales.preorder.New2SaleCustomerAddressCardFragment_preorder;
 import th.co.thiensurat.fragments.sales.preorder.New2SaleCustomerAddressInstallFragment_preorder;
 import th.co.thiensurat.fragments.sales.SaleCheckIDCardFragment;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment;
-import th.co.thiensurat.retrofit.api.Service;
+import th.co.thiensurat.fragments.sales.preorder.SaleListPackagePaymentFragment_preorder;
 
-import static th.co.thiensurat.retrofit.api.client.BASE_URL;
+import static th.co.thiensurat.fragments.sales.preorder.New2SaleCustomerAddressCardFragment_preorder.mPersonal;
+import static th.co.thiensurat.fragments.sales.preorder.New2SaleCustomerAddressCardFragment_preorder.select_read_card;
 
-public class New2SaleCustomerAddressCardFragment_preorder extends BHFragment  {
+public class New2SaleCustomerAddressBillFragment_preorder extends BHFragment {
 
     private String STATUS_CODE = "03";
     private int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     private static int MEDIA_TYPE_IMAGE = 1;
     private static String IMAGE_DIRECTORY_NAME = BHPreference.RefNo();
-
-
-    private static String EMPID = BHPreference.employeeID();
-    public  static String status="";
-
-
     private Uri fileUri;
     private static String Parth;
     private GPSTracker gps;
 
-    private final String imageTypeCode = ContractImageController.ImageType.CUSTOMER.toString();
-    private String imageID;
-    public static int check_box_status=0;
+    private static final String imageTypeCode = ContractImageController.ImageType.CUSTOMER.toString();
+    private static String imageID;
 
-
-   static public int select_read_card=0;
 
     private double latitude;
     private double longitude;
-
 
     public static class Data extends BHParcelable {
         //region For ChangeContract
@@ -151,6 +114,7 @@ public class New2SaleCustomerAddressCardFragment_preorder extends BHFragment  {
         public static AddressInfo newAddressInstall;
         public ContractImageInfo newContractImageInfo;
         //endregion
+
 
         public static DebtorCustomerInfo useDebtorCustomer;
         public static AddressInfo useAddressIDCard;
@@ -176,7 +140,7 @@ public class New2SaleCustomerAddressCardFragment_preorder extends BHFragment  {
     @InjectView
     private LinearLayout linearLayoutHeadNumber;
     @InjectView
-    private TextView txtNumber1,txt_s_date,txt_s_time;
+    private TextView txtNumber1;
     @InjectView
     private TextView txtNumber2;
     @InjectView
@@ -274,14 +238,13 @@ public class New2SaleCustomerAddressCardFragment_preorder extends BHFragment  {
     EditText editTextMobilePhone; // เบอร์มือถือ
     @InjectView
     EditText editTextEmail; // อีเมล์
+    @InjectView
+    Button buttonAddAddress; // ปุ่มเพิ่มที่อยู่ในช่องต่างๆ
+    @InjectView
+    Button buttonUseCard; // ปุ่มใช้ข้อมมูลตามบัตร
+    @InjectView
+    Button buttonUseInstall; // ปุ่มใช้ข้อมมูลตามที่ติดตั้ง
     //endregion
-    @InjectView
-    CheckBox checkBoxvip;
-    @InjectView
-    LinearLayout li_checkbox,li_date;
-    @InjectView
-    ImageView image_date,image_time;
-
 
     private static ContractInfo mainContractInfo;
     private static ContractImageInfo mainContractImageInfo;
@@ -291,11 +254,11 @@ public class New2SaleCustomerAddressCardFragment_preorder extends BHFragment  {
     public static AddressInfo tmpAddressInfo;
     public static DebtorCustomerInfo tmpDebtorCustomerInfo;
 
-    private boolean stringStatusCheckID; // สถานะการตรวจสอบบัตร
+    private boolean stringStatusCheckID = true; // สถานะการตรวจสอบบัตร
     private boolean checkSaveData;
     private boolean isAutoCompleteTextViewProvince; //ตรวจสอบการคลิกที่จังหวัด
 
-    private static AddressInfo.AddressType addressType = AddressInfo.AddressType.AddressIDCard;
+    private static AddressInfo.AddressType addressType = AddressInfo.AddressType.AddressPayment;
 
     @Override
     protected int titleID() {
@@ -304,62 +267,56 @@ public class New2SaleCustomerAddressCardFragment_preorder extends BHFragment  {
 
     @Override
     protected int fragmentID() {
-        return R.layout.fragment_new2_sale_customer_address_card;
+        return R.layout.fragment_new2_sale_customer_address_bill;
     }
 
     @Override
     protected int[] processButtons() {
-        return new int[]{R.string.button_back, R.string.button_add, R.string.button_next};
+        // TODO Auto-generated method stub
+        if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.EditContract.toString())) {
+            return new int[]{R.string.button_back, R.string.button_add, R.string.button_end};
+        } else if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.ChangeContract.toString())) {
+            return new int[]{R.string.button_back, R.string.button_add, R.string.button_next};
+        } else {
+            return new int[]{R.string.button_back, R.string.button_add, R.string.button_choice_payment};
+        }
     }
-
-
-    Calendar calendar ;
-    DatePickerDialog datePickerDialog ;
-    int Year, Month, Day ;
-String install_datetime="";
-
-
 
     @Override
     public void onProcessButtonClicked(int buttonID) {
         // TODO Auto-generated method stub
         switch (buttonID) {
             case R.string.button_next:
+            case R.string.button_choice_payment:
                 if (checkSaveData) {
-                    New2SaleCustomerAddressInstallFragment_preorder.Data data1 = new New2SaleCustomerAddressInstallFragment_preorder.Data();
+                    if(BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.ChangeContract.toString())){
 
-                    if (data != null) {
-                        if (data.useAddressInstall != null) {
-                            data1.useAddressInstall = data.useAddressInstall;
-                        }
+                        ChangeContractResultFragment.Data changeContractData = new ChangeContractResultFragment.Data();
 
-                        if (data.useAddressPayment != null) {
-                            data1.useAddressPayment = data.useAddressPayment;
-                        }
+                        changeContractData.selectedCauseName = data.selectedCauseName;
+                        changeContractData.chgContractRequest = data.chgContractRequest;
+                        changeContractData.chgContractApprove = data.chgContractApprove;
+                        changeContractData.chgContractAction = data.chgContractAction;
+                        changeContractData.assign = data.assign;
+                        changeContractData.oldContract = data.oldContract;
+                        changeContractData.newContract = data.newContract;
+                        changeContractData.newSPPList = data.newSPPList;
+                        changeContractData.newPayment = data.newPayment;
+
+                        changeContractData.newAddressIDCard = data.newAddressIDCard;
+                        changeContractData.newAddressInstall = data.newAddressInstall;
+                        changeContractData.newAddressPayment = data.newAddressPayment;
+                        changeContractData.changeContractType = "03";
+                        changeContractData.tmpCustomer = data.newDebtorCustomer;
+                        changeContractData.newContractImage = data.newContractImageInfo;
+
+                        ChangeContractResultFragment fm = BHFragment.newInstance(ChangeContractResultFragment.class, changeContractData);
+                        showNextView(fm);
+
+                    } else {
+                        showNextView(new SaleListPackagePaymentFragment_preorder());
                     }
 
-                    if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.ChangeContract.toString())) {
-                        data1.selectedCauseName = data.selectedCauseName;
-                        data1.chgContractRequest = data.chgContractRequest;
-                        data1.chgContractApprove = data.chgContractApprove;
-                        data1.chgContractAction = data.chgContractAction;
-                        data1.assign = data.assign;
-                        data1.oldContract = data.oldContract;
-                        data1.newContract = data.newContract;
-                        data1.newSPPList = data.newSPPList;
-                        data1.newPayment = data.newPayment;
-
-                        data1.newDebtorCustomer = data.newDebtorCustomer;
-                        data1.newAddressIDCard = data.newAddressIDCard;
-                        data1.newAddressInstall = data.newAddressInstall;
-                        data1.newAddressPayment = data.newAddressPayment;
-                        data1.newContractImageInfo = data.newContractImageInfo;
-                    }
-
-                    New2SaleCustomerAddressInstallFragment_preorder fm = BHFragment.newInstance(New2SaleCustomerAddressInstallFragment_preorder.class, data1);
-                    showNextView(fm);
-
-                    //showNextView(new New2SaleCustomerAddressInstallFragment());
                 } else {
                     String title = "การจัดเก็บข้อมูล";
                     String message = "บันทึกจัดเก็บข้อมูลก่อน";
@@ -367,6 +324,12 @@ String install_datetime="";
                 }
                 break;
             case R.string.button_back:
+                if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.ChangeContract.toString())) {
+                    New2SaleCustomerAddressInstallFragment_preorder.Data.newAddressIDCard = data.newAddressIDCard;
+                    New2SaleCustomerAddressInstallFragment_preorder.Data.newAddressInstall = data.newAddressInstall;
+                    New2SaleCustomerAddressInstallFragment_preorder.Data.newAddressPayment = data.newAddressPayment;
+                }
+
                 showLastView();
                 break;
             case R.string.button_add:
@@ -390,6 +353,15 @@ String install_datetime="";
                     showWarningDialog(title, message);
                 }
                 break;
+            case R.string.button_end:
+                if (checkSaveData) {
+                    activity.showView(new EditContractsMainFragment());
+                } else {
+                    String title = "การจัดเก็บข้อมูล";
+                    String message = "บันทึกจัดเก็บข้อมูลก่อน";
+                    showWarningDialog(title, message);
+                }
+                break;
             default:
                 break;
         }
@@ -399,159 +371,14 @@ String install_datetime="";
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
         data = getData();
 
-
-
-
-       // List<EmployeeDetailInfo> empinfo = new EmployeeDetailController().getEmployeeDetail();
-        BHPreference bhPreference =new BHPreference();
-        bhPreference.employeeID();
-
-
-Log.e("EMPIDEMPID",bhPreference.employeeID());
-        if (isConnectingToInternet()) {
-           // li_checkbox.setVisibility(View.VISIBLE);
-
-            load_data_check_vip(bhPreference.employeeID());
-
-        }
-        else {
-            li_checkbox.setVisibility(View.GONE);
-
-        }
-
-
-
-        //  CheckBox chk = (CheckBox) findViewById(R.id.chk1);
-        checkBoxvip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean checked = ((CheckBox) v).isChecked();
-                // Check which checkbox was clicked
-                if (checked){
-                    Log.e("UsedProductModelID","ON");
-                    check_box_status=1;
-
-                }
-                else{
-                    Log.e("UsedProductModelID","OFF");
-                    check_box_status=0;
-
-                }
-            }
-        });
-
-
-        image_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Log.e("aaaaa","5555");
-
-                final Calendar calendar = Calendar.getInstance();
-                int yy = calendar.get(Calendar.YEAR);
-                int mm = calendar.get(Calendar.MONTH);
-                int dd = calendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
-                        String S_dayOfMonth="";
-                        String S_month="";
-
-                        if(dayOfMonth<9){
-                            S_dayOfMonth="0"+String.valueOf(dayOfMonth);
-                        }
-                        else {
-                            S_dayOfMonth=String.valueOf(dayOfMonth);
-                        }
-
-
-
-                            if(month<9){
-                                S_month="0"+String.valueOf(month+1);
-                            }
-                            else {
-                                S_month=String.valueOf(month+1);
-                            }
-
-
-                        Log.e("datedate", String.valueOf(year)+"-"+S_month+"-"+S_dayOfMonth);
-
-                        txt_s_date.setText(String.valueOf(year)+"-"+S_month+"-"+S_dayOfMonth);
-                    }
-                }, yy, mm, dd);
-                datePicker.show();
-
-            }
-
-        });
-
-
-
-
-
-        image_time.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-
-                        String S_selectedHour="";
-                        String S_selectedMinute="";
-
-                        if(selectedHour<9){
-                            S_selectedHour="0"+String.valueOf(selectedHour);
-                        }
-                        else {
-                            S_selectedHour=String.valueOf(selectedHour);
-                        }
-
-
-
-                        if(selectedMinute<9){
-                            S_selectedMinute="0"+String.valueOf(selectedMinute);
-                        }
-                        else {
-                            S_selectedMinute=String.valueOf(selectedMinute);
-                        }
-
-
-
-
-                        Log.e("timetime", S_selectedHour+":"+S_selectedMinute+":00:000");
-                        txt_s_time.setText(S_selectedHour+":"+S_selectedMinute);
-                    }
-                }, hour, minute, true);//Yes 24 hour time
-                mTimePicker.setTitle("Select Time");
-                mTimePicker.show();
-
-            }
-        });
-
-
-
-
-        install_datetime=txt_s_date.getText().toString()+" "+txt_s_time.getText().toString();
-
-
         /*** [START] :: Permission ***/
         /*gps = new GPSTracker(getActivity());
         if (gps.canGetLocation()) {
             latitude = gps.getLatitude();
             longitude = gps.getLongitude();
         }*/
+        Log.e("moo","3");
 
-       // li_date.setVisibility(View.VISIBLE);
-
-
-        Log.e("moo","2");
         new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
 
             @Override
@@ -575,6 +402,7 @@ Log.e("EMPIDEMPID",bhPreference.employeeID());
 
         }, BHPermissions.PermissionType.LOCATION);
         /*** [END] :: Permission ***/
+
 
         switch (Enum.valueOf(SaleFirstPaymentChoiceFragment.ProcessType.class, BHPreference.ProcessType())) {
             case Sale:
@@ -602,6 +430,8 @@ Log.e("EMPIDEMPID",bhPreference.employeeID());
 
                 SetUpInputFilter();
 
+                enableDataCard(false);
+
                 mainContractInfo = null;
                 mainContractImageInfo = null;
                 mainAddressInfo = null;
@@ -615,6 +445,7 @@ Log.e("EMPIDEMPID",bhPreference.employeeID());
                     case EditContract:
                         mainContractInfo = TSRController.getContract(BHPreference.RefNo());
                         mainContractImageInfo = TSRController.getContractImage(BHPreference.RefNo(), imageTypeCode);
+
 
                         if (data != null) {
                             if (data.useDebtorCustomer != null) {
@@ -651,7 +482,7 @@ Log.e("EMPIDEMPID",bhPreference.employeeID());
 
                         if (tmpDebtorCustomerInfo == null) {
                             if (mainContractInfo != null) {
-                                if (mainContractInfo.CustomerID != null && !mainContractInfo.CustomerID.equals("")) {
+                                if (!mainContractInfo.CustomerID.equals("") && mainContractInfo.CustomerID != null) {
                                     mainDebtorCustomerInfo = TSRController.getDebCustometByID(mainContractInfo.CustomerID);
                                 }
                             }
@@ -673,8 +504,7 @@ Log.e("EMPIDEMPID",bhPreference.employeeID());
                         break;
                     case ChangeContract:
                         mainContractInfo = TSRController.getContract(BHPreference.RefNo());
-                        //mainContractImageInfo = TSRController.getContractImage(BHPreference.RefNo(), imageTypeCode);
-                        if (data.newContractImageInfo != null) {
+                        if(data.newContractImageInfo != null) {
                             mainContractImageInfo = data.newContractImageInfo;
                         } else {
                             mainContractImageInfo = null;
@@ -769,215 +599,133 @@ Log.e("EMPIDEMPID",bhPreference.employeeID());
         }).start();
 
 
+        buttonAddAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearAddress();
+            }
+        });
+
+        buttonUseCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.ChangeContract.toString())) {
+                    mainAddressInfo = data.newAddressIDCard;
+                } else {
+                    mainAddressInfo = TSRController.getAddress(BHPreference.RefNo(), AddressInfo.AddressType.AddressIDCard);
+                }
+                bindAddress();
+            }
+        });
+
+        buttonUseInstall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.ChangeContract.toString())) {
+                    mainAddressInfo = data.newAddressInstall;
+                } else {
+                    mainAddressInfo = TSRController.getAddress(BHPreference.RefNo(), AddressInfo.AddressType.AddressInstall);
+                }
+                bindAddress();
+            }
+        });
     }
 
-
-
-
     private void bindDebtorCustomer() {
-        if (isImportThaiIDCard) {
-            setEnabledUIDebtorCustomerForImportThaiIDCard(false);
-        }
-
         //ประเภทบุคคล
         spinnerType.setSelection(getSpinnerType(mainDebtorCustomerInfo.CustomerType), true);
 
-        try {
-            switch (getType(mainDebtorCustomerInfo.CustomerType)) {
-                case PERSON://บุคคลธรรมดา
-                case FOREIGNER://บุคคลต่างชาติ
-                    //ประเภทบัตร
-                    spinnerType.post(new Runnable() {
+        switch (getType(mainDebtorCustomerInfo.CustomerType)) {
+            case PERSON://บุคคลธรรมดา
+            case FOREIGNER://บุคคลต่างชาติ
+                //ประเภทบัตร
+                spinnerType.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        spinnerTypeCard.setSelection(getSpinnerTypeCard(mainDebtorCustomerInfo.IDCardType));
+                    }
+                });
+
+
+                switch (getType(mainDebtorCustomerInfo.CustomerType)) {
+                    case PERSON://บุคคลธรรมดา
+                        editTextIdentificationCard.setText(mainDebtorCustomerInfo.IDCard); //เลขที่บัตร
+                        break;
+                    case FOREIGNER://บุคคลต่างชาติ
+                        editTextCardNo.setText(mainDebtorCustomerInfo.IDCard); //เลขที่บัตร
+                        break;
+                }
+
+                // คำนำหน้าชื่อ
+                ArrayAdapter perfixAdapter = (ArrayAdapter) spinnerPerfix.getAdapter();
+                spinnerPerfix.setSelection(perfixAdapter.getPosition(mainDebtorCustomerInfo.PrefixName));
+
+                editTextName.setText(mainDebtorCustomerInfo.CustomerName); //ชื่อ-สกุล
+
+                if (mainDebtorCustomerInfo.Brithday != null) {
+                    final Calendar c = Calendar.getInstance();
+                    c.setTime(mainDebtorCustomerInfo.Brithday);
+
+                    // ปีเกิด
+                    ArrayAdapter yearAdapter = (ArrayAdapter) spinnerYear.getAdapter();
+                    spinnerYear.setSelection(yearAdapter.getPosition(String.valueOf(c.get(Calendar.YEAR) + 543)), true);
+
+                    // เดือนเกิด
+                    ArrayAdapter monthAdapter = (ArrayAdapter) spinnerMonth.getAdapter();
+                    spinnerMonth.setSelection(monthAdapter.getPosition(mMonthList.get((c.get(Calendar.MONTH) + 1)).monthName), true);
+
+                    spinnerYear.post(new Runnable() {
                         @Override
                         public void run() {
-                            spinnerTypeCard.setSelection(getSpinnerTypeCard(mainDebtorCustomerInfo.IDCardType));
-
-                            spinnerTypeCard.post(new Runnable() {
+                            spinnerMonth.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    switch (getType(mainDebtorCustomerInfo.CustomerType)) {
-                                        case PERSON://บุคคลธรรมดา
-                                            //editTextIdentificationCard.setText(mainDebtorCustomerInfo.IDCard); //เลขที่บัตร
-
-                                            if (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard == PersonTypeCardInfo.PersonTypeCardEnum.IDCARD) {
-                                                if (mainDebtorCustomerInfo.IDCard != null) {
-                                                    String strIdCard = mainDebtorCustomerInfo.IDCard.replace("-", "");
-                                                    String newStrIdCard = "";
-                                                    for (int i = 0; i < strIdCard.length(); i++) {
-                                                        if (String.valueOf(strIdCard.charAt(i)).matches("([0-9])")) {
-                                                            if (i == 1 || i == 5 || i == 10 || i == 12) {
-                                                                newStrIdCard += "-" + strIdCard.charAt(i);
-                                                            } else if (i < 13) {
-                                                                newStrIdCard += strIdCard.charAt(i);
-                                                            }
-                                                        } else {
-                                                            break;
-                                                        }
-                                                    }
-                                                    editTextIdentificationCard.setText(newStrIdCard);
-                                                } else {
-                                                    editTextIdentificationCard.setText(mainDebtorCustomerInfo.IDCard); //เลขที่บัตร
-                                                }
-                                            } else {
-                                                editTextIdentificationCard.setText(mainDebtorCustomerInfo.IDCard); //เลขที่บัตร
-                                            }
-                                            break;
-                                        case FOREIGNER://บุคคลต่างชาติ
-                                            editTextCardNo.setText(mainDebtorCustomerInfo.IDCard); //เลขที่บัตร
-                                            break;
-                                    }
+                                    // วันเกิด
+                                    ArrayAdapter dayAdapter = (ArrayAdapter) spinnerDate.getAdapter();
+                                    spinnerDate.setSelection(dayAdapter.getPosition(String.format("%02d", c.get(Calendar.DAY_OF_MONTH))));
                                 }
                             });
                         }
                     });
 
-
-                    // คำนำหน้าชื่อ
-                    ArrayAdapter perfixAdapter = (ArrayAdapter) spinnerPerfix.getAdapter();
-                    int positionPrefixName = perfixAdapter.getPosition(mainDebtorCustomerInfo.PrefixName);
-                    spinnerPerfix.setSelection(positionPrefixName != -1 ? positionPrefixName : 0);
-
-                    editTextName.setText(mainDebtorCustomerInfo.CustomerName); //ชื่อ-สกุล
-
-                //  String EMPID= BHApplication.getInstance().getPrefManager().getPreferrence("EMPID");
-
-
-
-
-
-
-
-
-
-          /*          try {
-                        Log.e("UsedProductModelID",mainDebtorCustomerInfo.UsedProductModelID);
-
-                        if(status.equals("OK")) {
-
-                            if (mainDebtorCustomerInfo.UsedProductModelID.equals("VIP")) {
-
-                                // checkBoxvip.se(false);
-                                checkBoxvip.setChecked(true);
-                            } else {
-                                checkBoxvip.setChecked(false);
-
-                            }
+                } else {
+                    spinnerYear.setSelection(mainDebtorCustomerInfo.logYear, true);
+                    spinnerMonth.setSelection(mainDebtorCustomerInfo.logMonth, true);
+                    spinnerYear.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            spinnerMonth.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // วันเกิด
+                                    spinnerDate.setSelection(mainDebtorCustomerInfo.logDay);
+                                }
+                            });
                         }
-                        else {
+                    });
+                }
 
-                        }
-                    }
-                    catch (Exception ex){
+                // เพศ
+                ArrayAdapter sexAdapter = (ArrayAdapter) spinnerSex.getAdapter();
+                spinnerSex.setSelection(sexAdapter.getPosition(mainDebtorCustomerInfo.Sex));
+                break;
 
-                    }*/
+            case CORPORATION://นิติบุคคล
 
+                editTextIdentificationNumber.setText(mainDebtorCustomerInfo.IDCard); //เลขประจำตัวผู้เสียภาษี
 
+                // คำนำหน้าบริษัท
+                ArrayAdapter perfixCorporationAdapter = (ArrayAdapter) spinnerPerfixCorporation.getAdapter();
+                spinnerPerfixCorporation.setSelection(perfixCorporationAdapter.getPosition(mainDebtorCustomerInfo.PrefixName));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    if (mainDebtorCustomerInfo.Brithday != null) {
-                        final Calendar c = Calendar.getInstance();
-                        c.setTime(mainDebtorCustomerInfo.Brithday);
-
-                        // ปีเกิด
-                        ArrayAdapter yearAdapter = (ArrayAdapter) spinnerYear.getAdapter();
-                        spinnerYear.setSelection(yearAdapter.getPosition(String.valueOf(c.get(Calendar.YEAR) + 543)), true);
-
-                        // เดือนเกิด
-                        ArrayAdapter monthAdapter = (ArrayAdapter) spinnerMonth.getAdapter();
-                        spinnerMonth.setSelection(monthAdapter.getPosition(mMonthList.get((c.get(Calendar.MONTH) + 1)).monthName), true);
-
-                        spinnerYear.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                spinnerMonth.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // วันเกิด
-                                        ArrayAdapter dayAdapter = (ArrayAdapter) spinnerDate.getAdapter();
-                                        if(dayAdapter != null){
-                                            spinnerDate.setSelection(dayAdapter.getPosition(String.format("%02d", c.get(Calendar.DAY_OF_MONTH))));
-                                        }
-                                    }
-                                });
-                            }
-                        });
-
-                    } else {
-                        spinnerYear.setSelection(mainDebtorCustomerInfo.logYear, true);
-                        spinnerMonth.setSelection(mainDebtorCustomerInfo.logMonth, true);
-                        spinnerYear.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                spinnerMonth.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // วันเกิด
-                                        spinnerDate.setSelection(mainDebtorCustomerInfo.logDay);
-                                    }
-                                });
-                            }
-                        });
-                    }
-
-                    // เพศ
-                    ArrayAdapter sexAdapter = (ArrayAdapter) spinnerSex.getAdapter();
-                    spinnerSex.setSelection(sexAdapter.getPosition(mainDebtorCustomerInfo.Sex));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    break;
-
-                case CORPORATION://นิติบุคคล
-
-                    editTextIdentificationNumber.setText(mainDebtorCustomerInfo.IDCard); //เลขประจำตัวผู้เสียภาษี
-
-                    // คำนำหน้าบริษัท
-                    ArrayAdapter perfixCorporationAdapter = (ArrayAdapter) spinnerPerfixCorporation.getAdapter();
-                    spinnerPerfixCorporation.setSelection(perfixCorporationAdapter.getPosition(mainDebtorCustomerInfo.PrefixName));
-
-                    editTextNameCorporation.setText(mainDebtorCustomerInfo.CompanyName); // ชื่อบริษัท
-                    editTextNameCommission.setText(mainDebtorCustomerInfo.AuthorizedName); // ชื่อกรรมการผู้มีอำนาจ
-                    editTextNameCardNoCommission.setText(mainDebtorCustomerInfo.AuthorizedIDCard); // เลขบัตรกรรมการผู้มีอำนาจ
-                    break;
-            }
-        }catch (Exception ex){}
+                editTextNameCorporation.setText(mainDebtorCustomerInfo.CompanyName); // ชื่อบริษัท
+                editTextNameCommission.setText(mainDebtorCustomerInfo.AuthorizedName); // ชื่อกรรมการผู้มีอำนาจ
+                editTextNameCardNoCommission.setText(mainDebtorCustomerInfo.AuthorizedIDCard); // เลขบัตรกรรมการผู้มีอำนาจ
+                break;
+        }
     }
 
     private void bindAddress() {
-        if (isImportThaiIDCard) {
-            setEnabledUIAddressForImportThaiIDCard(false);
-        }
-
         editTextAddressnumber.setText(mainAddressInfo.AddressDetail); // บ้านเลขที่
         editTextCategory.setText(mainAddressInfo.AddressDetail2); // หมู่ที่
         editTextAlley.setText(mainAddressInfo.AddressDetail3);// ซอย/ตรอก
@@ -1003,27 +751,20 @@ Log.e("EMPIDEMPID",bhPreference.employeeID());
             }
         });
 
-
-        try {
-            switch (getType(mainDebtorCustomerInfo.CustomerType)) {
-                case PERSON://บุคคลธรรมดา
-                case FOREIGNER://บุคคลต่างชาติ
-                    editTextPhone.setText(mainAddressInfo.TelHome);// เบอร์บ้าน
-                    editTextWorkPhone.setText(mainAddressInfo.TelOffice);// เบอร์ทีทำงาน
-                    editTextMobilePhone.setText(mainAddressInfo.TelMobile);// เบอร์มือถือ
-                    break;
-                case CORPORATION://นิติบุคคล
-                    editTextPhonecorporation1.setText(mainAddressInfo.TelHome);// เบอร์โทรศัพท์ 1
-                    editTextPhonecorporation2.setText(mainAddressInfo.TelOffice);// เบอร์โทรศัพท์ 2
-                    editTextFaxcorporation.setText(mainAddressInfo.TelMobile);// เบอร์แฟกซ์
-                    break;
-
-            }
-        }
-        catch (Exception ex){
+        switch (getType(mainDebtorCustomerInfo.CustomerType)) {
+            case PERSON://บุคคลธรรมดา
+            case FOREIGNER://บุคคลต่างชาติ
+                editTextPhone.setText(mainAddressInfo.TelHome);// เบอร์บ้าน
+                editTextWorkPhone.setText(mainAddressInfo.TelOffice);// เบอร์ทีทำงาน
+                editTextMobilePhone.setText(mainAddressInfo.TelMobile);// เบอร์มือถือ
+                break;
+            case CORPORATION://นิติบุคคล
+                editTextPhonecorporation1.setText(mainAddressInfo.TelHome);// เบอร์โทรศัพท์ 1
+                editTextPhonecorporation2.setText(mainAddressInfo.TelOffice);// เบอร์โทรศัพท์ 2
+                editTextFaxcorporation.setText(mainAddressInfo.TelMobile);// เบอร์แฟกซ์
+                break;
 
         }
-
         editTextEmail.setText(mainAddressInfo.EMail);// อีเมล์
 
     }
@@ -1114,18 +855,6 @@ Log.e("EMPIDEMPID",bhPreference.employeeID());
     //endregion
 
     private void check() {
-
-
-try {
-    String age =editTextAge.getText().toString()+"";
-    int  age_int= Integer.parseInt(age);
-
-    if(age_int<18){
-        showDialog("ไม่สามารถบันทึกได้","เนื่องจากอายุต่ำกว่า 18 ปี");
-    }
-    else {
-
-
         switch (mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonType) {
             case PERSON:/** 0-บุคคลธรรมดา **/
                 switch (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard) {
@@ -1173,64 +902,6 @@ try {
                 break;
         }
     }
-}
-catch (Exception ex){
-    switch (mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonType) {
-        case PERSON:/** 0-บุคคลธรรมดา **/
-            switch (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard) {
-                case IDCARD://บัตรประชาชน
-                case DRIVINGLICENSE://ใบขับขี่
-                    if (validateDataForPerson()) {
-                        if (checkIDcard()) {
-                            save();
-                        }
-                    }
-                    break;
-                case OFFICIALCARD://บัตรข้าราชการ
-                    if (validateDataForPerson()) {
-                        save();
-                    }
-                    break;
-                default:
-                    showWarningDialog("กรุณาป้อนข้อมูลให้ครบถ้วน", "กรุณาเลือกประเภทบัตร");
-                    break;
-            }
-            break;
-        case CORPORATION:/** 1-นิติบุคคล **/
-            if (validateDataForCorporation()) {
-                if (checkIdentificationNumber()) {
-                    if (checkIDcard()) {
-                        save();
-                    }
-                }
-            }
-            break;
-        case FOREIGNER:/** 2-บุคคลต่างชาติ **/
-            switch (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard) {
-                case PASSPORT: //หนังสือเดินทาง
-                case OUTLANDER: //บัตรต่างด้าว
-                    if (validateDataForForeigner()) {
-                        save();
-                    }
-                    break;
-                default:
-                    showWarningDialog("กรุณาป้อนข้อมูลให้ครบถ้วน", "กรุณาเลือกประเภทบัตร");
-                    break;
-            }
-            break;
-        default:
-            break;
-    }
-}
-
-
-
-
-
-
-
-
-    }
 
     //region bindView
     private void bindViewPerson() {
@@ -1243,15 +914,10 @@ catch (Exception ex){
         linearLayoutCorporation.setVisibility(View.GONE);
         textViewTypeCard.setVisibility(View.VISIBLE);
         spinnerTypeCard.setVisibility(View.VISIBLE);
-        textViewHeadAddress.setText("ที่อยู่ตามบัตร");
+        textViewHeadAddress.setText("ที่อยู่เก็บเงิน");
         linearLayoutcorporationPhone.setVisibility(View.GONE);
         linearLayoutPhone.setVisibility(View.VISIBLE);
-        //imageButtoncheckIDCard.setVisibility(View.VISIBLE);
-        if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.EditContract.toString())) {
-            imageButtoncheckIDCard.setVisibility(View.GONE);
-        } else {
-            imageButtoncheckIDCard.setVisibility(View.VISIBLE);
-        }
+        imageButtoncheckIDCard.setVisibility(View.GONE);
     }
 
     private void bindViewCorporation() {
@@ -1267,11 +933,7 @@ catch (Exception ex){
         textViewHeadAddress.setText("ที่ตั้งบริษัท");
         linearLayoutcorporationPhone.setVisibility(View.VISIBLE);
         linearLayoutPhone.setVisibility(View.GONE);
-        if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.EditContract.toString())) {
-            imageButtoncheckIDCard.setVisibility(View.GONE);
-        } else {
-            imageButtoncheckIDCard.setVisibility(View.VISIBLE);
-        }
+        imageButtoncheckIDCard.setVisibility(View.GONE);
     }
 
     private void bindViewForeigners() {
@@ -1284,15 +946,10 @@ catch (Exception ex){
         linearLayoutCardNo.setVisibility(View.VISIBLE);
         linearLayoutPerson.setVisibility(View.VISIBLE);
         linearLayoutCorporation.setVisibility(View.GONE);
-        textViewHeadAddress.setText("ที่อยู่ตามบัตร");
+        textViewHeadAddress.setText("ที่อยู่เก็บเงิน");
         linearLayoutcorporationPhone.setVisibility(View.GONE);
         linearLayoutPhone.setVisibility(View.VISIBLE);
-        //imageButtoncheckIDCard.setVisibility(View.GONE);
-        if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.EditContract.toString())) {
-            imageButtoncheckIDCard.setVisibility(View.GONE);
-        } else {
-            imageButtoncheckIDCard.setVisibility(View.VISIBLE);
-        }
+        imageButtoncheckIDCard.setVisibility(View.GONE);
     }
     //endregion
 
@@ -1487,7 +1144,7 @@ catch (Exception ex){
                 if (mainContractImageInfo == null && imageID == null) {
                     imageID = DatabaseHelper.getUUID();
                 } else {
-                    if (mainContractImageInfo != null) {
+                    if(mainContractImageInfo != null){
                         imageID = mainContractImageInfo.ImageID.toString();
                     }
                 }
@@ -1495,12 +1152,10 @@ catch (Exception ex){
             }
         });
 
-
         /** ค้นหาและตรวจสอบ ID **/
         imageButtoncheckIDCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.EditContract.toString())) {
                     String idcard = editTextIdentificationCard.getText().toString().replaceAll("-", "");
                     if (BHValidator.isValidCitizenID(idcard)) {
@@ -1512,7 +1167,7 @@ catch (Exception ex){
                         showMessage("รายละเอียดข้อมูลลูกค้า " + spinnerTypeCard.getSelectedItem().toString() + "ไม่ถูกต้อง");
                     }
                 } else {
-                    CheckIDcard(true);
+                    CheckIDcard();
                 }
 
             }
@@ -1522,14 +1177,11 @@ catch (Exception ex){
         spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-
                 switch (mPersonTypeList.get(position).PersonType) {
                     case PERSON:/** 0-บุคคลธรรมดา **/
                         bindViewPerson();
                         break;
                     case CORPORATION:/** 1-นิติบุคคล **/
-                        select_read_card=0;
-                        imageButtoncheckIDCard.setImageResource(android.R.drawable.ic_menu_search);
                         bindViewCorporation();
                         break;
                     case FOREIGNER:/** 2-บุคคลต่างชาติ **/
@@ -1551,35 +1203,15 @@ catch (Exception ex){
         spinnerTypeCard.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                setUIForImportThaiIDCard();
-
                 switch (mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonType) {
                     case PERSON:/** 0-บุคคลธรรมดา **/
-                        //imageButtoncheckIDCard.setVisibility(View.VISIBLE);
-                        if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.EditContract.toString())) {
-                            imageButtoncheckIDCard.setVisibility(View.GONE);
-                        } else {
-                            imageButtoncheckIDCard.setVisibility(View.VISIBLE);
-                        }
+                        imageButtoncheckIDCard.setVisibility(View.GONE);
 
                         if (!spinnerTypeCard.getSelectedItem().toString().equals("")) {
                             textViewIdentificationCard.setText(mPersonTypeCardList.get(position).PersonTypeCardName);
                         }
 
-                        if (mPersonTypeCardList.get(position).PersonTypeCard != PersonTypeCardInfo.PersonTypeCardEnum.OFFICIALCARD
-                                && mPersonTypeCardList.get(position).PersonTypeCard != PersonTypeCardInfo.PersonTypeCardEnum.DRIVINGLICENSE) {//ไม่เท่ากับบัตรข้าราชการและบัตรใบขับขี่
-
-                            if (!mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCardName.equals("")
-                                    && mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard == PersonTypeCardInfo.PersonTypeCardEnum.IDCARD
-                                    && BHGeneral.ID_CARD_MODE) {
-                                imageButtoncheckIDCard.setImageResource(R.drawable.ic_import_id_card);
-                                //select_read_card=1;
-                            } else {
-                                select_read_card=0;
-                                imageButtoncheckIDCard.setImageResource(android.R.drawable.ic_menu_search);
-
-                            }
-
+                        if (mPersonTypeCardList.get(position).PersonTypeCard != PersonTypeCardInfo.PersonTypeCardEnum.OFFICIALCARD) {//ไม่เท่ากับบัตรข้าราชการ
                             InputFilter IDcard = new InputFilter() {
                                 @Override
                                 public CharSequence filter(CharSequence source, int i1, int i2, Spanned spanned, int idcard, int i4) {
@@ -1614,13 +1246,12 @@ catch (Exception ex){
                             }
                             editTextIdentificationCard.setText(newStrIdCard);
                         } else {
-                            select_read_card=0;
-                            imageButtoncheckIDCard.setImageResource(android.R.drawable.ic_menu_search);
+
                             InputFilter TextValue = new InputFilter() {
                                 @Override
                                 public CharSequence filter(CharSequence source, int i, int i1, Spanned spanned, int i2, int i3) {
-                                    if (source.length() > 0) {
-                                        if (source.equals(" ")) {//ตัดค่าว่าง
+                                    if(source.length() > 0){
+                                        if(source.equals(" ")){//ตัดค่าว่าง
                                             return "";
                                         } else {
                                             if (String.valueOf(source.charAt(0)).matches("([0-9-])")) {
@@ -1640,23 +1271,10 @@ catch (Exception ex){
                         }
                         break;
                     case CORPORATION:/** 1-นิติบุคคล **/
-                        select_read_card=0;
-                        imageButtoncheckIDCard.setImageResource(android.R.drawable.ic_menu_search);
-                        if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.EditContract.toString())) {
-                            imageButtoncheckIDCard.setVisibility(View.GONE);
-                        } else {
-                            imageButtoncheckIDCard.setVisibility(View.VISIBLE);
-                        }
+                        imageButtoncheckIDCard.setVisibility(View.GONE);
                         break;
                     case FOREIGNER:/** 2-บุคคลต่างชาติ **/
-                        select_read_card=0;
-                        imageButtoncheckIDCard.setImageResource(android.R.drawable.ic_menu_search);
-                        //imageButtoncheckIDCard.setVisibility(View.VISIBLE);
-                        if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.EditContract.toString())) {
-                            imageButtoncheckIDCard.setVisibility(View.GONE);
-                        } else {
-                            imageButtoncheckIDCard.setVisibility(View.VISIBLE);
-                        }
+                        imageButtoncheckIDCard.setVisibility(View.GONE);
                         break;
                     default:
                         break;
@@ -1676,9 +1294,7 @@ catch (Exception ex){
                 String perfixName = spinnerPerfix.getSelectedItem().toString();
                 ArrayAdapter sexAdapter = (ArrayAdapter) spinnerSex.getAdapter();
 
-                select_read_card=0;
-               // Log.e("XXX",perfixName);
-/*                switch (perfixName) {
+                switch (perfixName) {
                     case "":
                         spinnerSex.setEnabled(false);
                         spinnerSex.setSelection(sexAdapter.getPosition(""));
@@ -1689,7 +1305,6 @@ catch (Exception ex){
                         spinnerSex.setSelection(sexAdapter.getPosition("ชาย"));
                         break;
                     case "นางสาว":
-                    case "น.ส.":
                     case "นาง":
                     case "Miss":
                     case "Mrs.":
@@ -1698,48 +1313,8 @@ catch (Exception ex){
                         spinnerSex.setSelection(sexAdapter.getPosition("หญิง"));
                         break;
                     default:
-
-
-
-                        spinnerSex.setEnabled(true);
-                        break;
-                }*/
-
-                if (isImportThaiIDCard
-                        && mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonType == PersonTypeInfo.PersonTypeEnum.PERSON
-                        && mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard == PersonTypeCardInfo.PersonTypeCardEnum.IDCARD) {
-                    // เพศ
-                    if (mainDebtorCustomerInfo != null ) {
                         spinnerSex.setEnabled(false);
-                        spinnerSex.setSelection(sexAdapter.getPosition(mainDebtorCustomerInfo.Sex));
-
-                        select_read_card=1;
-                       // showDialog("2222","2222");
-                    }
-                } else {
-                    switch (perfixName) {
-                        case "":
-                            spinnerSex.setEnabled(false);
-                            spinnerSex.setSelection(sexAdapter.getPosition(""));
-                            break;
-                        case "นาย":
-                        case "MR.":
-                            spinnerSex.setEnabled(false);
-                            spinnerSex.setSelection(sexAdapter.getPosition("ชาย"));
-                            break;
-                        case "นางสาว":
-                        case "น.ส.":
-                        case "นาง":
-                        case "Miss":
-                        case "Mrs.":
-                        case "Ms.":
-                            spinnerSex.setEnabled(false);
-                            spinnerSex.setSelection(sexAdapter.getPosition("หญิง"));
-                            break;
-                        default:
-                            spinnerSex.setEnabled(true);
-                            break;
-                    }
+                        break;
                 }
             }
 
@@ -1811,38 +1386,7 @@ catch (Exception ex){
 
             }
         });*/
-
-        if (!BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.EditContract.toString())) {
-            editTextIdentificationCard.setOnKeyListener(new View.OnKeyListener() {
-                @Override
-                public boolean onKey(View v, int keyCode, KeyEvent event) {
-                    if (!identificationCardOnKeyChange
-                            && mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonType == PersonTypeInfo.PersonTypeEnum.PERSON
-                            && mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard == PersonTypeCardInfo.PersonTypeCardEnum.IDCARD) {
-                        identificationCardOnKeyChange = true;
-                    }
-                    return false;
-                }
-            });
-
-            if (BHGeneral.ID_CARD_MODE) {
-                editTextIdentificationCard.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        if (!hasFocus && identificationCardOnKeyChange
-                                && mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonType == PersonTypeInfo.PersonTypeEnum.PERSON
-                                && mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard == PersonTypeCardInfo.PersonTypeCardEnum.IDCARD) {
-
-
-                            CheckIDcard(false);
-                            identificationCardOnKeyChange = false;
-                        }
-                    }
-                });
-            }
-        }
     }
-    boolean identificationCardOnKeyChange;
 
     private void bindPersonType() {
         mPersonTypeList = new ArrayList<PersonTypeInfo>(PersonTypeInfo.gets());
@@ -1912,12 +1456,10 @@ catch (Exception ex){
 
     private void bindYear() {
         Calendar c = Calendar.getInstance();
-      //  String[] year = new String[90];
-        String[] year = new String[107];
+        String[] year = new String[90];
         year[0] = "";
         for (int x = 1; x < year.length; x++) {
-           // year[x] = c.get(Calendar.YEAR) + 526 - x + "";
-            year[x] = c.get(Calendar.YEAR) + 543 - x + "";
+            year[x] = c.get(Calendar.YEAR) + 526 - x + "";
         }
         BHSpinnerAdapter<String> arrayyear = new BHSpinnerAdapter<String>(activity, year);
         spinnerYear.setAdapter(arrayyear);
@@ -2394,7 +1936,7 @@ catch (Exception ex){
             public CharSequence filter(CharSequence source, int i1, int i2, Spanned spanned, int mobilephone, int i4) {
                 String strMobilePhone = spanned.toString().replace("-", "");
 
-                if (strMobilePhone.length() < 10 && source.length() > 0) {
+                if (strMobilePhone.length() < 10  && source.length() > 0) {
                     if (!Character.isDigit(source.charAt(0)))
                         return "";
                     else {
@@ -2417,7 +1959,7 @@ catch (Exception ex){
         InputFilter PhoneNumber = new InputFilter() {
             public CharSequence filter(CharSequence source, int i1, int i2, Spanned spanned, int phoneNumber, int i4) {
                 if (source.length() > 0) {
-                    if (i4 == 0 && source.equals(" ")) {//ตัดค่าว่างตัวแรก
+                    if(i4 == 0 && source.equals(" ")){//ตัดค่าว่างตัวแรก
                         return "";
                     } else {
                         if (phoneNumber == 1 || phoneNumber == 6) {
@@ -2455,7 +1997,7 @@ catch (Exception ex){
         InputFilter PhoneNumberHome = new InputFilter() {
             public CharSequence filter(CharSequence source, int i1, int i2, Spanned spanned, int phoneNumber, int i4) {
                 if (source.length() > 0) {
-                    if (i4 == 0 && source.equals(" ")) {//ตัดค่าว่างตัวแรก
+                    if(i4 == 0 && source.equals(" ")){//ตัดค่าว่างตัวแรก
                         return "";
                     } else {
                         if (String.valueOf(source.charAt(0)).matches("([0-9])") || (i4 == 0 && source.equals("-"))) {
@@ -2477,8 +2019,8 @@ catch (Exception ex){
         InputFilter TextValue = new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int i, int i1, Spanned spanned, int i2, int i3) {
-                if (source.length() > 0) {
-                    if (i3 == 0 && source.equals(" ")) {//ตัดค่าว่างตัวแรก
+                if(source.length() > 0){
+                    if(i3 == 0 && source.equals(" ")){//ตัดค่าว่างตัวแรก
                         return "";
                     }
                     return source;
@@ -2582,7 +2124,7 @@ catch (Exception ex){
                         }
                         break;
                     case ChangeContract:
-                        if (data.newContract.CustomerID == null) {
+                        if(data.newContract.CustomerID == null) {
                             cust.CustomerID = DatabaseHelper.getUUID();
                         } else {
                             cust.CustomerID = data.newContract.CustomerID;
@@ -2590,35 +2132,42 @@ catch (Exception ex){
                         break;
                 }
 
-
                 cust.OrganizationCode = BHPreference.organizationCode();
-                //cust.UsedProductModelID = "VIP";// ชื่อกรรมการผู้มีอำนาจ
-
-
                 Calendar c = Calendar.getInstance();
                 PrefixInfo prefixInfo = new PrefixInfo();
                 switch (mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonType) {
 
                     case PERSON://บุคคลธรรมดา
+                        prefixInfo = mPrefixList.get(spinnerPerfix.getSelectedItemPosition());
+                        cust.PrefixCode = prefixInfo.PrefixCode;// คำนำหน้าชื่อ
+                        cust.PrefixName = prefixInfo.PrefixName;// คำนำหน้าชื่อ
+                        cust.CustomerName = editTextName.getText().toString();//ชื่อ-สกุล
+                        cust.CustomerType = mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonTypeCode;//ประเภทบุคคล
+                        cust.IDCardType = mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard.toString();//ประเภทบัตร
+                        cust.IDCard = editTextIdentificationCard.getText().toString();//เลขที่บัตร
+                        cust.CompanyName = null;// ชื่อบริษัท
+                        cust.AuthorizedName = null;// ชื่อกรรมการผู้มีอำนาจ
 
 
 
 
+                        try {
+                            if (mainDebtorCustomerInfo.UsedProductModelID.equals("VIP")) {
+
+                                // checkBoxvip.se(false);
+                                cust.UsedProductModelID = "VIP";// ชื่อกรรมการผู้มีอำนาจ
+                            } else {
+                                cust.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
+
+                            }
+                        }
+                        catch (Exception ex){
+
+                        }
 
 
 
-                            prefixInfo = mPrefixList.get(spinnerPerfix.getSelectedItemPosition());
-                            cust.PrefixCode = prefixInfo.PrefixCode;// คำนำหน้าชื่อ
-                            cust.PrefixName = prefixInfo.PrefixName;// คำนำหน้าชื่อ
-                            cust.CustomerName = editTextName.getText().toString();//ชื่อ-สกุล
-                            cust.CustomerType = mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonTypeCode;//ประเภทบุคคล
-                            cust.IDCardType = mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard.toString();//ประเภทบัตร
-                            cust.IDCard = editTextIdentificationCard.getText().toString();//เลขที่บัตร
-                            cust.CompanyName = null;// ชื่อบริษัท
-                            cust.AuthorizedName = null;// ชื่อกรรมการผู้มีอำนาจ
-
-
-                       // if(status.equals("OK")){
+                   /*     if(status.equals("OK")){
                             //cust.OrganizationCode = "3";// ชื่อกรรมการผู้มีอำนาจ
 
                             if(check_box_status==1){
@@ -2631,8 +2180,8 @@ catch (Exception ex){
                             }
 
 
-                       // }
-                     /*   else {
+                        }
+                        else {
                             cust.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
 
                             // cust.OrganizationCode = BHPreference.organizationCode();
@@ -2642,33 +2191,33 @@ catch (Exception ex){
 
 
 
-                        if (select_read_card == 1) {
-                                try {
-                                    cust.AuthorizedIDCard = mPersonal.getIssueDate() + "#" + mPersonal.getExpireDate(); // เลขบัตรกรรมการผู้มีอำนาจxcxaCsaxcsCs
-                                } catch (Exception ex) {
 
-                                }
+                        if(select_read_card==1){
+                            try {
+                                cust.AuthorizedIDCard = mPersonal.getIssueDate()+"#"+mPersonal.getExpireDate(); // เลขบัตรกรรมการผู้มีอำนาจxcxaCsaxcsCs
+                            }
+                            catch (Exception ex){
 
-                            } else {
-                                cust.AuthorizedIDCard = null; // เลขบัตรกรรมการผู้มีอำนาจ
                             }
 
-                            c.set(Calendar.MONTH, spinnerMonth.getSelectedItemPosition() - 1);// เดือนเกิด
-                            c.set(Calendar.YEAR, ((Integer.valueOf(spinnerYear.getSelectedItem().toString())) - 543));// ปีเกิด
-                            c.set(Calendar.DAY_OF_MONTH, Integer.valueOf(spinnerDate.getSelectedItem().toString()));// วันเกิด
-                            c.set(Calendar.HOUR, 0);
-                            c.set(Calendar.MINUTE, 0);
-                            c.set(Calendar.SECOND, 0);
-                            c.set(Calendar.MILLISECOND, 0);
-                            c.set(Calendar.HOUR_OF_DAY, 0);
-                            cust.Brithday = c.getTime();
+                        }
+                        else {
+                            cust.AuthorizedIDCard = null; // เลขบัตรกรรมการผู้มีอำนาจ
+                        }
 
-                            cust.Sex = spinnerSex.getSelectedItem().toString();// เพศ
+                       // cust.AuthorizedIDCard = null; // เลขบัตรกรรมการผู้มีอำนาจ
 
+                        c.set(Calendar.MONTH, spinnerMonth.getSelectedItemPosition() - 1);// เดือนเกิด
+                        c.set(Calendar.YEAR, ((Integer.valueOf(spinnerYear.getSelectedItem().toString())) - 543));// ปีเกิด
+                        c.set(Calendar.DAY_OF_MONTH, Integer.valueOf(spinnerDate.getSelectedItem().toString()));// วันเกิด
+                        c.set(Calendar.HOUR, 0);
+                        c.set(Calendar.MINUTE, 0);
+                        c.set(Calendar.SECOND, 0);
+                        c.set(Calendar.MILLISECOND, 0);
+                        c.set(Calendar.HOUR_OF_DAY, 0);
+                        cust.Brithday = c.getTime();
 
-
-                       // update_install_datetime(BHPreference.RefNo(),install_datetime,BHPreference.employeeID());
-
+                        cust.Sex = spinnerSex.getSelectedItem().toString();// เพศ
                         break;
 
                     case CORPORATION://นิติบุคคล
@@ -2693,14 +2242,22 @@ catch (Exception ex){
                         cust.Sex = null;// เพศ
 
 
-                        if(check_box_status==1){
-                            cust.UsedProductModelID = "VIP";// ชื่อกรรมการผู้มีอำนาจ
+
+                        try {
+                            if (mainDebtorCustomerInfo.UsedProductModelID.equals("VIP")) {
+
+                                // checkBoxvip.se(false);
+                                cust.UsedProductModelID = "VIP";// ชื่อกรรมการผู้มีอำนาจ
+                            } else {
+                                cust.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
+
+                            }
+                        }
+                        catch (Exception ex){
 
                         }
-                        else {
-                            cust.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
 
-                        }
+
 
 
 
@@ -2733,16 +2290,20 @@ catch (Exception ex){
 
 
 
+                        try {
+                            if (mainDebtorCustomerInfo.UsedProductModelID.equals("VIP")) {
 
+                                // checkBoxvip.se(false);
+                                cust.UsedProductModelID = "VIP";// ชื่อกรรมการผู้มีอำนาจ
+                            } else {
+                                cust.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
 
-                        if(check_box_status==1){
-                            cust.UsedProductModelID = "VIP";// ชื่อกรรมการผู้มีอำนาจ
+                            }
+                        }
+                        catch (Exception ex){
 
                         }
-                        else {
-                            cust.UsedProductModelID = "";// ชื่อกรรมการผู้มีอำนาจ
 
-                        }
 
 
 
@@ -2778,7 +2339,7 @@ catch (Exception ex){
                     cust.HobbyCode = "";
                     cust.HobbyDetail = "";
                     cust.IsUsedProduct = false;
-                   // cust.UsedProductModelID = "";
+                 //   cust.UsedProductModelID = "";
                     cust.SuggestionCode = "";
                     cust.SuggestionDetail = "";
                     cust.CreateDate = new Date();
@@ -2869,7 +2430,7 @@ catch (Exception ex){
                         data.newDebtorCustomer = cust;
 
                         address.RefNo = data.newContract.RefNo;
-                        switch (Enum.valueOf(AddressInfo.AddressType.class, addressType.toString())) {
+                        switch (Enum.valueOf(AddressInfo.AddressType.class, addressType.toString())){
 
                             case AddressIDCard:
                                 data.newAddressIDCard = address;
@@ -2912,88 +2473,56 @@ catch (Exception ex){
         }).start();
     }
 
-    private void CheckIDcard(boolean isImportThaiIDCard) {
+
+    private void CheckIDcard() {
         PersonTypeInfo personType = mPersonTypeList.get(spinnerType.getSelectedItemPosition());
-        PersonTypeCardInfo personTypeCard = mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition());
         String idcard;
         String cardTypeName;
         switch (Enum.valueOf(PersonTypeInfo.PersonTypeEnum.class, personType.PersonType.toString())) {
 
             case PERSON:/** 0-บุคคลธรรมดา **/
-                if (!mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCardName.equals("")
-                        && mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard == PersonTypeCardInfo.PersonTypeCardEnum.IDCARD
-                        && isImportThaiIDCard
-                        && BHGeneral.ID_CARD_MODE) {
-                    //showDialog("4444","4444");
-                    importThaiIDCard();
-                } else {
+                idcard = editTextIdentificationCard.getText().toString().replaceAll("-", "");
+                cardTypeName = textViewIdentificationCard.getText().toString();    // บัตรประชาชน/ใบขับขี่/บัตรข้าราชการ
+                boolean checkidcard = BHValidator.isValidCitizenID(idcard);
 
-                   // showDialog("3333","3333");
-                    idcard = editTextIdentificationCard.getText().toString().replaceAll("-", "");
-                    cardTypeName = textViewIdentificationCard.getText().toString();    // บัตรประชาชน/ใบขับขี่/บัตรข้าราชการ
-                    boolean checkidcard = BHValidator.isValidCitizenID(idcard);
+                if (!mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCardName.equals("")) {
+                    if (checkidcard == true || mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard == PersonTypeCardInfo.PersonTypeCardEnum.OFFICIALCARD) {
+                        //บัตรข้าราชการ
+                        stringStatusCheckID = true;
+                        SaleCheckIDCardFragment.Data data1 = new SaleCheckIDCardFragment.Data();
+                        data1.idCard = editTextIdentificationCard.getText().toString();
+                        data1.cardTypeName = cardTypeName;
+                        data1.personType = personType.PersonTypeCode;
 
-                    if (!mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCardName.equals("")) {
-                        if (checkidcard == true || mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard == PersonTypeCardInfo.PersonTypeCardEnum.OFFICIALCARD) {
-                            //บัตรข้าราชการ
-                            stringStatusCheckID = true;
-                            SaleCheckIDCardFragment.Data data1 = new SaleCheckIDCardFragment.Data();
-                            data1.idCard = editTextIdentificationCard.getText().toString();
-                            data1.cardTypeName = cardTypeName;
-                            data1.personType = personType.PersonTypeCode;
-                            data1.personTypeCard = personTypeCard.PersonTypeCard.toString();
+                        data1.tmpDebtorCustomer = saveLogDebtorCustomer();
+                        data1.tmpAddress = saveLogAddress();
 
-                            data1.tmpDebtorCustomer = saveLogDebtorCustomer();
-                            data1.tmpAddress = saveLogAddress();
+                        //changeContract
+                        if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.ChangeContract.toString())) {
 
-                            //changeContract
-                            if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.ChangeContract.toString())) {
-
-                                data1.selectedCauseName = data.selectedCauseName;
-                                data1.chgContractRequest = data.chgContractRequest;
-                                data1.chgContractApprove = data.chgContractApprove;
-                                data1.chgContractAction = data.chgContractAction;
-                                data1.assign = data.assign;
-                                data1.oldContract = data.oldContract;
-                                data1.newContract = data.newContract;
-                                data1.newSPPList = data.newSPPList;
-                                data1.newPayment = data.newPayment;
-
-                                data1.newContractImageInfo = data.newContractImageInfo;
-                            }
-
-                            SaleCheckIDCardFragment fm = BHFragment.newInstance(SaleCheckIDCardFragment.class, data1);
-                            //showNextView(fm);
-
-                            if (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard == PersonTypeCardInfo.PersonTypeCardEnum.IDCARD
-                                || mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard == PersonTypeCardInfo.PersonTypeCardEnum.DRIVINGLICENSE) {
-
-                                String title = "รายละเอียดข้อมูลลูกค้า";
-                                //String message = "รหัสบัตรประชาชนไม่ถูกต้อง";
-                                String message = spinnerTypeCard.getSelectedItem().toString() + "ถูกต้อง";
-                                showWarningDialog(title, message);
-                            } else if (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard == PersonTypeCardInfo.PersonTypeCardEnum.OFFICIALCARD){
-                                if (!idcard.equals("")) {
-                                    String title = "รายละเอียดข้อมูลลูกค้า";
-                                    String message = "ข้อมูลเรียบร้อย";
-                                    showWarningDialog(title, message);
-                                } else {
-                                    String title = "รายละเอียดข้อมูลลูกค้า";
-                                    String message = "กรุณาใส่" + spinnerTypeCard.getSelectedItem().toString();
-                                    showWarningDialog(title, message);
-                                }
-                            }
-                        } else {
-                            String title = "รายละเอียดข้อมูลลูกค้า";
-                            //String message = "รหัสบัตรประชาชนไม่ถูกต้อง";
-                            String message = spinnerTypeCard.getSelectedItem().toString() + "ไม่ถูกต้อง";
-                            showWarningDialog(title, message);
+                            data1.selectedCauseName = data.selectedCauseName;
+                            data1.chgContractRequest = data.chgContractRequest;
+                            data1.chgContractApprove = data.chgContractApprove;
+                            data1.chgContractAction = data.chgContractAction;
+                            data1.assign = data.assign;
+                            data1.oldContract = data.oldContract;
+                            data1.newContract = data.newContract;
+                            data1.newSPPList = data.newSPPList;
+                            data1.newPayment = data.newPayment;
                         }
+
+                        SaleCheckIDCardFragment fm = BHFragment.newInstance(SaleCheckIDCardFragment.class, data1);
+                        showNextView(fm);
                     } else {
                         String title = "รายละเอียดข้อมูลลูกค้า";
-                        String message = "กรุณาเลือกประเภทบัตร";
+                        //String message = "รหัสบัตรประชาชนไม่ถูกต้อง";
+                        String message = spinnerTypeCard.getSelectedItem().toString() + "ไม่ถูกต้อง";
                         showWarningDialog(title, message);
                     }
+                } else {
+                    String title = "รายละเอียดข้อมูลลูกค้า";
+                    String message = "กรุณาเลือกประเภทบัตร";
+                    showWarningDialog(title, message);
                 }
                 break;
             case CORPORATION: /** 1-นิติบุคคล **/
@@ -3002,42 +2531,33 @@ catch (Exception ex){
 
                 if (!idcard.equals("")) {
                     if (checkIdentificationNumber()) {
-                        if (checkIDcard()) {
-                            stringStatusCheckID = true;
+                        stringStatusCheckID = true;
 
-                            SaleCheckIDCardFragment.Data data1 = new SaleCheckIDCardFragment.Data();
-                            data1.idCard = idcard;
-                            data1.cardTypeName = cardTypeName;
-                            data1.personType = personType.PersonTypeCode;
-                            data1.personTypeCard = null;
+                        SaleCheckIDCardFragment.Data data1 = new SaleCheckIDCardFragment.Data();
+                        data1.idCard = idcard;
+                        data1.cardTypeName = cardTypeName;
+                        data1.personType = personType.PersonTypeCode;
 
-                            data1.tmpDebtorCustomer = saveLogDebtorCustomer();
-                            data1.tmpAddress = saveLogAddress();
+                        data1.tmpDebtorCustomer = saveLogDebtorCustomer();
+                        data1.tmpAddress = saveLogAddress();
 
-                            //changeContract
-                            if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.ChangeContract.toString())) {
+                        //changeContract
+                        if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.ChangeContract.toString())) {
 
-                                data1.selectedCauseName = data.selectedCauseName;
-                                data1.chgContractRequest = data.chgContractRequest;
-                                data1.chgContractApprove = data.chgContractApprove;
-                                data1.chgContractAction = data.chgContractAction;
-                                data1.assign = data.assign;
-                                data1.oldContract = data.oldContract;
-                                data1.newContract = data.newContract;
-                                data1.newSPPList = data.newSPPList;
-                                data1.newPayment = data.newPayment;
-
-                                data1.newContractImageInfo = data.newContractImageInfo;
-                            }
-
-                            SaleCheckIDCardFragment fm = BHFragment.newInstance(SaleCheckIDCardFragment.class, data1);
-                            //showNextView(fm);
-
-                            String title = "รายละเอียดข้อมูลลูกค้า";
-                            String message = "เลขที่บัตรถูกต้อง";
-                            //showNoticeDialogBox(title, message);
-                            showWarningDialog(title, message);
+                            data1.selectedCauseName = data.selectedCauseName;
+                            data1.chgContractRequest = data.chgContractRequest;
+                            data1.chgContractApprove = data.chgContractApprove;
+                            data1.chgContractAction = data.chgContractAction;
+                            data1.assign = data.assign;
+                            data1.oldContract = data.oldContract;
+                            data1.newContract = data.newContract;
+                            data1.newSPPList = data.newSPPList;
+                            data1.newPayment = data.newPayment;
                         }
+
+                        SaleCheckIDCardFragment fm = BHFragment.newInstance(SaleCheckIDCardFragment.class, data1);
+                        showNextView(fm);
+
                     }
                 } else {
                     String title = "รายละเอียดข้อมูลลูกค้า";
@@ -3057,7 +2577,6 @@ catch (Exception ex){
                         data1.idCard = idcard;
                         data1.cardTypeName = cardTypeName;
                         data1.personType = personType.PersonTypeCode;
-                        data1.personTypeCard = personTypeCard.PersonTypeCard.toString();
 
                         data1.tmpDebtorCustomer = saveLogDebtorCustomer();
                         data1.tmpAddress = saveLogAddress();
@@ -3074,16 +2593,10 @@ catch (Exception ex){
                             data1.newContract = data.newContract;
                             data1.newSPPList = data.newSPPList;
                             data1.newPayment = data.newPayment;
-
-                            data1.newContractImageInfo = data.newContractImageInfo;
                         }
 
                         SaleCheckIDCardFragment fm = BHFragment.newInstance(SaleCheckIDCardFragment.class, data1);
-                        //showNextView(fm);
-
-                        String title = "รายละเอียดข้อมูลลูกค้า";
-                        String message = "ข้อมูลเรียบร้อย";
-                        showWarningDialog(title, message);
+                        showNextView(fm);
 
                     } else {
                         String title = "รายละเอียดข้อมูลลูกค้า";
@@ -3119,6 +2632,14 @@ catch (Exception ex){
                 cust.IDCard = editTextIdentificationCard.getText().toString();//เลขที่บัตร
                 cust.CompanyName = null;// ชื่อบริษัท
                 cust.AuthorizedName = null;// ชื่อกรรมการผู้มีอำนาจ
+
+             /*   if(select_read_card==1){
+                    cust.AuthorizedIDCard = mPersonal.getIssueDate()+"#"+mPersonal.getExpireDate(); // เลขบัตรกรรมการผู้มีอำนาจxcxaCsaxcsCs
+                }
+                else {
+                    cust.AuthorizedIDCard = null; // เลขบัตรกรรมการผู้มีอำนาจ
+                }*/
+
 
                 if(select_read_card==1){
                     try {
@@ -3333,8 +2854,8 @@ catch (Exception ex){
 
 
     private void captureImage() {
-        /*** [START] :: Permission ***/
 
+        /*** [START] :: Permission ***/
         /*Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE, (data != null && data.newContract != null) ? data.newContract : new ContractInfo());
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
@@ -3413,7 +2934,7 @@ catch (Exception ex){
         return Uri.fromFile(getOutputMediaFile(type, newContract));
     }
 
-    private File getOutputMediaFile(int type, ContractInfo newContract) {
+    private static File getOutputMediaFile(int type, ContractInfo newContract) {
         String IMAGE_DIRECTORY_NAME_TEMP = IMAGE_DIRECTORY_NAME;
         if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.ChangeContract.toString())) {
             if (newContract != null && newContract.RefNo != null) {
@@ -3459,430 +2980,41 @@ catch (Exception ex){
     }
 
 
-
-
-
-
-    private boolean isImportThaiIDCard = false;
-    static public Personal mPersonal;
-
-    private void setEnabledUIDebtorCustomerForImportThaiIDCard(boolean isEnabled) {
-        //spinnerType.setEnabled(isEnabled);//ประเภทบุคคล
-        //spinnerTypeCard.setEnabled(isEnabled);//ประเภทบัตร
-        editTextIdentificationCard.setEnabled(isEnabled);//บัตรประชาชน
-        select_read_card=1;
-        //showDialog("okok","okok");
-        if (mainDebtorCustomerInfo != null && mainDebtorCustomerInfo.PrefixName.equals("")) {
-            spinnerPerfix.setEnabled(true);//คำนำหน้าชื่อ
-        } else {
-            spinnerPerfix.setEnabled(isEnabled);//คำนำหน้าชื่อ
-        }
-
-        editTextName.setEnabled(isEnabled);//ชื่อ-สกุล
-        spinnerYear.setEnabled(isEnabled);//ปีเกิด
-        spinnerMonth.setEnabled(isEnabled);//เดือนเกิด
-        spinnerDate.setEnabled(isEnabled);//วันเกิด
-
-        if (isImportThaiIDCard
-                && mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonType == PersonTypeInfo.PersonTypeEnum.PERSON
-                && mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard == PersonTypeCardInfo.PersonTypeCardEnum.IDCARD) {
-            if (mainDebtorCustomerInfo != null ) {
-                spinnerSex.setEnabled(false);//เพศ
-            }
-        }else {
-            String perfixName = spinnerPerfix.getSelectedItem().toString();
-
-            switch (perfixName) {
-                case "":
-                case "นาย":
-
-                    Log.e("asasa","4444");
-                    break;
-                case "MR.":
-                case "นางสาว":
-                case "น.ส.":
-                case "นาง":
-                case "Miss":
-                case "Mrs.":
-                case "Ms.":
-                    spinnerSex.setEnabled(false);
-                    break;
-                default:
-                    Log.e("asasa","5555");
-                    spinnerSex.setEnabled(true);
-                    break;
-            }
-        }
-
-
-
-        imageViewPerson.setEnabled(isEnabled);//ถ่ายรูป
+    private void enableDataCard(boolean bln) {
+        imageViewPerson.setEnabled(bln);
+        spinnerType.setEnabled(bln); // ประเภทบัตร
+        editTextIdentificationCard.setEnabled(bln); // บัตรประชาชน
+        editTextIdentificationNumber.setEnabled(bln); // เลขประจำตัวผู้เสียภาษี
+        spinnerTypeCard.setEnabled(bln); // ประเภทบัตรของบุคคลต่างชาติ
+        editTextCardNo.setEnabled(bln); // เลขที่บัตร
+        spinnerPerfix.setEnabled(bln); // คำนำหน้าชื่อ
+        editTextName.setEnabled(bln); // ชื่อ-สกุล
+        spinnerDate.setEnabled(bln); // วันเกิด
+        spinnerMonth.setEnabled(bln); // เดือนเกิด
+        spinnerYear.setEnabled(bln); // ปีเกิด
+        spinnerSex.setEnabled(bln); // เพศ
+        editTextAge.setEnabled(bln); // อายุ
+        spinnerPerfixCorporation.setEnabled(bln); // คำนำหน้า
+        editTextNameCorporation.setEnabled(bln); // ชื่อบริษัท
+        editTextNameCommission.setEnabled(bln); // กรรมการผู้มีอำนาจ
+        editTextNameCardNoCommission.setEnabled(bln); // เลขที่บัตร
     }
 
-    private void setEnabledUIAddressForImportThaiIDCard(boolean isEnabled) {
-        editTextAddressnumber.setEnabled(isEnabled);//บ้านเลขที่
-        editTextCategory.setEnabled(isEnabled);//หมู่ที่
-        editTextAlley.setEnabled(isEnabled);//ซอย/ตรอก
-        editTextRoad.setEnabled(isEnabled);//ถนน
-
-        autoCompleteTextViewProvince.setEnabled(isEnabled);//จังหวัด
-        spinnerDistrict.setEnabled(isEnabled);//อำเภอ/เขต
-        spinnerParish.setEnabled(isEnabled);//ตำบล/แขวง
+    private void clearAddress() {
+        editTextAddressnumber.setText("");
+        editTextAlley.setText("");
+        editTextCategory.setText("");
+        editTextRoad.setText("");
+        autoCompleteTextViewProvince.setText("");
+        spinnerDistrict.setAdapter(null);
+        spinnerParish.setAdapter(null);
+        editTextPhonecorporation1.setText("");
+        editTextPhonecorporation2.setText("");
+        editTextFaxcorporation.setText("");
+        editTextPhone.setText("");
+        editTextWorkPhone.setText("");
+        editTextMobilePhone.setText("");
+        editTextZipcode.setText("");
+        editTextEmail.setText("");
     }
-
-    private void setUIForImportThaiIDCard() {
-
-        if (isImportThaiIDCard
-                && mPersonTypeList.get(spinnerType.getSelectedItemPosition()).PersonType == PersonTypeInfo.PersonTypeEnum.PERSON
-                && mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard == PersonTypeCardInfo.PersonTypeCardEnum.IDCARD) {
-            setDebtorCustomerForImportThaiIDCard();
-            setAddressForImportThaiIDCard();
-            setImageForImportThaiIDCard();
-        } else if (isImportThaiIDCard) {
-            setEnabledUIDebtorCustomerForImportThaiIDCard(true);
-            setEnabledUIAddressForImportThaiIDCard(true);
-        }
-    }
-
-    private void setDebtorCustomerForImportThaiIDCard() {
-        if (mPersonal != null) {
-            //ตรวจสอบบัตรประชชน
-            stringStatusCheckID = true;
-
-            if (mainDebtorCustomerInfo == null) {
-                mainDebtorCustomerInfo = new DebtorCustomerInfo();
-            }
-
-            mainDebtorCustomerInfo.CustomerType = "0";//บุคคลธรรมดา
-            mainDebtorCustomerInfo.IDCardType = "IDCARD";//บัตรประชาชน
-            mainDebtorCustomerInfo.IDCard = mPersonal.getIDCard();
-
-            PrefixInfo prefixInfo = TSRController.getPrefixeByPrefixName(mPersonal.getTHPrefix());
-            if (prefixInfo != null) {
-                mainDebtorCustomerInfo.PrefixName = mPersonal.getTHPrefix();
-            } else {
-                mainDebtorCustomerInfo.PrefixName = "";
-            }
-
-            mainDebtorCustomerInfo.CustomerName = mPersonal.getTHFullname();
-            mainDebtorCustomerInfo.Sex = mPersonal.getGender();
-            mainDebtorCustomerInfo.Brithday = mPersonal.getDateOfBirth();
-
-            bindDebtorCustomer();
-        }
-    }
-
-    private void setAddressForImportThaiIDCard() {
-        if (mPersonal != null) {
-            if (mainAddressInfo == null) {
-                mainAddressInfo = new AddressInfo();
-            }
-
-            String houseNo = mPersonal.getAddresHouseNo();//บ้านเลขที่
-            if (houseNo != null) {
-                mainAddressInfo.AddressDetail = houseNo;
-            } else {
-                mainAddressInfo.AddressDetail = "-";
-            }
-
-            String villageNo = mPersonal.getAddresVillageNo();//หมู่ที่
-            if (villageNo != null) {
-                mainAddressInfo.AddressDetail2 =  villageNo.replaceFirst("หมู่ที่", "").trim();
-            } else {
-                mainAddressInfo.AddressDetail2 = "-";
-            }
-
-            //ซอย/ตรอก
-            String soi = mPersonal.getAddresSoi();//ซอย
-            if (soi != null) {
-                mainAddressInfo.AddressDetail3 =  soi.replaceFirst("ซอย", "").trim();
-            } else {
-
-                String lane = mPersonal.getAddresLane();//ตรอก
-                if (lane != null) {
-                    mainAddressInfo.AddressDetail3 =  soi.replaceFirst("ตรอก", "").trim();
-                } else {
-                    mainAddressInfo.AddressDetail3 = "-";
-                }
-            }
-
-            String road = mPersonal.getAAddresRoad();//ถนน
-            if (road != null) {
-                mainAddressInfo.AddressDetail4 =  road.replaceFirst("ถนน", "").trim();
-            } else {
-                mainAddressInfo.AddressDetail4 = "-";
-            }
-
-            String province = mPersonal.getAddresProvince();//จังหวัด
-            if (province != null) {
-                ProvinceInfo provinceInfo = TSRController.getProvinceByProvinceName(province.replaceFirst("จังหวัด", "").trim());
-                if (provinceInfo != null) {
-                    mainAddressInfo.ProvinceCode = provinceInfo.ProvinceCode;
-
-                    String amphur = mPersonal.getAddresAmphur();//อำเภอ/เขต
-                    if (amphur != null) {
-                        DistrictInfo districtInfo = TSRController.getDistrictByProvinceCodeAndDistrictName(provinceInfo.ProvinceCode, amphur.replaceFirst("อำเภอ", "").trim().replaceFirst("เขต", "").trim());
-                        if (districtInfo != null) {
-                            mainAddressInfo.DistrictCode = districtInfo.DistrictCode;
-
-
-                            String tambol = mPersonal.getAddresTambol();//ตำบล/แขวง
-                            if (tambol != null) {
-                                SubDistrictInfo subDistrictInfo = TSRController.getSubDistrictByDistrictCodeAndSubDistrictName(districtInfo.DistrictCode, tambol.replaceFirst("ตำบล", "").trim().replaceFirst("แขวง", "").trim());
-                                if (subDistrictInfo != null) {
-                                    mainAddressInfo.SubDistrictCode = subDistrictInfo.SubDistrictCode;
-                                }
-                            }
-
-                        }
-                    }
-
-                }
-            }
-
-            bindAddress();
-        }
-    }
-
-    private void setImageForImportThaiIDCard() {
-        if (mPersonal != null) {
-            Bitmap photoBitmap = mPersonal.PhotoBitmap();
-            if (photoBitmap != null) {
-
-                BHStorage.FolderType F = BHStorage.FolderType.Picture;
-                Parth = BHStorage.getFolder(F);
-                if (mainContractImageInfo == null && imageID == null) {
-                    imageID = DatabaseHelper.getUUID();
-                } else {
-                    if (mainContractImageInfo != null && mainContractImageInfo.ImageID != null) {
-                        imageID = mainContractImageInfo.ImageID;
-                    } else {
-                        imageID = DatabaseHelper.getUUID();
-                    }
-                }
-
-
-                if (mainContractImageInfo == null) {
-                    mainContractImageInfo = new ContractImageInfo();
-
-                    if (imageID != null) {
-                        mainContractImageInfo.ImageID = imageID;
-                        mainContractImageInfo.RefNo = BHPreference.RefNo();
-                        mainContractImageInfo.ImageName = imageID + ".jpg";
-                        mainContractImageInfo.ImageTypeCode = imageTypeCode;
-                        mainContractImageInfo.SyncedDate = new Date();
-                    }
-                }
-
-                File file = getOutputMediaFile(MEDIA_TYPE_IMAGE, (data != null && data.newContract != null) ? data.newContract : null);
-                if (file != null) {
-                    FileOutputStream fout;
-                    try {
-                        fout = new FileOutputStream(file);
-                        photoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fout);
-                        fout.flush();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                //previewCapturedImage();
-                AddContractImage();
-                bindContractImage();
-
-            }
-        }
-    }
-
-    private void importThaiIDCard() {
-
-        new BHThaiIDCard( activity, new ResultBHThaiIDCard() {
-            @Override
-            public void onSuccess(BHThaiIDCard bhThaiIDCard, Personal personal) {
-                super.onSuccess( bhThaiIDCard, personal );
-                //เมื่อมีการใช้ข้อมูลในบัตรปิด UI ไม่ให้แก้ไข
-                isImportThaiIDCard = true;
-
-                mPersonal = personal;
-                setDebtorCustomerForImportThaiIDCard();
-                setAddressForImportThaiIDCard();
-                setImageForImportThaiIDCard();
-            }
-
-            @Override
-            public void onNotSuccess(BHThaiIDCard bhThaiIDCard, BHThaiIDCard.ResultNotSuccess result) {
-                super.onNotSuccess( bhThaiIDCard, result );
-
-                switch (result) {
-                    case ConnectNoDevice:
-                        showWarningDialog( "แจ้งเตือน", "กรุณาตรวจสอบการเชื่อมต่อเครื่องอ่านบัตร" );
-                        break;
-                    case PermissionDenied:
-                        showWarningDialog( "แจ้งเตือน", String.format( "กรุณาอนุญาติให้ %s เข้าถึงปอุกรณ์ USB ก่อนใช้งาน", getResources().getString(R.string.tsr_app_name)));
-                        break;
-                    case NoCard:
-                        showWarningDialog( "แจ้งเตือน", "กรุณาตรวจสอบการเชื่อมต่อบัตรประชาชน" );
-                        break;
-                    case ErrorPowerOn:
-                    case ErrorNewAPDUThailandIdCardType:
-                    case ErrorDataPersonal:
-                        showWarningDialog( "เกิดข้อผิดพลาดในการรเชื่อมต่อ", "กรุณาถอดเครื่องอ่านบัตร แล้วทำการเชื่อมต่อใหม่อีกครั้ง" );
-                        break;
-                }
-            }
-        } );
-    }
-
-
-
-
-
-
-    public boolean isConnectingToInternet() {
-        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-
-        return isConnected;
-    }
-
-
-    private void load_data_check_vip(String EMPID) {
-        try {
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-            Service request = retrofit.create(Service.class);
-            Call call = request.check_vid(EMPID);
-            call.enqueue(new Callback() {
-                @Override
-                public void onResponse(Call call, retrofit2.Response response) {
-                    Gson gson = new Gson();
-                    try {
-                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
-
-                        JSON_PARSE_DATA_AFTER_WEBCALL22(jsonObject.getJSONArray("data"));
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.e("data", "22");
-                    }
-                }
-
-                @Override
-                public void onFailure(Call call, Throwable t) {
-                    Log.e("data", "2");
-                }
-            });
-
-        } catch (Exception e) {
-            Log.e("data", "3");
-        }
-    }
-
-
-
-
-    public void JSON_PARSE_DATA_AFTER_WEBCALL22(JSONArray array) {
-        if (array.length() == 0) {
-            li_checkbox.setVisibility(View.GONE);
-
-        } else {
-
-
-            JSONObject json = null;
-
-            for (int i = 0; i < array.length(); i++) {
-                try {
-
-                    json = array.getJSONObject(i);
-                     status = json.getString("status") + "";
-
-
-                } catch (Exception ex) {
-
-                    //    Log.e("catch", ex.getLocalizedMessage());
-
-                }
-            }
-
-
-         //   Log.e("statusstatus",status);
-
-            if(status.equals("OK")){
-                li_checkbox.setVisibility(View.VISIBLE);
-
-
-
-
-
-
-
-
-
-         try {
-             if (mainDebtorCustomerInfo.UsedProductModelID.equals("VIP")) {
-
-                 check_box_status=1;
-
-                 // checkBoxvip.se(false);
-                 checkBoxvip.setChecked(true);
-             } else {
-                 check_box_status=0;
-                 checkBoxvip.setChecked(false);
-
-             }
-                }
-                catch (Exception ex){
-                    check_box_status=0;
-
-                }
-
-
-
-
-            }
-            else {
-                li_checkbox.setVisibility(View.GONE);
-
-            }
-
-
-        }
-    }
-
-
-
-
-
-
-    private void update_install_datetime(String RefNo,String Installdate,String EMPID) {
-        try {
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-            Service request = retrofit.create(Service.class);
-            Call call = request.InsertInstallDate(RefNo,Installdate,EMPID);
-            call.enqueue(new Callback() {
-                @Override
-                public void onResponse(Call call, retrofit2.Response response) {
-
-                }
-
-                @Override
-                public void onFailure(Call call, Throwable t) {
-                    Log.e("data", "2");
-                }
-            });
-
-        } catch (Exception e) {
-            Log.e("data", "3");
-        }
-    }
-
-
-
 }

@@ -152,7 +152,7 @@ import th.co.thiensurat.fragments.credit.Import.ImportAuditListFragment;
 import th.co.thiensurat.fragments.credit.Import.ImportCreditSelectDateFragment;
 import th.co.thiensurat.fragments.credit.SortOrderDefault.SortOrderDefaultForCreditMainFragment;
 import th.co.thiensurat.fragments.credit.SortOrderDefault.SortOrderDefaultMainFragment;
-import th.co.thiensurat.fragments.credit.credit.CreditMainFragment_intro;
+import th.co.thiensurat.fragments.credit.credit.CreditListFragment;
 import th.co.thiensurat.fragments.cutdivisor.contract.CutDivisorContractListFragment;
 import th.co.thiensurat.fragments.cutoff.contract.CutOffContractMainFragment;
 import th.co.thiensurat.fragments.document.DocumentHistoryMainFragment;
@@ -190,7 +190,6 @@ import th.co.thiensurat.fragments.sales.EditContractsMainFragment;
 import th.co.thiensurat.fragments.sales.SaleMainFragment;
 import th.co.thiensurat.fragments.sales.preorder.SaleMainFragment_peoorder;
 import th.co.thiensurat.fragments.sales.preorder_setting.SaleMainFragment_preorder_setting;
-import th.co.thiensurat.fragments.sales.preorder_setting.SaleMainFragment_preorder_setting2;
 import th.co.thiensurat.fragments.sendmoney.SendMoneySummaryMainFragment;
 import th.co.thiensurat.fragments.synchronize.SynchronizeMainFragment;
 import th.co.thiensurat.retrofit.api.Service;
@@ -1424,15 +1423,15 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
 
 
-                    success = showView(BHFragment.newInstance(CreditMainFragment_intro.class));
+                // success = showView(BHFragment.newInstance(CreditMainFragment_intro.class));
 
 
 
-/*                    CreditListFragment.Data input = new CreditListFragment.Data();
+                    CreditListFragment.Data input = new CreditListFragment.Data();
                     input.selectedDate =  Calendar.getInstance().getTime();
                     CreditListFragment fragment = BHFragment
                             .newInstance(CreditListFragment.class, input);
-                    success = showNextView(fragment);*/
+                    success = showNextView(fragment);
 
 
 

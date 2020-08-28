@@ -223,7 +223,7 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
         if (data != null && data.resTitle != 0) {
             return data.resTitle;
         } else {
-            return R.string.title_sales;
+            return R.string.title_sales_preorder;
         }
     }
 

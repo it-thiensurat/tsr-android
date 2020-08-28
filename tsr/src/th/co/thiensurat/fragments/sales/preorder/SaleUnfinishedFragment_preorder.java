@@ -57,7 +57,7 @@ public class SaleUnfinishedFragment_preorder extends BHFragment {
 	@Override
 	protected int titleID() {
 		// TODO Auto-generated method stub
-		return R.string.title_sales;
+		return R.string.title_sales_preorder;
 	}
 
 	@Override
@@ -145,7 +145,7 @@ public class SaleUnfinishedFragment_preorder extends BHFragment {
 
 						if (intStatuscode <= 6) {
 							if (intStatuscode >= 4) {
-								showNextView(BHFragment.newInstance(SaleListPackagePaymentFragment.class));
+								showNextView(BHFragment.newInstance(SaleListPackagePaymentFragment_preorder.class));
 							} else {
 								showMessage("สถานะการทำงานของท่านยังมาไม่ถึง");
 							}
@@ -158,7 +158,7 @@ public class SaleUnfinishedFragment_preorder extends BHFragment {
 
 						if (intStatuscode <= 6) {
 							if (intStatuscode >= 5) {
-								showNextView(BHFragment.newInstance(SalePayFragment.class));
+								showNextView(BHFragment.newInstance(SalePayFragment_preorder.class));
 							} else {
 								showMessage("สถานะการทำงานของท่านยังมาไม่ถึง");
 							}
@@ -171,7 +171,7 @@ public class SaleUnfinishedFragment_preorder extends BHFragment {
 
 						if (intStatuscode <= 6) {
 							if (intStatuscode >= 6) {
-								showNextView(BHFragment.newInstance(SaleDetailCheckFragment.class));
+								showNextView(BHFragment.newInstance(SaleDetailCheckFragment_preorder.class));
 							} else {
 								showMessage("สถานะการทำงานของท่านยังมาไม่ถึง");
 							}
@@ -274,7 +274,7 @@ public class SaleUnfinishedFragment_preorder extends BHFragment {
 
 						if (intStatuscode <= 12) {
 							if (intStatuscode >= 11) {
-								showNextView(BHFragment.newInstance(SalePhotographyFragment.class));
+								showNextView(BHFragment.newInstance(SalePhotographyFragment_preorder.class));
 							} else {
 								showMessage("สถานะการทำงานของท่านยังมาไม่ถึง");
 							}
