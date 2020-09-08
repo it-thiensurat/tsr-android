@@ -136,7 +136,7 @@ public class SignatureActivity extends Activity {
             if (customerSignPath.exists()) {
                 BitmapFactory.Options bmOptions = new BitmapFactory.Options();
                 Bitmap bitmap = BitmapFactory.decodeFile(customerSignPath.getAbsolutePath(), bmOptions);
-                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+                bitmap = Bitmap.createScaledBitmap(bitmap, (bitmap.getWidth() + 100), bitmap.getHeight(), true);
                 signaturePad.setSignatureBitmap(bitmap);
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -236,7 +236,7 @@ public class SignatureActivity extends Activity {
     }
 
     public void saveBitmapToJPG(Bitmap bitmap, File photo) throws IOException {
-        Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap newBitmap = Bitmap.createBitmap((bitmap.getWidth() + 100), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(newBitmap);
         canvas.drawColor(Color.WHITE);
         canvas.drawBitmap(bitmap, 0, 0, null);

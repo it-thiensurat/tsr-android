@@ -3,12 +3,12 @@ apply plugin: 'io.fabric'
 
 android {
     useLibrary 'org.apache.http.legacy'
-    compileSdkVersion 28
+    compileSdkVersion 29
     buildToolsVersion '28.0.3'
 
     def versionCodes = { ->
-//        return 157   //<-- current version
-        return 158   //<-- New version
+//        return 159   //<-- current version
+        return 160   //<-- New version
     }
 
     def tsrAppVersion = { ->
@@ -25,10 +25,10 @@ android {
     defaultConfig {
         applicationId 'th.co.thiensurat'
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode   versionCodes()
-//        versionName "1.0.0.68" //<-- current version
-        versionName "1.0.0.69" //<-- New version
+//        versionName "1.0.0.70" //<-- current version
+        versionName "1.0.0.71" //<-- New version
         resValue 'string', 'tsr_app_version', tsrAppVersion()
     }
 

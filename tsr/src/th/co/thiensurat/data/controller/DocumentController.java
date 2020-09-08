@@ -3710,11 +3710,12 @@ public class DocumentController {
     }
 
     public static Bitmap mergeSignature(Bitmap bmp1, Bitmap bmp2, File path) {
-        Bitmap result = Bitmap.createBitmap((bmp1.getWidth() + bmp2.getWidth()), bmp1.getHeight(), Config.ARGB_8888 );
+//        Bitmap result = Bitmap.createBitmap((bmp1.getWidth() + bmp2.getWidth()), bmp1.getHeight(), Config.ARGB_8888 );
+        Bitmap result = Bitmap.createBitmap(RECEIPT_WIDTH, bmp1.getHeight(), Config.ARGB_8888 );
         Canvas canvas = new Canvas(result);
         canvas.drawColor(Color.WHITE);
         canvas.drawBitmap(bmp1, 0, 0, null);
-        canvas.drawBitmap(bmp2, bmp1.getWidth(), 10, null);
+        canvas.drawBitmap(bmp2, (bmp1.getWidth() + 50), 10, null);
         OutputStream stream = null;
         try {
             stream = new FileOutputStream(path);
