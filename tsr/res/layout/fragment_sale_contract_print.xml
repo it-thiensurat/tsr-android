@@ -728,6 +728,21 @@
                     android:layout_height="50dp"
                     android:text="ยกเลิกสัญญา"/>
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutSurvey"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btnSurvery"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:textColor="@android:color/white"
+                    android:text="ข้อมูลเพิ่มเติม"
+                    android:background="@color/bg_sub_header"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

@@ -17,8 +17,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +45,7 @@ import th.co.bighead.utilities.BHUtilities;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
 import th.co.thiensurat.activities.SignatureActivity;
+import th.co.thiensurat.activities.SurveyActivity;
 import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.PrinterController;
 import th.co.thiensurat.business.controller.TSRController;
@@ -176,6 +179,11 @@ public class SaleContractPrintFragment extends BHFragment {
     private Button btnSignature;
     @InjectView ImageView imgSignature;
 
+    @InjectView
+    private LinearLayout layoutSurvey;
+    @InjectView
+    private Button btnSurvery;
+
     public static int sizee=0;
     public static int size_ww=0;
 
@@ -201,6 +209,12 @@ public class SaleContractPrintFragment extends BHFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        checkHasSurvey();
+    }
+
+    @Override
     protected int fragmentID() {
         // TODO Auto-generated method stub
         return R.layout.fragment_sale_contract_print;
@@ -221,7 +235,12 @@ public class SaleContractPrintFragment extends BHFragment {
         // TODO Auto-generated method stub
         int[] ret;
         if (Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.Sale)
-            ret = new int[]{R.string.button_pay, R.string.button_print}; // ,
+//            if (true) {
+//                ret = new int[]{R.string.button_survey_befor_contract_confirm};
+//            } else {
+//                ret = new int[]{R.string.button_pay, R.string.button_print}; // ,
+//            }
+            ret = new int[]{R.string.button_pay, R.string.button_print};
             // R.string.button_save_manual_contract
         else if (Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract)
             ret = new int[]{R.string.button_back, R.string.button_print, R.string.button_receipt};// ,
@@ -237,6 +256,7 @@ public class SaleContractPrintFragment extends BHFragment {
         if (BHPreference.ProcessType().equals(ProcessType.Sale.toString())) {
             saveStatusCode();
         }
+
         loadData();
         linearLayoutPayment.setVisibility(View.GONE);
 
@@ -285,6 +305,7 @@ public class SaleContractPrintFragment extends BHFragment {
 
             @Override
             protected void after() {
+                Log.e("contract", String.valueOf(contract));
                 if (contract != null) {
                     try {
                         /*** [START] :: Fixed - [BHPROJ-0025-815] :: [Android-Reprint ใบสัญญา+ใบเสร็จ] กรณีเป็นฝ่ายเก็บเงินจะ Re-Print ได้เฉพาะใบเสร็จรับเงินที่เค้าเป็นคนเก็บเท่านั้น จะไม่สามารถกลับไป Re-Print ใบสัญญา หรือ ใบเสร็จรับเงินของคนอื่นได้  ***/
@@ -293,6 +314,7 @@ public class SaleContractPrintFragment extends BHFragment {
                             listId.add(R.string.button_print);
 
                             activity.setViewProcessButtons(listId, View.GONE);
+                            layoutSurvey.setVisibility(View.GONE);
                         } else {
                             /*** [START] :: Fixed - [BHPROJ-1036-8796] - ไม่ให้แก้ไขชื่อ ที่อยู่ และภาพถ่าย ข้ามวัน ให้แก้ไขได้ภายในวันที่ทำสัญญาเท่านั้น รวมทั้งการพิมพ์สัญญาต้องพิมพ์ข้ามวันไม่ได้ด้วย ***/
                             if (contract.EFFDATE != null) {
@@ -316,6 +338,7 @@ public class SaleContractPrintFragment extends BHFragment {
                                     listId.add(R.string.button_print);
 
                                     activity.setViewProcessButtons(listId, View.GONE);
+                                    layoutSurvey.setVisibility(View.GONE);
                                 }
                             }
                             /*** [END] :: Fixed - [BHPROJ-1036-8796] - ไม่ให้แก้ไขชื่อ ที่อยู่ และภาพถ่าย ข้ามวัน ให้แก้ไขได้ภายในวันที่ทำสัญญาเท่านั้น รวมทั้งการพิมพ์สัญญาต้องพิมพ์ข้ามวันไม่ได้ด้วย  ***/
@@ -524,6 +547,8 @@ public class SaleContractPrintFragment extends BHFragment {
                         String ContractDate = df.format(contract.EFFDATE);
                         if (!contract.STATUS.equals("VOID") && ContractDate.equals(currentDate) && Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract) {
                             btnVoidContract.setVisibility(View.VISIBLE);
+                        } else if (!contract.STATUS.equals("VOID") && ContractDate.equals(currentDate) && Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.Sale) {
+                            checkHasSurvey();
                         }
                     }
                     catch (Exception rr){
@@ -624,6 +649,13 @@ public class SaleContractPrintFragment extends BHFragment {
                             Intent intent = new Intent(getContext(), SignatureActivity.class);
                             intent.putExtra("CONTRACT_NUMBER", contract.CONTNO);
                             startActivityForResult(intent, 999);
+                        }
+                    });
+
+                    btnSurvery.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            SurveyPage();
                         }
                     });
                     /**
@@ -1117,6 +1149,86 @@ public class SaleContractPrintFragment extends BHFragment {
                 btnSignature.setVisibility(View.GONE);
                 imgSignature.setImageBitmap(getResizedBitmap(bitmap, 250, 80));
             }
+        } else if (requestCode == 333) {
+//            Toast.makeText(getContext(), "survey", Toast.LENGTH_LONG).show();
+            checkHasSurvey();
         }
     }
+
+    /**
+     *
+     * Edit by Teerayut Klinsanga
+     *
+     * Add customer survey process
+     * Date: 2020-09-11 09:00:00
+     *
+     */
+    private void SurveyPage() {
+        Intent intent = new Intent(getContext(), SurveyActivity.class);
+        intent.putExtra("REFERRENCE_NUMBER", contract.RefNo);
+        intent.putExtra("CONTRACT_NUMBER", contract.CONTNO);
+        intent.putExtra("EMPLOYEE_NUMBER", contract.SaleEmployeeCode);
+        startActivityForResult(intent, 333);
+    }
+
+    private void checkHasSurvey() {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.checkQuestion(contract.CONTNO);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Log.e("Survey contno", contract.CONTNO);
+                    Gson gson=new Gson();
+                    try {
+                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+                        Log.e("json question: ",jsonObject.toString());
+                        JSONArray array = jsonObject.getJSONArray("data");
+                        JSONObject obj = null;
+                        for (int i = 0; i < array.length(); i++) {
+                            obj = array.getJSONObject(i);
+                            String status = obj.getString("Status");
+                            Log.e("Question status", status);
+                            if ("Error".equals(status)) {
+                                List<Integer> listId = new ArrayList<Integer>();
+                                listId.add(R.string.button_pay);
+                                listId.add(R.string.button_print);
+
+                                activity.setViewProcessButtons(listId, View.GONE);
+                                layoutSurvey.setVisibility(View.VISIBLE);
+                            } else {
+                                List<Integer> listId = new ArrayList<Integer>();
+                                listId.add(R.string.button_pay);
+                                listId.add(R.string.button_print);
+
+                                activity.setViewProcessButtons(listId, View.VISIBLE);
+                                layoutSurvey.setVisibility(View.GONE);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("data","22");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("onFailure question:",t.getLocalizedMessage());
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("Exception question",e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     *
+     * End
+     *
+     */
 }

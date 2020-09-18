@@ -40,23 +40,11 @@ public interface Service {
     @GET("Production/GIS/TrackingLocation")
     Call<Object> updateGIS(@Query("latitude") String data1, @Query("longitude") String data2, @Query("deviceId") String data3, @Query("empId") String data4, @Query("speed") String data5, @Query("source") String data6);
 
-
-
-
     @GET("/api/api-gis-Receipt.php")
     Call<Object> getgps(@Query("ReceiptID") String ReceiptID, @Query("EmpID") String EmpID, @Query("Latitude") String Latitude, @Query("Longitude") String Longitude);
 
-
-
-
-
-
-
     @GET("/api/api-setInsertInstallDate.php")
     Call<Object> InsertInstallDate(@Query("RefNo") String RefNo,@Query("InstallDate") String InstallDate,@Query("Empid") String Empid);
-
-
-
 
     @GET("/api/api-productListBooking.php")
     Call<Object> product(@Query("Empid") String Empid);
@@ -71,10 +59,14 @@ public interface Service {
     @GET("/api/api-booking-contract_UAT.php")
     Call<Object> load_data_contact_online_preoder_UAT();
 
+    @GET("/api/api-creditScoreQuestion_UAT.php")
+    Call<Object> checkQuestion(@Query("Contno") String data);
 
+    @GET("UAT/SurveryAppSale/GetSurvey")
+    Call<Object> getSurvey();
 
-
-
+    @GET("/api/api-creditScoreInsert_UAT.php")
+    Call<Object> saveSurvey(@Query("RefNo") String refno, @Query("Contno") String conto, @Query("CusStatus") int cusstatus, @Query("ResStatus") int resstatus, @Query("ResTime") int restime, @Query("JobName") int jobname, @Query("JobTime") int jobtime, @Query("CusSalary") int cussalary, @Query("EmpID") String empid);
 }
 
 

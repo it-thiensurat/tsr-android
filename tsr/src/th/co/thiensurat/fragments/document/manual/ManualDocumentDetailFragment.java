@@ -2,6 +2,7 @@ package th.co.thiensurat.fragments.document.manual;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Date;
 import java.util.List;
@@ -20,6 +22,8 @@ import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHUtilities;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
+import th.co.thiensurat.activities.MainActivity;
+import th.co.thiensurat.activities.SurveyActivity;
 import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.controller.ChangeContractController;
@@ -93,6 +97,11 @@ public class ManualDocumentDetailFragment extends BHFragment {
                 && dataManualDocument.processType != null
                 && (dataManualDocument.processType == SaleFirstPaymentChoiceFragment.ProcessType.Sale
                 || dataManualDocument.processType == SaleFirstPaymentChoiceFragment.ProcessType.ChangeContract))
+//            if (true) {
+//                return new int[]{R.string.button_back, R.string.button_survey_befor_contract_confirm};
+//            } else {
+//
+//            }
             return new int[]{R.string.button_back, R.string.button_contract_confirm};
         else if (dataManualDocument.DocumentType.equals(DocumentType.Receipt.toString()))
             return new int[]{R.string.button_back, R.string.button_save_manual_receipt};
@@ -129,6 +138,9 @@ public class ManualDocumentDetailFragment extends BHFragment {
             case R.string.button_contract_confirm:
                 CheckSaveManualDocument();
                 break;
+//            case R.string.button_survey_befor_contract_confirm:
+//                SurveyPage();
+//                break;
             default:
                 break;
         }
@@ -230,8 +242,6 @@ public class ManualDocumentDetailFragment extends BHFragment {
                 }
             }
         }.start();
-
-
     }
 
     private void CheckSaveManualDocument() {

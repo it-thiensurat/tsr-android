@@ -4640,21 +4640,28 @@ public class DocumentController {
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
 
-        receiptBuilder.setAlign(Paint.Align.CENTER);
-        String qrcode = String.format("|010755600021301" + CR + "%s" + CR + "%s" + CR + "%s", debtorCustomerInfo.IDCard.replace("-", ""), paymentInfo.CONTNO, "0");
-        Bitmap bmpQR = createQRCodeForReceipt(qrcode);
-        File file = new File(getAlbumStorageDir(paymentInfo.CONTNO), String.format("bottomreceipt_%s.jpg", paymentInfo.CONTNO));
-        Bitmap bottomReceipt = mergeBMP(bmpQR, logoTelesale(), file);
 
-        Bitmap resultReceipt = Bitmap.createBitmap(RECEIPT_WIDTH, 160, Config.ARGB_8888);
-        Canvas cc = new Canvas(resultReceipt);
-        cc.drawBitmap(bottomReceipt, 0, 0, null);
-        bottomReceipt.recycle();
 
         receiptBuilder.setTextSize(20);
-        receiptBuilder.addImage(resultReceipt);
-        receiptBuilder.setAlign(Paint.Align.LEFT);
-        receiptBuilder.addText("สำหรับชำระค่างวด", false);
+        if (paymentInfo.PaymentPeriodNumber == 1) {
+            receiptBuilder.setAlign(Align.RIGHT);
+            receiptBuilder.addImage(logoTelesale());
+        } else {
+            receiptBuilder.setAlign(Paint.Align.CENTER);
+            String qrcode = String.format("|010755600021301" + CR + "%s" + CR + "%s" + CR + "%s", debtorCustomerInfo.IDCard.replace("-", ""), paymentInfo.CONTNO, "0");
+            Bitmap bmpQR = createQRCodeForReceipt(qrcode);
+            File file = new File(getAlbumStorageDir(paymentInfo.CONTNO), String.format("bottomreceipt_%s.jpg", paymentInfo.CONTNO));
+            Bitmap bottomReceipt = mergeBMP(bmpQR, logoTelesale(), file);
+
+            Bitmap resultReceipt = Bitmap.createBitmap(RECEIPT_WIDTH, 160, Config.ARGB_8888);
+            Canvas cc = new Canvas(resultReceipt);
+            cc.drawBitmap(bottomReceipt, 0, 0, null);
+            bottomReceipt.recycle();
+            receiptBuilder.addImage(resultReceipt);
+            receiptBuilder.setAlign(Paint.Align.LEFT);
+            receiptBuilder.addText("สำหรับชำระค่างวด", false);
+        }
+
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(40);
 

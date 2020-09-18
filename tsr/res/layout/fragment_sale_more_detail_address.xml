@@ -179,6 +179,29 @@
                 </LinearLayout>
             </LinearLayout>
 
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="@dimen/padding_normal"-->
+<!--                android:layout_marginRight="@dimen/padding_normal"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:background="@color/bg_active"-->
+<!--                android:orientation="vertical" >-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="สถานภาพ"-->
+<!--                    android:textColor="#999FFF"-->
+<!--                    android:textSize="@dimen/normal_font_size" />-->
+
+<!--                <Spinner-->
+<!--                    android:id="@+id/spinnerMary"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center" />-->
+<!--            </LinearLayout>-->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -243,6 +266,29 @@
                     android:textSize="@dimen/normal_font_size" />
             </LinearLayout>
 
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="@dimen/padding_normal"-->
+<!--                android:layout_marginRight="@dimen/padding_normal"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:background="@color/bg_active"-->
+<!--                android:orientation="vertical" >-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="ระยะเวลาที่อยู่อาศัย"-->
+<!--                    android:textColor="#999FFF"-->
+<!--                    android:textSize="@dimen/normal_font_size" />-->
+
+<!--                <Spinner-->
+<!--                    android:id="@+id/spinnerStayTime"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center" />-->
+<!--            </LinearLayout>-->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -284,6 +330,52 @@
                         android:textSize="@dimen/normal_font_size" />
                 </LinearLayout>
             </LinearLayout>
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="@dimen/padding_normal"-->
+<!--                android:layout_marginRight="@dimen/padding_normal"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:background="@color/bg_active"-->
+<!--                android:orientation="vertical" >-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="อายุงาน"-->
+<!--                    android:textColor="#999FFF"-->
+<!--                    android:textSize="@dimen/normal_font_size" />-->
+
+<!--                <Spinner-->
+<!--                    android:id="@+id/spinnerWorkTime"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center" />-->
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="@dimen/padding_normal"-->
+<!--                android:layout_marginRight="@dimen/padding_normal"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:background="@color/bg_active"-->
+<!--                android:orientation="vertical" >-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="รายได้ต่อเดือน"-->
+<!--                    android:textColor="#999FFF"-->
+<!--                    android:textSize="@dimen/normal_font_size" />-->
+
+<!--                <Spinner-->
+<!--                    android:id="@+id/spinnerSalary"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center" />-->
+<!--            </LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="match_parent"

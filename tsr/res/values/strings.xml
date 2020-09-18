@@ -64,6 +64,7 @@
     <string name="button_confirm">ยืนยัน</string>
     <string name="button_confirm_print">ยืนยัน/พิมพ์</string>
     <string name="button_contract_confirm">ยืนยันการออกสัญญา</string>
+    <string name="button_survey_befor_contract_confirm">กรอกข้อมูลเพิ่มเติม</string>
     <string name="button_contract_confirm_preorder">ยืนยันการออกใบจอง</string>
     <string name="button_conclude">สรุป</string>
     <string name="button_save_manual_receipt">บันทึกใบเสร็จมือ</string>
@@ -590,7 +591,6 @@
     <string name="title_assign_employee">Assign employee</string>
 
     <!--end for print version 2-->
-
 
 
 </resources>
