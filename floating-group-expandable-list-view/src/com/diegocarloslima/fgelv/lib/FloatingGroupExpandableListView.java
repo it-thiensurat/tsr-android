@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -156,17 +157,19 @@ public class FloatingGroupExpandableListView extends ExpandableListView {
 			}
 		};
 
-		mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
-
-			@Override
-			public void onLongPress(MotionEvent e) {
-				if(mFloatingGroupView != null && !mFloatingGroupView.isLongClickable()) {
-					final ContextMenuInfo contextMenuInfo = new ExpandableListContextMenuInfo(mFloatingGroupView, getPackedPositionForGroup(mFloatingGroupPosition), mAdapter.getGroupId(mFloatingGroupPosition));
-					ReflectionUtils.setFieldValue(AbsListView.class, "mContextMenuInfo", FloatingGroupExpandableListView.this, contextMenuInfo);
-					showContextMenu();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+			mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+	
+				@Override
+				public void onLongPress(MotionEvent e) {
+					if(mFloatingGroupView != null && !mFloatingGroupView.isLongClickable()) {
+						final ContextMenuInfo contextMenuInfo = new ExpandableListContextMenuInfo(mFloatingGroupView, getPackedPositionForGroup(mFloatingGroupPosition), mAdapter.getGroupId(mFloatingGroupPosition));
+						ReflectionUtils.setFieldValue(AbsListView.class, "mContextMenuInfo", FloatingGroupExpandableListView.this, contextMenuInfo);
+						showContextMenu();
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	@Override
@@ -188,13 +191,17 @@ public class FloatingGroupExpandableListView extends ExpandableListView {
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
 		// Reflection is used here to obtain info about the selector
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			mSelectorPosition = (Integer) ReflectionUtils.getFieldValue(AbsListView.class, "mSelectorPosition", FloatingGroupExpandableListView.this);
-		} else {
-			mSelectorPosition = (Integer) ReflectionUtils.getFieldValue(AbsListView.class, "mMotionPosition", FloatingGroupExpandableListView.this);
-		}
+		try {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+				mSelectorPosition = (Integer) ReflectionUtils.getFieldValue(AbsListView.class, "mSelectorPosition", FloatingGroupExpandableListView.this);
+			} else {
+				mSelectorPosition = (Integer) ReflectionUtils.getFieldValue(AbsListView.class, "mMotionPosition", FloatingGroupExpandableListView.this);
+			}
 
-		mSelectorRect.set((Rect) ReflectionUtils.getFieldValue(AbsListView.class, "mSelectorRect", FloatingGroupExpandableListView.this));
+			mSelectorRect.set((Rect) ReflectionUtils.getFieldValue(AbsListView.class, "mSelectorRect", FloatingGroupExpandableListView.this));
+		} catch (NullPointerException e) {
+			Log.e("library", e.getLocalizedMessage());
+		}
 
 		if(!mDrawSelectorOnTop) {
 			drawDefaultSelector(canvas);
