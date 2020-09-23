@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -56,6 +57,7 @@ public class SurveyActivity extends Activity implements View.OnClickListener {
     private ImageButton buttonBack;
     private EditText editTextHabitat, editTextCareer, editTextHobby, editTextSuggestion;
     private LinearLayout layoutHabitat, layoutCareer;
+    private TextView homeStar, homeStatusStar, homeStatusOtherStar, homeTimeStar, jobStar, jobOtherStar, jobTimeStar, salaryStar;
     private Spinner spinnerMarry, spinnerHabitat, spinnerStatusLive, spinnerTimeLive, spinnerCareer, spinnerCareerTime, spinnerSalary, spinnerHobby, spinnerSuggestion;
     private void setUpView() {
         buttonSave          = (Button) findViewById(R.id.button_save);
@@ -81,6 +83,24 @@ public class SurveyActivity extends Activity implements View.OnClickListener {
         spinnerSalary       = (Spinner) findViewById(R.id.spinnerSalary);
         spinnerHobby        = (Spinner) findViewById(R.id.spinnerHobby);
         spinnerSuggestion   = (Spinner) findViewById(R.id.spinnerSuggestion);
+
+        homeStar                = (TextView) findViewById(R.id.homeStar);
+        homeStatusStar          = (TextView) findViewById(R.id.homeStatusStar);
+        homeStatusOtherStar     = (TextView) findViewById(R.id.homeStatusOtherStar);
+        homeTimeStar            = (TextView) findViewById(R.id.homeTimeStar);
+        jobStar                 = (TextView) findViewById(R.id.JobStar);
+        jobOtherStar            = (TextView) findViewById(R.id.JobOtherStar);
+        jobTimeStar             = (TextView) findViewById(R.id.JobTimeStar);
+        salaryStar              = (TextView) findViewById(R.id.SalaryStar);
+
+        homeStar.setVisibility(View.GONE);
+        homeStatusStar.setVisibility(View.GONE);
+        homeStatusOtherStar.setVisibility(View.GONE);
+        homeTimeStar.setVisibility(View.GONE);
+        jobStar.setVisibility(View.GONE);
+        jobOtherStar.setVisibility(View.GONE);
+        jobTimeStar.setVisibility(View.GONE);
+        salaryStar.setVisibility(View.GONE);
 
         buttonBack.setOnClickListener(this);
         buttonSave.setOnClickListener(this);
@@ -118,62 +138,104 @@ public class SurveyActivity extends Activity implements View.OnClickListener {
     }
 
     private void saveSurvey() {
-        String habitatOther, careerOther, hobbyOther, suggestionOther;
+        String habitatOther = "", careerOther = "", hobbyOther, suggestionOther;
         habitatOther    = editTextHabitat.getText().toString();
         careerOther     = editTextCareer.getText().toString();
         hobbyOther      = editTextHobby.getText().toString();
         suggestionOther = editTextSuggestion.getText().toString();
 
         if (marryId > 0 && homeId > 0 && timeLiveId > 0 && jobId > 0 && jobTimeId > 0 && salaryId > 0) {
-            try {
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(BASE_URL)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                Service request = retrofit.create(Service.class);
-                Call call = request.saveSurvey(refNo, contractNo, marryId, homeId, timeLiveId, jobId, jobTimeId, salaryId, empId);
-                call.enqueue(new Callback() {
-                    @Override
-                    public void onResponse(Call call, retrofit2.Response response) {
-                        Gson gson = new Gson();
-                        try {
-                            JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
-                            Log.e("save survey", String.valueOf(jsonObject));
-                            JSONArray array = jsonObject.getJSONArray("data");
-                            JSONObject obj = null;
-                            for (int i = 0; i < array.length(); i++) {
-                                obj = array.getJSONObject(i);
-                                String status = obj.getString("StatusInsert");
-                                if ("SUCCESS".equals(status)) {
-                                    setResult(RESULT_OK);
-                                    finish();
-                                } else {
-                                    AlertDialog.Builder setupAlert;
-                                    setupAlert = new AlertDialog.Builder(SurveyActivity.this)
-                                            .setTitle("แจ้งเตือน")
-                                            .setMessage("พบข้อผิดพลาดในการบันทึกข้อมูล")
-                                            .setCancelable(false)
-                                            .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int whichButton) {
-                                                    dialog.cancel();
-                                                }
-                                            });
-                                    setupAlert.show();
-                                }
+            if (homeId == 8 && "".equals(habitatOther) && jobId == 24 && "".equals(careerOther)) {
+                AlertDialog.Builder setupAlert;
+                setupAlert = new AlertDialog.Builder(SurveyActivity.this)
+                        .setTitle("แจ้งเตือน")
+                        .setMessage("กรุณาระบุกรณีเลือกอื่นๆ")
+                        .setCancelable(false)
+                        .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dialog.cancel();
+                                homeStatusOtherStar.setVisibility(View.VISIBLE);
+                                jobOtherStar.setVisibility(View.VISIBLE);
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.e("JSONException", e.getLocalizedMessage());
+                        });
+                setupAlert.show();
+            } else if (homeId == 8 && "".equals(habitatOther)) {
+                AlertDialog.Builder setupAlert;
+                setupAlert = new AlertDialog.Builder(SurveyActivity.this)
+                        .setTitle("แจ้งเตือน")
+                        .setMessage("กรุณาระบุที่อยู่อื่นๆ")
+                        .setCancelable(false)
+                        .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dialog.cancel();
+                                homeStatusOtherStar.setVisibility(View.VISIBLE);
+                            }
+                        });
+                setupAlert.show();
+            } else if (jobId == 24 && "".equals(careerOther)) {
+                AlertDialog.Builder setupAlert;
+                setupAlert = new AlertDialog.Builder(SurveyActivity.this)
+                        .setTitle("แจ้งเตือน")
+                        .setMessage("กรุณาระบุอาชีพอื่นๆ")
+                        .setCancelable(false)
+                        .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dialog.cancel();
+                                jobOtherStar.setVisibility(View.VISIBLE);
+                            }
+                        });
+                setupAlert.show();
+            } else {
+                try {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(BASE_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    Service request = retrofit.create(Service.class);
+                    Call call = request.saveSurvey(refNo, contractNo, marryId, homeId, timeLiveId, jobId, jobTimeId, salaryId, empId, habitatOther, careerOther);
+                    call.enqueue(new Callback() {
+                        @Override
+                        public void onResponse(Call call, retrofit2.Response response) {
+                            Gson gson = new Gson();
+                            try {
+                                JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+                                Log.e("save survey", String.valueOf(jsonObject));
+                                JSONArray array = jsonObject.getJSONArray("data");
+                                JSONObject obj = null;
+                                for (int i = 0; i < array.length(); i++) {
+                                    obj = array.getJSONObject(i);
+                                    String status = obj.getString("StatusInsert");
+                                    if ("SUCCESS".equals(status)) {
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    } else {
+                                        AlertDialog.Builder setupAlert;
+                                        setupAlert = new AlertDialog.Builder(SurveyActivity.this)
+                                                .setTitle("แจ้งเตือน")
+                                                .setMessage("พบข้อผิดพลาดในการบันทึกข้อมูล")
+                                                .setCancelable(false)
+                                                .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                                        dialog.cancel();
+                                                    }
+                                                });
+                                        setupAlert.show();
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.e("JSONException", e.getLocalizedMessage());
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call call, Throwable t) {
-                        Log.e("data", "2");
-                    }
-                });
-            } catch (Exception e) {
-                Log.e("data", "3");
+                        @Override
+                        public void onFailure(Call call, Throwable t) {
+                            Log.e("data", "2");
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e("data", "3");
+                }
             }
         } else {
             AlertDialog.Builder setupAlert;
@@ -184,6 +246,41 @@ public class SurveyActivity extends Activity implements View.OnClickListener {
                     .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             dialog.cancel();
+                            if (marryId == 0) {
+                                homeStar.setVisibility(View.VISIBLE);
+                            } else {
+                                homeStar.setVisibility(View.GONE);
+                            }
+
+                            if (homeId == 0) {
+                                homeStatusStar.setVisibility(View.VISIBLE);
+                            } else {
+                                homeStatusStar.setVisibility(View.GONE);
+                            }
+
+                            if (timeLiveId == 0) {
+                                homeTimeStar.setVisibility(View.VISIBLE);
+                            } else {
+                                homeTimeStar.setVisibility(View.GONE);
+                            }
+
+                            if (jobId == 0) {
+                                jobStar.setVisibility(View.VISIBLE);
+                            } else {
+                                jobStar.setVisibility(View.GONE);
+                            }
+
+                            if (jobTimeId == 0) {
+                                jobTimeStar.setVisibility(View.VISIBLE);
+                            } else {
+                                jobTimeStar.setVisibility(View.GONE);
+                            }
+
+                            if (salaryId == 0) {
+                                salaryStar.setVisibility(View.VISIBLE);
+                            } else {
+                                salaryStar.setVisibility(View.GONE);
+                            }
                         }
                     });
             setupAlert.show();
@@ -225,12 +322,12 @@ public class SurveyActivity extends Activity implements View.OnClickListener {
             }
     }
 
-    private int marryId = 0;
-    private int homeId = 0;
-    private int timeLiveId = 0;
-    private int jobId = 0;
-    private int jobTimeId = 0;
-    private int salaryId = 0;
+    private int marryId     = 0;
+    private int homeId      = 0;
+    private int timeLiveId  = 0;
+    private int jobId       = 0;
+    private int jobTimeId   = 0;
+    private int salaryId    = 0;
 
     private List<String> listMarry = new ArrayList<String>();
     private List<String> listHome = new ArrayList<String>();
@@ -265,7 +362,12 @@ public class SurveyActivity extends Activity implements View.OnClickListener {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     try {
-                        marryId = finalMarry.getJSONObject(i - 1).getInt("id");
+//                        Toast.makeText(getApplicationContext(), String.valueOf(i) + finalMarry.getJSONObject(i), Toast.LENGTH_LONG).show();
+                        if (i > 0) {
+                            marryId = finalMarry.getJSONObject(i - 1).getInt("id");
+                        } else if (i == 0) {
+                            marryId = 0;
+                        }
 //                        Toast.makeText(getApplicationContext(), finalMarry.getJSONObject(i - 1).getInt("id") + "" + listMarry.get(i), Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -274,7 +376,7 @@ public class SurveyActivity extends Activity implements View.OnClickListener {
 
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
-
+                    Toast.makeText(getApplicationContext(), "onNothingSelected", Toast.LENGTH_LONG).show();
                 }
             });
             /**
@@ -298,12 +400,16 @@ public class SurveyActivity extends Activity implements View.OnClickListener {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     try {
-                        homeId = finalHome.getJSONObject(i - 1).getInt("ID");
+                        if (i > 0) {
+                            homeId = finalHome.getJSONObject(i - 1).getInt("ID");
 //                        Toast.makeText(getApplicationContext(), finalHome.getJSONObject(i - 1).getInt("ID") + "" + listHome.get(i), Toast.LENGTH_LONG).show();
-                        if (homeId == 8) {
-                            layoutHabitat.setVisibility(View.VISIBLE);
-                        } else {
-                            layoutHabitat.setVisibility(View.GONE);
+                            if (homeId == 8) {
+                                layoutHabitat.setVisibility(View.VISIBLE);
+                            } else {
+                                layoutHabitat.setVisibility(View.GONE);
+                            }
+                        } else if (i == 0) {
+                            homeId = 0;
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -336,8 +442,12 @@ public class SurveyActivity extends Activity implements View.OnClickListener {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     try {
-                        timeLiveId = finalHomeTime.getJSONObject(i - 1).getInt("ID");
+                        if (i > 0) {
+                            timeLiveId = finalHomeTime.getJSONObject(i - 1).getInt("ID");
 //                        Toast.makeText(getApplicationContext(), finalHomeTime.getJSONObject(i - 1).getInt("ID") + "" + listHomeTime.get(i), Toast.LENGTH_LONG).show();
+                        } else if (i ==0) {
+                            timeLiveId = 0;
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -369,12 +479,16 @@ public class SurveyActivity extends Activity implements View.OnClickListener {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     try {
-                        jobId = finalJob.getJSONObject(i - 1).getInt("ID");
+                        if (i > 0) {
+                            jobId = finalJob.getJSONObject(i - 1).getInt("ID");
 //                        Toast.makeText(getApplicationContext(), finalJob.getJSONObject(i - 1).getInt("ID") + "" + listJob.get(i), Toast.LENGTH_LONG).show();
-                        if (jobId == 24) {
-                            layoutCareer.setVisibility(View.VISIBLE);
-                        } else {
-                            layoutCareer.setVisibility(View.GONE);
+                            if (jobId == 24) {
+                                layoutCareer.setVisibility(View.VISIBLE);
+                            } else {
+                                layoutCareer.setVisibility(View.GONE);
+                            }
+                        } else if (i == 0) {
+                            jobId = 0;
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -407,8 +521,12 @@ public class SurveyActivity extends Activity implements View.OnClickListener {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     try {
-                        jobTimeId = finalJobTime.getJSONObject(i - 1).getInt("ID");
+                        if (i > 0) {
+                            jobTimeId = finalJobTime.getJSONObject(i - 1).getInt("ID");
 //                        Toast.makeText(getApplicationContext(), finalJobTime.getJSONObject(i - 1).getInt("ID") + "" + listJobTime.get(i), Toast.LENGTH_LONG).show();
+                        } else if (i == 0) {
+                            jobTimeId = 0;
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -440,8 +558,12 @@ public class SurveyActivity extends Activity implements View.OnClickListener {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     try {
-                        salaryId = finalSalary.getJSONObject(i - 1).getInt("ID");
+                        if (i > 0) {
+                            salaryId = finalSalary.getJSONObject(i - 1).getInt("ID");
 //                        Toast.makeText(getApplicationContext(), finalSalary.getJSONObject(i - 1).getInt("ID") + "" + listSalary.get(i), Toast.LENGTH_LONG).show();
+                        } else if (i == 0) {
+                            salaryId = 0;
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

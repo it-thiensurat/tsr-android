@@ -82,7 +82,6 @@ public class CreditListFragment extends BHFragment {
         public Date selectedDate;
     }
 
-
     @Override
     protected int fragmentID() {
         return R.layout.fragment_credit_list;
@@ -96,11 +95,6 @@ public class CreditListFragment extends BHFragment {
 
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
-
-
-
-
-
         if (isConnectingToInternet()) {
 
             data = getData();
@@ -108,9 +102,6 @@ public class CreditListFragment extends BHFragment {
             LayoutInflater inflater = activity.getLayoutInflater();
             ViewGroup headerListView = (ViewGroup) inflater.inflate(R.layout.list_credit_header, listView, false);
             listView.addHeaderView(headerListView, null, false);
-
-
-
 
 
 
@@ -149,8 +140,12 @@ public class CreditListFragment extends BHFragment {
                 /*** [END] - Fixed - [BHPROJ-0026-3248] [Android-เก็บเงินค่างวด] หลังจากที่เลือกวันที่ในการเก็บเงินแล้วมาแสดงรายการที่ต้องเก็บเงิน ลูกค้าต้องการให้สามารถค้นหาสัญญาได้ในทุก ๆ วัน (เดิมค้นหาได้เฉพาะวันที่เลือกกดเข้ามา) ที่ถูกแสดงบน Mobile ***/
             }
 
+            Log.e("List customer", "LIST" + String.valueOf(creditList));
+
             customerAdapter = new CustomerAdapter(activity, R.layout.list_credit, creditList);
             listView.setAdapter(customerAdapter);
+
+
 
             btnSearch.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -181,17 +176,13 @@ public class CreditListFragment extends BHFragment {
 
             load_data_test();
 
-          }
-        else {
+          } else {
 
             data = getData();
 
             LayoutInflater inflater = activity.getLayoutInflater();
             ViewGroup headerListView = (ViewGroup) inflater.inflate(R.layout.list_credit_header, listView, false);
             listView.addHeaderView(headerListView, null, false);
-
-
-
 
 
 
@@ -332,6 +323,8 @@ public class CreditListFragment extends BHFragment {
                 }
                 chkHeader.setChecked(selectedChkHeader);
                 customerAdapter.notifyDataSetChanged();
+
+                Log.e("List customer", "List2" + String.valueOf(creditList));
             }
         }.start();
     }
@@ -591,9 +584,6 @@ public class CreditListFragment extends BHFragment {
                         JSON_PARSE_DATA_AFTER_WEBCALL(jsonObject.getJSONArray("data"));
                     } catch (JSONException e) {
                         e.printStackTrace();
-
-
-
 
                     }
 

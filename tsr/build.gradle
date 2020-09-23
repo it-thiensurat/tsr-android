@@ -3,7 +3,7 @@ apply plugin: 'io.fabric'
 
 android {
     useLibrary 'org.apache.http.legacy'
-    compileSdkVersion 29
+    compileSdkVersion 28
     buildToolsVersion '28.0.3'
 
     def versionCodes = { ->
@@ -25,7 +25,7 @@ android {
     defaultConfig {
         applicationId 'th.co.thiensurat'
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 28
         multiDexEnabled true
         versionCode   versionCodes()
 //        versionName "1.0.0.71" //<-- current version

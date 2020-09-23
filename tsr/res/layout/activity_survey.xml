@@ -16,6 +16,14 @@
             android:id="@+id/tool_bar"
             layout="@layout/toolbar" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="* กรุณาเลือกตอบคำถามทุกข้อ"
+            android:textColor="@color/bg_body_red"
+            android:layout_gravity="center"
+            android:textSize="@dimen/large_font_size" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,12 +43,24 @@
                     android:layout_marginTop="30dp"
                     android:orientation="vertical" >
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="สถานะภาพ"
-                        android:textColor="#999FFF"
-                        android:textSize="@dimen/normal_font_size" />
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="สถานะภาพ"
+                            android:textColor="#999FFF"
+                            android:textSize="@dimen/normal_font_size" />
+                        <TextView
+                            android:id="@+id/homeStar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" *"
+                            android:layout_gravity="center"
+                            android:textColor="@color/bg_body_red"
+                            android:textSize="@dimen/normal_font_size" />
+                    </LinearLayout>
 
                     <Spinner
                         android:id="@+id/spinnerMary"
@@ -57,12 +77,26 @@
                     android:layout_marginTop="30dp"
                     android:orientation="vertical" >
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="สถานะที่อยู่อาศัย"
-                        android:textColor="#999FFF"
-                        android:textSize="@dimen/normal_font_size" />
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="สถานะที่อยู่อาศัย"
+                            android:textColor="#999FFF"
+                            android:textSize="@dimen/normal_font_size" />
+
+                        <TextView
+                            android:id="@+id/homeStatusStar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" *"
+                            android:layout_gravity="center"
+                            android:textColor="@color/bg_body_red"
+                            android:textSize="@dimen/normal_font_size" />
+                    </LinearLayout>
 
                     <Spinner
                         android:id="@+id/spinnerHabitat"
@@ -76,12 +110,26 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal" >
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="อื่นๆ"
-                            android:textSize="@dimen/normal_font_size" />
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="อื่นๆ"
+                                android:textSize="@dimen/normal_font_size" />
+
+                            <TextView
+                                android:id="@+id/homeStatusOtherStar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" *"
+                                android:layout_gravity="center"
+                                android:textColor="@color/bg_body_red"
+                                android:textSize="@dimen/normal_font_size" />
+                        </LinearLayout>
 
                         <EditText
                             android:id="@+id/editTextHabitat"
@@ -127,12 +175,26 @@
                     android:layout_marginTop="25dp"
                     android:orientation="vertical" >
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="ระยะเวลาที่อยู่อาศัย"
-                        android:textColor="#999FFF"
-                        android:textSize="@dimen/normal_font_size" />
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ระยะเวลาที่อยู่อาศัย"
+                            android:textColor="#999FFF"
+                            android:textSize="@dimen/normal_font_size" />
+
+                        <TextView
+                            android:id="@+id/homeTimeStar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" *"
+                            android:layout_gravity="center"
+                            android:textColor="@color/bg_body_red"
+                            android:textSize="@dimen/normal_font_size" />
+                    </LinearLayout>
 
                     <Spinner
                         android:id="@+id/spinnerTimeLive"
@@ -149,12 +211,26 @@
                     android:layout_marginTop="30dp"
                     android:orientation="vertical" >
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="อาชีพ"
-                        android:textColor="#999FFF"
-                        android:textSize="@dimen/normal_font_size" />
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="อาชีพ"
+                            android:textColor="#999FFF"
+                            android:textSize="@dimen/normal_font_size" />
+
+                        <TextView
+                            android:id="@+id/JobStar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" *"
+                            android:layout_gravity="center"
+                            android:textColor="@color/bg_body_red"
+                            android:textSize="@dimen/normal_font_size" />
+                    </LinearLayout>
 
                     <Spinner
                         android:id="@+id/spinnerCareer"
@@ -168,12 +244,26 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal" >
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="อื่นๆ"
-                            android:textSize="@dimen/normal_font_size" />
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="อื่นๆ"
+                                android:textSize="@dimen/normal_font_size" />
+
+                            <TextView
+                                android:id="@+id/JobOtherStar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" *"
+                                android:layout_gravity="center"
+                                android:textColor="@color/bg_body_red"
+                                android:textSize="@dimen/normal_font_size" />
+                        </LinearLayout>
 
                         <EditText
                             android:id="@+id/editTextCareer"
@@ -193,12 +283,26 @@
                     android:layout_marginTop="30dp"
                     android:orientation="vertical" >
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="อายุงาน"
-                        android:textColor="#999FFF"
-                        android:textSize="@dimen/normal_font_size" />
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="อายุงาน"
+                            android:textColor="#999FFF"
+                            android:textSize="@dimen/normal_font_size" />
+
+                        <TextView
+                            android:id="@+id/JobTimeStar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" *"
+                            android:layout_gravity="center"
+                            android:textColor="@color/bg_body_red"
+                            android:textSize="@dimen/normal_font_size" />
+                    </LinearLayout>
 
                     <Spinner
                         android:id="@+id/spinnerCareerTime"
@@ -215,12 +319,26 @@
                     android:layout_marginTop="30dp"
                     android:orientation="vertical" >
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="รายได้ต่อเดือน"
-                        android:textColor="#999FFF"
-                        android:textSize="@dimen/normal_font_size" />
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="รายได้ต่อเดือน"
+                            android:textColor="#999FFF"
+                            android:textSize="@dimen/normal_font_size" />
+
+                        <TextView
+                            android:id="@+id/SalaryStar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" *"
+                            android:layout_gravity="center"
+                            android:textColor="@color/bg_body_red"
+                            android:textSize="@dimen/normal_font_size" />
+                    </LinearLayout>
 
                     <Spinner
                         android:id="@+id/spinnerSalary"
@@ -331,7 +449,7 @@
                         android:layout_centerHorizontal="true"
                         android:text="บันทึก"
                         android:textColor="@android:color/white"
-                        android:background="@drawable/button_style_blue"/>
+                        android:background="@color/bg_sub_header"/>
 
                 </RelativeLayout>
             </LinearLayout>

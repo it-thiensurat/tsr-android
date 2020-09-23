@@ -4673,8 +4673,8 @@ public class DocumentController {
         receiptBuilder.setAlign(Paint.Align.CENTER);
         receiptBuilder.addText("ขอเชิญร่วมแสดงความคิดเห็น เพื่อนำมาพัฒนาและปรับปรุงบริการของเรา", true);
         receiptBuilder.addParagraph();
-        receiptBuilder.setAlign(Paint.Align.CENTER);
-        receiptBuilder.addText("เพื่อนำมาพัฒนาและปรับปรุงบริการของเรา", true);
+//        receiptBuilder.setAlign(Paint.Align.CENTER);
+//        receiptBuilder.addText("เพื่อนำมาพัฒนาและปรับปรุงบริการของเรา", true);
 
         receiptBuilder.setTextSize(26);
         receiptBuilder.setAlign(Paint.Align.CENTER);

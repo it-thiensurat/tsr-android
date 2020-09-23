@@ -547,6 +547,7 @@ public class SaleContractPrintFragment extends BHFragment {
                         String ContractDate = df.format(contract.EFFDATE);
                         if (!contract.STATUS.equals("VOID") && ContractDate.equals(currentDate) && Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract) {
                             btnVoidContract.setVisibility(View.VISIBLE);
+                            layoutSurvey.setVisibility(View.GONE);
                         } else if (!contract.STATUS.equals("VOID") && ContractDate.equals(currentDate) && Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.Sale) {
                             checkHasSurvey();
                         }
@@ -1209,6 +1210,7 @@ public class SaleContractPrintFragment extends BHFragment {
                                 layoutSurvey.setVisibility(View.GONE);
                             }
                         }
+//                        layoutSurvey.setVisibility(View.VISIBLE);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         Log.e("data","22");
