@@ -44,6 +44,7 @@ public class SurveyActivity extends Activity implements View.OnClickListener {
     private String contractNo;
     private String refNo;
     private String empId;
+    private boolean checkStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class SurveyActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_survey);
         setUpView();
         loadSurvey();
+        loadCheckStatus();
     }
 
     private Button buttonSave;
@@ -144,146 +146,236 @@ public class SurveyActivity extends Activity implements View.OnClickListener {
         hobbyOther      = editTextHobby.getText().toString();
         suggestionOther = editTextSuggestion.getText().toString();
 
-        if (marryId > 0 && homeId > 0 && timeLiveId > 0 && jobId > 0 && jobTimeId > 0 && salaryId > 0) {
-            if (homeId == 8 && "".equals(habitatOther) && jobId == 24 && "".equals(careerOther)) {
-                AlertDialog.Builder setupAlert;
-                setupAlert = new AlertDialog.Builder(SurveyActivity.this)
-                        .setTitle("แจ้งเตือน")
-                        .setMessage("กรุณาระบุกรณีเลือกอื่นๆ")
-                        .setCancelable(false)
-                        .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.cancel();
-                                homeStatusOtherStar.setVisibility(View.VISIBLE);
-                                jobOtherStar.setVisibility(View.VISIBLE);
-                            }
-                        });
-                setupAlert.show();
-            } else if (homeId == 8 && "".equals(habitatOther)) {
-                AlertDialog.Builder setupAlert;
-                setupAlert = new AlertDialog.Builder(SurveyActivity.this)
-                        .setTitle("แจ้งเตือน")
-                        .setMessage("กรุณาระบุที่อยู่อื่นๆ")
-                        .setCancelable(false)
-                        .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.cancel();
-                                homeStatusOtherStar.setVisibility(View.VISIBLE);
-                            }
-                        });
-                setupAlert.show();
-            } else if (jobId == 24 && "".equals(careerOther)) {
-                AlertDialog.Builder setupAlert;
-                setupAlert = new AlertDialog.Builder(SurveyActivity.this)
-                        .setTitle("แจ้งเตือน")
-                        .setMessage("กรุณาระบุอาชีพอื่นๆ")
-                        .setCancelable(false)
-                        .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.cancel();
-                                jobOtherStar.setVisibility(View.VISIBLE);
-                            }
-                        });
-                setupAlert.show();
-            } else {
-                try {
-                    Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl(BASE_URL)
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .build();
-                    Service request = retrofit.create(Service.class);
-                    Call call = request.saveSurvey(refNo, contractNo, marryId, homeId, timeLiveId, jobId, jobTimeId, salaryId, empId, habitatOther, careerOther);
-                    call.enqueue(new Callback() {
-                        @Override
-                        public void onResponse(Call call, retrofit2.Response response) {
-                            Gson gson = new Gson();
-                            try {
-                                JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
-                                Log.e("save survey", String.valueOf(jsonObject));
-                                JSONArray array = jsonObject.getJSONArray("data");
-                                JSONObject obj = null;
-                                for (int i = 0; i < array.length(); i++) {
-                                    obj = array.getJSONObject(i);
-                                    String status = obj.getString("StatusInsert");
-                                    if ("SUCCESS".equals(status)) {
-                                        setResult(RESULT_OK);
-                                        finish();
-                                    } else {
-                                        AlertDialog.Builder setupAlert;
-                                        setupAlert = new AlertDialog.Builder(SurveyActivity.this)
-                                                .setTitle("แจ้งเตือน")
-                                                .setMessage("พบข้อผิดพลาดในการบันทึกข้อมูล")
-                                                .setCancelable(false)
-                                                .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                                        dialog.cancel();
-                                                    }
-                                                });
-                                        setupAlert.show();
-                                    }
+        if (checkStatus) {
+            if (marryId > 0 && homeId > 0 && timeLiveId > 0 && jobId > 0 && jobTimeId > 0 && salaryId > 0) {
+                if (homeId == 8 && "".equals(habitatOther) && jobId == 24 && "".equals(careerOther)) {
+                    AlertDialog.Builder setupAlert;
+                    setupAlert = new AlertDialog.Builder(SurveyActivity.this)
+                            .setTitle("แจ้งเตือน")
+                            .setMessage("กรุณาระบุกรณีเลือกอื่นๆ")
+                            .setCancelable(false)
+                            .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dialog.cancel();
+                                    homeStatusOtherStar.setVisibility(View.VISIBLE);
+                                    jobOtherStar.setVisibility(View.VISIBLE);
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                Log.e("JSONException", e.getLocalizedMessage());
+                            });
+                    setupAlert.show();
+                } else if (homeId == 8 && "".equals(habitatOther)) {
+                    AlertDialog.Builder setupAlert;
+                    setupAlert = new AlertDialog.Builder(SurveyActivity.this)
+                            .setTitle("แจ้งเตือน")
+                            .setMessage("กรุณาระบุที่อยู่อื่นๆ")
+                            .setCancelable(false)
+                            .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dialog.cancel();
+                                    homeStatusOtherStar.setVisibility(View.VISIBLE);
+                                }
+                            });
+                    setupAlert.show();
+                } else if (jobId == 24 && "".equals(careerOther)) {
+                    AlertDialog.Builder setupAlert;
+                    setupAlert = new AlertDialog.Builder(SurveyActivity.this)
+                            .setTitle("แจ้งเตือน")
+                            .setMessage("กรุณาระบุอาชีพอื่นๆ")
+                            .setCancelable(false)
+                            .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dialog.cancel();
+                                    jobOtherStar.setVisibility(View.VISIBLE);
+                                }
+                            });
+                    setupAlert.show();
+                } else {
+                    try {
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(BASE_URL)
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+                        Service request = retrofit.create(Service.class);
+                        Call call = request.saveSurvey(refNo, contractNo, marryId, homeId, timeLiveId, jobId, jobTimeId, salaryId, empId, habitatOther, careerOther);
+                        call.enqueue(new Callback() {
+                            @Override
+                            public void onResponse(Call call, retrofit2.Response response) {
+                                Gson gson = new Gson();
+                                try {
+                                    JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+                                    Log.e("save survey", String.valueOf(jsonObject));
+                                    JSONArray array = jsonObject.getJSONArray("data");
+                                    JSONObject obj = null;
+                                    for (int i = 0; i < array.length(); i++) {
+                                        obj = array.getJSONObject(i);
+                                        String status = obj.getString("StatusInsert");
+                                        if ("SUCCESS".equals(status)) {
+                                            setResult(RESULT_OK);
+                                            finish();
+                                        } else {
+                                            AlertDialog.Builder setupAlert;
+                                            setupAlert = new AlertDialog.Builder(SurveyActivity.this)
+                                                    .setTitle("แจ้งเตือน")
+                                                    .setMessage("พบข้อผิดพลาดในการบันทึกข้อมูล")
+                                                    .setCancelable(false)
+                                                    .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int whichButton) {
+                                                            dialog.cancel();
+                                                        }
+                                                    });
+                                            setupAlert.show();
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    Log.e("JSONException", e.getLocalizedMessage());
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call call, Throwable t) {
-                            Log.e("data", "2");
-                        }
-                    });
-                } catch (Exception e) {
-                    Log.e("data", "3");
+                            @Override
+                            public void onFailure(Call call, Throwable t) {
+                                Log.e("data", "2");
+                            }
+                        });
+                    } catch (Exception e) {
+                        Log.e("data", "3");
+                    }
                 }
+            } else {
+                AlertDialog.Builder setupAlert;
+                setupAlert = new AlertDialog.Builder(SurveyActivity.this)
+                        .setTitle("แจ้งเตือน")
+                        .setMessage("กรุณาตอบแบบสอบถามให้ครบทุกข้อ")
+                        .setCancelable(false)
+                        .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dialog.cancel();
+                                if (marryId == 0) {
+                                    homeStar.setVisibility(View.VISIBLE);
+                                } else {
+                                    homeStar.setVisibility(View.GONE);
+                                }
+
+                                if (homeId == 0) {
+                                    homeStatusStar.setVisibility(View.VISIBLE);
+                                } else {
+                                    homeStatusStar.setVisibility(View.GONE);
+                                }
+
+                                if (timeLiveId == 0) {
+                                    homeTimeStar.setVisibility(View.VISIBLE);
+                                } else {
+                                    homeTimeStar.setVisibility(View.GONE);
+                                }
+
+                                if (jobId == 0) {
+                                    jobStar.setVisibility(View.VISIBLE);
+                                } else {
+                                    jobStar.setVisibility(View.GONE);
+                                }
+
+                                if (jobTimeId == 0) {
+                                    jobTimeStar.setVisibility(View.VISIBLE);
+                                } else {
+                                    jobTimeStar.setVisibility(View.GONE);
+                                }
+
+                                if (salaryId == 0) {
+                                    salaryStar.setVisibility(View.VISIBLE);
+                                } else {
+                                    salaryStar.setVisibility(View.GONE);
+                                }
+                            }
+                        });
+                setupAlert.show();
             }
         } else {
-            AlertDialog.Builder setupAlert;
-            setupAlert = new AlertDialog.Builder(SurveyActivity.this)
-                    .setTitle("แจ้งเตือน")
-                    .setMessage("กรุณาตอบแบบสอบถามให้ครบทุกข้อ")
-                    .setCancelable(false)
-                    .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            dialog.cancel();
-                            if (marryId == 0) {
-                                homeStar.setVisibility(View.VISIBLE);
-                            } else {
-                                homeStar.setVisibility(View.GONE);
+            try {
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                Service request = retrofit.create(Service.class);
+                Call call = request.saveSurvey(refNo, contractNo, marryId, homeId, timeLiveId, jobId, jobTimeId, salaryId, empId, habitatOther, careerOther);
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onResponse(Call call, retrofit2.Response response) {
+                        Gson gson = new Gson();
+                        try {
+                            JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+                            Log.e("save survey", String.valueOf(jsonObject));
+                            JSONArray array = jsonObject.getJSONArray("data");
+                            JSONObject obj = null;
+                            for (int i = 0; i < array.length(); i++) {
+                                obj = array.getJSONObject(i);
+                                String status = obj.getString("StatusInsert");
+                                if ("SUCCESS".equals(status)) {
+                                    setResult(RESULT_OK);
+                                    finish();
+                                } else {
+                                    AlertDialog.Builder setupAlert;
+                                    setupAlert = new AlertDialog.Builder(SurveyActivity.this)
+                                            .setTitle("แจ้งเตือน")
+                                            .setMessage("พบข้อผิดพลาดในการบันทึกข้อมูล")
+                                            .setCancelable(false)
+                                            .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int whichButton) {
+                                                    dialog.cancel();
+                                                }
+                                            });
+                                    setupAlert.show();
+                                }
                             }
-
-                            if (homeId == 0) {
-                                homeStatusStar.setVisibility(View.VISIBLE);
-                            } else {
-                                homeStatusStar.setVisibility(View.GONE);
-                            }
-
-                            if (timeLiveId == 0) {
-                                homeTimeStar.setVisibility(View.VISIBLE);
-                            } else {
-                                homeTimeStar.setVisibility(View.GONE);
-                            }
-
-                            if (jobId == 0) {
-                                jobStar.setVisibility(View.VISIBLE);
-                            } else {
-                                jobStar.setVisibility(View.GONE);
-                            }
-
-                            if (jobTimeId == 0) {
-                                jobTimeStar.setVisibility(View.VISIBLE);
-                            } else {
-                                jobTimeStar.setVisibility(View.GONE);
-                            }
-
-                            if (salaryId == 0) {
-                                salaryStar.setVisibility(View.VISIBLE);
-                            } else {
-                                salaryStar.setVisibility(View.GONE);
-                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("JSONException", e.getLocalizedMessage());
                         }
-                    });
-            setupAlert.show();
+                    }
+
+                    @Override
+                    public void onFailure(Call call, Throwable t) {
+                        Log.e("data", "2");
+                    }
+                });
+            } catch (Exception e) {
+                Log.e("data", "3");
+            }
+        }
+    }
+
+    private void loadCheckStatus() {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(GIS_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.getSurvey();
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson = new Gson();
+                    try {
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+                        JSONArray array = jsonObject.getJSONArray("data");
+                        JSONObject obj = null;
+                        for (int i = 0; i < array.length(); i++) {
+                            obj = array.getJSONObject(i);
+                            checkStatus = obj.getBoolean("CheckStatus");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("JSONException", e.getLocalizedMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("data", "2");
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("data", "3");
         }
     }
 

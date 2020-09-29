@@ -8,17 +8,23 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,6 +46,7 @@ import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHUtilities;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
+import th.co.thiensurat.activities.SurveyActivity;
 import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.controller.DatabaseHelper;
@@ -133,7 +140,7 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
 
     @Override
     protected int[] processButtons() {
-        return new int[]{R.string.button_back, R.string.button_confirm_print};
+        return new int[]{R.string.button_back, R.string.button_update_customer_phone, R.string.button_confirm_print};
     }
 
     @Override
@@ -150,12 +157,14 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
         }
 
         data = getData();
+        checklastperiod();
 
         if (data.processType == ProcessType.Credit || data.processType == ProcessType.NextPayment) {
             lblTitle.setText(R.string.title_next_payment_credit);
         }
 
         loadData();
+
 
         currentLoc = new GetCurrentLocation(getActivity());
 
@@ -172,9 +181,43 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
                 break;
             case R.string.button_back:
                 showLastView();
+                break;
+            case R.string.button_update_customer_phone :
+                showDialogUpdate();
+                break;
             default:
                 break;
         }
+    }
+
+    private void showDialogUpdate() {
+        final EditText input = new EditText(activity);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        input.setHint("ใส่เบอร์โทรลูกค้า");
+        input.setInputType(InputType.TYPE_CLASS_PHONE);
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
+        alertDialog.setView(input);
+        alertDialog.setMessage("กรุณาอัพเดทเบอร์ฯ ของลูกค้า");
+        alertDialog.setTitle("อัพเดทข้อมูล");
+
+        alertDialog.setPositiveButton("ยืนยัน", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.dismiss();
+                updateCustomerPhone(input.getText().toString());
+            }
+        });
+
+        alertDialog.setNegativeButton("ยกเลิก", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 
     private void showYesNoDialogBox(final String title, final String message) {
@@ -669,10 +712,7 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
 
 
     private void save_gps(String ReceiptID,String EmpID,String Latitude,String Longitude) {
-
         try {
-
-
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -682,27 +722,9 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, retrofit2.Response response) {
-
-         /*           Gson gson=new Gson();
-                    try {
-                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
-
-                        Log.e("jsonObject",jsonObject.toString());
-                        JSON_PARSE_DATA_AFTER_WEBCALL_test(jsonObject.getJSONArray("data"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-
-
-
-
-                    }*/
-
-
                 }
-
                 @Override
                 public void onFailure(Call call, Throwable t) {
-
 
                 }
             });
@@ -712,14 +734,114 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
         }
     }
 
+    /**
+     * Edit by Teerayut Klinsanga
+     *
+     * 29/09/2020
+     */
+    private boolean lastPeriod = false;
+    private void checklastperiod() {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.getLastPeriod(data.contract.CONTNO);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson=new Gson();
+                    try {
+                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+                        JSONArray array = jsonObject.getJSONArray("data");
+                        JSONObject obj = null;
+                        for (int i = 0; i < array.length(); i++) {
+                            obj = array.getJSONObject(i);
+                            lastPeriod = obj.getBoolean("Status");
+                        }
 
+                        if (lastPeriod) {
+                            List<Integer> listId = new ArrayList<Integer>();
+                            listId.add(R.string.button_confirm_print);
+                            activity.setViewProcessButtons(listId, View.GONE);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                @Override
+                public void onFailure(Call call, Throwable t) {
 
+                }
+            });
 
+        } catch (Exception e) {
 
+        }
+    }
 
+    private void updateCustomerPhone(String phone) {
+        if (lastPeriod && phone.isEmpty()) {
+            AlertDialog.Builder setupAlert;
+            setupAlert = new AlertDialog.Builder(activity)
+                    .setTitle("แจ้งเตือน")
+                    .setMessage("กรุณาระบุเบอร์โทรลูกค้า")
+                    .setCancelable(false)
+                    .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.cancel();
+                            showDialogUpdate();
+                        }
+                    });
+            setupAlert.show();
+        } else {
+            try {
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                Service request = retrofit.create(Service.class);
+                Call call = request.updateCustomerPhone("");
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onResponse(Call call, retrofit2.Response response) {
+                        Gson gson=new Gson();
+                        try {
+                            JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+                            JSONArray array = jsonObject.getJSONArray("data");
+                            JSONObject obj = null;
+                            String status = null;
+                            for (int i = 0; i < array.length(); i++) {
+                                obj = array.getJSONObject(i);
+                                status = obj.getString("Status");
+                            }
 
+                            if (status.equals("Success")) {
+                                List<Integer> listId = new ArrayList<Integer>();
+                                listId.add(R.string.button_confirm_print);
+                                activity.setViewProcessButtons(listId, View.VISIBLE);
 
+                                List<Integer> list = new ArrayList<Integer>();
+                                list.add(R.string.button_update_customer_phone);
+                                activity.setViewProcessButtons(list, View.GONE);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call call, Throwable t) {
 
+                    }
+                });
 
+            } catch (Exception e) {
 
+            }
+        }
+    }
+    /**
+     * End
+     */
 }

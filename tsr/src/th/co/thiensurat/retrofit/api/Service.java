@@ -65,6 +65,15 @@ public interface Service {
     @GET("UAT/SurveryAppSale/GetSurvey")
     Call<Object> getSurvey();
 
+    @GET("/api/api-creditScoreCheck_UAT.php")
+    Call<Object> getCheckScoreStatus();
+
+    @GET("/api/api-LastPeriodCheck_UAT.php")
+    Call<Object> getLastPeriod(@Query("Contno") String contno);
+
+    @GET("")
+    Call<Object> updateCustomerPhone(@Query("Contno") String phoneNumber);
+
     @GET("/api/api-creditScoreInsert_UAT.php")
     Call<Object> saveSurvey(@Query("RefNo") String refno, @Query("Contno") String conto, @Query("CusStatus") int cusstatus, @Query("ResStatus") int resstatus, @Query("ResTime") int restime, @Query("JobName") int jobname, @Query("JobTime") int jobtime, @Query("CusSalary") int cussalary, @Query("EmpID") String empid, @Query("ResStatusDis") String homeOther, @Query("JobNameDisc") String jobOther);
 }

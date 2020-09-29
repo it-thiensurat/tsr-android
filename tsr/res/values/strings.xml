@@ -65,6 +65,7 @@
     <string name="button_confirm_print">ยืนยัน/พิมพ์</string>
     <string name="button_contract_confirm">ยืนยันการออกสัญญา</string>
     <string name="button_survey_befor_contract_confirm">กรอกข้อมูลเพิ่มเติม</string>
+    <string name="button_update_customer_phone">แก้ไขเบอร์ลูกค้า</string>
     <string name="button_contract_confirm_preorder">ยืนยันการออกใบจอง</string>
     <string name="button_conclude">สรุป</string>
     <string name="button_save_manual_receipt">บันทึกใบเสร็จมือ</string>
