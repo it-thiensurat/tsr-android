@@ -206,7 +206,6 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
 
         alertDialog.setPositiveButton("ยืนยัน", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                dialog.dismiss();
                 updateCustomerPhone(input.getText().toString());
             }
         });
@@ -782,6 +781,7 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
     }
 
     private void updateCustomerPhone(String phone) {
+//        Toast.makeText(activity, phone, Toast.LENGTH_SHORT).show();
         if (lastPeriod && phone.isEmpty()) {
             AlertDialog.Builder setupAlert;
             setupAlert = new AlertDialog.Builder(activity)
@@ -802,7 +802,7 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 Service request = retrofit.create(Service.class);
-                Call call = request.updateCustomerPhone("");
+                Call call = request.updateCustomerPhone(phone, data.contract.RefNo, BHPreference.employeeID());
                 call.enqueue(new Callback() {
                     @Override
                     public void onResponse(Call call, retrofit2.Response response) {
@@ -810,14 +810,15 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
                         try {
                             JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
                             JSONArray array = jsonObject.getJSONArray("data");
+                            Log.e("Update", String.valueOf(array));
                             JSONObject obj = null;
                             String status = null;
                             for (int i = 0; i < array.length(); i++) {
                                 obj = array.getJSONObject(i);
-                                status = obj.getString("Status");
+                                status = obj.getString("StatusUpdate");
                             }
 
-                            if (status.equals("Success")) {
+                            if (status.equals("SUCCESS")) {
                                 List<Integer> listId = new ArrayList<Integer>();
                                 listId.add(R.string.button_confirm_print);
                                 activity.setViewProcessButtons(listId, View.VISIBLE);
@@ -832,12 +833,12 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
                     }
                     @Override
                     public void onFailure(Call call, Throwable t) {
-
+                        Log.e("Update", String.valueOf(t.getLocalizedMessage()));
                     }
                 });
 
             } catch (Exception e) {
-
+                Log.e("Update", e.getLocalizedMessage());
             }
         }
     }
