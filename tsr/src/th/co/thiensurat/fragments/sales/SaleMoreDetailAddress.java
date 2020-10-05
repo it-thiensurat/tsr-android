@@ -1,5 +1,6 @@
 package th.co.thiensurat.fragments.sales;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,15 +12,26 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHSpinnerAdapter;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
+import th.co.thiensurat.activities.SurveyActivity;
 import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.info.CareerInfo;
@@ -29,9 +41,11 @@ import th.co.thiensurat.data.info.HabitatTypeInfo;
 import th.co.thiensurat.data.info.HobbyInfo;
 import th.co.thiensurat.data.info.SuggestionInfo;
 import th.co.thiensurat.fragments.credit.Audit.CheckCustomersMainFragment;
+import th.co.thiensurat.retrofit.api.Service;
 
 import static th.co.thiensurat.fragments.sales.New2SaleCustomerAddressCardFragment.check_box_status;
 import static th.co.thiensurat.fragments.sales.New2SaleCustomerAddressCardFragment.status;
+import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 
 public class SaleMoreDetailAddress extends BHFragment {
 
@@ -82,7 +96,7 @@ public class SaleMoreDetailAddress extends BHFragment {
     @Override
     protected int[] processButtons() {
         // TODO Auto-generated method stub
-        return new int[]{R.string.button_back, R.string.button_end};
+        return new int[]{R.string.button_back, R.string.button_survey_befor_contract_confirm, R.string.button_end};
     }
 
 
@@ -119,7 +133,7 @@ public class SaleMoreDetailAddress extends BHFragment {
 
 
         Log.e("vvvv","final");
-
+        checkHasSurvey();
         BindingSpinner();
         GetContractData();
     }
@@ -137,6 +151,9 @@ public class SaleMoreDetailAddress extends BHFragment {
                 break;
             case R.string.button_back:
                 showLastView();
+                break;
+            case R.string.button_survey_befor_contract_confirm:
+                SurveyPage();
                 break;
             default:
                 break;
@@ -560,4 +577,73 @@ public class SaleMoreDetailAddress extends BHFragment {
         }).start();
     }
 
+    /**
+     * Edit by Teerayut Klinsanga
+     * 05/10/2020
+     */
+    private void SurveyPage() {
+        Intent intent = new Intent(getContext(), SurveyActivity.class);
+        intent.putExtra("REFERRENCE_NUMBER", contract.RefNo);
+        intent.putExtra("CONTRACT_NUMBER", contract.CONTNO);
+        intent.putExtra("EMPLOYEE_NUMBER", contract.SaleEmployeeCode);
+        startActivityForResult(intent, 333);
+    }
+
+    private void checkHasSurvey() {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.checkQuestion(contract.CONTNO);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Log.e("Survey contno", contract.CONTNO);
+                    Gson gson=new Gson();
+                    try {
+                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+                        Log.e("json question: ",jsonObject.toString());
+                        JSONArray array = jsonObject.getJSONArray("data");
+                        JSONObject obj = null;
+                        for (int i = 0; i < array.length(); i++) {
+                            obj = array.getJSONObject(i);
+                            String status = obj.getString("Status");
+                            Log.e("Question status", status);
+//                            if ("Error".equals(status)) {
+//                                List<Integer> listId = new ArrayList<Integer>();
+//                                listId.add(R.string.button_pay);
+//                                listId.add(R.string.button_print);
+//
+//                                activity.setViewProcessButtons(listId, View.GONE);
+//                            } else {
+//                                List<Integer> listId = new ArrayList<Integer>();
+//                                listId.add(R.string.button_pay);
+//                                listId.add(R.string.button_print);
+//
+//                                activity.setViewProcessButtons(listId, View.VISIBLE);
+//                            }
+                        }
+//                        layoutSurvey.setVisibility(View.VISIBLE);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("data","22");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("onFailure question:",t.getLocalizedMessage());
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("Exception question",e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * End
+     */
 }

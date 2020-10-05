@@ -179,10 +179,10 @@ public class SaleContractPrintFragment extends BHFragment {
     private Button btnSignature;
     @InjectView ImageView imgSignature;
 
-    @InjectView
-    private LinearLayout layoutSurvey;
-    @InjectView
-    private Button btnSurvery;
+//    @InjectView
+//    private LinearLayout layoutSurvey;
+//    @InjectView
+//    private Button btnSurvery;
 
     public static int sizee=0;
     public static int size_ww=0;
@@ -211,7 +211,7 @@ public class SaleContractPrintFragment extends BHFragment {
     @Override
     public void onResume() {
         super.onResume();
-        checkHasSurvey();
+//        checkHasSurvey();
     }
 
     @Override
@@ -314,7 +314,7 @@ public class SaleContractPrintFragment extends BHFragment {
                             listId.add(R.string.button_print);
 
                             activity.setViewProcessButtons(listId, View.GONE);
-                            layoutSurvey.setVisibility(View.GONE);
+//                            layoutSurvey.setVisibility(View.GONE);
                         } else {
                             /*** [START] :: Fixed - [BHPROJ-1036-8796] - ไม่ให้แก้ไขชื่อ ที่อยู่ และภาพถ่าย ข้ามวัน ให้แก้ไขได้ภายในวันที่ทำสัญญาเท่านั้น รวมทั้งการพิมพ์สัญญาต้องพิมพ์ข้ามวันไม่ได้ด้วย ***/
                             if (contract.EFFDATE != null) {
@@ -338,7 +338,7 @@ public class SaleContractPrintFragment extends BHFragment {
                                     listId.add(R.string.button_print);
 
                                     activity.setViewProcessButtons(listId, View.GONE);
-                                    layoutSurvey.setVisibility(View.GONE);
+//                                    layoutSurvey.setVisibility(View.GONE);
                                 }
                             }
                             /*** [END] :: Fixed - [BHPROJ-1036-8796] - ไม่ให้แก้ไขชื่อ ที่อยู่ และภาพถ่าย ข้ามวัน ให้แก้ไขได้ภายในวันที่ทำสัญญาเท่านั้น รวมทั้งการพิมพ์สัญญาต้องพิมพ์ข้ามวันไม่ได้ด้วย  ***/
@@ -547,9 +547,9 @@ public class SaleContractPrintFragment extends BHFragment {
                         String ContractDate = df.format(contract.EFFDATE);
                         if (!contract.STATUS.equals("VOID") && ContractDate.equals(currentDate) && Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract) {
                             btnVoidContract.setVisibility(View.VISIBLE);
-                            layoutSurvey.setVisibility(View.GONE);
+//                            layoutSurvey.setVisibility(View.GONE);
                         } else if (!contract.STATUS.equals("VOID") && ContractDate.equals(currentDate) && Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.Sale) {
-                            checkHasSurvey();
+//                            checkHasSurvey();
                         }
                     }
                     catch (Exception rr){
@@ -653,12 +653,12 @@ public class SaleContractPrintFragment extends BHFragment {
                         }
                     });
 
-                    btnSurvery.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            SurveyPage();
-                        }
-                    });
+//                    btnSurvery.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            SurveyPage();
+//                        }
+//                    });
                     /**
                      *
                      * End
@@ -1152,7 +1152,7 @@ public class SaleContractPrintFragment extends BHFragment {
             }
         } else if (requestCode == 333) {
 //            Toast.makeText(getContext(), "survey", Toast.LENGTH_LONG).show();
-            checkHasSurvey();
+//            checkHasSurvey();
         }
     }
 
@@ -1200,14 +1200,14 @@ public class SaleContractPrintFragment extends BHFragment {
                                 listId.add(R.string.button_print);
 
                                 activity.setViewProcessButtons(listId, View.GONE);
-                                layoutSurvey.setVisibility(View.VISIBLE);
+//                                layoutSurvey.setVisibility(View.VISIBLE);
                             } else {
                                 List<Integer> listId = new ArrayList<Integer>();
                                 listId.add(R.string.button_pay);
                                 listId.add(R.string.button_print);
 
                                 activity.setViewProcessButtons(listId, View.VISIBLE);
-                                layoutSurvey.setVisibility(View.GONE);
+//                                layoutSurvey.setVisibility(View.GONE);
                             }
                         }
 //                        layoutSurvey.setVisibility(View.VISIBLE);

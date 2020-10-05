@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
     <LinearLayout
         android:id="@+id/linearLayoutHeadNumber"
         android:layout_width="wrap_content"
@@ -105,7 +105,7 @@
             android:textSize="32sp"
             android:textStyle="bold" />
     </LinearLayout>
-    
+
 
     <th.co.thiensurat.views.ViewTitle
         style="@style/ViewTitle"
