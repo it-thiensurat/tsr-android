@@ -113,14 +113,32 @@
         app:text="@string/caption_sale_detail" >
     </th.co.thiensurat.views.ViewTitle>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+        <Button
+            android:id="@+id/btnSurvery"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:textColor="@android:color/white"
+            android:text="ข้อมูลเพิ่มเติม"
+            android:background="@color/bg_sub_header"/>
+
+    </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_margin="@dimen/padding_small" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="vertical" >
 
             <LinearLayout

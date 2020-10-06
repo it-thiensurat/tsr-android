@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -66,6 +67,9 @@ public class SaleMoreDetailAddress extends BHFragment {
     @InjectView
     Spinner spinnerHabitat, spinnerStatusLive, spinnerCareer, spinnerHobby, spinnerSuggestion;
 
+    @InjectView
+    Button btnSurvery;
+
     private List<HabitatTypeInfo> HabitatTypeList;
     private List<CareerInfo> CareerList;
     private List<HobbyInfo> HobbyList;
@@ -96,7 +100,7 @@ public class SaleMoreDetailAddress extends BHFragment {
     @Override
     protected int[] processButtons() {
         // TODO Auto-generated method stub
-        return new int[]{R.string.button_back, R.string.button_survey_befor_contract_confirm, R.string.button_end};
+        return new int[]{R.string.button_back, R.string.button_end};
     }
 
 
@@ -133,9 +137,15 @@ public class SaleMoreDetailAddress extends BHFragment {
 
 
         Log.e("vvvv","final");
-        checkHasSurvey();
         BindingSpinner();
         GetContractData();
+
+        btnSurvery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SurveyPage();
+            }
+        });
     }
 
     @Override
@@ -151,9 +161,6 @@ public class SaleMoreDetailAddress extends BHFragment {
                 break;
             case R.string.button_back:
                 showLastView();
-                break;
-            case R.string.button_survey_befor_contract_confirm:
-                SurveyPage();
                 break;
             default:
                 break;
@@ -330,6 +337,7 @@ public class SaleMoreDetailAddress extends BHFragment {
                 // TODO Auto-generated method stub
                 if (contract != null) {
                     BindingDebCustomer();
+                    checkHasSurvey();
                 }
             }
         }).start();
@@ -475,14 +483,29 @@ public class SaleMoreDetailAddress extends BHFragment {
 				debcustomer.SuggestionCode = SuggestionCode;
 				debcustomer.SuggestionDetail = SuggestionDetail;*/
 
-                debcustomer.HabitatTypeCode = HabitatCode;
-                debcustomer.HabitatDetail = editTextHabitat.getText().toString();
-                debcustomer.OccupyType = spinnerStatusLive.getSelectedItem().toString();
-                debcustomer.CareerCode = CareerCode;
-                debcustomer.CareerDetail = editTextCareer.getText().toString();
-                debcustomer.HobbyCode = HobbyCode;
-                debcustomer.HobbyDetail = editTextHobby.getText().toString();
-                debcustomer.IsUsedProduct = false;
+//                debcustomer.HabitatTypeCode = HabitatCode;
+//                debcustomer.HabitatDetail = editTextHabitat.getText().toString();
+//                debcustomer.OccupyType = spinnerStatusLive.getSelectedItem().toString();
+//                debcustomer.CareerCode = CareerCode;
+//                debcustomer.CareerDetail = editTextCareer.getText().toString();
+//                debcustomer.HobbyCode = HobbyCode;
+//                debcustomer.HobbyDetail = editTextHobby.getText().toString();
+//                debcustomer.IsUsedProduct = false;
+
+                /**
+                 * Edit by Teerayut Klinsanga
+                 */
+                debcustomer.HabitatTypeCode = "";
+                debcustomer.HabitatDetail   = "";
+                debcustomer.OccupyType      = "";
+                debcustomer.CareerCode      = "";
+                debcustomer.CareerDetail    = "";
+                debcustomer.HobbyCode       = "";
+                debcustomer.HobbyDetail     = "";
+                debcustomer.IsUsedProduct   = false;
+                /**
+                 * End
+                 */
 
               //  debcustomer.UsedProductModelID = "";
 
@@ -577,10 +600,19 @@ public class SaleMoreDetailAddress extends BHFragment {
         }).start();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 333) {
+            checkHasSurvey();
+        }
+    }
+
     /**
      * Edit by Teerayut Klinsanga
      * 05/10/2020
      */
+
     private void SurveyPage() {
         Intent intent = new Intent(getContext(), SurveyActivity.class);
         intent.putExtra("REFERRENCE_NUMBER", contract.RefNo);
@@ -611,19 +643,11 @@ public class SaleMoreDetailAddress extends BHFragment {
                             obj = array.getJSONObject(i);
                             String status = obj.getString("Status");
                             Log.e("Question status", status);
-//                            if ("Error".equals(status)) {
-//                                List<Integer> listId = new ArrayList<Integer>();
-//                                listId.add(R.string.button_pay);
-//                                listId.add(R.string.button_print);
-//
-//                                activity.setViewProcessButtons(listId, View.GONE);
-//                            } else {
-//                                List<Integer> listId = new ArrayList<Integer>();
-//                                listId.add(R.string.button_pay);
-//                                listId.add(R.string.button_print);
-//
-//                                activity.setViewProcessButtons(listId, View.VISIBLE);
-//                            }
+                            if ("Error".equals(status)) {
+                                btnSurvery.setVisibility(View.VISIBLE);
+                            } else {
+                                btnSurvery.setVisibility(View.GONE);
+                            }
                         }
 //                        layoutSurvey.setVisibility(View.VISIBLE);
                     } catch (JSONException e) {
