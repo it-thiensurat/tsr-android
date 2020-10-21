@@ -63,7 +63,14 @@ public class EmployeeController extends BaseController {
         return ret;
 
     }
+    public List<EmployeeInfo> getEmployeesTeamCodeBySaleLeader_for_credit(String EMPID,String teamCode) {
+        String sql = "SELECT Employee.*, EmployeeDetail.* FROM Employee INNER JOIN EmployeeDetail ON Employee.EmpID = EmployeeDetail.EmployeeCode "
+                + "WHERE (EmpID = ?)  AND (PositionCode='Credit') AND PositionCode <> 'Driver'  AND EmployeeDetail.TeamCode = ? AND (Employee.Status IS NULL OR (Employee.Status IS NOT NULL AND Employee.Status <> 'R')) ORDER BY EmployeeDetail.SaleCode ASC";
+        List<EmployeeInfo> ret = null;
+        ret = executeQueryList(sql, new String[]{EMPID,teamCode}, EmployeeInfo.class);
+        return ret;
 
+    }
     public List<EmployeeInfo> getEmployeesTeamCodeBySubTeamLeader(String teamCode, String subTeamCode) {
         String sql = "SELECT Employee.*, EmployeeDetail.* FROM Employee INNER JOIN EmployeeDetail ON Employee.EmpID = EmployeeDetail.EmployeeCode "
                 + "WHERE PositionCode <> 'Driver'  AND EmployeeDetail.TeamCode = ? AND (Employee.Status IS NULL OR (Employee.Status IS NOT NULL AND Employee.Status <> 'R')) AND ( EmployeeDetail.SubTeamCode = ? or PositionCode='SaleLeader' or EmployeeDetail.EmployeeTypeCode='100') ORDER BY EmployeeDetail.SaleCode ASC";
@@ -72,6 +79,13 @@ public class EmployeeController extends BaseController {
         return ret;
     }
 
+    public List<EmployeeInfo> getEmployeesTeamCodeBySubTeamLeader_for_credit(String EMPID,String teamCode, String subTeamCode) {
+        String sql = "SELECT Employee.*, EmployeeDetail.* FROM Employee INNER JOIN EmployeeDetail ON Employee.EmpID = EmployeeDetail.EmployeeCode "
+                + "WHERE PositionCode <> 'Driver'  AND EmployeeDetail.TeamCode = ? AND (Employee.Status IS NULL OR (Employee.Status IS NOT NULL AND Employee.Status <> 'R')) AND ( EmployeeDetail.SubTeamCode = ? or PositionCode='SaleLeader' or EmployeeDetail.EmployeeTypeCode='100')  AND(EmpID = ?) AND (PositionCode='Credit')   ORDER BY EmployeeDetail.SaleCode ASC";
+        List<EmployeeInfo> ret = null;
+        ret = executeQueryList(sql, new String[]{teamCode, subTeamCode,EMPID}, EmployeeInfo.class);
+        return ret;
+    }
     public List<EmployeeInfo> getAllTeamMember(String organizationCode, String teamCode, String subTeamCode) {
 
         // String sql =
@@ -346,6 +360,11 @@ public class EmployeeController extends BaseController {
         return executeQueryObject(QUERY_EMPLOYEE_GET_BY_ID, new String[]{empID, teamCode}, EmployeeInfo.class);
     }
 
+    public EmployeeInfo getEmpByEmpID_for_credit(String empID ,String teamCode) {
+        final String QUERY_EMPLOYEE_GET_BY_ID = "SELECT Employee .* ,EmployeeDetail.* FROM Employee INNER JOIN EmployeeDetail on Employee.EmpID = EmployeeDetail.EmployeeCode WHERE  (EmpID = ?) AND (PositionCode='Credit')" +
+                " AND EmployeeDetail.TeamCode = ?";
+        return executeQueryObject(QUERY_EMPLOYEE_GET_BY_ID, new String[]{ empID,teamCode}, EmployeeInfo.class);
+    }
 
 /*    public EmployeeInfo getEmpByEmpID_for_credit(String empID, String teamCode) {
         String QUERY_EMPLOYEE_GET_BY_ID = "SELECT Employee .* ,EmployeeDetail.* FROM Employee INNER JOIN EmployeeDetail on Employee.EmpID = EmployeeDetail.EmployeeCode WHERE (EmpID = ?)";

@@ -141,6 +141,8 @@ public class ManualDocumentDetailFragment_preorder2 extends BHFragment {
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
 
+        Log.e("manual","22222");
+
       //  li1.setVisibility(View.GONE);
        // li2.setVisibility(View.GONE);
 

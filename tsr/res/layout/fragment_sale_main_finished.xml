@@ -4,6 +4,59 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+
+
+    <LinearLayout
+        android:id="@+id/li_s"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingBottom="@dimen/padding_small"
+        android:paddingTop="@dimen/padding_small"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textSearch"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:layout_weight="0.15"
+            android:gravity="center"
+            android:text="@string/button_search" />
+
+        <EditText
+            android:id="@+id/edtSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:maxLines="1"
+            android:textSize="@dimen/normal_font_size"></EditText>
+
+        <Button
+            android:id="@+id/btnSearch"
+            style="@style/ButtonTop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:layout_weight="0.3"
+            android:text="@string/button_search" />
+
+
+        <Button
+            android:id="@+id/btnRefresh"
+            style="@style/ButtonTop2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:layout_weight="0.3"
+            android:text="รีโหลด" />
+
+    </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >

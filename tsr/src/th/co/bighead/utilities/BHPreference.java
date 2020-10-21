@@ -1021,4 +1021,18 @@ public class BHPreference {
         }
         return false;
     }
+
+
+    public static boolean IsSaleForTS() {
+        //ทำงานเหมือนพนักงานเก็บ แต่สามารถขายได้ด้วย การขายจะต้องเห็นเฉพาะของตัวเอง
+        String processTypeOfEmployee = BHPreference.processTypeOfEmployee();
+
+        if (processTypeOfEmployee != null) {
+            if (processTypeOfEmployee.equals("TS")) {
+                return  true;
+            }
+        }
+        return false;
+    }
+
 }

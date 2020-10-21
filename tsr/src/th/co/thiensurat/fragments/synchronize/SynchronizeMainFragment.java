@@ -460,7 +460,12 @@ public class SynchronizeMainFragment extends BHFragment {
                 // TODO Auto-generated method stub
                 ViewHolder vh = (ViewHolder) holder;
                 Integer value = data.masterList.get(row);
-                vh.text1.setText(getResources().getString(value.intValue()));
+
+
+
+                    vh.text1.setText(getResources().getString(value.intValue()));
+
+
                 //-- Fixed - [BHPROJ-0026-951] :: Remove check control in Full-Synch Screen
 //                vh.text1.setChecked(data.masterSelected.contains(value));
             }
@@ -470,7 +475,10 @@ public class SynchronizeMainFragment extends BHFragment {
                 view.setBackgroundResource(R.color.bg_table_main_header);
 
                 ViewHolder vh = (ViewHolder) holder;
-                vh.text1.setText("MASTER TABLE");
+
+                    vh.text1.setText("MASTER TABLE");
+
+
                 //-- Fixed - [BHPROJ-0026-951] :: Remove check control in Full-Synch Screen
 //                vh.text1.setChecked(data.masterSelected.size() == data.masterList.size());
             }

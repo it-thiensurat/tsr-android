@@ -143,6 +143,8 @@ public class SaleReceiptPayment_old extends BHFragment {
 
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
+
+        Log.e("papa","1234");
         data = getData();
 
         switch (Enum.valueOf(SaleFirstPaymentChoiceFragment.ProcessType.class, BHPreference.ProcessType())) {

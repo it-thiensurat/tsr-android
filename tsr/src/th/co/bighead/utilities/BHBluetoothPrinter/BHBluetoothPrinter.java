@@ -120,10 +120,13 @@ public class BHBluetoothPrinter {
     private void ConnectBluetoothPrinter() {
         if (mDeviceAddress.startsWith(MAC_ADDRESS_Printer_1)) {
             mDatecsThemalPrint.establishBluetoothConnection(mDeviceAddress, mDetailPrint, mHandler, mIsWithInterrupt);
+            Log.e("P", "1111");
         } else if (mDeviceAddress.startsWith(MAC_ADDESS_NEW_DEVICE) || mDeviceAddress.startsWith(MAC_ADDESS_NEW_DEVICE_2)) {
             mZJMiniThemalPrint.connect(mDeviceAddress, mBitmap, mDetailPrint, mHandler, mIsWithInterrupt);
+            Log.e("P", "2222");
         } else {
             mDatecsThemalPrint.establishBluetoothConnection(mDeviceAddress, mDetailPrint, mHandler, mIsWithInterrupt);
+            Log.e("P", "3333");
         }
     }
 

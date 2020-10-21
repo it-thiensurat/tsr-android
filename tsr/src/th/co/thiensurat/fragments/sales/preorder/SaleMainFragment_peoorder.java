@@ -74,7 +74,7 @@ public class SaleMainFragment_peoorder extends BHFragment {
         Log.e("cccc","cccc");
 
         vpSaleMain.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
-            private final String[] PAGE_TITLE = {"รายการขายคงค้าง", "รายการขายเสร็จสมบูรณ์"};
+            private final String[] PAGE_TITLE = {"รายการจองคงค้าง", "รายการจองเสร็จสมบูรณ์"};
 
             @Override
             public CharSequence getPageTitle(int position) {

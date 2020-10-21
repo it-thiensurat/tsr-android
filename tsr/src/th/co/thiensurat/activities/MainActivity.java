@@ -153,6 +153,7 @@ import th.co.thiensurat.fragments.credit.Import.ImportCreditSelectDateFragment;
 import th.co.thiensurat.fragments.credit.SortOrderDefault.SortOrderDefaultForCreditMainFragment;
 import th.co.thiensurat.fragments.credit.SortOrderDefault.SortOrderDefaultMainFragment;
 import th.co.thiensurat.fragments.credit.credit.CreditListFragment;
+import th.co.thiensurat.fragments.credit.pc.CreditListFragment_pc;
 import th.co.thiensurat.fragments.cutdivisor.contract.CutDivisorContractListFragment;
 import th.co.thiensurat.fragments.cutoff.contract.CutOffContractMainFragment;
 import th.co.thiensurat.fragments.document.DocumentHistoryMainFragment;
@@ -190,6 +191,7 @@ import th.co.thiensurat.fragments.sales.EditContractsMainFragment;
 import th.co.thiensurat.fragments.sales.SaleMainFragment;
 import th.co.thiensurat.fragments.sales.preorder.SaleMainFragment_peoorder;
 import th.co.thiensurat.fragments.sales.preorder_setting.SaleMainFragment_preorder_setting;
+import th.co.thiensurat.fragments.sales.preorder_setting.SaleMainFragment_preorder_setting2;
 import th.co.thiensurat.fragments.sendmoney.SendMoneySummaryMainFragment;
 import th.co.thiensurat.fragments.synchronize.SynchronizeMainFragment;
 import th.co.thiensurat.retrofit.api.Service;
@@ -236,6 +238,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
     public static final int REQUEST_CONNECT_DEVICE = 1;
     public static  int select_page_preorder=0;
 
+    public static  int select_page_list=0;
 
     public  static  String EMPID="";
     //********************************************************************************//
@@ -1081,7 +1084,10 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 R.string.main_menu_credit_sort_order_default_audit,
                 R.string.main_menu_credit_sort_order_default_credit,
                 R.string.main_menu_credit_assign_push_pull,
-                R.string.main_menu_goto_tssm
+                R.string.main_menu_goto_tssm,
+                R.string.main_menu_credit_pc,
+                R.string.main_menu_proorder_credit
+
 
         };
 
@@ -1307,18 +1313,20 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
                 case R.string.main_menu_sales: // not require SaleCode
                     select_page_preorder=0;
+                    select_page_list=0;
                     success = showView(BHFragment.newInstance(SaleMainFragment.class));
                     break;
 
                 case R.string.main_menu_preorder: // not require SaleCode
                     select_page_preorder=1;
+                    select_page_list=0;
                     success = showView(BHFragment.newInstance(SaleMainFragment_peoorder.class));
                     break;
 
                 case R.string.main_menu_preorder_setting: // preorder stting
 
                     success = showView(BHFragment.newInstance(SaleMainFragment_preorder_setting.class));
-                   //success = showView(BHFragment.newInstance(SaleMainFragment_preorder_setting2.class));
+                  // success = showView(BHFragment.newInstance(SaleMainFragment_preorder_setting2.class));
 
                     break;
 
@@ -1438,6 +1446,17 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
 
                     break;
+                case R.string.main_menu_credit_pc: // not require SaleCode
+
+
+                    CreditListFragment_pc.Data input2 = new CreditListFragment_pc.Data();
+                    input2.selectedDate =  Calendar.getInstance().getTime();
+                    CreditListFragment_pc fragment2 = BHFragment
+                            .newInstance(CreditListFragment_pc.class, input2);
+                    success = showNextView(fragment2);
+
+                    break;
+
                 case R.string.main_menu_credit_cut_off_contract://ระบบตัดสัญญาออกจากฟอร์ม // not require SaleCode
                     success = showView(BHFragment.newInstance(CutOffContractMainFragment.class));
                     break;
@@ -1445,6 +1464,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     success = showView(BHFragment.newInstance(CutDivisorContractListFragment.class));
                     break;
                 case R.string.main_menu_credit_contract_details://รายละเอียดสัญญา ของ CREDIT // not require SaleCode
+                    select_page_list=1;
                     success = showView(BHFragment.newInstance(ContractDetails.class));
                     break;
                 case R.string.main_menu_credit_sort_order_default_audit://ระบบจัดลำดับค่าเริ่มต้นสำหรับตรวจสอบลูกค้า
@@ -2368,11 +2388,14 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     put(r.getString(R.string.main_menu_credit_import_audit_data), R.drawable.ic_menu_import_saleaudit);             //-- Fixed - [BHPROJ-0026-3184] :: Change ic_tsr_logo to be new menu icon
                     put(r.getString(R.string.main_menu_credit_audit_check_customers), R.drawable.ic_menu_sale_audit);
                     put(r.getString(R.string.main_menu_credit_salepaymentperiod_credit_customers), R.drawable.ic_menu_next_period);
+                    put(r.getString(R.string.main_menu_credit_pc), R.drawable.ic_menu_next_period);
                     put(r.getString(R.string.main_menu_credit_cut_off_contract), R.drawable.ic_menu_cutoff_contract);
                     put(r.getString(R.string.main_menu_credit_cut_divisor_contract), R.drawable.ic_menu_cutdivisor_contract);
                     put(r.getString(R.string.main_menu_credit_contract_details), R.drawable.ic_menu_contract_detail);       //-- Fixed - [BHPROJ-0026-771]
                     put(r.getString(R.string.main_menu_credit_sort_order_default_audit), R.drawable.ic_menu_orderexp_saleaudit);    //-- Fixed - [BHPROJ-0026-3184] :: Change ic_tsr_logo to be new menu icon
                     put(r.getString(R.string.main_menu_credit_sort_order_default_credit), R.drawable.ic_menu_orderexp_credit);      //-- Fixed - [BHPROJ-0026-3184] :: Change ic_tsr_logo to be new menu icon
+                    put(r.getString(R.string.main_menu_proorder_credit), R.drawable.ic_menu_sales);      //-- Fixed - [BHPROJ-0026-3184] :: Change ic_tsr_logo to be new menu icon
+
                 }
             };
 

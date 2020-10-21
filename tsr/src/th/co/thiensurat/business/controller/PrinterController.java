@@ -212,145 +212,6 @@ public class PrinterController {
     }
 
     public void newPrintReceipt(List<PaymentInfo> payments,Boolean withInterrupt) {
-        /*//List<Bitmap> documents = new ArrayList<Bitmap>();
-        List<ShortReceiptInfo> shortReceiptInfoList= new ArrayList<>();
-        List<PaymentInfo> payments1 = new ArrayList<>(payments);
-
-        //region RePrint
-        //List<Bitmap> documentsForReprint = new ArrayList<Bitmap>();
-        List<ShortReceiptInfo> shortReceiptInfoListForReprint= new ArrayList<>();
-        List<PaymentInfo> paymentsForReprint = new ArrayList<PaymentInfo>();
-        //endregion
-
-        for (PaymentInfo info : payments1) {
-            DebtorCustomerInfo debtorCustomerInfo = TSRController.getDebCustometByID(info.CustomerID);
-            AddressInfo addressInfo = TSRController.getAddress(info.RefNo, AddressInfo.AddressType.AddressInstall);
-            //EmployeeInfo employeeInfo = TSRController.getEmployeeDetailByEmployeeIDAndPositionCode(BHPreference.organizationCode(), info.CreateBy, BHPreference.sourceSystem(), null);
-
-
-           *//**ยอดเงินที่จ่ายมาตามใบเสร็จ**//*
-            ShortReceiptInfo shortReceiptInfo = new ShortReceiptInfo(); //DocumentController.getShortReceipt(info, debtorCustomerInfo, addressInfo);
-
-            *//*if (info.MODE == 1) {
-                if (info.BalancesOfPeriod == 0) {   //จ่ายเต็ม
-                    shortReceiptInfo = DocumentController.getTextReceipt(info, debtorCustomerInfo, addressInfo);
-                } else {  //บางส่วน
-                    shortReceiptInfo.receiptHeader = DocumentController.getNewReceipt(info, debtorCustomerInfo, addressInfo);
-                }
-            } else {
-                if (info.CloseAccountPaymentPeriodNumber == info.PaymentPeriodNumber && info.BalancesOfPeriod == 0) {   //ตัดสด
-                    shortReceiptInfo.receiptHeader = DocumentController.getNewReceipt(info, debtorCustomerInfo, addressInfo);
-                } else{
-                    if (info.BalancesOfPeriod == 0) {   //จ่ายเต็ม
-                        shortReceiptInfo = DocumentController.getTextReceipt(info, debtorCustomerInfo, addressInfo);
-                    } else {    //บางส่วน
-                        shortReceiptInfo.receiptHeader = DocumentController.getNewReceipt(info, debtorCustomerInfo, addressInfo);
-                    }
-                }
-
-            }*//*
-            shortReceiptInfo = DocumentController.getTextReceipt(info, debtorCustomerInfo, addressInfo);
-            shortReceiptInfoList.add(shortReceiptInfo);
-
-
-            //region RePrint
-            switch (Enum.valueOf(EmployeeController.SourceSystem.class, BHPreference.sourceSystem())) {
-                case Sale:
-                    DocumentHistoryInfo checkExist = TSRController.getDocumentHistoryByDocumentNumber(info.ReceiptID, DocumentHistoryController.DocumentType.Receipt.toString());
-                    ShortReceiptInfo shortReceiptInfoForReprint = new ShortReceiptInfo();
-                    if(checkExist == null){
-
-                        *//*if (info.MODE == 1) {
-                            if (info.BalancesOfPeriod == 0) {   //จ่ายเต็ม
-                                shortReceiptInfoForReprint = DocumentController.getTextReceipt(info, debtorCustomerInfo, addressInfo);
-
-                            } else {  //บางส่วน
-                                shortReceiptInfoForReprint.receiptHeader = DocumentController.getNewReceipt(info, debtorCustomerInfo, addressInfo);
-                            }
-                        } else {
-                            if (info.CloseAccountPaymentPeriodNumber == info.PaymentPeriodNumber && info.BalancesOfPeriod == 0) {   //ตัดสด
-                                shortReceiptInfoForReprint.receiptHeader = DocumentController.getNewReceipt(info, debtorCustomerInfo, addressInfo);
-                            } else{
-                                if (info.BalancesOfPeriod == 0) {   //จ่ายเต็ม
-                                    shortReceiptInfoForReprint = DocumentController.getTextReceipt(info, debtorCustomerInfo, addressInfo);
-
-                                } else {    //บางส่วน
-                                    shortReceiptInfoForReprint.receiptHeader = DocumentController.getNewReceipt(info, debtorCustomerInfo, addressInfo);
-                                }
-                            }
-
-                        }*//*
-
-                        shortReceiptInfoForReprint = DocumentController.getTextReceipt(info, debtorCustomerInfo, addressInfo);
-
-                        shortReceiptInfoListForReprint.add(shortReceiptInfoForReprint);
-                        paymentsForReprint.add(info);
-                    }
-                    break;
-                default:
-                    break;
-            }
-            //endregion
-
-        }
-
-        //region RePrint
-        if(shortReceiptInfoListForReprint != null && shortReceiptInfoListForReprint.size() > 0) {
-            shortReceiptInfoList.addAll(shortReceiptInfoListForReprint);
-            payments1.addAll(paymentsForReprint);
-        }
-        //endregion
-
-        final List<PaymentInfo> paymentsForPrint = new ArrayList<>(payments1);
-
-        mainActivity.printImage(shortReceiptInfoList.toArray(new ShortReceiptInfo[shortReceiptInfoList.size()]), new MainActivity.PrintHandler() {
-            @Override
-            public void onBackgroundPrinting(int index) {
-
-                DocumentHistoryInfo docHist = new DocumentHistoryInfo();
-                DocumentHistoryInfo Hist;
-
-                Hist = TSRController.getDocumentHistoryByDocumentNumber(paymentsForPrint.get(index).ReceiptID, DocumentHistoryController.DocumentType.Receipt.toString());
-
-
-                int num = 1;
-                if (Hist != null) {
-                    num = Hist.PrintOrder + 1;
-                }
-
-                docHist.PrintHistoryID = DatabaseHelper.getUUID();
-                docHist.OrganizationCode = BHPreference.organizationCode();
-                docHist.DatePrint = new Date();
-                docHist.DocumentType = DocumentHistoryController.DocumentType.Receipt.toString();
-                docHist.DocumentNumber = paymentsForPrint.get(index).ReceiptID;
-                docHist.SyncedDate = new Date();
-                docHist.CreateBy = BHPreference.employeeID();
-                docHist.CreateDate = new Date();
-                docHist.LastUpdateDate = null;
-                docHist.LastUpdateBy = "";
-                docHist.Selected = false;
-                docHist.Deleted = false;
-                docHist.PrintOrder = num;
-                docHist.Status = "";
-                docHist.SentDate = null;
-                docHist.SentEmpID = "";
-                docHist.SentSaleCode = "";
-                docHist.SentSubTeamCode = "";
-                docHist.SentTeamCode = "";
-                docHist.ReceivedDate = null;
-                docHist.ReceivedEmpID = "";
-
-
-                TSRController.addDocumentHistory(docHist, true);
-
-            }
-        });
-
-        for (PaymentInfo info : paymentsForPrint)
-        {
-
-        }*/
-
         AddressInfo addressInfo = null;
         DebtorCustomerInfo debtorCustomerInfo = null;
         List<Bitmap> bitmapList = new ArrayList<>();
@@ -372,6 +233,16 @@ public class PrinterController {
 //                    Bitmap bmp = DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo);
                     DocumentHistoryInfo checkExist = TSRController.getDocumentHistoryByDocumentNumber(info.ReceiptID, DocumentHistoryController.DocumentType.Receipt.toString());
                     if(checkExist == null){
+                        document.add(DocumentController.getTextReceiptNew(info, debtorCustomerInfo, addressInfo));
+                        paymentsForPrint.add(info);
+                        bitmapList.add(DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo));
+                    }
+                    break;
+
+                case Credit:
+//                    Bitmap bmp = DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo);
+                    DocumentHistoryInfo checkExist2 = TSRController.getDocumentHistoryByDocumentNumber(info.ReceiptID, DocumentHistoryController.DocumentType.Receipt.toString());
+                    if(checkExist2 == null){
                         document.add(DocumentController.getTextReceiptNew(info, debtorCustomerInfo, addressInfo));
                         paymentsForPrint.add(info);
                         bitmapList.add(DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo));
@@ -468,6 +339,7 @@ public class PrinterController {
             //region RePrint
             switch (Enum.valueOf(EmployeeController.SourceSystem.class, BHPreference.sourceSystem())) {
                 case Sale:
+                    Log.e("posi","sale");
 //                    Bitmap bmp = DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo);
                     DocumentHistoryInfo checkExist = TSRController.getDocumentHistoryByDocumentNumber(info.ReceiptID, DocumentHistoryController.DocumentType.Receipt.toString());
                     if(checkExist == null){
@@ -476,7 +348,26 @@ public class PrinterController {
                         bitmapList.add(DocumentController_preorder.getNewReceiptImage(info, debtorCustomerInfo, addressInfo));
                     }
                     break;
+                case Credit:
+                    Log.e("posi","credit");
+
+                 // Bitmap bmp = DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo);
+                    DocumentHistoryInfo checkExist2 = TSRController.getDocumentHistoryByDocumentNumber(info.ReceiptID, DocumentHistoryController.DocumentType.Receipt.toString());
+
+               //   Log.e("DocumentNumber",checkExist2.DocumentNumber);
+
+                   if(checkExist2 == null){
+                       Log.e("cccc","null");
+                        document.add(DocumentController.getTextReceiptNew(info, debtorCustomerInfo, addressInfo));
+                        paymentsForPrint.add(info);
+                        bitmapList.add(DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo));
+                   }
+                    break;
                 default:
+
+
+
+
                     break;
             }
             //endregion

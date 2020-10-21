@@ -141,6 +141,9 @@ public class ManualDocumentDetailFragment_preorder extends BHFragment {
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
 
+        Log.e("manual","11111");
+
+
         li1.setVisibility(View.GONE);
         li2.setVisibility(View.GONE);
 
@@ -170,6 +173,9 @@ public class ManualDocumentDetailFragment_preorder extends BHFragment {
         if (dataManualDocument.DocumentType.equals(DocumentType.Contract.toString())
                 && dataManualDocument.processType != null
                 && (dataManualDocument.processType == SaleFirstPaymentChoiceFragment_preorder.ProcessType.Sale)) {
+
+            Log.e("qqq2","1111");
+            txtDocNo.setText(BHApplication.getInstance().getPrefManager().getPreferrence("getContractReferenceNo"));
 
         } else {
          //   txtDocNo.setText(dataManualDocument.DocumentNo);
@@ -236,6 +242,11 @@ public class ManualDocumentDetailFragment_preorder extends BHFragment {
 
                         Log.e("qqq","2222");
 
+                    }
+                    else {
+                        txtDocNo.setText(BHApplication.getInstance().getPrefManager().getPreferrence("getContractReferenceNo"));
+
+                        Log.e("qqq2","2222");
                     }
 
              //       etManualBookNo.setText(docWithdrawal.VolumeNo);

@@ -222,7 +222,7 @@ public class NewCheckStockCheckResultFragment extends BHFragment {
 						if (missProduct.size() > 0) {
 							linearLayoutDisplayMiss.setVisibility(View.VISIBLE);
 							lvProductWait.setVisibility(View.VISIBLE);
-							adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, missProduct);
+							adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_1111, missProduct);
 							lvProductWait.setAdapter(adapter);
 						}
 					}

@@ -339,11 +339,17 @@ public class SaleReceiptPayment_old_preorder extends BHFragment {
         listId.add(R.string.button_print);
         listId.add(R.string.button_save_manual_receipt);
 
-        if (!payments.get(0).EmpID.equals(BHPreference.employeeID()) || payments.get(0).VoidStatus == true) {
-            activity.setViewProcessButtons(listId, View.GONE);
-        } else {
-            activity.setViewProcessButtons(listId, View.VISIBLE);
+        try {
+            if (!payments.get(0).EmpID.equals(BHPreference.employeeID()) || payments.get(0).VoidStatus == true) {
+                activity.setViewProcessButtons(listId, View.GONE);
+            } else {
+                activity.setViewProcessButtons(listId, View.VISIBLE);
+            }
         }
+        catch (Exception ex){
+
+        }
+
         /*** [END] :: Fixed - [BHPROJ-0025-815] :: [Android-Reprint ใบสัญญา+ใบเสร็จ] กรณีเป็นฝ่ายเก็บเงินจะ Re-Print ได้เฉพาะใบเสร็จรับเงินที่เค้าเป็นคนเก็บเท่านั้น จะไม่สามารถกลับไป Re-Print ใบสัญญา หรือ ใบเสร็จรับเงินของคนอื่นได้  ***/
 
 
@@ -602,7 +608,13 @@ public class SaleReceiptPayment_old_preorder extends BHFragment {
 
             TextView txtReceiptHeadTitle = (TextView) view.findViewById(R.id.txtReceiptHeadTitle);
 
-            txtReceiptHeadTitle.setText("ใบรับเงิน" + (payments.get(position).VoidStatus == true ? "  (ใบเสร็จถูกยกเลิก)" : ""));
+            try {
+                txtReceiptHeadTitle.setText("ใบรับเงิน" + (payments.get(position).VoidStatus == true ? "  (ใบเสร็จถูกยกเลิก)" : ""));
+
+            }
+            catch (Exception ex){
+
+            }
 
             TextView tvReceiptDate = (TextView) view.findViewById(R.id.tvReceiptDate); //วันที่รับเงิน
             tvReceiptDate.setText(BHUtilities.dateFormat(payments.get(position).PayDate));
@@ -734,53 +746,62 @@ public class SaleReceiptPayment_old_preorder extends BHFragment {
                 txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(payments.get(position).Amount)));
 
             }
-            txtThaiBaht.setVisibility(payments.get(position).VoidStatus ? View.GONE : View.VISIBLE);
-            tvPeriodAmount.setText(payments.get(position).VoidStatus ? "ยกเลิกการชำระเงิน" : tvPeriodAmount.getText());
+
+            try {
+                txtThaiBaht.setVisibility(payments.get(position).VoidStatus ? View.GONE : View.VISIBLE);
+                tvPeriodAmount.setText(payments.get(position).VoidStatus ? "ยกเลิกการชำระเงิน" : tvPeriodAmount.getText());
+
+            }
+            catch (Exception ex){
+
+            }
 
             //tvPeriodAmount.setText(BHUtilities.numericFormat(payments.get(position).Amount) + bahtLabel);
             /*** [END] :: Fixed - [BHPROJ-0026-751] :: แก้ไขการแสดงผลในส่วนของ ยอดชำระเงิน ให้เป็นตัวสีแดง + ตัวหนา + เพิ่มขนาดตัวหนังสือมา 1 ระดับ***/
 
 
-            //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
-            if ((payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) || payments.get(position).VoidStatus) {
-                LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
-                llBalancesOfPeriod.setVisibility(View.GONE);
 
-                LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
-                llBalanceAmount.setVisibility(View.GONE);
-
-            } else {
-                /**ยอดเงินคงเหลือของงวดนั้น**/
-                LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
-                TextView tvBalancesOfPeriodLabel = (TextView) view.findViewById(R.id.tvBalancesOfPeriodLabel); //คงเหลืองวดที่ n
-                TextView tvBalancesOfPeriod = (TextView) view.findViewById(R.id.tvBalancesOfPeriod); //จำนวนเงินคงเหลือของงวด
-
-                if (payments.get(position).BalancesOfPeriod == 0) {
-                    llBalancesOfPeriod.setVisibility(View.GONE);
-                } else {
-                    llBalancesOfPeriod.setVisibility(View.VISIBLE);
-                    if (payments.get(position).MODE == 1) {
-                        tvBalancesOfPeriodLabel.setText("คงเหลือเงินสด");
-                    } else {
-                        tvBalancesOfPeriodLabel.setText(String.format("คงเหลืองวดที่ %d", payments.get(position).PaymentPeriodNumber));
-                    }
-                    tvBalancesOfPeriod.setText(BHUtilities.numericFormat(payments.get(position).BalancesOfPeriod) + bahtLabel);
-                }
-
-
-                /**ยอดคงเหลือของงวดถัดไป**/
-                LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
-                TextView tvBalanceAmountLabel = (TextView) view.findViewById(R.id.tvBalanceAmountLabel); //คงเหลือเงินสด หรื คงเหลืองวดที่ 1 - n หรือ คงเหลืองวดที่ n
-                TextView tvBalanceAmount = (TextView) view.findViewById(R.id.tvBalanceAmount); //จำนวนเงินคงเหลือ
-
+            try {
                 //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
-                if (payments.get(position).Balances - payments.get(position).BalancesOfPeriod == 0 || payments.get(position).VoidStatus) {
+                if ((payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) || payments.get(position).VoidStatus) {
+                    LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                    llBalancesOfPeriod.setVisibility(View.GONE);
+
+                    LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
                     llBalanceAmount.setVisibility(View.GONE);
+
                 } else {
-                    llBalanceAmount.setVisibility(View.VISIBLE);
-                    if (payments.get(position).MODE == 1) {
-                        tvBalanceAmountLabel.setText("คงเหลือเงินสด");
+                    /**ยอดเงินคงเหลือของงวดนั้น**/
+                    LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                    TextView tvBalancesOfPeriodLabel = (TextView) view.findViewById(R.id.tvBalancesOfPeriodLabel); //คงเหลืองวดที่ n
+                    TextView tvBalancesOfPeriod = (TextView) view.findViewById(R.id.tvBalancesOfPeriod); //จำนวนเงินคงเหลือของงวด
+
+                    if (payments.get(position).BalancesOfPeriod == 0) {
+                        llBalancesOfPeriod.setVisibility(View.GONE);
                     } else {
+                        llBalancesOfPeriod.setVisibility(View.VISIBLE);
+                        if (payments.get(position).MODE == 1) {
+                            tvBalancesOfPeriodLabel.setText("คงเหลือเงินสด");
+                        } else {
+                            tvBalancesOfPeriodLabel.setText(String.format("คงเหลืองวดที่ %d", payments.get(position).PaymentPeriodNumber));
+                        }
+                        tvBalancesOfPeriod.setText(BHUtilities.numericFormat(payments.get(position).BalancesOfPeriod) + bahtLabel);
+                    }
+
+
+                    /**ยอดคงเหลือของงวดถัดไป**/
+                    LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                    TextView tvBalanceAmountLabel = (TextView) view.findViewById(R.id.tvBalanceAmountLabel); //คงเหลือเงินสด หรื คงเหลืองวดที่ 1 - n หรือ คงเหลืองวดที่ n
+                    TextView tvBalanceAmount = (TextView) view.findViewById(R.id.tvBalanceAmount); //จำนวนเงินคงเหลือ
+
+                    //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
+                    if (payments.get(position).Balances - payments.get(position).BalancesOfPeriod == 0 || payments.get(position).VoidStatus) {
+                        llBalanceAmount.setVisibility(View.GONE);
+                    } else {
+                        llBalanceAmount.setVisibility(View.VISIBLE);
+                        if (payments.get(position).MODE == 1) {
+                            tvBalanceAmountLabel.setText("คงเหลือเงินสด");
+                        } else {
                     /*if (payments.get(position).BalancesOfPeriod == 0) {
                         if ((payments.get(position).PaymentPeriodNumber + 1) == payments.get(position).MODE) {
                             tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d", payments.get(position).MODE));
@@ -794,11 +815,29 @@ public class SaleReceiptPayment_old_preorder extends BHFragment {
                             tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d - %d", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
                         }
                     }*/
-                        tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d - %d", payments.get(position).PaymentPeriodNumber + 1, payments.get(position).MODE));
+                            tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d - %d", payments.get(position).PaymentPeriodNumber + 1, payments.get(position).MODE));
+                        }
+                        tvBalanceAmount.setText(BHUtilities.numericFormat(payments.get(position).Balances - payments.get(position).BalancesOfPeriod) + bahtLabel);
                     }
-                    tvBalanceAmount.setText(BHUtilities.numericFormat(payments.get(position).Balances - payments.get(position).BalancesOfPeriod) + bahtLabel);
                 }
             }
+            catch (Exception EX){
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             /**ชำระโดยบัตรเครดิต**/
@@ -862,7 +901,14 @@ public class SaleReceiptPayment_old_preorder extends BHFragment {
             /*Void Button*/
             Button voidBtn = (Button) view.findViewById(R.id.btnVoidReceipt);
             voidBtn.setText("ยกเลิกใบรับเงิน");
-            voidBtn.setVisibility(payments.get(position).CanVoid ? view.VISIBLE : view.GONE);
+
+            try {
+                voidBtn.setVisibility(payments.get(position).CanVoid ? view.VISIBLE : view.GONE);
+
+            }
+            catch (Exception ex){
+
+            }
 
             voidBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -893,31 +939,25 @@ public class SaleReceiptPayment_old_preorder extends BHFragment {
 
             Button btnPrintImage = (Button) view.findViewById(R.id.btnPrintImage);
             btnPrintImage.setVisibility(View.GONE);
-//
-//            if (!payments.get(position).EmpID.equals(BHPreference.employeeID()) || payments.get(position).VoidStatus == true) {
-//                btnPrintImage.setVisibility(View.GONE);
-//            } else {
-//                btnPrintImage.setVisibility(View.VISIBLE);
-//
-//                btnPrintImage.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        new PrinterController(activity).newImagePrintReceipt(payments.get(position));
-//                    }
-//                });
-//            }
 
 
             TextView txtHeader = (TextView) view.findViewById(R.id.txtReceiptHeadTitle);
-            if (!(!payments.get(position).EmpID.equals(BHPreference.employeeID()) || payments.get(position).VoidStatus == true))
-            {
-                txtHeader.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new PrinterController(activity).newImagePrintReceipt(payments.get(position));
-                    }
-                });
+
+            try {
+                if (!(!payments.get(position).EmpID.equals(BHPreference.employeeID()) || payments.get(position).VoidStatus == true))
+                {
+                    txtHeader.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            new PrinterController(activity).newImagePrintReceipt(payments.get(position));
+                        }
+                    });
+                }
             }
+            catch (Exception ex){
+
+            }
+
 
 
             ((ViewPager) container).addView(view);

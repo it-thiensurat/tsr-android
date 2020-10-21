@@ -10,7 +10,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -52,16 +55,20 @@ import static java.lang.String.valueOf;
 import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 
 public class SaleMainFragment_preorder_setting2 extends BHFragment {
-
-
+    @InjectView
+    private EditText edtSearch;
+    @InjectView
+    private Button btnSearch,btnRefresh;
+    @InjectView
+    private LinearLayout li_s;
     @InjectView
     private TextView textViewFinish;
     @InjectView
     public static ListView listViewFinish;
     public static List<ContractInfo> contractList = null;
 
-    public static SaleMainFinishedFragment_preorder_setting.ContractAdapter contractAdapter;
-
+    //public static SaleMainFinishedFragment_preorder_setting2.ContractAdapter contractAdapter;
+    ContractAdapter contractAdapter;
     ProgressDialog dialog;
     private final boolean isCredit = BHPreference.sourceSystem().equals(EmployeeController.SourceSystem.Credit.toString());
     public  boolean isContractDetails =  false;
@@ -99,12 +106,26 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
 
         BHPreference.setProcessType(ProcessType.Sale.toString());
 
-
+        li_s.setVisibility(View.VISIBLE);
 
        // load_data_contact_online_preoder();
 
         GetContractStatusFinish();
 
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String Search=edtSearch.getText().toString();
+                GetContractStatusFinish2(Search);
+            }
+        });
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GetContractStatusFinish();bindContractList();
+            }
+        });
 
     }
 
@@ -185,6 +206,7 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                             } else {
                                 Log.e("sssss","ssss2");
                                 bindContractList();
+                                listViewFinish.setVisibility(View.VISIBLE);
                             }
 
                         } else {
@@ -212,6 +234,92 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
         }.start();
     }
 
+
+
+    private void GetContractStatusFinish2(String S) {
+        // TODO Auto-generated method stub
+        new BackgroundProcess(activity) {
+            @Override
+            protected void calling() {
+                // TODO Auto-generated method stub
+                try {
+                    if(isCredit){
+                        //-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป (Comment ตัวนี้ไปใช้ getContractStatusFinishForCreditBySearch แทน)
+                        //contractList = TSRController.getContractStatusFinishForCredit(BHPreference.organizationCode(), ContractStatusName.COMPLETED.toString());
+                        contractList = TSRController.getContractStatusFinishForCreditBySearch_ContractInfo_preorder(BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%");
+                        //Log.e("user",contractList.toString());
+                        Log.e("1111","1111");
+                    } else {
+                        if (BHPreference.IsSaleForCRD()) {
+                            if (isContractDetails) {
+                                contractList = TSRController.getContractStatusFinishForCreditBySearch_ContractInfo_preorder(BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%");
+                                Log.e("1111","2222");
+                            } else {
+                                //  contractList = TSRController.getContractStatusFinishForCRD_ContractInfo_preorder(BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
+                                contractList = TSRController.getContractStatusFinish_ContractInfo_preorder_SETTING_S(S);
+
+                                Log.e("1111","3333");
+                            }
+                        } else {
+                            //    contractList = TSRController.getContractStatusFinish_ContractInfo_preorder_SETTING(BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString());
+                            contractList = TSRController.getContractStatusFinish_ContractInfo_preorder_SETTING_S(S);
+
+                            Log.e("1111","4444");
+                        }
+                    }
+                    //Log.e("TEST_SPEED","1111");
+                    Log.e("contractList_SI",contractList.size()+"");
+                } catch (NullPointerException ex) {
+                    ex.printStackTrace();
+                } catch (Exception e) {
+                    // TODO: handle exception
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            protected void after() {
+                // TODO Auto-generated method stub
+                try {
+                    if (contractList != null) {
+                        //Log.e("TEST_SPEED","222222");
+                        if (isConnectingToInternet()) {
+                            String SOU = BHPreference.sourceSystem();
+
+                            if(SOU.equals("Credit")){
+                                dialog = ProgressDialog.show(activity, "", "Loading...", true);
+                                //new PaymentController().deletePaymentByRefNo(BHPreference.RefNo());
+                                //load_data();
+
+                                Log.e("sssss","ssss");
+                            } else {
+                                Log.e("sssss","ssss2");
+                                bindContractList();
+                            }
+
+                        } else {
+                            bindContractList();
+                        }
+                    } else {
+                        listViewFinish.setVisibility(View.GONE);
+                        textViewFinish.setVisibility(View.VISIBLE);
+                        if(isCredit){
+                            textViewFinish.setText("Finished List");
+                        } else {
+                            textViewFinish.setText("Finished Sales List");
+                        }
+                    }
+                } catch (NullPointerException ex) {
+                    listViewFinish.setVisibility(View.GONE);
+                    textViewFinish.setVisibility(View.VISIBLE);
+                    if(isCredit){
+                        textViewFinish.setText("Finished List");
+                    } else {
+                        textViewFinish.setText("Finished Sales List");
+                    }
+                }
+            }
+        }.start();
+    }
 
 
     public boolean isConnectingToInternet() {
@@ -245,7 +353,7 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
         @Override
         protected void onViewItem(final int position, View view, Object holder, final ContractInfo info) {
             // TODO Auto-generated method stub
-            SaleMainFinishedFragment_preorder_setting.ContractAdapter.ViewHolder vh = (SaleMainFinishedFragment_preorder_setting.ContractAdapter.ViewHolder) holder;
+            ContractAdapter.ViewHolder vh = (ContractAdapter.ViewHolder) holder;
             gg++;
             Log.e("position",position+","+gg);
             if(gg>148){
@@ -284,7 +392,7 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
     private void bindContractList() {
         // TODO Auto-generated method stub
         textViewFinish.setVisibility(View.GONE);
-        contractAdapter = new SaleMainFinishedFragment_preorder_setting.ContractAdapter(activity, R.layout.list_main_status, contractList);
+        contractAdapter = new ContractAdapter(activity, R.layout.list_main_status, contractList);
         listViewFinish.setAdapter(contractAdapter);
 
         listViewFinish.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -321,7 +429,7 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                             if (cont != null) {
 
 
-                                Log.e("aaa4",cont.RefNo);
+                                Log.e("aaa4",cont.CONTNO);
 
 
 

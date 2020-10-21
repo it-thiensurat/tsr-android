@@ -202,14 +202,13 @@ public class SaleScanEmployeesFragment extends BHFragment {
 
                     Log.e("sale_select",empID+","+BHPreference.teamCode());
                 }
-           /*     else {
+                else {
+                    //String empID = employeeListTemp.get(position).EmpID;
 
+                    Log.e("sale_select2",BHPreference.teamCode());
                     bindSelectedEmployee(BHPreference.employeeID(), BHPreference.teamCode());
 
-
                 }
-*/
-
 
             }
 
@@ -348,15 +347,18 @@ public class SaleScanEmployeesFragment extends BHFragment {
             @Override
             protected void calling() {
                 // TODO Auto-generated method stub
-                //if(BHPreference.sourceSystem().equals("Credit")) {
-                  //  employee = getEmpByempID_for_credit(empID, teamCode);
-                //}
-            /*    else {
+                if(BHPreference.sourceSystem().equals("Credit")) {
+                    Log.e("po","credit");
+                    employee = getEmpByempID_for_credit(empID,teamCode);
+                }
+                else {
+                    Log.e("po","sale");
+
                     employee = getEmpByempID(empID, teamCode);
 
-                }*/
+                }
 
-                employee = getEmpByempID(empID, teamCode);
+               // employee = getEmpByempID(empID, teamCode);
 
             }
 
@@ -426,9 +428,27 @@ public class SaleScanEmployeesFragment extends BHFragment {
             protected void calling() {
                 // TODO Auto-generated method stub
                 if (BHPreference.SubTeamCode() == null) {
-                    employeeList = getEmployeeInfoSaleLeader(BHPreference.teamCode());
+                   // employeeList = getEmployeeInfoSaleLeader(BHPreference.teamCode());
+
+                    if(BHPreference.sourceSystem().equals("Credit")) {
+                        employeeList = getEmployeeInfoSaleLeader_for_credit(BHPreference.employeeID(),BHPreference.teamCode());
+                    }
+                    else {
+
+                        employeeList = getEmployeeInfoSaleLeader(BHPreference.teamCode());
+                    }
+
                 } else {
-                    employeeList = getEmployeeInfoSubTeamLeader(BHPreference.teamCode(), BHPreference.SubTeamCode());
+                    if(BHPreference.sourceSystem().equals("Credit")) {
+                        employeeList = getEmployeeInfoSubTeamLeader_for_credit(BHPreference.employeeID(),BHPreference.teamCode(), BHPreference.SubTeamCode());
+
+                    }
+                    else {
+                        employeeList = getEmployeeInfoSubTeamLeader(BHPreference.teamCode(), BHPreference.SubTeamCode());
+
+                    }
+
+                  //  employeeList = getEmployeeInfoSubTeamLeader(BHPreference.teamCode(), BHPreference.SubTeamCode());
                 }
                 contract = getContract(BHPreference.RefNo());
 
@@ -448,18 +468,20 @@ public class SaleScanEmployeesFragment extends BHFragment {
                 if (employeeList != null) {
                 	for (int i = employeeList.size()-1; i >= 0; i--) {
 
-                	/*    if(BHPreference.sourceSystem().equals("Credit")) {
-                            if (!employeeList.get(i).PositionCode.equals("Credit")) {
+                        if(BHPreference.sourceSystem().equals("Credit")) {
+                            //if (!employeeList.get(i).PositionCode.equals("Credit")) {
+                            if (employeeList.get(i).PositionCode == null || !employeeList.get(i).PositionCode.equals("Credit") || employeeList.get(i).SaleCode == null) {
+
 
                                 employeeList.remove(i);
                             }
-                        }*/
-                	   // else {
+                        }
+                         else {
                             if (employeeList.get(i).PositionCode == null || !employeeList.get(i).PositionCode.equals("Sale") || employeeList.get(i).SaleCode == null) {
 
                                 employeeList.remove(i);
                             }
-                       // }
+                        }
 
 
 

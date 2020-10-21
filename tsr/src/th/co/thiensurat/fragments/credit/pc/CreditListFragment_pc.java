@@ -1,4 +1,4 @@
-package th.co.thiensurat.fragments.credit.credit;
+package th.co.thiensurat.fragments.credit.pc;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -47,6 +47,9 @@ import th.co.thiensurat.data.controller.AssignController;
 import th.co.thiensurat.data.controller.DatabaseManager;
 import th.co.thiensurat.data.info.AddressInfo;
 import th.co.thiensurat.data.info.AssignInfo;
+import th.co.thiensurat.fragments.credit.credit.CreditDetailFragment;
+
+import th.co.thiensurat.fragments.credit.credit.CreditMapFragment;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment;
 import th.co.thiensurat.retrofit.api.Service;
 
@@ -285,11 +288,11 @@ public class CreditListFragment_pc extends BHFragment {
     }
     public void callCreditDetail(AssignInfo assign) {
         // next payment
-        CreditDetailFragment.Data input = new CreditDetailFragment.Data();
+        CreditDetailFragment_pc.Data input = new CreditDetailFragment_pc.Data();
         input.AssignID = assign.AssignID;
         input.selectedDate = data.selectedDate;
-        CreditDetailFragment fragment = BHFragment
-                .newInstance(CreditDetailFragment.class, input);
+        CreditDetailFragment_pc fragment = BHFragment
+                .newInstance(CreditDetailFragment_pc.class, input);
         showNextView(fragment);
     }
 
@@ -317,8 +320,10 @@ public class CreditListFragment_pc extends BHFragment {
             @Override
             protected void calling() {
                 creditList.clear();
-                List<AssignInfo> result = new AssignController().getSalePaymentPeriodListForAssignCredit(BHPreference.organizationCode(),
-                        BHPreference.teamCode(), BHPreference.employeeID(), data.selectedDate, search, AddressInfo.AddressType.AddressPayment.toString());
+
+                Log.e("organizationCode", String.valueOf(data.selectedDate));
+                List<AssignInfo> result = new AssignController().getSalePaymentPeriodListForAssignCredit_pc(BHPreference.organizationCode(),
+             BHPreference.employeeID(), data.selectedDate, search, AddressInfo.AddressType.AddressPayment.toString());
                 if (result != null && result.size() > 0) {
                     creditList.addAll(result);
                 }
@@ -357,8 +362,17 @@ public class CreditListFragment_pc extends BHFragment {
                     creditList.addAll(result);
                 }*/
 
+
+
                result = new AssignController().getNewSalePaymentPeriodListForAssignCredit_PC(BHPreference.organizationCode(),
                         BHPreference.teamCode(), BHPreference.employeeID(), search, AddressInfo.AddressType.AddressPayment.toString());
+
+
+               Log.e("fffff",BHPreference.organizationCode()+","+ BHPreference.teamCode()+","+BHPreference.employeeID()+","+ search+","+ AddressInfo.AddressType.AddressPayment.toString());
+
+//                Log.e("sqlsql",result.toString());
+
+
             }
 
             @Override
@@ -384,10 +398,10 @@ public class CreditListFragment_pc extends BHFragment {
         switch (buttonID) {
             case R.string.button_back:
                 //showLastView();
-                activity.showView(BHFragment.newInstance(CreditMainFragment.class));
+                activity.showView(BHFragment.newInstance(CreditMainFragment_pc.class));
                 break;
             case R.string.button_credit_choose_date :
-                CreditMainFragment selecte_date_fragment = BHFragment.newInstance(CreditMainFragment.class);
+                CreditMainFragment_pc selecte_date_fragment = BHFragment.newInstance(CreditMainFragment_pc.class);
                 showNextView(selecte_date_fragment);
                 break;
             case R.string.button_display_map:
@@ -404,11 +418,11 @@ public class CreditListFragment_pc extends BHFragment {
                         BHUtilities.alertDialog(activity, "แจ้งเตือน", "กรุณาเลือกข้อมูล").show();
                         break;
                     default:
-                        CreditMapFragment.Data input = new CreditMapFragment.Data();
+                        CreditMapFragment_pc.Data input = new CreditMapFragment_pc.Data();
                         input.customerList = customerList;
                         input.selectedDate = data.selectedDate;
-                        CreditMapFragment fragment = BHFragment
-                                .newInstance(CreditMapFragment.class, input);
+                        CreditMapFragment_pc fragment = BHFragment
+                                .newInstance(CreditMapFragment_pc.class, input);
                         showNextView(fragment);
                         break;
                 }

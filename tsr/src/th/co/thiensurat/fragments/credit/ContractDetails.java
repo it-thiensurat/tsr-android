@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ import th.co.thiensurat.service.TSRService;
 import th.co.thiensurat.service.data.GetContractStatusFinishForCreditBySearchInputInfo;
 import th.co.thiensurat.service.data.GetContractStatusFinishForCreditBySearchOutputInfo;
 
+import static th.co.thiensurat.activities.MainActivity.select_page_list;
 import static th.co.thiensurat.fragments.synchronize.SynchronizeMainFragment.check_update_database;
 
 public class ContractDetails extends BHFragment {
@@ -34,6 +36,7 @@ public class ContractDetails extends BHFragment {
     public static List<ContractInfo> contractList = null;
 
     private final boolean isCredit = BHPreference.sourceSystem().equals(EmployeeController.SourceSystem.Credit.toString());
+
 
     @Override
     protected int fragmentID() {
@@ -53,6 +56,9 @@ public class ContractDetails extends BHFragment {
 
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
+
+
+        Log.e("dddd","aaa");
         viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
 
             @Override
@@ -133,7 +139,8 @@ public class ContractDetails extends BHFragment {
                     // TODO Auto-generated method stub
                     try {
                         if(isCredit){
-                            contractList = TSRController.getContractStatusFinishForCreditBySearch(BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), strSearch);
+                          Log.e("test", "AAAA");
+                            contractList = TSRController.getContractStatusFinishForCreditBySearch_all(BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), strSearch);
                             /*** [START] :: Fixed - [BHPROJ-0026-3277][Android-รายละเอียดสัญญา] ในเมนูนี้ เหมือนว่าต้องการจะทำให้สามารถค้นหาสัญญาใด ๆ ก็ได้ แต่ปัจจุบันค้นหาได้เฉพาะสัญญาของตนเองเท่านั้น ***/
 
                             if (contractList == null) {
@@ -150,6 +157,7 @@ public class ContractDetails extends BHFragment {
                             }
                             /*** [END] :: Fixed - [BHPROJ-0026-3277][Android-รายละเอียดสัญญา] ในเมนูนี้ เหมือนว่าต้องการจะทำให้สามารถค้นหาสัญญาใด ๆ ก็ได้ แต่ปัจจุบันค้นหาได้เฉพาะสัญญาของตนเองเท่านั้น ***/
                         } else {
+                            Log.e("test", "BBBB");
                             contractList = TSRController.getContractStatusFinishBySearch(BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), strSearch);
                         }
                     } catch (Exception e) {
@@ -161,6 +169,9 @@ public class ContractDetails extends BHFragment {
                 protected void after() {
                     // TODO Auto-generated method stub
                     SaleMainFinishedFragment.contractList = contractList;
+
+
+                    Log.e("test","CCCC");
 
                     SaleMainFinishedFragment.contractAdapter = new SaleMainFinishedFragment.ContractAdapter(activity, R.layout.list_main_status, SaleMainFinishedFragment.contractList);
                     SaleMainFinishedFragment.listViewFinish.setAdapter(SaleMainFinishedFragment.contractAdapter);

@@ -529,7 +529,7 @@ public class SaleConfirmBeforeReceiptFragment_preorder extends BHFragment {
                 input.ReceiptCode = BHApplication.getInstance().getPrefManager().getPreferrence("getReceiptCode");
                 data.receiptCode= BHApplication.getInstance().getPrefManager().getPreferrence("getReceiptCode");
 
-                Log.e("receiptCode",data.receiptCode);
+              //  Log.e("receiptCode",data.receiptCode);
 
                 if (data.paymentType.equals("Credit")) {
                     input.BankCode = data.bank.BankCode;

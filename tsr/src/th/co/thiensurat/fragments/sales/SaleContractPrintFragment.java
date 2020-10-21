@@ -461,6 +461,7 @@ public class SaleContractPrintFragment extends BHFragment {
                              */
                             if (contract.SaleEmployeeName.equals(contract.upperEmployeeName)) {
                                 txtSaleEmpName.setText("(                   )");
+                                //txtSaleEmpName.setText(BHUtilities.trim("(" + contract.SaleEmployeeName + ")"));
                                 txtSaleEmpID.setText(BHUtilities.trim("รหัส "));
                             } else {
                                 txtSaleEmpName.setText(BHUtilities.trim("(" + contract.SaleEmployeeName + ")"));

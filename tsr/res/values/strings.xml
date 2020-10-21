@@ -163,6 +163,9 @@
     <string name="main_menu_credit_sort_order_default_audit">B1587E19527D4FD980425A4727C310D4</string>
     <string name="main_menu_credit_sort_order_default_credit">E487C8A68DC84F0C80BD0A3A1C87ACF4</string>
 
+    <string name="main_menu_credit_pc">C07FCC694E284F469B9AC4C99C96DDCF</string>
+    <string name="main_menu_proorder_credit">C07FCC694E284F469B9AC4C99C96DDCG</string>
+
     <!-- Fixed - [BHPROJ-0026-3265] [Backend+Frontend] เพิ่มเมนูสำหรับทำการ ย้ายเข้า/ย้ายออก ข้อมูล Assign การเก็บเงิน -->
     <string name="main_menu_credit_assign_push_pull">42340AAEECA6495082198378374B8706</string>
 

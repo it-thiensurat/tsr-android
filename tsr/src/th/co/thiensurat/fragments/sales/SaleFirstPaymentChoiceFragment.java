@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -249,6 +250,8 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
 
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
+        Log.e("page","8");
+
         if (Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.Sale) {
             saveStatusCode();
             txtNumber1.setText("...");

@@ -333,7 +333,7 @@ public class ContractController extends BaseController {
         return executeQueryList(sql, new String[]{organizationCode, saleTeamCode}, ContractInfo.class);
     }
 
-    public List<ContractInfo> getContractStatusFinish(String organizationCode, String saleTeamCode, String StatusName) {
+    public List<ContractInfo> getContractStatusFinish(String EMPID,String organizationCode, String saleTeamCode, String StatusName) {
         final String sql =
                 /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
                 //"SELECT distinct Cont.*,"
@@ -354,11 +354,11 @@ public class ContractController extends BaseController {
                 + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
                 + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
                 + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
-                + " WHERE  (Cont.ProductSerialNumber != '-') AND   (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
+                + " WHERE   (Cont.ProductSerialNumber != '-') AND   (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
                 + " ORDER BY Cont.CONTNO ASC";
 
         return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName}, ContractInfo.class);
-    }
+    }//(Cont.SaleEmployeeCode = ?) AND
 
 
     public List<ContractInfo> getContractStatusFinish_ContractInfo_preorder(String organizationCode, String saleTeamCode, String StatusName) {
@@ -410,7 +410,7 @@ public class ContractController extends BaseController {
                         + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
                         + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
                         + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
-                        + " WHERE   substr(Cont.ProductSerialNumber,1, 2) ='WO'  AND  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
+                        + " WHERE   (substr(Cont.ProductSerialNumber,1, 2) ='WG' or  substr(Cont.ProductSerialNumber,1, 2) ='WI' or substr(Cont.ProductSerialNumber,1, 2) ='WS' or substr(Cont.ProductSerialNumber,1, 2) ='WK' or substr(Cont.ProductSerialNumber,1, 2) ='WJ' or substr(Cont.ProductSerialNumber,1, 3) ='SFK' or substr(Cont.ProductSerialNumber,1, 3) ='SFL' or substr(Cont.ProductSerialNumber,1, 2) ='WO')  AND  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
                         + " ORDER BY Cont.CONTNO ASC";
 
         return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName}, ContractInfo.class);
@@ -450,7 +450,39 @@ public class ContractController extends BaseController {
     }
 
 
-    public List<ContractInfo> getContractStatusFinishForCRD(String organizationCode, String saleTeamCode, String StatusName, String EmployeeID) {
+    public List<ContractInfo> getContractStatusFinish_ContractInfo_preorder_SETTING_S(String S) {
+        final String sql =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT distinct Cont.*,"
+                " SELECT distinct Cont.[RefNo],Cont.[CONTNO],Cont.[CustomerID],Cont.[OrganizationCode],Cont.[STATUS],Cont.[StatusCode],Cont.[SALES],Cont.[TotalPrice],Cont.[EFFDATE],Cont.[HasTradeIn]"
+                        + "     ,Cont.[TradeInProductCode],Cont.[TradeInBrandCode],Cont.[TradeInProductModel],Cont.[TradeInDiscount]"
+                        + "     ,Cont.[PreSaleSaleCode],Cont.[PreSaleEmployeeCode],Cont.[PreSaleTeamCode],Cont.[SaleCode],Cont.[SaleEmployeeCode],Cont.[SaleTeamCode] "
+                        + "     ,Cont.[InstallerSaleCode],Cont.[InstallerEmployeeCode],Cont.[InstallerTeamCode],Cont.[InstallDate],ifnull(Cont.[ProductSerialNumber],'') AS ProductSerialNumber,Cont.[ProductID]"
+                        + "     ,Cont.[SaleEmployeeLevelPath],Cont.[MODE],Cont.[FortnightID],Cont.[ProblemID],Cont.[svcontno],Cont.[isActive],Cont.[MODEL]"
+                        + "     ,Cont.[fromrefno],Cont.[fromcontno],Cont.[todate],Cont.[tocontno],Cont.[torefno],Cont.[CreateDate],Cont.[CreateBy],Cont.[LastUpdateDate],Cont.[LastUpdateBy],Cont.[SyncedDate]"
+                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate]"
+                        /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
+
+                        + " 			,Cust.PrefixName || IFNULL(Cust.CustomerName,'') AS CustomerFullName, Cust.CompanyName, Cust.IDCard,"
+                        + " 			 Prod.ProductName, Sale.FirstName || '  ' || Sale.LastName AS SaleEmployeeName,"
+                        + " 			 ContST.StatusName"
+                        //  + " FROM            Contract AS Cont INNER JOIN"
+                        + " FROM            Contract AS Cont LEFT JOIN"
+
+                        + "                         DebtorCustomer AS Cust ON Cont.OrganizationCode = Cust.OrganizationCode AND Cont.CustomerID = Cust.CustomerID INNER JOIN"
+                        + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
+                        + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
+                        + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
+                        // + " WHERE   (Cont.ProductSerialNumber = '-') AND  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?)  AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
+                        + " WHERE   (Cont.ProductSerialNumber = '-') AND (Cont.StatusCode='13')  AND (Cont.CONTNO LIKE  ? OR CustomerFullName LIKE  ?) "
+                        // + " WHERE   (Cont.ProductSerialNumber = '-') "
+
+
+                        + " ORDER BY Cont.CONTNO ASC";
+
+        return executeQueryList(sql, new String[]{"%" + S + "%","%" + S + "%"}, ContractInfo.class);
+    }
+    public List<ContractInfo> getContractStatusFinishForCRD(String EMPID,String organizationCode, String saleTeamCode, String StatusName, String EmployeeID) {
         final String sql =
                 /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
                 //"SELECT distinct Cont.*,"
@@ -563,7 +595,7 @@ public class ContractController extends BaseController {
 //        return executeQueryList(sql, new String[]{organizationCode, StatusName}, ContractInfo.class);
 //    }
 
-    public List<ContractInfo> getContractStatusFinishForCreditBySearch(String organizationCode, String StatusName, String strSearch) {
+    public List<ContractInfo> getContractStatusFinishForCreditBySearch(String EMPID,String organizationCode, String StatusName, String strSearch) {
         final String sql =
                 /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
                 //"SELECT distinct Cont.*,"
@@ -585,15 +617,43 @@ public class ContractController extends BaseController {
                 + "      INNER JOIN Employee AS Sale ON (Cont.OrganizationCode = Sale.OrganizationCode) AND (Cont.SaleEmployeeCode = Sale.EmpID) "
                 + "      INNER JOIN ContractStatus AS ContST ON (Cont.StatusCode = ContST.StatusCode) "
                 + "      LEFT OUTER JOIN (SELECT RefNo, MAX(PAYDATE) AS MaxPaymentDate FROM Payment GROUP BY RefNo) AS MaxPay ON (Cont.RefNo = MaxPay.RefNo) "  //-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป
-                + " WHERE (Cont.ProductSerialNumber != '-') AND  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
+                + " WHERE  (Cont.CreateBy =?) AND (Cont.ProductSerialNumber != '-') AND  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
                 //+ "            AND (Cont.CONTNO LIKE  ? OR Cont.ProductSerialNumber LIKE  ? OR CustomerFullName2 LIKE  ?)"
                 + "      AND (Cont.CONTNO LIKE  ? OR CustomerFullName2 LIKE  ?)"
                 + " ORDER BY MaxPay.MaxPaymentDate DESC, Cont.CONTNO ASC";  //-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป
 
-        return executeQueryList(sql, new String[]{organizationCode, StatusName, strSearch, strSearch}, ContractInfo.class);
+        return executeQueryList(sql, new String[]{EMPID,organizationCode, StatusName, strSearch, strSearch}, ContractInfo.class);
     }
 
+    public List<ContractInfo> getContractStatusFinishForCreditBySearch_all(String organizationCode, String StatusName, String strSearch) {
+        final String sql =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT distinct Cont.*,"
+                " SELECT distinct Cont.[RefNo],Cont.[CONTNO],Cont.[CustomerID],Cont.[OrganizationCode],Cont.[STATUS],Cont.[StatusCode],Cont.[SALES],Cont.[TotalPrice],Cont.[EFFDATE],Cont.[HasTradeIn]"
+                        + "     ,Cont.[TradeInProductCode],Cont.[TradeInBrandCode],Cont.[TradeInProductModel],Cont.[TradeInDiscount]"
+                        + "     ,Cont.[PreSaleSaleCode],Cont.[PreSaleEmployeeCode],Cont.[PreSaleTeamCode],Cont.[SaleCode],Cont.[SaleEmployeeCode],Cont.[SaleTeamCode] "
+                        + "     ,Cont.[InstallerSaleCode],Cont.[InstallerEmployeeCode],Cont.[InstallerTeamCode],Cont.[InstallDate],ifnull(Cont.[ProductSerialNumber],'') AS ProductSerialNumber,Cont.[ProductID]"
+                        + "     ,Cont.[SaleEmployeeLevelPath],Cont.[MODE],Cont.[FortnightID],Cont.[ProblemID],Cont.[svcontno],Cont.[isActive],Cont.[MODEL]"
+                        + "     ,Cont.[fromrefno],Cont.[fromcontno],Cont.[todate],Cont.[tocontno],Cont.[torefno],Cont.[CreateDate],Cont.[CreateBy],Cont.[LastUpdateDate],Cont.[LastUpdateBy],Cont.[SyncedDate]"
+                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate]"
+                        /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
+                        + " 	,Cust.PrefixName || IFNULL(Cust.CustomerName,'') AS CustomerFullName, Cust.CompanyName, Cust.IDCard,"
+                        + " 	 Prod.ProductName, Sale.FirstName || '  ' || Sale.LastName AS SaleEmployeeName,"
+                        + " 	 ContST.StatusName, IFNULL(Cust.CustomerName,'') || IFNULL(Cust.CompanyName,'') AS CustomerFullName2"
+                        + " 	 , MaxPay.MaxPaymentDate"   //-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป
+                        + " FROM  Contract AS Cont "
+                        + "      INNER JOIN DebtorCustomer AS Cust ON (Cont.OrganizationCode = Cust.OrganizationCode) AND (Cont.CustomerID = Cust.CustomerID) "
+                        + "      INNER JOIN Product AS Prod ON (Cont.OrganizationCode = Prod.OrganizationCode) AND (Cont.ProductID = Prod.ProductID) "
+                        + "      INNER JOIN Employee AS Sale ON (Cont.OrganizationCode = Sale.OrganizationCode) AND (Cont.SaleEmployeeCode = Sale.EmpID) "
+                        + "      INNER JOIN ContractStatus AS ContST ON (Cont.StatusCode = ContST.StatusCode) "
+                        + "      LEFT OUTER JOIN (SELECT RefNo, MAX(PAYDATE) AS MaxPaymentDate FROM Payment GROUP BY RefNo) AS MaxPay ON (Cont.RefNo = MaxPay.RefNo) "  //-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป
+                        + " WHERE (Cont.ProductSerialNumber != '-') AND  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
+                        //+ "            AND (Cont.CONTNO LIKE  ? OR Cont.ProductSerialNumber LIKE  ? OR CustomerFullName2 LIKE  ?)"
+                        + "      AND (Cont.CONTNO LIKE  ? OR CustomerFullName2 LIKE  ?)"
+                        + " ORDER BY MaxPay.MaxPaymentDate DESC, Cont.CONTNO ASC";  //-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป
 
+        return executeQueryList(sql, new String[]{organizationCode, StatusName, strSearch, strSearch}, ContractInfo.class);
+    }
 
     public List<ContractInfo> getContractStatusFinishForCreditBySearch_ContractInfo_preorder(String organizationCode, String StatusName, String strSearch) {
         final String sql =
@@ -625,10 +685,40 @@ public class ContractController extends BaseController {
         return executeQueryList(sql, new String[]{organizationCode, StatusName, strSearch, strSearch}, ContractInfo.class);
     }
 
+    public List<ContractInfo> getContractStatusFinishForCreditBySearch_ContractInfo_preorder_CREDIT(String organizationCode, String StatusName, String strSearch,String EMPID) {
+        final String sql =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT distinct Cont.*,"
+                " SELECT distinct Cont.[RefNo],Cont.[CONTNO],Cont.[CustomerID],Cont.[OrganizationCode],Cont.[STATUS],Cont.[StatusCode],Cont.[SALES],Cont.[TotalPrice],Cont.[EFFDATE],Cont.[HasTradeIn]"
+                        + "     ,Cont.[TradeInProductCode],Cont.[TradeInBrandCode],Cont.[TradeInProductModel],Cont.[TradeInDiscount]"
+                        + "     ,Cont.[PreSaleSaleCode],Cont.[PreSaleEmployeeCode],Cont.[PreSaleTeamCode],Cont.[SaleCode],Cont.[SaleEmployeeCode],Cont.[SaleTeamCode] "
+                        + "     ,Cont.[InstallerSaleCode],Cont.[InstallerEmployeeCode],Cont.[InstallerTeamCode],Cont.[InstallDate],ifnull(Cont.[ProductSerialNumber],'') AS ProductSerialNumber,Cont.[ProductID]"
+                        + "     ,Cont.[SaleEmployeeLevelPath],Cont.[MODE],Cont.[FortnightID],Cont.[ProblemID],Cont.[svcontno],Cont.[isActive],Cont.[MODEL]"
+                        + "     ,Cont.[fromrefno],Cont.[fromcontno],Cont.[todate],Cont.[tocontno],Cont.[torefno],Cont.[CreateDate],Cont.[CreateBy],Cont.[LastUpdateDate],Cont.[LastUpdateBy],Cont.[SyncedDate]"
+                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate]"
+                        /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
+                        + " 	,Cust.PrefixName || IFNULL(Cust.CustomerName,'') AS CustomerFullName, Cust.CompanyName, Cust.IDCard,"
+                        + " 	 Prod.ProductName, Sale.FirstName || '  ' || Sale.LastName AS SaleEmployeeName,"
+                        + " 	 ContST.StatusName, IFNULL(Cust.CustomerName,'') || IFNULL(Cust.CompanyName,'') AS CustomerFullName2"
+                        + " 	 , MaxPay.MaxPaymentDate"   //-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป
+                        + " FROM  Contract AS Cont "
+                        + "      INNER JOIN DebtorCustomer AS Cust ON (Cont.OrganizationCode = Cust.OrganizationCode) AND (Cont.CustomerID = Cust.CustomerID) "
+                        + "      INNER JOIN Product AS Prod ON (Cont.OrganizationCode = Prod.OrganizationCode) AND (Cont.ProductID = Prod.ProductID) "
+                        + "      INNER JOIN Employee AS Sale ON (Cont.OrganizationCode = Sale.OrganizationCode) AND (Cont.SaleEmployeeCode = Sale.EmpID) "
+                        + "      INNER JOIN ContractStatus AS ContST ON (Cont.StatusCode = ContST.StatusCode) "
+                        + "      LEFT OUTER JOIN (SELECT RefNo, MAX(PAYDATE) AS MaxPaymentDate FROM Payment GROUP BY RefNo) AS MaxPay ON (Cont.RefNo = MaxPay.RefNo) "  //-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป
+                        + " WHERE (Cont.ProductSerialNumber = '-') AND (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
+                        //+ "            AND (Cont.CONTNO LIKE  ? OR Cont.ProductSerialNumber LIKE  ? OR CustomerFullName2 LIKE  ?)"
+                        + "      AND (Cont.CONTNO LIKE  ? OR CustomerFullName2 LIKE  ?)"
+                        + "      AND (Cont.CreateBy =  ?)"
+                        + " ORDER BY MaxPay.MaxPaymentDate DESC, Cont.CONTNO ASC";  //-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป
+
+        return executeQueryList(sql, new String[]{organizationCode, StatusName, strSearch, strSearch,EMPID}, ContractInfo.class);
+    }
     // private static final String QUERY_CONTRACT_GET_BY_STATUS_UNFINISH =
     // "SELECT * FROM Contract WHERE organizationCode = ? AND  SaleTeamCode = ? AND StatusCode <> ?";
 
-    public List<ContractInfo> getContractStatusUnFinish(String organizationCode, String saleTeamCode, String StatusName) {
+    public List<ContractInfo> getContractStatusUnFinish(String EMPID,String organizationCode, String saleTeamCode, String StatusName) {
         final String sql =
                 /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
                 //"SELECT distinct Cont.*,"
@@ -649,12 +739,12 @@ public class ContractController extends BaseController {
                 + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
                 + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
                 + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
-                + " WHERE  substr(Cont.ProductSerialNumber,1, 2) !='WO'  AND (Cont.ProductSerialNumber != '-') AND   (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?)";
+                + " WHERE  substr(Cont.ProductSerialNumber,1, 2) !='WG' AND  substr(Cont.ProductSerialNumber,1, 2) !='WI' AND substr(Cont.ProductSerialNumber,1, 2) !='WS' AND substr(Cont.ProductSerialNumber,1, 2) !='WK' AND substr(Cont.ProductSerialNumber,1, 2) !='WJ' AND substr(Cont.ProductSerialNumber,1, 3) !='SFK' AND substr(Cont.ProductSerialNumber,1, 3) !='SFL' AND substr(Cont.ProductSerialNumber,1, 2) !='WO' AND (Cont.ProductSerialNumber != '-') AND (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?)";
 
 
         //Log.e("xxxxx_moo_test",organizationCode+","+saleTeamCode+","+StatusName);
         return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName}, ContractInfo.class);
-    }
+    }//(Cont.SaleEmployeeCode = ?) AND  substr(Cont.ProductSerialNumber,1, 2) !='WO'
 
 
     public List<ContractInfo> getContractStatusUnFinish_SETTING(String organizationCode, String saleTeamCode, String StatusName) {
@@ -678,7 +768,7 @@ public class ContractController extends BaseController {
                         + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
                         + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
                         + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
-                        + " WHERE substr(Cont.ProductSerialNumber,1, 2) ='WO' AND  (Cont.ProductSerialNumber != '-') AND   (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?)";
+                        + " WHERE (substr(Cont.ProductSerialNumber,1, 2) ='WG' or  substr(Cont.ProductSerialNumber,1, 2) ='WI' or substr(Cont.ProductSerialNumber,1, 2) ='WS' or substr(Cont.ProductSerialNumber,1, 2) ='WK' or substr(Cont.ProductSerialNumber,1, 2) ='WJ' or substr(Cont.ProductSerialNumber,1, 3) ='SFK' or substr(Cont.ProductSerialNumber,1, 3) ='SFL' or substr(Cont.ProductSerialNumber,1, 2) ='WO') AND  (Cont.ProductSerialNumber != '-') AND   (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?)";
 
 
         //Log.e("xxxxx_moo_test",organizationCode+","+saleTeamCode+","+StatusName);
@@ -716,7 +806,7 @@ public class ContractController extends BaseController {
     }
 
 
-    public List<ContractInfo> getContractStatusUnFinishForCRD(String organizationCode, String saleTeamCode, String StatusName, String SaleEmployeeCode) {
+    public List<ContractInfo> getContractStatusUnFinishForCRD(String EMPID,String organizationCode, String saleTeamCode, String StatusName, String SaleEmployeeCode) {
         final String sql =
                 /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
                 //"SELECT distinct Cont.*,"
@@ -737,7 +827,7 @@ public class ContractController extends BaseController {
                         + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
                         + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
                         + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
-                        + " WHERE  substr(Cont.ProductSerialNumber,1, 2) !='WO'  AND (Cont.ProductSerialNumber != '-') AND   (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?) AND (Cont.CreateBy = ?)";
+                        + " WHERE substr(Cont.ProductSerialNumber,1, 2) !='WG' AND  substr(Cont.ProductSerialNumber,1, 2) !='WI' AND substr(Cont.ProductSerialNumber,1, 2) !='WS' AND substr(Cont.ProductSerialNumber,1, 2) !='WK' AND substr(Cont.ProductSerialNumber,1, 2) !='WJ' AND substr(Cont.ProductSerialNumber,1, 3) !='SFK' AND substr(Cont.ProductSerialNumber,1, 3) !='SFL' AND substr(Cont.ProductSerialNumber,1, 2) !='WO'  AND (Cont.ProductSerialNumber != '-') AND   (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?) AND (Cont.CreateBy = ?)";
         return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName, SaleEmployeeCode}, ContractInfo.class);
     }
 
@@ -764,7 +854,7 @@ public class ContractController extends BaseController {
                         + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
                         + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
                         + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
-                        + " WHERE  substr(Cont.ProductSerialNumber,1, 2) ='WO' AND  (Cont.ProductSerialNumber != '-') AND  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?) AND (Cont.CreateBy = ?)";
+                        + " WHERE (substr(Cont.ProductSerialNumber,1, 2) ='WG' or  substr(Cont.ProductSerialNumber,1, 2) ='WI' or substr(Cont.ProductSerialNumber,1, 2) ='WS' or substr(Cont.ProductSerialNumber,1, 2) ='WK' or substr(Cont.ProductSerialNumber,1, 2) ='WJ' or substr(Cont.ProductSerialNumber,1, 3) ='SFK' or substr(Cont.ProductSerialNumber,1, 3) ='SFL' or substr(Cont.ProductSerialNumber,1, 2) ='WO') AND  (Cont.ProductSerialNumber != '-') AND  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName <> ?) AND (Cont.CreateBy = ?)";
         return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName, SaleEmployeeCode}, ContractInfo.class);
     }
 

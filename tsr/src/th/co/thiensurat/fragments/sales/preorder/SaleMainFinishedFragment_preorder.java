@@ -93,13 +93,13 @@ public class SaleMainFinishedFragment_preorder extends BHPagerFragment {
 					if(isCredit){
 						//-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป (Comment ตัวนี้ไปใช้ getContractStatusFinishForCreditBySearch แทน)
 						//contractList = TSRController.getContractStatusFinishForCredit(BHPreference.organizationCode(), ContractStatusName.COMPLETED.toString());
-						contractList = TSRController.getContractStatusFinishForCreditBySearch_ContractInfo_preorder(BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%");
+						contractList = TSRController.getContractStatusFinishForCreditBySearch_ContractInfo_preorder_CREDIT(BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%",BHPreference.employeeID());
 						//Log.e("user",contractList.toString());
-						//Log.e("1111","1111");
+						Log.e("1111","1111");
 					} else {
 						if (BHPreference.IsSaleForCRD()) {
 							if (isContractDetails) {
-								contractList = TSRController.getContractStatusFinishForCreditBySearch_ContractInfo_preorder(BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%");
+								contractList = TSRController.getContractStatusFinishForCreditBySearch_ContractInfo_preorder_CREDIT(BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%",BHPreference.employeeID());
 								Log.e("1111","2222");
 							} else {
 								contractList = TSRController.getContractStatusFinishForCRD_ContractInfo_preorder(BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());

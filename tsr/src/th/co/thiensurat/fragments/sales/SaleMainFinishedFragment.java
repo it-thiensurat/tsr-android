@@ -44,6 +44,7 @@ import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessTy
 import th.co.thiensurat.retrofit.api.Service;
 
 import static java.lang.String.valueOf;
+import static th.co.thiensurat.activities.MainActivity.select_page_list;
 import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 
 public class SaleMainFinishedFragment extends BHPagerFragment {
@@ -93,20 +94,43 @@ public class SaleMainFinishedFragment extends BHPagerFragment {
 					if(isCredit){
 						//-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป (Comment ตัวนี้ไปใช้ getContractStatusFinishForCreditBySearch แทน)
 						//contractList = TSRController.getContractStatusFinishForCredit(BHPreference.organizationCode(), ContractStatusName.COMPLETED.toString());
-						contractList = TSRController.getContractStatusFinishForCreditBySearch(BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%");
+
+						if(select_page_list==1){
+							//contractList = TSRController.getContractStatusFinishForCreditBySearch_all(BHPreference.employeeID(),BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%");
+							contractList = TSRController.getContractStatusFinishForCreditBySearch_all(BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%");
+
+						}
+						else {
+							contractList = TSRController.getContractStatusFinishForCreditBySearch(BHPreference.employeeID(),BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%");
+
+						}
+
+
 						//Log.e("user",contractList.toString());
-						//Log.e("1111","1111");
+						Log.e("1111_credit","1111");
 					} else {
 						if (BHPreference.IsSaleForCRD()) {
 							if (isContractDetails) {
-								contractList = TSRController.getContractStatusFinishForCreditBySearch(BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%");
+								contractList = TSRController.getContractStatusFinishForCreditBySearch(BHPreference.employeeID(),BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%");
 								Log.e("1111","2222");
 							} else {
-								contractList = TSRController.getContractStatusFinishForCRD(BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
+								contractList = TSRController.getContractStatusFinishForCRD(BHPreference.employeeID(),BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
 								Log.e("1111","3333");
 							}
-						} else {
-							contractList = TSRController.getContractStatusFinish(BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString());
+						}
+						else if (BHPreference.IsSaleForTS()) {
+
+							if (isContractDetails) {
+								contractList = TSRController.getContractStatusFinishForCreditBySearch(BHPreference.employeeID(),BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%");
+								//Log.e("1111","2222");
+							} else {
+								contractList = TSRController.getContractStatusFinishForCRD(BHPreference.employeeID(),BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
+								Log.e("1111","5555");
+							}
+						}
+
+						else {
+							contractList = TSRController.getContractStatusFinish(BHPreference.employeeID(),BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString());
 							Log.e("1111","4444");
 						}
 					}

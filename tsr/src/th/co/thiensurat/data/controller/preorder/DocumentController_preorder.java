@@ -3829,6 +3829,10 @@ public class DocumentController_preorder {
 
     private static int RECEIPT_WIDTH = 576;
     public static  Bitmap getNewContactImage(ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
+
+
+
+
         ReceiptBuilder receiptBuilder = new ReceiptBuilder(RECEIPT_WIDTH);
         receiptBuilder.setMargin(5, 0);
         receiptBuilder.setTextSize(24);
@@ -4245,13 +4249,14 @@ public class DocumentController_preorder {
         Bitmap contractSign = null;
 
         if (customeSign != null) {
-            /*File file = new File(getAlbumStorageDir(contract.CONTNO), String.format("contract_%s.jpg", contract));
+/*File file = new File(getAlbumStorageDir(contract.CONTNO), String.format("contract_%s.jpg", contract));
             contractSign = mergeSignature(signature, customeSign, file);
             final int width = signature.getWidth();
             final int height = signature.getHeight();
             final int[] argb = new int[width * height];
             signature.getPixels(argb, 0, width, 0, 0, width, height);
             signature.recycle();*/
+
             contractSign = customeSign;
         } else {
            // contractSign = signature;
@@ -4260,30 +4265,6 @@ public class DocumentController_preorder {
 
 
 
-/*
-        Bitmap signature = generatSignature();
-
-        Bitmap customeSign = generateCustomerSignature(contract.CONTNO);
-        Bitmap contractSign = null;
-
-        if (customeSign != null) {
-            File file = new File(getAlbumStorageDir(contract.CONTNO), String.format("contract_%s.jpg", contract));
-            contractSign = mergeSignature( customeSign, file);
-           // final int width = signature.getWidth();
-            //final int height = signature.getHeight();
-
-            final int width = 0;
-            final int height =0;
-
-            final int[] argb = new int[width * height];
-            //signature.getPixels(argb, 0, width, 0, 0, width, height);
-          //  signature.recycle();
-          //
-
-        } else {
-            //contractSign = signature;
-        }
-*/
 
 
 
@@ -4291,54 +4272,6 @@ public class DocumentController_preorder {
             Log.e("aaa","1");
 
 
-/*
-           if (customeSign != null) {
-                receiptBuilder.setAlign(Align.CENTER);
-            } else {
-                receiptBuilder.setAlign(Align.LEFT);
-            }
-
-            receiptBuilder.addImage(contractSign);
-            yy += 25;
-
-            String TSR = "";
-            if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
-                EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
-                if (saleLeader != null) {
-                    TSR = "("+saleLeader.DepartmentHeadName+")";
-                }
-            }
-
-            cv.drawText(String.format("%s", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - 60)), RECEIPT_WIDTH / 4, yy, pSignature);
-            cv.drawText(String.format("%s", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - 60)), (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
-
-            String[] texts1 = getText(TSR, pSignature, RECEIPT_WIDTH / 2);
-            String[] texts2 = getText(customer, pSignature, RECEIPT_WIDTH / 2);
-            int num;
-            if (texts1.length > texts2.length) {
-                num = texts1.length;
-            } else {
-                num = texts2.length;
-            }
-
-            for (int ii = 0; ii < num; ii++) {
-                yy += fontSize + lineSpace;
-                if (texts1.length > ii) {
-                    cv.drawText(texts1[ii], RECEIPT_WIDTH / 4, yy, pSignature);
-                }
-
-                if (texts2.length > ii) {
-                    cv.drawText(texts2[ii], (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
-                }
-            }
-
-            result = Bitmap.createBitmap(RECEIPT_WIDTH, 120, Config.ARGB_8888);
-            cv = new Canvas(result);
-            cv.drawBitmap(img, 0, 0, null);
-            img.recycle();
-
-            receiptBuilder.addImage(result);
-*/
 
 
 
@@ -4424,88 +4357,6 @@ public class DocumentController_preorder {
 
 
 
-           /* if (customeSign != null) {
-                receiptBuilder.setAlign(Align.CENTER);
-            } else {
-                receiptBuilder.setAlign(Align.LEFT);
-            }
-
-            receiptBuilder.addImage(contractSign);
-            yy += 25;
-            String TSR = "";
-            if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
-                EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
-                if (saleLeader != null) {
-                    TSR = "("+saleLeader.DepartmentHeadName+")";
-                }
-            }
-            cv.drawText(String.format("%sผจก.ฝ่ายขาย", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("ผจก.ฝ่ายขาย", pSignature) + 50))), RECEIPT_WIDTH / 4, yy, pSignature);
-            cv.drawText(String.format("%sผู้เช่าซื้อ", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("ผู้เช่าซื้อ", pSignature) + 50))), (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
-
-            String[] texts1 = getText(TSR, pSignature, RECEIPT_WIDTH / 2);
-            String[] texts2 = getText(customer, pSignature, RECEIPT_WIDTH / 2);
-            int num;
-            if (texts1.length > texts2.length) {
-                num = texts1.length;
-            } else {
-                num = texts2.length;
-            }
-
-            for (int ii = 0; ii < num; ii++) {
-                yy += fontSize + lineSpace;
-                if (texts1.length > ii) {
-                    cv.drawText(texts1[ii], RECEIPT_WIDTH / 4, yy, pSignature);
-                }
-
-                if (texts2.length > ii) {
-                    cv.drawText(texts2[ii], (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
-                }
-            }
-
-            yy += 120;
-            String salename = "(" + BHUtilities.trim(contract.SaleEmployeeName != null ? contract.SaleEmployeeName : "") + ")";
-            String salecode = "รหัส " + BHUtilities.trim(contract.SaleCode);
-
-            String saleteamname = "(" + BHUtilities.trim(contract.upperEmployeeName != null ? contract.upperEmployeeName : "") + ")";
-            String saleteamcode = "" + BHUtilities.trim(contract.SaleTeamName != null ? contract.SaleTeamName : "");
-
-            if (contract.SaleEmployeeName.equals(contract.upperEmployeeName)) {
-                salename = "";
-                salecode = "";
-            }
-
-            cv.drawText(String.format("%sพยาน", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("พยาน", pSignature) + 50))), RECEIPT_WIDTH / 4, yy, pSignature);
-            cv.drawText(String.format("%sพยาน", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("พยาน", pSignature) + 50))), (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
-
-            texts1 = getText(saleteamname, pSignature, RECEIPT_WIDTH / 2);
-            texts2 = getText(salename, pSignature, RECEIPT_WIDTH / 2);
-            if (texts1.length > texts2.length) {
-                num = texts1.length;
-            } else {
-                num = texts2.length;
-            }
-
-            for (int ii = 0; ii < num; ii++) {
-                yy += fontSize + lineSpace;
-                if (texts1.length > ii) {
-                    cv.drawText(texts1[ii], RECEIPT_WIDTH / 4, yy, pSignature);
-                }
-
-                if (texts2.length > ii) {
-                    cv.drawText(texts2[ii], (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
-                }
-            }
-
-            yy += fontSize + lineSpace;
-            cv.drawText(saleteamcode, RECEIPT_WIDTH / 4, yy, pSignature);
-            cv.drawText(salecode, (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
-
-            result = Bitmap.createBitmap(RECEIPT_WIDTH, 300, Config.ARGB_8888);
-            cv = new Canvas(result);
-            cv.drawBitmap(img, 0, 0, null);
-            img.recycle();
-
-            receiptBuilder.addImage(result);*/
 
         } else {
 
@@ -4604,162 +4455,6 @@ public class DocumentController_preorder {
 
 
 
-/*            if (customeSign != null) {
-                receiptBuilder.setAlign(Align.CENTER);
-            } else {
-                receiptBuilder.setAlign(Align.LEFT);
-            }
-
-            receiptBuilder.addImage(contractSign);
-            yy += 25;
-
-            String TSR = "";
-
-
-*//*            if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
-                EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
-                if (saleLeader != null) {
-                    TSR = "("+saleLeader.DepartmentHeadName+")";
-                }
-            }*//*
-
-         //   cv.drawText(String.format("%s", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - 60)), RECEIPT_WIDTH / 4, yy, pSignature);
-        //    cv.drawText(String.format("%s", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - 60)), (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
-
-            cv.drawText(String.format("%sพนักงานขาบ", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - 60)), RECEIPT_WIDTH / 4, yy, pSignature);
-            cv.drawText(String.format("%sผู้จอง", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - 60)), (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
-
-
-            // String[] texts1 = getText(TSR, pSignature, RECEIPT_WIDTH / 2);
-
-            String salename = "(" + BHUtilities.trim(contract.SaleEmployeeName != null ? contract.SaleEmployeeName : "") + ")";
-         //   String salecode = "รหัส " + BHUtilities.trim(contract.SaleCode);
-
-         //   String saleteamname = "(" + BHUtilities.trim(contract.upperEmployeeName != null ? contract.upperEmployeeName : "") + ")";
-          //  String saleteamcode = "" + BHUtilities.trim(contract.SaleTeamName != null ? contract.SaleTeamName : "");
-
-            if (contract.SaleEmployeeName.equals(contract.upperEmployeeName)) {
-                salename = "";
-              //  salecode = "";
-            }
-
-            //cv.drawText(String.format("%sพยาน", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("พยาน", pSignature) + 50))), RECEIPT_WIDTH / 4, yy, pSignature);
-           // cv.drawText(String.format("%sพยาน", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("พยาน", pSignature) + 50))), (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
-
-            //texts1 = getText(saleteamname, pSignature, RECEIPT_WIDTH / 2);
-           // texts2 = getText(salename, pSignature, RECEIPT_WIDTH / 2);
-            String[] texts1 = getText(salename, pSignature, RECEIPT_WIDTH / 2);
-
-
-            String[] texts2 = getText(customer, pSignature, RECEIPT_WIDTH / 2);
-            int num;
-            if (texts1.length > texts2.length) {
-                num = texts1.length;
-            } else {
-                num = texts2.length;
-            }
-
-            for (int ii = 0; ii < num; ii++) {
-                yy += fontSize + lineSpace;
-                if (texts1.length > ii) {
-                    cv.drawText(texts1[ii], RECEIPT_WIDTH / 4, yy, pSignature);
-                }
-
-                if (texts2.length > ii) {
-                    cv.drawText(texts2[ii], (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
-                }
-            }
-
-            result = Bitmap.createBitmap(RECEIPT_WIDTH, 120, Config.ARGB_8888);
-            cv = new Canvas(result);
-            cv.drawBitmap(img, 0, 0, null);
-            img.recycle();
-
-            receiptBuilder.addImage(result);*/
-
-
-/*            if (customeSign != null) {
-                receiptBuilder.setAlign(Align.CENTER);
-            } else {
-                receiptBuilder.setAlign(Align.LEFT);
-            }
-
-            receiptBuilder.addImage(contractSign);
-            yy += 25;
-            String TSR = "";
-            if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
-                EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
-                if (saleLeader != null) {
-                    TSR = "("+saleLeader.DepartmentHeadName+")";
-                }
-            }
-            cv.drawText(String.format("%sผู้ให้เช่าซื้อ", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("ผู้ให้เช่าซื้อ", pSignature) + 50))), RECEIPT_WIDTH / 4, yy, pSignature);
-            cv.drawText(String.format("%sผู้เช่าซื้อ", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("ผู้เช่าซื้อ", pSignature) + 50))), (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
-
-            String[] texts1 = getText(TSR, pSignature, RECEIPT_WIDTH / 2);
-            String[] texts2 = getText(customer, pSignature, RECEIPT_WIDTH / 2);
-            int num;
-            if (texts1.length > texts2.length) {
-                num = texts1.length;
-            } else {
-                num = texts2.length;
-            }
-
-            for (int ii = 0; ii < num; ii++) {
-                yy += fontSize + lineSpace;
-                if (texts1.length > ii) {
-                    cv.drawText(texts1[ii], RECEIPT_WIDTH / 4, yy, pSignature);
-                }
-
-                if (texts2.length > ii) {
-                    cv.drawText(texts2[ii], (RECEIPT_WIDTH / 4) * 3, yy, pSignature);   ..
-                }
-            }
-
-            yy += 120;
-            String salename = "(" + BHUtilities.trim(contract.SaleEmployeeName != null ? contract.SaleEmployeeName : "") + ")";
-            String salecode = "รหัส " + BHUtilities.trim(contract.SaleCode);
-
-            String saleteamname = "(" + BHUtilities.trim(contract.upperEmployeeName != null ? contract.upperEmployeeName : "") + ")";
-            String saleteamcode = "" + BHUtilities.trim(contract.SaleTeamName != null ? contract.SaleTeamName : "");
-
-            if (contract.SaleEmployeeName.equals(contract.upperEmployeeName)) {
-                salename = "";
-                salecode = "";
-            }
-
-            cv.drawText(String.format("%sพยาน", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("พยาน", pSignature) + 50))), RECEIPT_WIDTH / 4, yy, pSignature);
-            cv.drawText(String.format("%sพยาน", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("พยาน", pSignature) + 50))), (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
-
-            texts1 = getText(saleteamname, pSignature, RECEIPT_WIDTH / 2);
-            texts2 = getText(salename, pSignature, RECEIPT_WIDTH / 2);
-            if (texts1.length > texts2.length) {
-                num = texts1.length;
-            } else {
-                num = texts2.length;
-            }
-
-            for (int ii = 0; ii < num; ii++) {
-                yy += fontSize + lineSpace;
-                if (texts1.length > ii) {
-                    cv.drawText(texts1[ii], RECEIPT_WIDTH / 4, yy, pSignature);
-                }
-
-                if (texts2.length > ii) {
-                    cv.drawText(texts2[ii], (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
-                }
-            }
-
-            yy += fontSize + lineSpace;
-            cv.drawText(saleteamcode, RECEIPT_WIDTH / 4, yy, pSignature);
-            cv.drawText(salecode, (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
-
-            result = Bitmap.createBitmap(RECEIPT_WIDTH, 300, Config.ARGB_8888);
-            cv = new Canvas(result);
-            cv.drawBitmap(img, 0, 0, null);
-            img.recycle();
-
-            receiptBuilder.addImage(result);*/
         }
 
         receiptBuilder.setAlign(Align.LEFT);
@@ -4774,20 +4469,6 @@ public class DocumentController_preorder {
 
 
 
-/*        receiptBuilder.setTextSize(22);
-        receiptBuilder.setAlign(Align.LEFT);
-        receiptBuilder.addText("** หมายเหตุ: ผู้เช่าซื้อหรือผู้ซื้อมีสิทธิเลิกสัญญาโดยการ", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addText("ส่งหนังสือแสดงเจตนาได้ภายใน 7 วัน นับแต่วันที่ผู้เช่าซื้อ", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addText("หรือผู้ซื้อได้รับสินค้าและผู้ให้เช่าซื้อหรือผู้ขายจะคืนเงิน", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.setTextSize(20);
-        receiptBuilder.addText("เต็มจำนวนที่ผู้เช่าซื้อหรือผู้ซื้อได้จ่ายไปเพื่อเช่าซื้อหรือซื้อสินค้า", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addText("ภายใน 15 วันนับแต่วันที่ผู้เช่าซื้อหรือผู้ซื้อใช้สิทธิในการคืนสินค้า", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addBlankSpace(20);*/
 
         receiptBuilder.setTextSize(22);
         receiptBuilder.setAlign(Align.LEFT);
@@ -4816,6 +4497,39 @@ public class DocumentController_preorder {
 
 
 
+
+
+/*        ReceiptBuilder receiptBuilder = new ReceiptBuilder(RECEIPT_WIDTH);
+
+
+        receiptBuilder.setTextSize(36);
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("** ผู้ส่ง: **", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("อัสนี แหวนหล่อ", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("\uD83D\uDCDE  0936095980", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.setTextSize(24);
+
+        receiptBuilder.addBlankSpace(40);
+
+        receiptBuilder.setTextSize(36);
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("** ผู้รับ: **", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("ทนงศักดิ์ งาคม   \uD83D\uDCDE  0851118027", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("255/4  ม.2 ต.ตะเคียนเตี้ย", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("อ.บางละมุง จ ชลบุรี 20150", true);
+        receiptBuilder.addParagraph();
+
+        receiptBuilder.setTextSize(24);
+        receiptBuilder.addBlankSpace(40);*/
+
+
+
         Bitmap bmp = receiptBuilder.build();
 
         return scaleBitmap(bmp, bmp.getWidth(), bmp.getHeight());
@@ -4827,11 +4541,7 @@ public class DocumentController_preorder {
         receiptBuilder.setAlign(Align.CENTER);
         receiptBuilder.setColor(Color.BLACK);
         receiptBuilder.setTextSize(26);
-//        receiptBuilder.addText("บริษัท เธียรสุรัตน์ จำกัด (มหาชน)", true);
-//        receiptBuilder.addParagraph();
-//        receiptBuilder.addText("เลขประจำตัวผู้เสียภาษี 0107556000213", true);
-//        receiptBuilder.addParagraph();
-//        receiptBuilder.addText("โทร. 1210", true);
+
         receiptBuilder.addImage(shortHeaderPrint());
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
@@ -4839,27 +4549,7 @@ public class DocumentController_preorder {
         receiptBuilder.addText("ใบรับเงิน");
         receiptBuilder.addParagraph();
 
-//        Bitmap imgTitle = Bitmap.createBitmap(RECEIPT_WIDTH, 65, Config.ARGB_8888);
-//        imgTitle.setHasAlpha(true);
-//        Canvas cvTitle = new Canvas(imgTitle);
-//        cvTitle.drawColor(BLACK);
-//        Paint rect = new Paint();
-//        rect.setColor(BLACK);
-//        rect.setStyle(Style.FILL);
-//        rect.setAntiAlias(true);
-//        cvTitle.drawBitmap(backgroundTitle(), 0, 0, null);
-//        Paint pTitle = new Paint();
-//        pTitle.setTypeface(Typeface.DEFAULT_BOLD);
-//        pTitle.setTextSize(26);
-//        pTitle.setTextAlign(Align.CENTER);
-//        pTitle.setColor(WHITE);
-//        pTitle.setStyle(Style.FILL);
-//        pTitle.setAntiAlias(true);
-//        cvTitle.drawText("ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ", RECEIPT_WIDTH / 2, 42, pTitle);
-//        Bitmap title = Bitmap.createBitmap(RECEIPT_WIDTH, 65, Config.ARGB_8888);
-//        Canvas cvTitle2 = new Canvas(title);
-//        cvTitle2.drawBitmap(imgTitle, 0, 0, null);
-//        receiptBuilder.addImage(imgTitle);
+
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
 
@@ -5063,6 +4753,18 @@ public class DocumentController_preorder {
 
         return receiptBuilder.build();
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
     public final static char CR  = (char) 0x0D;
     public static Bitmap getNewSendMoneyImage(SendMoneyInfo sendMoney) {
