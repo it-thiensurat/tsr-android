@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
@@ -140,7 +141,11 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
 
     @Override
     protected int[] processButtons() {
-        return new int[]{R.string.button_back, R.string.button_update_customer_phone, R.string.button_confirm_print};
+        if (Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.Credit) {
+            return new int[]{R.string.button_back, R.string.button_update_customer_phone, R.string.button_confirm_print};
+        } else {
+            return new int[]{R.string.button_back, R.string.button_confirm_print};
+        }
     }
 
     @Override
@@ -198,6 +203,10 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
         input.setLayoutParams(lp);
         input.setHint("ใส่เบอร์โทรลูกค้า");
         input.setInputType(InputType.TYPE_CLASS_PHONE);
+
+        InputFilter[] filters = new InputFilter[1];
+        filters[0] = new InputFilter.LengthFilter(10);
+        input .setFilters(filters);
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
         alertDialog.setView(input);
