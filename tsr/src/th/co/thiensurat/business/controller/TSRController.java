@@ -257,6 +257,12 @@ public class TSRController {
     public static GetUserByUserNameOutputInfo getUserByUserName(GetUserByUserNameInputInfo info) {
         return TSRService.getUserByUserName(info, false);
     }
+    public static GetUserByUserNameOutputInfo getUserByUserName2(GetUserByUserNameInputInfo info) {
+        return TSRService.getUserByUserName2(info, false);
+    }
+    public static GetUserByUserNameOutputInfo getUserByUserName3(GetUserByUserNameInputInfo info) {
+        return TSRService.getUserByUserName3(info, false);
+    }
 
     public static List<SalePaymentPeriodInfo> getNextSalePaymentPeriodByContractTeam(String organizationCode, String saleTeamCode) {
         return new SalePaymentPeriodController().getNextSalePaymentPeriodByContractTeam(organizationCode, saleTeamCode);

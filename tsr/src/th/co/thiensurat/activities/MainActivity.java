@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -114,6 +115,7 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHActivity;
+import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHArrayAdapter;
 import th.co.bighead.utilities.BHBluetoothPrinter.BHBluetoothPrinter;
 import th.co.bighead.utilities.BHFragment;
@@ -214,6 +216,7 @@ import th.co.thiensurat.service.data.GetDepartmentSignatureImageOutputInfo;
 
 import static java.lang.String.valueOf;
 import static th.co.bighead.utilities.BHApplication.getContext;
+import static th.co.bighead.utilities.BHPreference.pp3;
 import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 import static th.co.thiensurat.retrofit.api.client.GIS_BASE_URL;
 
@@ -265,6 +268,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
     private RelativeLayout vwProcess;
     private TextView txtTitle;
     private TextView txtDate;
+    TextView tvUserDetail2;
     //end variable for print version 2
     private ImageView imgMenu;
     private ListView lvMainMenu;
@@ -276,6 +280,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
     private MyBroadcastReceiver receiver;
     GetCurrentLocation currentLoc;
 
+    private AuthenticateInputInfo authenticateInputInfo;
 
     /**********************************************************************************************/
     private Runnable mJob = null;
@@ -359,6 +364,8 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         lvMainMenu = (ListView) llMainMenu.findViewById(R.id.lvMainMenu);
 
         TextView tvUserDetail = (TextView) llMainMenu.findViewById(R.id.tvUserDetail);
+         tvUserDetail2 = (TextView) llMainMenu.findViewById(R.id.tvUserDetail2);
+
 
         /*** [START] :: offset statusBar ***/
         Rect rectangle = new Rect();
@@ -373,6 +380,268 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
         userProfileString = String.format("%s\nRun on : %s", userProfileString, BHGeneral.SERVICE_MODE.toString());
         tvUserDetail.setText(userProfileString);
+
+
+
+
+Log.e("PositionName",BHPreference.PositionName());
+        try {
+            String DD= BHApplication.getInstance().getPrefManager().getPreferrence("pp3");
+
+            if((BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต"))|(BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย"))|(BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย,พนักงานเครดิต"))|(BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต"))) {
+                tvUserDetail2.setVisibility(View.VISIBLE);
+                tvUserDetail2.setText("ปลี่ยนเมนูตำแหน่ง");
+               // tvUserDetail2.setVisibility(View.GONE);
+            }
+            else {
+                tvUserDetail2.setVisibility(View.GONE);
+                // tvUserDetail2.setText("ปลี่ยนเมนูตำแหน่ง ต้อนนี้ใช้เมนู Credit");
+            }
+        }
+        catch (Exception ex){
+
+        }
+
+
+
+
+        tvUserDetail2.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+
+
+
+                final Dialog dialog = new Dialog(MainActivity.this);
+                dialog.requestWindowFeature(dialog.getWindow().FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.select_position_user);
+                dialog.setCancelable(true);
+                //final ImageView image_map=(ImageView)dialog.findViewById(R.id.image_map);
+                // final ImageView rotage2=(ImageView)dialog.findViewById(R.id.rotage2);
+
+                final LinearLayout sale_button = (LinearLayout) dialog.findViewById(R.id.sale_button);
+                final LinearLayout  credit_button = (LinearLayout) dialog.findViewById(R.id.credit_button);
+
+
+
+
+
+                sale_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+
+
+                        BHPreference.setSourceSystem("Sale");
+                        BHApplication.getInstance().getPrefManager().setPreferrence("select_p", "Sale");
+                        get_teamcode_select_position();
+
+                        List<TransactionLogInfo> trInfo = null;
+                        trInfo = TSRController.getTransactionLogBySyncStatus(false);
+                        if (trInfo == null) {
+
+                            if (isConnectingToInternet()) {
+                                (new AsyncTask<String, Void, Boolean>() {
+                                    @Override
+                                    protected void onPreExecute() {
+                                        BHLoading.show(activity);
+                                    }
+
+                                    @Override
+                                    protected Boolean doInBackground(String... urls) {
+
+                                        boolean result = false;
+                                        try {
+                                            HttpGet httpGet = new HttpGet(urls[0]);
+                                            HttpClient client = new DefaultHttpClient();
+                                            //TimeOut 20s
+                                            HttpParams params = client.getParams();
+                                            HttpConnectionParams.setConnectionTimeout(params, timeOut);
+                                            HttpConnectionParams.setSoTimeout(params, timeOut);
+
+                                            HttpResponse response = client.execute(httpGet);
+
+                                            int statusCode = response.getStatusLine().getStatusCode();
+
+                                            if (statusCode == 200) {
+                                                result = true;
+                                            }
+
+                                        } catch (ClientProtocolException e) {
+
+                                        } catch (IOException e) {
+
+                                        }
+
+                                        return result;
+                                    }
+
+                                    protected void onPostExecute(Boolean result) {
+                                        if (!result) {
+                                            showWarningDialog("Connecting To Server", "เกิดการผิดพลาด ไม่สามารถเชื่อมต่อกับเซิฟเวอร์ได้");
+                                            BHLoading.close();
+                                        } else {
+                                            logout2(BHPreference.userID(), BHPreference.userDeviceId(), AddUserDeviceLogInputInfo.UserDeviceLogProcessType.ANDROID_LOGOUT.toString(),"Sale");
+                                        }
+                                    }
+                                }).execute(BHPreference.TSR_SERVICE_URL);
+                            } else {
+
+                                showWarningDialog("Connecting To Internet", "ไม่พบการเชื่อมต่ออินเตอร์เน็ต");
+                            }
+
+
+                        } else {
+                            Builder setupAlert;
+                            //success = showView(BHFragment.newInstance(SynchronizeMainFragment.class));
+                            setupAlert = new AlertDialog.Builder(MainActivity.this)
+                                    .setTitle("แจ้งเตือน ปรับปรุงฐานข้อมูล")
+                                    .setMessage("กรุณาปรับปรุงข้อมูลก่อนออกจากระบบ")
+                                    .setCancelable(false)
+                                    .setPositiveButton("ปรับปรุง", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int whichButton) {
+                                            checkLogout = true;
+                                            startSyncLogout();
+                                        }
+                                    })
+                                    .setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int whichButton) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                            setupAlert.show();
+
+                        }
+
+
+
+
+
+
+
+
+                    }
+                });
+
+                credit_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+
+                        BHPreference.setSourceSystem("Credit");
+                        BHApplication.getInstance().getPrefManager().setPreferrence("select_p", "Credit");
+                        get_teamcode_select_position();
+
+                        List<TransactionLogInfo> trInfo = null;
+                        trInfo = TSRController.getTransactionLogBySyncStatus(false);
+                        if (trInfo == null) {
+
+                            if (isConnectingToInternet()) {
+                                (new AsyncTask<String, Void, Boolean>() {
+                                    @Override
+                                    protected void onPreExecute() {
+                                        BHLoading.show(activity);
+                                    }
+
+                                    @Override
+                                    protected Boolean doInBackground(String... urls) {
+
+                                        boolean result = false;
+                                        try {
+                                            HttpGet httpGet = new HttpGet(urls[0]);
+                                            HttpClient client = new DefaultHttpClient();
+                                            //TimeOut 20s
+                                            HttpParams params = client.getParams();
+                                            HttpConnectionParams.setConnectionTimeout(params, timeOut);
+                                            HttpConnectionParams.setSoTimeout(params, timeOut);
+
+                                            HttpResponse response = client.execute(httpGet);
+
+                                            int statusCode = response.getStatusLine().getStatusCode();
+
+                                            if (statusCode == 200) {
+                                                result = true;
+                                            }
+
+                                        } catch (ClientProtocolException e) {
+
+                                        } catch (IOException e) {
+
+                                        }
+
+                                        return result;
+                                    }
+
+                                    protected void onPostExecute(Boolean result) {
+                                        if (!result) {
+                                            showWarningDialog("Connecting To Server", "เกิดการผิดพลาด ไม่สามารถเชื่อมต่อกับเซิฟเวอร์ได้");
+                                            BHLoading.close();
+                                        } else {
+                                            logout2(BHPreference.userID(), BHPreference.userDeviceId(), AddUserDeviceLogInputInfo.UserDeviceLogProcessType.ANDROID_LOGOUT.toString(),"Credit");
+                                        }
+                                    }
+                                }).execute(BHPreference.TSR_SERVICE_URL);
+                            } else {
+
+                                showWarningDialog("Connecting To Internet", "ไม่พบการเชื่อมต่ออินเตอร์เน็ต");
+                            }
+
+
+                        } else {
+                            Builder setupAlert;
+                            //success = showView(BHFragment.newInstance(SynchronizeMainFragment.class));
+                            setupAlert = new AlertDialog.Builder(MainActivity.this)
+                                    .setTitle("แจ้งเตือน ปรับปรุงฐานข้อมูล")
+                                    .setMessage("กรุณาปรับปรุงข้อมูลก่อนออกจากระบบ")
+                                    .setCancelable(false)
+                                    .setPositiveButton("ปรับปรุง", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int whichButton) {
+                                            checkLogout = true;
+                                            startSyncLogout();
+                                        }
+                                    })
+                                    .setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int whichButton) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                            setupAlert.show();
+
+                        }
+
+
+
+
+
+
+
+
+
+
+
+                    }
+                });
+
+
+
+
+
+                dialog.show();
+
+
+
+
+
+
+
+
+            }
+        });
+
+
+
 
 
 
@@ -565,6 +834,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
             }
 
             if (BHPreference.getUserNotAllowLogin().equals(UserController.LoginType.NOT_ALLOW.toString())) {
+                Log.e("fff","1");
                 showMessage("ระบบกำลังทำการ Logout");
                 checkLogout = true;
                 startSyncLogout();
@@ -574,9 +844,44 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
 
                 if (checkDatabase()) {
-                    BHPreference.setLastloginID(BHPreference.userID());
-                    checkLogin = true;
+                    Log.e("fff","2");
+
+
+
+
+
+                    try {
+                        String DD= BHApplication.getInstance().getPrefManager().getPreferrence("select_p");
+
+                        if((DD.equals("Sale"))|(DD.equals("Credit"))) {
+                            startSyncLogin();
+                            BHApplication.getInstance().getPrefManager().setPreferrence("select_p","null");
+
+                        }
+                        else {
+
+                            BHPreference.setLastloginID(BHPreference.userID());
+                            checkLogin = true;
+
+                        }
+                    }
+                    catch (Exception ex){
+
+                        BHPreference.setLastloginID(BHPreference.userID());
+                        checkLogin = true;
+
+                    }
+
+
+
+
+
+
+
+
+
                 } else {
+                    Log.e("fff","3");
                     startSyncLogin();
                 }
                 /*** [END] :: Fixed - [BHPROJ-0016-1064] :: [Android-Auto-Full-Synch] เปิดให้ Auto Full-Synch แค่กรณีหลังจาก Login เสร็จแล้วเท่านั้น (ส่วน Full-Synch ตอนที่เปิด App. ให้ตัดทิ้งไปเลย) ***/
@@ -864,7 +1169,9 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
        MODE=  BHGeneral.SERVICE_MODE.toString();
 
-      Log.e("MODE",MODE);
+
+
+        Log.e("MODE",MODE);
         //load_data_contact_online_preoder();
 
         activity = MainActivity.this;
@@ -924,7 +1231,36 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
 
 
-    }
+
+
+
+
+
+
+
+
+
+
+ /*               try {
+            String DD= BHApplication.getInstance().getPrefManager().getPreferrence("pp3");
+
+                    if(!DD.equals("2")) {
+                        tvUserDetail2.setVisibility(View.VISIBLE);
+                        tvUserDetail2.setText("ปลี่ยนเมนูตำแหน่ง ต้อนนี้ใช้เมนู "+BHPreference.sourceSystem());
+                    }
+                    else {
+                        tvUserDetail2.setVisibility(View.GONE);
+                       // tvUserDetail2.setText("ปลี่ยนเมนูตำแหน่ง ต้อนนี้ใช้เมนู Credit");
+                    }
+        }
+        catch (Exception ex){
+
+        }*/
+
+
+
+
+        }
 
     @Override
     protected void onPause() {
@@ -1503,6 +1839,11 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     break;
                     /*** [END] :: Fixed - [BHPROJ-0026-3266][LINE@20/09/2016][Android-เพิ่มเมนูใหม่] คุณหนุ๋ยแจ้งขอเพิ่มเมนูระบบ TSSM เพื่อ Link ไปยัง URL ข้างนอกโดยส่งค่า EmpID ออกไปให้ ***/
                 case R.string.main_menu_logout: //ออกจากระบบ // not require SaleCode
+
+
+
+
+
                     List<TransactionLogInfo> trInfo = null;
                     trInfo = TSRController.getTransactionLogBySyncStatus(false);
                     if (trInfo == null) {
@@ -1548,6 +1889,9 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                                         showWarningDialog("Connecting To Server", "เกิดการผิดพลาด ไม่สามารถเชื่อมต่อกับเซิฟเวอร์ได้");
                                         BHLoading.close();
                                     } else {
+                                        BHApplication.getInstance().getPrefManager().setPreferrence("TeamCode", "null");
+                                        BHApplication.getInstance().getPrefManager().setPreferrence("SubTeamCode","null");
+
                                         logout(BHPreference.userID(), BHPreference.userDeviceId(), AddUserDeviceLogInputInfo.UserDeviceLogProcessType.ANDROID_LOGOUT.toString());
                                     }
                                 }
@@ -1579,8 +1923,18 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                         setupAlert.show();
                         break;
                     }
+
+
+
                     //logout();
                     return;
+
+
+
+
+
+
+
 
                 default:
                     break;
@@ -1865,6 +2219,180 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
             }).start(true, true);
         }
     }
+
+
+
+
+
+    public void logout2(final String userName, final String deviceID, final String userDeviceLogProcessType,String position) {
+        //final BHLoading dialog = BHLoading.show(MainActivity.this);
+        final Handler handler = new Handler();
+
+        if (BHPreference.IsAdmin()) {
+            (new BackgroundProcess(MainActivity.this) {
+
+                @Override
+                protected void calling() {
+                    // TODO Auto-generated method stub]
+                }
+
+                @Override
+                protected void after() {
+                    // TODO Auto-generated method stub
+
+                    BHPreference.setIsAdmin(false);
+                    BHPreference.setLastloginID(null);
+                    BHPreference.setServiceMode(null);
+                    BHPreference.setUserID(null);
+                    BHPreference.setEmployeeID(null);
+                    BHPreference.setUserNotAllowLogin(UserController.LoginType.ALLOW.toString());
+
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    //dialog.dismiss();
+                    checkLogin = false;
+                    finish();
+                }
+
+            }).start(true, true);
+        } else {
+            (new BackgroundProcess(MainActivity.this) {
+                CheckSoapOutputInfo checkSoapOutput;
+
+                AuthenticateInputInfo input;
+                AuthenticateOutputInfo output;
+
+                /*** [START] :: Fixed - [BHPROJ-0016-1059] :: [DB/Back-End/Front-End] เก็บ Log ของการ Login mobile ด้วย DeviceID ต่าง ๆ เป็น Historical  ***/
+                AddUserDeviceLogInputInfo inputAddUserDeviceLog;
+
+                /*** [END] :: Fixed - [BHPROJ-0016-1059] :: [DB/Back-End/Front-End] เก็บ Log ของการ Login mobile ด้วย DeviceID ต่าง ๆ เป็น Historical ***/
+
+                @Override
+                protected void before() {
+                    // TODO Auto-generated method stub
+                    input = new AuthenticateInputInfo();
+//                input.UserName = BHPreference.userID();
+//                input.DeviceID = BHPreference.userDeviceId();
+                    input.UserName = userName;
+                    input.DeviceID = deviceID;
+                    // input.UserName = "A10687";//Fix TEst
+
+
+                    /*** [START] :: Fixed - [BHPROJ-0026-3271] [Back-End] เพิ่ม Field VersionCode ใน ตาราง [UserDevice] เพื่อเก็บว่า ณ ขณะนั้นใช้งาน TSR Mobile App version อะไรอยู่ (เป็น VersionCode ที่อยู่ใน AndroidManifest.xml) ***/
+                    /*int VersionCode = 0;
+                    try {
+                        PackageManager pm = getPackageManager();
+                        PackageInfo packageInfo = pm.getPackageInfo(getPackageName(), 0);
+                        VersionCode = packageInfo.versionCode;
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }*/
+                    /*** [END] :: Fixed - [BHPROJ-0026-3271] [Back-End] เพิ่ม Field VersionCode ใน ตาราง [UserDevice] เพื่อเก็บว่า ณ ขณะนั้นใช้งาน TSR Mobile App version อะไรอยู่ (เป็น VersionCode ที่อยู่ใน AndroidManifest.xml)   ***/
+
+                    /*** [START] :: Fixed - [BHPROJ-0016-1059] :: [DB/Back-End/Front-End] เก็บ Log ของการ Login mobile ด้วย DeviceID ต่าง ๆ เป็น Historical  ***/
+                    inputAddUserDeviceLog = new AddUserDeviceLogInputInfo();
+                    inputAddUserDeviceLog.UserName = userName;
+                    inputAddUserDeviceLog.DeviceID = deviceID;
+                    inputAddUserDeviceLog.ProcessType = userDeviceLogProcessType;
+
+                    //inputAddUserDeviceLog.VersionCode = VersionCode;
+                    inputAddUserDeviceLog.VersionCode = BHPreference.appVersionCode();
+                    inputAddUserDeviceLog.AndroidApiLevel = BHPreference.androidApiLevel();
+                    /*** [END] :: Fixed - [BHPROJ-0016-1059] :: [DB/Back-End/Front-End] เก็บ Log ของการ Login mobile ด้วย DeviceID ต่าง ๆ เป็น Historical ***/
+                }
+
+                @Override
+                protected void calling() {
+                    // TODO Auto-generated method stub]
+                    try {
+                        checkSoapOutput = TSRController.checkSoap();
+                        if (checkSoapOutput != null && checkSoapOutput.ResultCode == 0) {
+
+                            output = TSRController.logout(input);
+
+                            /*** [START] :: Fixed - [BHPROJ-0016-1059] :: [DB/Back-End/Front-End] เก็บ Log ของการ Login mobile ด้วย DeviceID ต่าง ๆ เป็น Historical  ***/
+                            if (output != null) {
+                                if (output.ResultCode == 0) {
+                                    TSRController.addUserDeviceLog(inputAddUserDeviceLog);
+                                }
+                            }
+                            /*** [END] :: Fixed - [BHPROJ-0016-1059] :: [DB/Back-End/Front-End] เก็บ Log ของการ Login mobile ด้วย DeviceID ต่าง ๆ เป็น Historical ***/
+                        }
+
+                    } catch (Exception e) {
+                        Log.i("Logout", "Error");
+                    }
+                }
+
+                @Override
+                protected void after() {
+                    // TODO Auto-generated method stub
+                    if (output != null) {
+                        if (output.ResultCode == 0) {
+                            BHPreference.setLastloginID(BHPreference.userID());
+                            BHPreference.setServiceMode(null);
+                            BHPreference.setUserID(null);
+                            BHPreference.setEmployeeID(null);
+                            BHPreference.setUserNotAllowLogin(UserController.LoginType.ALLOW.toString());
+                            BHPreference.setTimeOutLogin(false);
+
+
+
+                            authenticateInputInfo = new AuthenticateInputInfo();
+
+
+                           // Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                            BHPreference.setSourceSystem(position);
+                            BHApplication.getInstance().getPrefManager().setPreferrence("pp3", "2");
+
+
+                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                            Bundle bun = new Bundle();
+                            bun.putString("position", position);
+                            bun.putString("UserName", authenticateInputInfo.UserName);
+                            bun.putString("Password", authenticateInputInfo.Password);
+
+                            intent.putExtras(bun);
+                            startActivity(intent);
+
+
+
+
+                            //dialog.dismiss();
+                            checkLogin = false;
+                            finish();
+
+                            TimeOutLoginService.cancelAlarm(activity);
+                            TimeOutLoginService.cancelAlarmSuspendServiceNotice(activity);
+                        } else {
+                            //showDialogBox("Logout", "Logout ไม่สำเร็จ กรุณาลองอีกครั้ง");
+//                        showMessage("Logout ไม่สำเร็จ กรุณาลองอีกครั้ง");
+                            //dialog.dismiss();
+
+                            if (BHPreference.TimeOutLogin()) {
+                                TimeOutLoginService.startAlarm(activity);
+                            }
+
+                            showDialogBox("Logout", "Logout ไม่สำเร็จ กรุณาลองอีกครั้ง");
+                        }
+                    } else {
+                        //showDialogBox("Logout", "Logout ไม่สำเร็จ กรุณาลองอีกครั้ง");
+//                    showMessage("Logout ไม่สำเร็จ กรุณาลองอีกครั้ง");
+                        //dialog.dismiss();
+                        if (BHPreference.TimeOutLogin()) {
+                            TimeOutLoginService.startAlarm(activity);
+                        }
+
+                        showDialogBox("Logout", "Logout ไม่สำเร็จ กรุณาลองอีกครั้ง");
+                    }
+                }
+
+            }).start(true, true);
+        }
+    }
+
+
+
 
     public void showDialogBox(String title, String message) {
         Builder setupAlert;
@@ -3586,10 +4114,27 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 if (result.progress == SynchronizeService.SYNCHRONIZE_ALL_COMPLETED || result.progress == SynchronizeService.SYNCHRONIZE_LOCAL_ERROR || result.progress == SynchronizeService.SYNCHRONIZE_ALL_ERROR) {
                     dialog.dismiss();
                     if (result.progress == SynchronizeService.SYNCHRONIZE_LOCAL_ERROR || result.progress == SynchronizeService.SYNCHRONIZE_ALL_ERROR) {
-                        showWarningDialog(result.error);
-                        showView(BHFragment.newInstance(SynchronizeMainFragment.class));
-                        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-                        menu.showContent();
+
+
+
+
+
+
+                            showWarningDialog(result.error);
+                            showView(BHFragment.newInstance(SynchronizeMainFragment.class));
+                            menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+                            menu.showContent();
+
+
+
+
+
+
+
+
+
+
+
                     } else {
                         if (result.progress == SynchronizeService.SYNCHRONIZE_ALL_COMPLETED && checkLogout) {
                             checkLogout = false;
@@ -3845,11 +4390,75 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
 
 
+    public static void get_teamcode_select_position() {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call=null;
+            if(MODE.equals("UAT")){
+                call = request.get_teamcode_select_position(BHPreference.employeeID(),BHPreference.sourceSystem());
+
+            }
+            else {
+                call = request.get_teamcode_select_position(BHPreference.employeeID(),BHPreference.sourceSystem());
+
+            }
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson = new Gson();
+                    try {
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+                        Log.e("data", "331");
+                        JSON_PARSE_DATA_AFTER_WEBCALL_get_teamcode_select_position(jsonObject.getJSONArray("data"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("data", "22");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("data", "2");
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("data", "3");
+        }
+    }
 
 
 
+    public static void JSON_PARSE_DATA_AFTER_WEBCALL_get_teamcode_select_position(JSONArray array) {
 
+        //Log.e("length1", String.valueOf(array.length()));
+        for (int i = 0; i < array.length(); i++) {
 
+            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
+
+            JSONObject json = null;
+            try {
+                json = array.getJSONObject(i);
+
+                String TeamCode=json.getString("TeamCode");
+                String SubTeamCode=json.getString("SubTeamCode");
+
+                BHApplication.getInstance().getPrefManager().setPreferrence("TeamCode", TeamCode);
+                BHApplication.getInstance().getPrefManager().setPreferrence("SubTeamCode",SubTeamCode);
+              //  Log.e("TeamCode_M",TeamCode);
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+        }
+    }
 
 
 

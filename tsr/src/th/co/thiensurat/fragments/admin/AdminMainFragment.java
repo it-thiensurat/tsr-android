@@ -24,6 +24,7 @@ import org.apache.http.params.HttpParams;
 import java.io.IOException;
 import java.util.List;
 
+import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHGeneral;
 import th.co.bighead.utilities.BHLoading;
@@ -142,7 +143,30 @@ public class AdminMainFragment extends BHFragment {
                             @Override
                             protected void calling() {
                                 // TODO Auto-generated method stub]
-                                result = TSRController.getUserByUserName(input);
+
+
+                              //
+                               // result = TSRController.getUserByUserName(input);
+                                try {
+                                    String DD= BHApplication.getInstance().getPrefManager().getPreferrence("select_p");
+                                    if(DD.equals("Credit")) {
+                                        result = TSRController.getUserByUserName2(input);
+
+                                    }
+                                    else if(DD.equals("Sale")) {
+                                        result = TSRController.getUserByUserName3(input);
+
+                                    }
+                                    else {
+                                        result = TSRController.getUserByUserName(input);
+                                    }
+
+
+                                }
+                                catch (Exception ex){
+                                    result = TSRController.getUserByUserName(input);
+
+                                }
 
                                 // เพิ่มใหม่
                                 if (result.ResultCode == 0) {
@@ -152,7 +176,10 @@ public class AdminMainFragment extends BHFragment {
                                     outputGetCurrentFortnight = TSRController.getCurrentFortnight(inputGetCurrentFortnight);
 
                                     GetDeviceMenusInputInfo deviceMenuInput = new GetDeviceMenusInputInfo();
-                                    deviceMenuInput.EmployeeCode = result.Info.EmpID;
+
+                                   // deviceMenuInput.EmployeeCode = result.Info.EmpID;
+                                    deviceMenuInput.EmployeeCode = result.Info.EmpID+"_"+result.Info.SourceSystem;
+
                                     menus = TSRController.getDeviceMenus(deviceMenuInput);
                                 }
                             }

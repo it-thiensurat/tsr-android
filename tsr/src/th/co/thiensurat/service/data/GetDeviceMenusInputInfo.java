@@ -7,4 +7,5 @@ import th.co.bighead.utilities.BHParcelable;
  */
 public class GetDeviceMenusInputInfo extends BHParcelable {
     public String EmployeeCode;
+    public String position;
 }

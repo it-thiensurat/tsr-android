@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -50,6 +51,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import th.co.bighead.utilities.BHActivity;
+import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHGeneral;
 import th.co.bighead.utilities.BHLoading;
 import th.co.bighead.utilities.BHPreference;
@@ -73,6 +75,7 @@ import th.co.thiensurat.service.data.GetDeviceMenusInputInfo;
 import th.co.thiensurat.service.data.GetDeviceMenusOutputInfo;
 import th.co.thiensurat.service.data.PlatformVersionOutputInfo;
 
+import static th.co.bighead.utilities.BHPreference.pp3;
 import static th.co.thiensurat.activities.MainActivity.activity;
 
 public class LoginActivity extends BHActivity {
@@ -87,6 +90,8 @@ public class LoginActivity extends BHActivity {
     Button btnLogin;
     //GoogleCloudMessaging gcm;
 
+
+    String po,u,p;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
@@ -193,9 +198,38 @@ public class LoginActivity extends BHActivity {
                 }
             }
         });
+
+
+
+
+            try {
+                Bundle data = getIntent().getExtras();
+                if (data != null) {
+                    po = data.getString("position");
+                    u = BHApplication.getInstance().getPrefManager().getPreferrence("UserName");
+                    p = BHApplication.getInstance().getPrefManager().getPreferrence("Password");
+
+
+                    Log.e("cccccc",po+u+p);
+
+                    if((!po.isEmpty())|(!po.equals("null"))){
+                        login2(u,p,po);
+                    }
+
+                }
+
+            }
+            catch (Exception ex){
+
+            }
+
+
+
+
+
     }
 
-    private void login(final String userName, final String password) {
+    public void login(final String userName, final String password) {
         if (isConnectingToInternet()) {
             (new AsyncTask<String, Void, Boolean>() {
                 @Override
@@ -216,6 +250,7 @@ public class LoginActivity extends BHActivity {
                         HttpConnectionParams.setSoTimeout(params, timeOut);
 
                         HttpResponse response = client.execute(httpGet);
+
 
                         int statusCode = response.getStatusLine().getStatusCode();
 
@@ -261,10 +296,319 @@ public class LoginActivity extends BHActivity {
                                 input.AndroidDeviceID = Settings.Secure.getString(LoginActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
                                 input.VersionName = BHPreference.appVersionName();
                                 input.AndroidApiLevel = BHPreference.androidApiLevel();
+
+
+                                Log.e("userName",userName);
+                                Log.e("password",password);
+                                Log.e("userDeviceId",BHPreference.userDeviceId());
+                                Log.e("appVersionCode", String.valueOf(BHPreference.appVersionCode()));
+                                Log.e("ANDROID_ID",Settings.Secure.getString(LoginActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID));
+                                Log.e("appVersionName",BHPreference.appVersionName());
+                                Log.e("androidApiLevel", String.valueOf(BHPreference.androidApiLevel()));
+
+                                BHApplication.getInstance().getPrefManager().setPreferrence("UserName", userName);
+                                BHApplication.getInstance().getPrefManager().setPreferrence("Password", password);
+
                             }
 
                             @Override
                             protected void calling() {
+
+
+
+
+
+
+                                            Log.e("qqq","1");
+                                            // TODO Auto-generated method stub]
+                                            checkSoapOutput = TSRController.checkSoap();
+
+                                            if (checkSoapOutput != null && checkSoapOutput.ResultCode == 0) {
+                                                result = TSRController.authenticate(input);
+
+                                                // เพิ่มใหม่
+                                                if(result != null) {
+                                                    if (result.ResultCode == 0) {
+                                                        GetCurrentFortnightInputInfo inputGetCurrentFortnight = new GetCurrentFortnightInputInfo();
+                                                        inputGetCurrentFortnight.OrganizationCode = result.Info.OrganizationCode;
+                                                        inputGetCurrentFortnight.ProcessType = ((result.Info.ProcessType == null) || (result.Info.ProcessType == "")) ? "Sale" : result.Info.ProcessType;         // [BHPROJ-0016-3225] :: [Android+Web-Admin] แก้ไข Code เรื่องการเพิ่ม Field เพื่อระบุ Department สำหรับ ตารางเก็บปักษ์การขาย
+                                                        outputGetCurrentFortnight = TSRController.getCurrentFortnight(inputGetCurrentFortnight);
+
+
+
+
+                                                     Log.e("Info.ProcessType",result.Info.ProcessType);
+                                                   GetDeviceMenusInputInfo deviceMenuInput = new GetDeviceMenusInputInfo();
+                                                        //deviceMenuInput.EmployeeCode = result.Info.EmpID;
+                                                        deviceMenuInput.EmployeeCode = result.Info.EmpID+"_"+result.Info.SourceSystem;
+                                                        //Log.e("SourceSystem555",result.Info.SourceSystem);
+                                                        menus = TSRController.getDeviceMenus(deviceMenuInput);
+
+
+
+
+
+
+                                                    }
+                                                }
+                                            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            }
+
+                            @Override
+                            protected void after() {
+
+
+
+
+
+
+
+
+                                            Log.e("qqq","2");
+                                            // TODO Auto-generated method stub
+                                            if (result != null) {
+                                                switch (result.ResultCode) {
+                                                    case 0:
+
+
+                                                        Log.e("Send user info", String.valueOf(result.Info));
+
+                                                        if (menus != null) {
+                                                            BHPreference.setUserMenus(menus.Info);
+                                                        }
+
+                                                        if (result.Info != null) {
+
+                                                            BHPreference.setIsAdmin(false);
+                                                            BHPreference.initPreference(result.Info,outputGetCurrentFortnight);
+
+                                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                            startActivity(intent);
+                                                            finish();
+                                                            BHPreference.setLogLogin(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+
+                                                        } else {
+                                                            showWarningDialog("แจ้งเตือนการเข้าระบบ", "UserName Or Password ไม่ถูกต้อง");
+                                                        }
+                                                        break;
+                                                    case 4002:
+                                                        showWarningDialog("แจ้งเตือนการเข้าระบบ",
+                                                                "ชื่อผู้ใช้งานนี้มีการใช้งานที่เครื่องอื่นแล้ว \nให้ทำการ Logout จากเครื่องที่ใช้งานในปัจจุบันก่อน หรือติดต่อเจ้าหน้าที่ดูแลระบบ");
+                                                        break;
+                                                    case 4010:
+                                                        showWarningDialog("แจ้งเตือนการเข้าระบบ","ระบบปิดการใช้งาน จะสามารถใช้งานได้อีกครั้งในเวลา 5.00 น.");
+                                                        break;
+                                                    case 4003:
+                                                        showWarningDialog("แจ้งเตือนการเข้าระบบ",
+                                                                "คุณป้อนรหัสผ่านผิดเกิน 3 ครั้ง กรุณารออีก 3 นาที");
+                                                        btnLogin.setEnabled(false);
+                                                        final TextView textCounter = (TextView) findViewById(R.id.textCounter);
+                                                        // textCounter.setVisibility(View.VISIBLE);
+                                                        new CountDownTimer(180000, 1000) { // adjust the milliseconds here
+
+                                                            public void onTick(long millisUntilFinished) {
+                                                                if (millisUntilFinished / 1000 > 60)
+                                                                    textCounter
+                                                                            .setText("Please wait : "
+                                                                                    + millisUntilFinished
+                                                                                    / 60000
+                                                                                    + "m "
+                                                                                    + (millisUntilFinished % 60000)
+                                                                                    / 1000 + "s");
+                                                                else
+                                                                    textCounter
+                                                                            .setText("Please wait : "
+                                                                                    + millisUntilFinished
+                                                                                    / 1000 + "s");
+                                                            }
+
+                                                            // here you can have your logic to set
+                                                            // text to edittext
+
+                                                            public void onFinish() {
+                                                                btnLogin.setEnabled(true);
+                                                                textCounter.setText("");
+                                                                // textCounter.setVisibility(View.INVISIBLE);
+                                                            }
+                                                        }.start();
+                                                        break;
+                                                    case 4004:
+                                                        showWarningDialog(
+                                                                "แจ้งเตือนการเข้าระบบ",
+                                                                "ชื่อผู้ใช้งานนี้ไม่มีสิทธิ์เข้าใช้งาน");
+                                                        break;
+                                                    case 4000:
+                                                        showWarningDialog(
+                                                                "แจ้งเตือนการเข้าระบบ",
+                                                                "ไม่พบผู้ใช้งานนี้ในระบบ ลองใหม่อีกครั้ง");
+                                                        break;
+
+                                                    case 9000: //Fixed - [BHPROJ-1036-8542] :: ปรับโครงสร้าง โฟรเดอร์รูปภาพของ App Bighead
+                                                        showDialogUpdateApp(result.Info.PlatformVersion);
+                                                        break;
+
+                                                    default:
+                                                        showWarningDialog("แจ้งเตือนการเข้าระบบ",
+                                                                "ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง ลองใหม่อีกครั้ง");
+                                                        break;
+                                                }
+                                            } else {
+                                                showWarningDialog("แจ้งเตือนการเข้าระบบ",
+                                                        "ไม่สามารถเข้าสู่ระบบได้ กรุณาลองใหม่อีกครั้ง");
+                                            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            }
+                        }).start();
+
+
+                    }
+                }
+
+
+
+
+
+
+
+
+
+
+
+            }).execute(BHPreference.TSR_SERVICE_URL);
+        } else {
+            showWarningDialog("Connecting To Internet", "ไม่พบการเชื่อมต่ออินเตอร์เน็ต");
+            btnLogin.setEnabled(true);
+        }
+    }
+
+
+
+
+
+    public void login2(final String userName, final String password, final String position) {
+        if (isConnectingToInternet()) {
+            (new AsyncTask<String, Void, Boolean>() {
+                @Override
+                protected void onPreExecute() {
+                    BHLoading.show(LoginActivity.this);
+                }
+
+                @Override
+                protected Boolean doInBackground(String... urls) {
+
+                    boolean result = false;
+                    try {
+                        HttpGet httpGet = new HttpGet(urls[0]);
+                        HttpClient client = new DefaultHttpClient();
+                        //TimeOut 20s
+                        HttpParams params = client.getParams();
+                        HttpConnectionParams.setConnectionTimeout(params, timeOut);
+                        HttpConnectionParams.setSoTimeout(params, timeOut);
+
+                        HttpResponse response = client.execute(httpGet);
+
+
+                        int statusCode = response.getStatusLine().getStatusCode();
+
+                        if (statusCode == 200) {
+                            result = true;
+                        }
+
+                    } catch (ClientProtocolException e) {
+
+                    } catch (IOException e) {
+
+                    }
+
+                    return result;
+                }
+
+                protected void onPostExecute(Boolean result) {
+                    if (!result) {
+                        showWarningDialog("Connecting To Server", "เกิดการผิดพลาด ไม่สามารถเชื่อมต่อกับเซิฟเวอร์ได้");
+                        BHLoading.close();
+                    } else {
+
+                        (new BackgroundProcess(LoginActivity.this) {
+
+                            private CheckSoapOutputInfo  checkSoapOutput;
+                            private AuthenticateInputInfo input;
+                            private AuthenticateOutputInfo result;
+
+                            private GetCurrentFortnightOutputInfo outputGetCurrentFortnight = null;
+
+                            private FortnightInfo fortnight = null;
+                            private GetDeviceMenusOutputInfo menus = null;
+
+                            @Override
+                            protected void before() {
+                                // TODO Auto-generated method stub
+
+                                input = new AuthenticateInputInfo();
+                                input.UserName = userName;
+                                input.Password = password;
+                                input.DeviceID = BHPreference.userDeviceId();
+                                input.VersionCode = BHPreference.appVersionCode();
+                                input.AndroidDeviceID = Settings.Secure.getString(LoginActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
+                                input.VersionName = BHPreference.appVersionName();
+                                input.AndroidApiLevel = BHPreference.androidApiLevel();
+
+
+/*                                Log.e("userName",userName);
+                                Log.e("password",password);
+                                Log.e("userDeviceId",BHPreference.userDeviceId());
+                                Log.e("appVersionCode", String.valueOf(BHPreference.appVersionCode()));
+                                Log.e("ANDROID_ID",Settings.Secure.getString(LoginActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID));
+                                Log.e("appVersionName",BHPreference.appVersionName());
+                                Log.e("androidApiLevel", String.valueOf(BHPreference.androidApiLevel()));*/
+
+
+                            }
+
+                            @Override
+                            protected void calling() {
+
+
+
+
+
+
+                                Log.e("qqq","1");
                                 // TODO Auto-generated method stub]
                                 checkSoapOutput = TSRController.checkSoap();
 
@@ -279,25 +623,61 @@ public class LoginActivity extends BHActivity {
                                             inputGetCurrentFortnight.ProcessType = ((result.Info.ProcessType == null) || (result.Info.ProcessType == "")) ? "Sale" : result.Info.ProcessType;         // [BHPROJ-0016-3225] :: [Android+Web-Admin] แก้ไข Code เรื่องการเพิ่ม Field เพื่อระบุ Department สำหรับ ตารางเก็บปักษ์การขาย
                                             outputGetCurrentFortnight = TSRController.getCurrentFortnight(inputGetCurrentFortnight);
 
+
+
+
+
+
                                             GetDeviceMenusInputInfo deviceMenuInput = new GetDeviceMenusInputInfo();
-                                            deviceMenuInput.EmployeeCode = result.Info.EmpID;
+                                            //deviceMenuInput.EmployeeCode = result.Info.EmpID;
+                                            deviceMenuInput.EmployeeCode = result.Info.EmpID+"_"+position;
                                             menus = TSRController.getDeviceMenus(deviceMenuInput);
+
+
+
+
+
+
                                         }
                                     }
                                 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                             }
 
                             @Override
                             protected void after() {
+
+
+
+
+
+
+
+
+                                Log.e("qqq","2");
                                 // TODO Auto-generated method stub
                                 if (result != null) {
                                     switch (result.ResultCode) {
                                         case 0:
-//                                            YIM Move to BHPreference.initPreference
-//                                            if ((outputGetCurrentFortnight != null) && (outputGetCurrentFortnight.ResultCode == 0)) {   // [BHPROJ-0016-3225] :: [Android+Web-Admin] แก้ไข Code เรื่องการเพิ่ม Field เพื่อระบุ Department สำหรับ ตารางเก็บปักษ์การขาย
-//                                                BHPreference.setFortnightYear(outputGetCurrentFortnight.Info.Year);
-//                                                BHPreference.setFortnightNumber(outputGetCurrentFortnight.Info.FortnightNumber);
-//                                            }
+
 
                                             Log.e("Send user info", String.valueOf(result.Info));
 
@@ -306,68 +686,7 @@ public class LoginActivity extends BHActivity {
                                             }
 
                                             if (result.Info != null) {
-//                                              YIM Move to BHPreference.initPreference
-//                                                BHPreference.setIsAdmin(false);
-//                                                BHPreference.setTimeOutLogin(false);
-//                                                BHPreference.setServiceMode(BHGeneral.SERVICE_MODE.toString());
-//                                                BHPreference.setUserNotAllowLogin(UserController.LoginType.ALLOW.toString());
-//                                                BHPreference.setUserID(result.Info.UserName);
-//                                                BHPreference.setUserFullName(result.Info.UserFullName);
-//                                                BHPreference.setOrganizationCode(result.Info.OrganizationCode);
-//                                                BHPreference.setTeamCode(result.Info.TeamCode);
-//                                                BHPreference.setSubTeamCode(result.Info.SubTeamCode);
-//                                                BHPreference.setEmployeeID(result.Info.EmpID);
-//                                                BHPreference.setDepartmentCode(result.Info.DepartmentCode);
-//                                                BHPreference.setSubDepartmentCode(result.Info.SubDepartmentCode);
-//                                                BHPreference.setSupervisorCode(result.Info.SupervisorCode);
-//
-//                                                String strSourceSystem = result.Info.SourceSystem;
-//                                                BHPreference.setSourceSystem(strSourceSystem);
-//                                                BHPreference.setSourceSystemName(result.Info.SourceSystemName);
-//                                                BHPreference.setProcessTypeOfEmployee(result.Info.ProcessType);         // [BHPROJ-0016-3225] :: [Android+Web-Admin] แก้ไข Code เรื่องการเพิ่ม Field เพื่อระบุ Department สำหรับ ตารางเก็บปักษ์การขาย
-////                                                showMessage(BHPreference.processTypeOfEmployee());
-//
-//                                                List<UserInfo> userPositionList = result.Info.UserPosition;
-//                                                if (userPositionList != null) {
-//                                                    String strPositionCode = "";
-//                                                    String strPositionName = "";
-//                                                    String strSaleCode = "";
-//                                                    String strCashCode = "";
-//
-//                                                    for (UserInfo userInfo : userPositionList) {
-//                                                        strPositionCode += userInfo.PositionCode;
-//                                                        strPositionCode += ",";
-//
-//                                                        strPositionName += userInfo.PositionName;
-//                                                        strPositionName += ",";
-//
-//                                                        if (userInfo.SaleCode != null) {
-//                                                            strSaleCode = userInfo.SaleCode;
-//                                                        }
-//                                                        if ((userInfo.SaleCode != null) && (strSourceSystem.equals("Credit"))) {
-//                                                            strCashCode = userInfo.SaleCode;
-//                                                        }
-//                                                    }
-//                                                    strPositionCode = strPositionCode.substring(0, strPositionCode.length() - 1);
-//                                                    BHPreference.setPositionCode(strPositionCode);
-//
-//                                                    strPositionName = strPositionName.substring(0, strPositionName.length() - 1);
-//                                                    BHPreference.setPositionName(strPositionName);
-//
-//                                                    BHPreference.setSaleCode(strSaleCode);
-//                                                    BHPreference.setCashCode(strCashCode);
-//                                                }
-//                                                /*** [START] :: Fixed - [BHPROJ-0026-6574] ลูกค้าพบปัญหาเลขที่ใบเสร็จรับเงินซ้ำ ***/
-//                                                BHPreference.setDateFormatGenerateDocument(result.Info.DateFormatGenerateDocument);
-//                                                BHPreference.setRunningNumberReceipt(result.Info.RunningNumberReceipt);
-//                                                BHPreference.setRunningNumberChangeContract(result.Info.RunningNumberChangeContract);
-//                                                BHPreference.setRunningNumberReturnProduct(result.Info.RunningNumberReturnProduct);
-//                                                BHPreference.setRunningNumberImpoundProduct(result.Info.RunningNumberImpoundProduct);
-//                                                BHPreference.setRunningNumberChangeProduct(result.Info.RunningNumberChangeProduct);
-//                                                BHPreference.setRunningNumberComplain(result.Info.RunningNumberComplain);
-//                                                /*** [END] :: Fixed - [BHPROJ-0026-6574] ลูกค้าพบปัญหาเลขที่ใบเสร็จรับเงินซ้ำ   ***/
 
-                                                // YIM use this method for move comment code
                                                 BHPreference.setIsAdmin(false);
                                                 BHPreference.initPreference(result.Info,outputGetCurrentFortnight);
 
@@ -445,6 +764,23 @@ public class LoginActivity extends BHActivity {
                                     showWarningDialog("แจ้งเตือนการเข้าระบบ",
                                             "ไม่สามารถเข้าสู่ระบบได้ กรุณาลองใหม่อีกครั้ง");
                                 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                             }
                         }).start();
 
@@ -452,265 +788,26 @@ public class LoginActivity extends BHActivity {
                     }
                 }
 
-						/*protected void onPostExecute(Boolean result) {
-                            if (!result) {
-								showWarningDialog("Connecting To Server", "เกิดการผิดพลาด ไม่สามารถเชื่อมต่อกับเซิฟเวอร์ได้");
-								btnLogin.setEnabled(true);
-							} else {
-
-								(new BackgroundProcess(LoginActivity.this) {
-
-									private AuthenticateInputInfo input;
-									private AuthenticateOutputInfo result;
-
-									*//*** [START] :: Fixed - [BHPROJ-0016-769] ปรับปรุง Process การ Login ผ่านระบบ Android ***//*
-                                    private IsUserLoggedInInputInfo inputIsLoggedIn;
-									private IsUserLoggedInOutputInfo resultIsLoggedIn;
-
-									private UpdateUserLoggedInInputInfo inputUpdateLoggedIn;
-									private UpdateUserLoggedInOutputInfo resultUpdateLoggedIn;
-									*//*** [END] :: Fixed - [BHPROJ-0016-769] ปรับปรุง Process การ Login ผ่านระบบ Android ***//*
-
-									private GetCurrentFortnightOutputInfo outputGetCurrentFortnight = null;
-
-									// เพิ่มใหม่
-									private GetUserByUserNameInputInfo getInput;
-									private GetUserByUserNameOutputInfo getOutput = null;
-
-									*//*** Fixed - [BHPROJ-0016-1059] :: [DB/Back-End/Front-End] เก็บ Log ของการ Login mobile ด้วย DeviceID ต่าง ๆ เป็น Historical ***//*
-									private AddUserDeviceLogInputInfo inputAddUserDeviceLog;
-
-									private FortnightInfo fortnight = null;
-									private GetDeviceMenusOutputInfo menus = null;
-
-									@Override
-									protected void before() {
-										// TODO Auto-generated method stub
-										input = new AuthenticateInputInfo();
-										input.UserName = userName;
-										input.Password = password;
-										input.DeviceID = BHPreference.userDeviceId();
-
-										*//*** [START] :: Fixed - [BHPROJ-0016-769] ปรับปรุง Process การ Login ผ่านระบบ Android ***//*
-										inputIsLoggedIn = new IsUserLoggedInInputInfo();
-										inputIsLoggedIn.UserName = userName;
-										inputIsLoggedIn.Password = password;
-										inputIsLoggedIn.DeviceID = BHPreference.userDeviceId();
-
-										inputUpdateLoggedIn = new UpdateUserLoggedInInputInfo();
-										inputUpdateLoggedIn.UserName = userName;
-										inputUpdateLoggedIn.Password = password;
-										inputUpdateLoggedIn.DeviceID = BHPreference.userDeviceId();
-										inputUpdateLoggedIn.LastLoginDate = new Date();    // Fixed - [BHPROJ-0020-1026] การบริหารจัดการผู้ใช้งาน วันที่ Login ล่าสุด แสดงไม่ถูกต้อง
-										*//*** [END] :: Fixed - [BHPROJ-0016-769] ปรับปรุง Process การ Login ผ่านระบบ Android ***//*
-
-										*//*** [START] :: Fixed - [BHPROJ-0016-1059] :: [DB/Back-End/Front-End] เก็บ Log ของการ Login mobile ด้วย DeviceID ต่าง ๆ เป็น Historical ***//*
-										inputAddUserDeviceLog = new AddUserDeviceLogInputInfo();
-										inputAddUserDeviceLog.UserName = userName;
-										inputAddUserDeviceLog.DeviceID = BHPreference.userDeviceId();
-										//inputAddUserDeviceLog.CreateDate = new Date();
-										inputAddUserDeviceLog.ProcessType = AddUserDeviceLogInputInfo.UserDeviceLogProcessType.ANDROID_LOGIN.toString();
-										*//*** [END] :: Fixed - [BHPROJ-0016-1059] :: [DB/Back-End/Front-End] เก็บ Log ของการ Login mobile ด้วย DeviceID ต่าง ๆ เป็น Historical ***//*
-
-										// เพิ่มใหม่
-										getInput = new GetUserByUserNameInputInfo();
-										getInput.UserName = userName;
-									}
-
-									@Override
-									protected void calling() {
-										// TODO Auto-generated method stub]
-										result = TSRController.authenticate(input);
-
-										// เพิ่มใหม่
-										if (result.ResultCode == 0) {
-											*//*** [START] :: Fixed - [BHPROJ-0016-769] ปรับปรุง Process การ Login ผ่านระบบ Android ***//*
-											resultIsLoggedIn = TSRController.isUserLoggedIn(inputIsLoggedIn);
-											if (resultIsLoggedIn.ResultCode == 0) {
-												if (!resultIsLoggedIn.Info) {
-													resultUpdateLoggedIn = TSRController.updateUserLoggedIn(inputUpdateLoggedIn);
-												}
-											}
-											*//*** [END] :: Fixed - [BHPROJ-0016-769] ปรับปรุง Process การ Login ผ่านระบบ Android ***//*
-
-											getOutput = TSRController.getUserByUserName(getInput);
-											if (getOutput.Info != null) {
-												*//*** [START] :: Fixed - [BHPROJ-0016-1059] :: [DB/Back-End/Front-End] เก็บ Log ของการ Login mobile ด้วย DeviceID ต่าง ๆ เป็น Historical ***//*
-												//inputAddUserDeviceLog.UserID = getOutput.Info.UserID;
-												//inputAddUserDeviceLog.CreateBy = getOutput.Info.EmpID;
-												TSRController.addUserDeviceLog(inputAddUserDeviceLog);
-												*//*** [END] :: Fixed - [BHPROJ-0016-1059] :: [DB/Back-End/Front-End] เก็บ Log ของการ Login mobile ด้วย DeviceID ต่าง ๆ เป็น Historical ***//*
-
-												//fortnight = TSRController.getFortnight(getOutput.Info.OrganizationCode);
-												GetCurrentFortnightInputInfo inputGetCurrentFortnight = new GetCurrentFortnightInputInfo();
-												inputGetCurrentFortnight.OrganizationCode = getOutput.Info.OrganizationCode;
-												outputGetCurrentFortnight = TSRController.getCurrentFortnight(inputGetCurrentFortnight);
-
-												GetDeviceMenusInputInfo deviceMenuInput = new GetDeviceMenusInputInfo();
-												deviceMenuInput.EmployeeCode = getOutput.Info.EmpID;
-												menus = TSRController.getDeviceMenus(deviceMenuInput);
-											}
-										}
-
-									}
-
-									@Override
-									protected void after() {
-										// TODO Auto-generated method stub
-										// if (result != null && getOutput != null) {
-										btnLogin.setEnabled(true);
-										if (result != null) {
-											if (result.ResultCode == 0) {
-												*//*if (fortnight != null) {
-													BHPreference.setFortnightYear(fortnight.Year);
-													BHPreference.setFortnightNumber(fortnight.FortnightNumber);
-												}*//*
-												if (outputGetCurrentFortnight != null) {
-													BHPreference.setFortnightYear(outputGetCurrentFortnight.Info.Year);
-													BHPreference.setFortnightNumber(outputGetCurrentFortnight.Info.FortnightNumber);
-												}
-
-												if (menus != null) {
-													BHPreference.setUserMenus(menus.Info);
-												}
-
-												if (getOutput.Info != null) {
-													BHPreference.setServiceMode(BHGeneral.SERVICE_MODE.toString());
-													BHPreference.setUserID(getOutput.Info.UserName);
-													BHPreference.setUserFullName(getOutput.Info.UserFullName);
-													BHPreference.setOrganizationCode(getOutput.Info.OrganizationCode);
-													// BHPreference.setTeamCode(getOutput.Info.EmployeeDetail.TeamCode);
-													BHPreference.setTeamCode(getOutput.Info.TeamCode);
-//									String aa = getOutput.Info.SubTeamCode;
-													BHPreference.setSubTeamCode(getOutput.Info.SubTeamCode);
-
-													BHPreference.setEmployeeID(getOutput.Info.EmpID);
-													// BHPreference.setCashCode(getOutput.Info.CashCode);
-													// BHPreference.setFortnightYear(getOutput.Info.FortnightYear);
-													// BHPreference.setSaleCode(getOutput.Info.SaleCode);
-
-													BHPreference.setDepartmentCode(getOutput.Info.DepartmentCode);
-													BHPreference.setSubDepartmentCode(getOutput.Info.SubDepartmentCode);
-													BHPreference.setSupervisorCode(getOutput.Info.SupervisorCode);
-
-													String strSourceSystem = getOutput.Info.SourceSystem;
-													BHPreference.setSourceSystem(strSourceSystem);
-													BHPreference.setSourceSystemName(getOutput.Info.SourceSystemName);
-
-													List<UserInfo> userPositionList = getOutput.Info.UserPosition;
-													if (userPositionList != null) {
-														String strPositionCode = "";
-														String strPositionName = "";
-														String strSaleCode = "";
-														String strCashCode = "";
-
-														for (UserInfo userInfo : userPositionList) {
-															strPositionCode += userInfo.PositionCode;
-															strPositionCode += ",";
-
-															strPositionName += userInfo.PositionName;
-															strPositionName += ",";
-
-															if (userInfo.SaleCode != null) {
-																strSaleCode = userInfo.SaleCode;
-															}
-															if ((userInfo.SaleCode != null) && (strSourceSystem.equals("Credit"))) {
-																strCashCode = userInfo.SaleCode;
-															}
-														}
-														strPositionCode = strPositionCode.substring(0, strPositionCode.length() - 1);
-														BHPreference.setPositionCode(strPositionCode);
-
-														strPositionName = strPositionName.substring(0, strPositionName.length() - 1);
-														BHPreference.setPositionName(strPositionName);
-
-														BHPreference.setSaleCode(strSaleCode);
-														BHPreference.setCashCode(strCashCode);
-
-													}    // if (userPositionList != null) {
-
-													// try {
-													// new BaseController().removeDatabase();
-													// Thread.sleep(1000);
-													// } catch (InterruptedException e) {
-													// // TODO Auto-generated catch block
-													// e.printStackTrace();
-													// }
-
-													//Timeout();
-
-													Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-													startActivity(intent);
-													finish();
-													BHPreference.setLogLogin(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-
-												} else {
-													showWarningDialog("แจ้งเตือนการเข้าระบบ", "UserName Or Password ไม่ถูกต้อง");
-												}
-											} else if (result.ResultCode == 4002) {
-												showWarningDialog("แจ้งเตือนการเข้าระบบ",
-														"ชื่อผู้ใช้งานนี้มีการใช้งานที่เครื่องอื่นแล้ว \nให้ทำการ Logout จากเครื่องที่ใช้งานในปัจจุบันก่อน หรือติดต่อเจ้าหน้าที่ดูแลระบบ");
-											} else if (result.ResultCode == 4003) {
-												showWarningDialog("แจ้งเตือนการเข้าระบบ",
-														"คุณป้อนรหัสผ่านผิดเกิน 3 ครั้ง กรุณารออีก 3 นาที");
-												btnLogin.setEnabled(false);
-												final TextView textCounter = (TextView) findViewById(R.id.textCounter);
-												// textCounter.setVisibility(View.VISIBLE);
-												new CountDownTimer(180000, 1000) { // adjust the milliseconds here
-
-													public void onTick(long millisUntilFinished) {
-														if (millisUntilFinished / 1000 > 60)
-															textCounter
-																	.setText("Please wait : "
-																			+ millisUntilFinished
-																			/ 60000
-																			+ "m "
-																			+ (millisUntilFinished % 60000)
-																			/ 1000 + "s");
-														else
-															textCounter
-																	.setText("Please wait : "
-																			+ millisUntilFinished
-																			/ 1000 + "s");
-													}
-
-													// here you can have your logic to set
-													// text to edittext
-
-													public void onFinish() {
-														btnLogin.setEnabled(true);
-														textCounter.setText("");
-														// textCounter.setVisibility(View.INVISIBLE);
-													}
-												}.start();
-											} else if (result.ResultCode == 4004) {
-												showWarningDialog(
-														"แจ้งเตือนการเข้าระบบ",
-														"ชื่อผู้ใช้งานนี้ไม่มีสิทธิเข้าใช้งาน");
-											} else if (result.ResultCode == 4000) {
-												showWarningDialog(
-														"แจ้งเตือนการเข้าระบบ",
-														"ไม่พบผู้ใช้งานนี้ในระบบ ลองใหม่อีกครั้ง");
-											} else {
-												showWarningDialog("แจ้งเตือนการเข้าระบบ",
-														"ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง ลองใหม่อีกครั้ง");
-											}
-										} else {
-											showWarningDialog("แจ้งเตือนการเข้าระบบ",
-													"ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง ลองใหม่อีกครั้ง");
-										}
-									}
-								}).start();
 
 
-							}
-						}*/
+
+
+
+
+
+
+
+
             }).execute(BHPreference.TSR_SERVICE_URL);
         } else {
             showWarningDialog("Connecting To Internet", "ไม่พบการเชื่อมต่ออินเตอร์เน็ต");
             btnLogin.setEnabled(true);
         }
     }
+
+
+
+
 
 
     @Override

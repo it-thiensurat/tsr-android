@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,8 @@ public class EmployeeDetailFragment extends BHFragment {
 
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
+
+        Log.e("hhhh","1111");
         settingUI();
     }
 
@@ -78,7 +81,10 @@ public class EmployeeDetailFragment extends BHFragment {
             protected void calling() {
                 trip = new TripController().getCurrentTrip();
                 // Employee Login Detail
+
                 employeeDetail = new EmployeeDetailController().getEmployeeDetailByTeamCodeByEmployeeID(BHPreference.organizationCode(), BHPreference.employeeID(), BHPreference.teamCode());
+                Log.e("hhhh","2222");
+
                 if (BHPreference.teamCode() != null && !BHPreference.teamCode().equals("")) {
                     // TeamHead Detail
                     teamHeadDetail = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());

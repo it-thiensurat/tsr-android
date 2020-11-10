@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.util.Log;
+import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -195,6 +197,8 @@ public class BHPreference {
     private static SharedPreferences pref = BHApplication.getContext().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
     private static Editor editor = pref.edit();
 
+
+    public  static int pp1=0,pp2=0,pp3=0;
     /** ServiceMode**/
     public static void setServiceMode(String serveiceMode) {
         synchronized (editor) {
@@ -925,6 +929,8 @@ public class BHPreference {
             BHPreference.setFortnightNumber(fortnightOutput.Info.FortnightNumber);
         }
 
+        Log.e("infoinfo",info.toString());
+
         BHPreference.setIsAdmin(IsAdmin());
         BHPreference.setTimeOutLogin(false);
         BHPreference.setServiceMode(BHGeneral.SERVICE_MODE.toString());
@@ -932,17 +938,92 @@ public class BHPreference {
         BHPreference.setUserID(info.UserName);
         BHPreference.setUserFullName(info.UserFullName);
         BHPreference.setOrganizationCode(info.OrganizationCode);
-        BHPreference.setTeamCode(info.TeamCode);
-        BHPreference.setSubTeamCode(info.SubTeamCode);
+
+
+
+      //  BHPreference.setTeamCode(info.TeamCode);
+      //  BHPreference.setSubTeamCode(info.SubTeamCode);
+
+     //   Log.e("info.TeamCode",info.TeamCode);
+     //   Log.e("info.TeamCode",info.SubTeamCode);
+
+
         BHPreference.setEmployeeID(info.EmpID);
         BHPreference.setDepartmentCode(info.DepartmentCode);
         BHPreference.setSubDepartmentCode(info.SubDepartmentCode);
         BHPreference.setSupervisorCode(info.SupervisorCode);
 
         String strSourceSystem = info.SourceSystem;
+
+       // Log.e("strSourceSystem",strSourceSystem);
+        //String strSourceSystem = "Credit";
+
         BHPreference.setSourceSystem(strSourceSystem);
-        BHPreference.setSourceSystemName(info.SourceSystemName);
-        BHPreference.setProcessTypeOfEmployee(info.ProcessType);         // [BHPROJ-0016-3225] :: [Android+Web-Admin] แก้ไข Code เรื่องการเพิ่ม Field เพื่อระบุ Department สำหรับ ตารางเก็บปักษ์การขาย
+
+            try {
+                String TeamCode= BHApplication.getInstance().getPrefManager().getPreferrence("TeamCode");
+                String SubTeamCode= BHApplication.getInstance().getPrefManager().getPreferrence("SubTeamCode");
+
+                if(!TeamCode.equals("null")){
+                    BHPreference.setTeamCode(TeamCode);
+                    BHPreference.setSubTeamCode(SubTeamCode);
+                }
+                else {
+                    BHPreference.setTeamCode(info.TeamCode);
+                    BHPreference.setSubTeamCode(info.SubTeamCode);
+                }
+
+            }
+            catch (Exception exx){
+                BHPreference.setTeamCode(info.TeamCode);
+                BHPreference.setSubTeamCode(info.SubTeamCode);
+            }
+
+
+            try {
+                String DD= BHApplication.getInstance().getPrefManager().getPreferrence("select_p");
+
+                if(DD.equals("Sale")) {
+                    BHPreference.setSourceSystem("Sale");
+                    BHPreference.setSourceSystemName("ระบบงานขาย");
+                    BHPreference.setProcessTypeOfEmployee("CRD");
+                    // BHPreference.setProcessTypeOfEmployee("Sale");
+
+
+                }
+                else {
+                    BHPreference.setSourceSystem("Credit");
+                    BHPreference.setSourceSystemName("ระบบเก็บเงิน/ตรวจสอบ");
+                    BHPreference.setProcessTypeOfEmployee("Credit");
+
+                }
+            }
+            catch (Exception ex){
+                BHPreference.setSourceSystem(strSourceSystem);
+                BHPreference.setSourceSystemName(info.SourceSystemName);
+                BHPreference.setProcessTypeOfEmployee(info.ProcessType);
+
+
+                Log.e("info.SourceSystem","555555");
+            }
+        //}
+
+
+
+
+
+       // BHPreference.setSourceSystemName(info.SourceSystemName);
+       // BHPreference.setProcessTypeOfEmployee(info.ProcessType);
+
+
+
+        Log.e("info.SourceSystem",BHPreference.sourceSystem());
+        Log.e("info.SourceSystemName",BHPreference.sourceSystemName());
+        Log.e("info.ProcessType",BHPreference.processTypeOfEmployee());
+
+        Log.e("info.teamCode",BHPreference.teamCode());
+        // [BHPROJ-0016-3225] :: [Android+Web-Admin] แก้ไข Code เรื่องการเพิ่ม Field เพื่อระบุ Department สำหรับ ตารางเก็บปักษ์การขาย
+
 
         List<UserInfo> userPositionList = info.UserPosition;
         if (userPositionList != null) {
@@ -952,6 +1033,8 @@ public class BHPreference {
             String strCashCode = "";
 
             for (UserInfo userInfo : userPositionList) {
+
+                        //Log.e("userInfo.TeamCode",userInfo.TeamCode);
                 strPositionCode += userInfo.PositionCode;
                 strPositionCode += ",";
 
@@ -960,10 +1043,21 @@ public class BHPreference {
 
                 if (userInfo.SaleCode != null) {
                     strSaleCode = userInfo.SaleCode;
+                    pp1=1;
+                    Log.e("wwww","1");
                 }
                 if ((userInfo.SaleCode != null) && (strSourceSystem.equals("Credit"))) {
                     strCashCode = userInfo.SaleCode;
+                    pp2=1;
+                    Log.e("wwww","2");
                 }
+
+                pp3=pp1+pp2;
+
+
+                BHApplication.getInstance().getPrefManager().setPreferrence("pp3", String.valueOf(pp3));
+
+
             }
             strPositionCode = strPositionCode.substring(0, strPositionCode.length() - 1);
             BHPreference.setPositionCode(strPositionCode);

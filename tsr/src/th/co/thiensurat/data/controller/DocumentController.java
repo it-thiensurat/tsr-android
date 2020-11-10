@@ -4360,7 +4360,9 @@ public class DocumentController {
 
             yy += 120;
             String salename = "(" + BHUtilities.trim(contract.SaleEmployeeName != null ? contract.SaleEmployeeName : "") + ")";
-            String salecode = "รหัส " + BHUtilities.trim(contract.SaleCode);
+            String salecode=  "รหัส " + BHUtilities.trim(contract.SaleCode);
+
+
 
             String saleteamname = "(" + BHUtilities.trim(contract.upperEmployeeName != null ? contract.upperEmployeeName : "") + ")";
             String saleteamcode = "" + BHUtilities.trim(contract.SaleTeamName != null ? contract.SaleTeamName : "");
@@ -4371,6 +4373,8 @@ public class DocumentController {
             }
 
             cv.drawText(String.format("%sพยาน", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("พยาน", pSignature) + 50))), RECEIPT_WIDTH / 4, yy, pSignature);
+
+
             cv.drawText(String.format("%sพยาน", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("พยาน", pSignature) + 50))), (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
 
             texts1 = getText(saleteamname, pSignature, RECEIPT_WIDTH / 2);

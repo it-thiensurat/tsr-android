@@ -1,6 +1,7 @@
 package th.co.thiensurat.data.controller;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +102,8 @@ public class EmployeeDetailController extends BaseController {
 	}
 
 	public EmployeeDetailInfo getEmployeeDetailByTeamCodeByEmployeeID(String OrganizationCode, String empID, String teamCode) {
+
+		Log.e("yyyy",empID+","+teamCode);
 		String sql = "SELECT ed.*" +
 				" , IFNULL(e.FirstName,'') || ' ' || IFNULL(e.LastName,'') As EmployeeName" +
 				" , IFNULL(TeamHead.FirstName,'') || ' ' || IFNULL(TeamHead.LastName,'') AS TeamHeadName" +

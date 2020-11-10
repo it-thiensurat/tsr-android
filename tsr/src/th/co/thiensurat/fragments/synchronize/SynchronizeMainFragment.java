@@ -12,6 +12,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHGeneral;
 import th.co.bighead.utilities.BHListViewAdapter;
@@ -302,14 +304,44 @@ public class SynchronizeMainFragment extends BHFragment {
                             @Override
                             protected void before() {
                                 // TODO Auto-generated method stub
-                                input = new GetUserByUserNameInputInfo();
+
+                               input = new GetUserByUserNameInputInfo();
+
+                                //Log.e("moo_SourceSystem",SourceSystem);
                                 input.UserName = userName;
                             }
 
                             @Override
                             protected void calling() {
                                 // TODO Auto-generated method stub]
-                                result = TSRController.getUserByUserName(input);
+                                try {
+                                    String DD= BHApplication.getInstance().getPrefManager().getPreferrence("select_p");
+                                    if(DD.equals("Credit")) {
+                                        Log.e("rrrr","1");
+                                       result = TSRController.getUserByUserName2(input);
+
+                                    }
+                                    else if(DD.equals("Sale")) {
+                                        Log.e("rrrr","2");
+                                        result = TSRController.getUserByUserName3(input);
+
+                                    }
+                                    else {
+                                        Log.e("rrrr","3");
+                                        result = TSRController.getUserByUserName(input);
+                                    }
+
+
+                                }
+                                catch (Exception ex){
+                                    Log.e("rrrr","4");
+                                    result = TSRController.getUserByUserName(input);
+
+                                }
+
+
+
+
 
                                 // เพิ่มใหม่
                                 if (result.ResultCode == 0) {
@@ -319,7 +351,9 @@ public class SynchronizeMainFragment extends BHFragment {
                                     outputGetCurrentFortnight = TSRController.getCurrentFortnight(inputGetCurrentFortnight);
 
                                     GetDeviceMenusInputInfo deviceMenuInput = new GetDeviceMenusInputInfo();
-                                    deviceMenuInput.EmployeeCode = result.Info.EmpID;
+                                   // deviceMenuInput.EmployeeCode = result.Info.EmpID;
+                                    deviceMenuInput.EmployeeCode = result.Info.EmpID+"_"+result.Info.SourceSystem;
+                                  //  deviceMenuInput.position = result.Info.SourceSystem;
                                     menus = TSRController.getDeviceMenus(deviceMenuInput);
                                 }
                             }
@@ -475,6 +509,8 @@ public class SynchronizeMainFragment extends BHFragment {
                 view.setBackgroundResource(R.color.bg_table_main_header);
 
                 ViewHolder vh = (ViewHolder) holder;
+
+
 
                     vh.text1.setText("MASTER TABLE");
 

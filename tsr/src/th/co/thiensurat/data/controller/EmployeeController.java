@@ -1,5 +1,7 @@
 package th.co.thiensurat.data.controller;
 
+import android.util.Log;
+
 import java.util.List;
 
 import th.co.bighead.utilities.BHPreference;
@@ -139,12 +141,16 @@ public class EmployeeController extends BaseController {
         List<EmployeeInfo> ret = null;
 
         if (subTeamCode == null) {
+
+            Log.e("qqqq","1111"+","+teamCode);
             String sql = "SELECT EmployeeDetail.*,Employee.EmpID,Employee.FirstName,Employee.LastName,Position.PositionID,Position.PositionName,Position.ParentPosition "
                     + "FROM EmployeeDetail INNER JOIN  Employee on EmployeeDetail.EmployeeCode=Employee.EmpID INNER JOIN Position on EmployeeDetail.positionCode=Position.PositionID "
                     + "WHERE (Employee.Status IS NULL OR (Employee.Status IS NOT NULL AND Employee.Status <> 'R')) AND (EmployeeDetail.OrganizationCode = ?) AND (EmployeeDetail.TeamCode = ?) AND (EmployeeDetail.SubTeamCode is not null) ORDER BY EmployeeDetail.TeamCode, EmployeeDetail.SubTeamCode asc, Position.PositionLevel desc, Position.PositionLevel desc, EmployeeDetail.SaleCode asc";
 
             ret = executeQueryList(sql, new String[]{organizationCode, teamCode}, EmployeeInfo.class);// PAK23
         } else {
+            Log.e("qqqq","2222"+","+teamCode+","+ subTeamCode);
+
             String sql = "SELECT EmployeeDetail.*,Employee.EmpID,Employee.FirstName,Employee.LastName,Position.PositionID,Position.PositionName,Position.ParentPosition "
                     + "FROM EmployeeDetail INNER JOIN  Employee on EmployeeDetail.EmployeeCode=Employee.EmpID INNER JOIN Position on EmployeeDetail.positionCode=Position.PositionID "
                     + "WHERE (Employee.Status IS NULL OR (Employee.Status IS NOT NULL AND Employee.Status <> 'R')) AND (EmployeeDetail.OrganizationCode = ?) AND (EmployeeDetail.TeamCode = ?) AND (EmployeeDetail.SubTeamCode = ?) ORDER BY EmployeeDetail.TeamCode, EmployeeDetail.SubTeamCode asc, Position.PositionLevel desc, Position.PositionLevel desc, EmployeeDetail.SaleCode asc";

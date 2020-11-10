@@ -178,6 +178,16 @@ public class TSRService extends BHService {
         return service.call("GetUserByUserName", info, GetUserByUserNameOutputInfo.class, isSchedule);
     }
 
+    public static GetUserByUserNameOutputInfo getUserByUserName2(GetUserByUserNameInputInfo info, boolean isSchedule) {
+        return service.call("GetUserByUserName2", info, GetUserByUserNameOutputInfo.class, isSchedule);
+    }
+
+    public static GetUserByUserNameOutputInfo getUserByUserName3(GetUserByUserNameInputInfo info, boolean isSchedule) {
+        return service.call("GetUserByUserName3", info, GetUserByUserNameOutputInfo.class, isSchedule);
+    }
+
+
+
     public static GetNextSalePaymentPeriodByContractTeamOutputInfo getNextSalePaymentPeriodByContractTeam(GetNextSalePaymentPeriodByContractTeamInputInfo info,
                                                                                                           boolean isSchedule) {
         return service.call("GetNextSalePaymentPeriodByContractTeam", info, GetNextSalePaymentPeriodByContractTeamOutputInfo.class, isSchedule);
@@ -774,6 +784,8 @@ public class TSRService extends BHService {
     public static GetDeviceMenusOutputInfo getDeviceMenus(GetDeviceMenusInputInfo info) {
         return service.call("GetDeviceMenus", info, GetDeviceMenusOutputInfo.class);
     }
+
+
 
     /**
      * ** ManualDocument-ManualDocumentWithdrawal-ManualDocumentType ***

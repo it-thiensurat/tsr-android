@@ -69,7 +69,12 @@ public class SaleMainFragment extends BHFragment {
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
 
-        BHPreference.setProcessType(ProcessType.Sale.toString());
+        //if(BHPreference.sourceSystem().equals("Sale")){
+            BHPreference.setProcessType(ProcessType.Sale.toString());
+
+       // }
+
+
 
 
         Log.e("cccc","cccc");

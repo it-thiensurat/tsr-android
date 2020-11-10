@@ -46,15 +46,17 @@ public interface Service {
     @GET("/api/api-setInsertInstallDate.php")
     Call<Object> InsertInstallDate(@Query("RefNo") String RefNo,@Query("InstallDate") String InstallDate,@Query("Empid") String Empid);
 
-    @GET("/api/api-productListBooking.php")
-    Call<Object> product(@Query("Empid") String Empid);
+
+
 
     @GET("/api/api-booking-contract.php")
     Call<Object> load_data_contact_online_preoder();
 
+    @GET("/api/api-productListBooking.php")
+    Call<Object> product(@Query("Empid") String Empid);
 
     @GET("/api/api-productListBooking_UAT.php")
-    Call<Object> product_UAT(@Query("Empid") String Empid);
+    Call<Object> product_UAT(@Query("Empid") String Empid,@Query("ProductCat") String ProductCat);
 
     @GET("/api/api-booking-contract_UAT.php")
     Call<Object> load_data_contact_online_preoder_UAT();
@@ -71,11 +73,28 @@ public interface Service {
     @GET("/api/api-LastPeriodCheck_UAT.php")
     Call<Object> getLastPeriod(@Query("Contno") String contno);
 
+
     @GET("/api/api-LastPeriodUpdate_UAT.php")
     Call<Object> updateCustomerPhone(@Query("telphone") String phoneNumber, @Query("refno") String refno, @Query("CreateBy") String createby);
 
+    @GET("/api/api-productListPreBooking.php")
+    Call<Object> productListPreBooking(@Query("Empid") String Empid);
+
+
+    @GET("/api/api-productListPreBooking_UAT.php")
+    Call<Object> productListPreBooking_UAT(@Query("Empid") String Empid);
+
+
+
+
     @GET("/api/api-creditScoreInsert_UAT.php")
     Call<Object> saveSurvey(@Query("RefNo") String refno, @Query("Contno") String conto, @Query("CusStatus") int cusstatus, @Query("ResStatus") int resstatus, @Query("ResTime") int restime, @Query("JobName") int jobname, @Query("JobTime") int jobtime, @Query("CusSalary") int cussalary, @Query("EmpID") String empid, @Query("ResStatusDis") String homeOther, @Query("JobNameDisc") String jobOther);
+
+
+
+    @GET("/assanee_UAT/assanee/bighead_api_new/get_teamcode_select_position.php")
+    Call<Object> get_teamcode_select_position(@Query("EmpID") String EmpID,@Query("SourceSystem") String SourceSystem);
+
 }
 
 
