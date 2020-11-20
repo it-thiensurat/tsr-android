@@ -110,8 +110,7 @@ public interface Service {
 
 
     @GET("/assanee_UAT/assanee/bighead_api_new/get_teamcode_select_position.php")
-    Call<Object> get_teamcode_select_position(@Query("EmpID") String EmpID,@Query("SourceSystem") String SourceSystem);
-
+    Call<Object> get_teamcode_select_position_uat(@Query("EmpID") String EmpID,@Query("SourceSystem") String SourceSystem);
 
 
     /***** uat by moo*/
@@ -132,15 +131,17 @@ public interface Service {
     @GET("/api/api-booking-contract.php")
     Call<Object> load_data_contact_online_preoder(@Query("Empid") String EMPID);
 
-    @GET("/assanee_UAT/assanee/bighead_api_new/get_max_numeber.php")
+    @GET("/assanee/bighead_api_new/get_max_numeber.php")
     Call<Object> get_max_numeber(@Query("SaleCode") String SaleCode,@Query("YearMonthTH") String YearMonthTH);
 
     @GET("/api/api-productListPreBooking.php")
     Call<Object> productListPreBooking(@Query("Empid") String Empid);
 
 
-    @GET("/assanee_UAT/assanee/bighead_api_new/get_teamcode_select_position.php")
-    Call<Object> get_teamcode_select_position_uat(@Query("EmpID") String EmpID,@Query("SourceSystem") String SourceSystem);
+
+
+    @GET("/assanee/bighead_api_new/get_teamcode_select_position.php")
+    Call<Object> get_teamcode_select_position(@Query("EmpID") String EmpID,@Query("SourceSystem") String SourceSystem);
 
 
     /***** production  */
