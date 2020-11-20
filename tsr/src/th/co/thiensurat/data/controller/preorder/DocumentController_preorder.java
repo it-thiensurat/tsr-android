@@ -4470,7 +4470,7 @@ public class DocumentController_preorder {
 
 
 
-        receiptBuilder.setTextSize(22);
+/*        receiptBuilder.setTextSize(22);
         receiptBuilder.setAlign(Align.LEFT);
         receiptBuilder.addText("** หมายเหตุ: **", true);
         receiptBuilder.addParagraph();
@@ -4492,7 +4492,10 @@ public class DocumentController_preorder {
 
 
         receiptBuilder.addText("4. ให้ยึดที่อยู่ที่ติดตั้งเป็นหลัก (ในกรณีชื่อ ล/ค ไม่ตรง)", true);
-        receiptBuilder.addParagraph();
+        receiptBuilder.addParagraph();*/
+
+
+
         receiptBuilder.addBlankSpace(20);
 
 

@@ -33,6 +33,7 @@ import th.co.thiensurat.data.info.SalePaymentPeriodInfo;
 import th.co.thiensurat.data.info.SendDocumentInfo;
 import th.co.thiensurat.data.info.SendMoneyInfo;
 
+import static th.co.thiensurat.activities.MainActivity.select_page_bs;
 import static th.co.thiensurat.business.controller.TSRController.getAddress;
 import static th.co.thiensurat.business.controller.TSRController.getChangeProductByID;
 import static th.co.thiensurat.business.controller.TSRController.getContractByRefNo;
@@ -240,13 +241,22 @@ public class PrinterController {
                     break;
 
                 case Credit:
-//                    Bitmap bmp = DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo);
-                    DocumentHistoryInfo checkExist2 = TSRController.getDocumentHistoryByDocumentNumber(info.ReceiptID, DocumentHistoryController.DocumentType.Receipt.toString());
-                    if(checkExist2 == null){
-                        document.add(DocumentController.getTextReceiptNew(info, debtorCustomerInfo, addressInfo));
-                        paymentsForPrint.add(info);
-                        bitmapList.add(DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo));
+
+                    Log.e("select_page_bs", String.valueOf(select_page_bs));
+                    if(select_page_bs==1){
+
                     }
+                    else {
+                        DocumentHistoryInfo checkExist2 = TSRController.getDocumentHistoryByDocumentNumber(info.ReceiptID, DocumentHistoryController.DocumentType.Receipt.toString());
+                        if(checkExist2 == null){
+                            document.add(DocumentController.getTextReceiptNew(info, debtorCustomerInfo, addressInfo));
+                            paymentsForPrint.add(info);
+                            bitmapList.add(DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo));
+                        }
+                    }
+
+
+
                     break;
                 default:
                     break;
@@ -350,18 +360,22 @@ public class PrinterController {
                     break;
                 case Credit:
                     Log.e("posi","credit");
+                    Log.e("select_page_bs", String.valueOf(select_page_bs));
+                    if(select_page_bs==1){
 
-                 // Bitmap bmp = DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo);
-                    DocumentHistoryInfo checkExist2 = TSRController.getDocumentHistoryByDocumentNumber(info.ReceiptID, DocumentHistoryController.DocumentType.Receipt.toString());
+                    }
+                    else {
+                        DocumentHistoryInfo checkExist2 = TSRController.getDocumentHistoryByDocumentNumber(info.ReceiptID, DocumentHistoryController.DocumentType.Receipt.toString());
 
-               //   Log.e("DocumentNumber",checkExist2.DocumentNumber);
 
-                   if(checkExist2 == null){
-                       Log.e("cccc","null");
-                        document.add(DocumentController.getTextReceiptNew(info, debtorCustomerInfo, addressInfo));
-                        paymentsForPrint.add(info);
-                        bitmapList.add(DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo));
-                   }
+                        if(checkExist2 == null){
+                            Log.e("cccc","null");
+                            document.add(DocumentController.getTextReceiptNew(info, debtorCustomerInfo, addressInfo));
+                            paymentsForPrint.add(info);
+                            bitmapList.add(DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo));
+                        }
+                    }
+
                     break;
                 default:
 

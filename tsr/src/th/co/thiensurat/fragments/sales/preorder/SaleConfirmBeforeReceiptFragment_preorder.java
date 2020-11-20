@@ -386,6 +386,7 @@ public class SaleConfirmBeforeReceiptFragment_preorder extends BHFragment {
         txtSaleEmpName.setText(String.format("(%s)", BHPreference.userFullName()));
         //txtSaleTeamName.setText("(ทีม "+ data.contract.SaleTeamCode + ")");
         txtSaleTeamName.setText(String.format("(ทีม %s)", BHPreference.teamCode()));
+       // txtSaleTeamName.setText(String.format("(ทีม %s)", BHPreference.cashCode()));
 
         txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(data.PartlyPaidPrice)));
         txtThaiBahtNum.setText(BHUtilities.numericFormat(data.PartlyPaidPrice));

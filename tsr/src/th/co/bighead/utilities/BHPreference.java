@@ -14,14 +14,29 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import th.co.thiensurat.activities.MainActivity;
 import th.co.thiensurat.data.controller.UserController;
 import th.co.thiensurat.data.info.DeviceMenuInfo;
 import th.co.thiensurat.data.info.UserInfo;
+import th.co.thiensurat.retrofit.api.Service;
 import th.co.thiensurat.service.data.GetCurrentFortnightOutputInfo;
+
+import static th.co.thiensurat.activities.MainActivity.get_teamcode_select_position;
+import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 
 public class BHPreference {
 
@@ -196,7 +211,7 @@ public class BHPreference {
 
     private static SharedPreferences pref = BHApplication.getContext().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
     private static Editor editor = pref.edit();
-
+    static String MODE="";
 
     public  static int pp1=0,pp2=0,pp3=0;
     /** ServiceMode**/
@@ -929,7 +944,7 @@ public class BHPreference {
             BHPreference.setFortnightNumber(fortnightOutput.Info.FortnightNumber);
         }
 
-        Log.e("infoinfo",info.toString());
+
 
         BHPreference.setIsAdmin(IsAdmin());
         BHPreference.setTimeOutLogin(false);
@@ -941,12 +956,6 @@ public class BHPreference {
 
 
 
-      //  BHPreference.setTeamCode(info.TeamCode);
-      //  BHPreference.setSubTeamCode(info.SubTeamCode);
-
-     //   Log.e("info.TeamCode",info.TeamCode);
-     //   Log.e("info.TeamCode",info.SubTeamCode);
-
 
         BHPreference.setEmployeeID(info.EmpID);
         BHPreference.setDepartmentCode(info.DepartmentCode);
@@ -955,10 +964,24 @@ public class BHPreference {
 
         String strSourceSystem = info.SourceSystem;
 
-       // Log.e("strSourceSystem",strSourceSystem);
-        //String strSourceSystem = "Credit";
-
         BHPreference.setSourceSystem(strSourceSystem);
+
+
+
+
+
+/*        BHPreference.setSourceSystemName(info.SourceSystemName);
+        BHPreference.setProcessTypeOfEmployee(info.ProcessType);
+
+        BHPreference.setTeamCode(info.TeamCode);
+        BHPreference.setSubTeamCode(info.SubTeamCode);*/
+
+
+        BHPreference.setSourceSystemName(info.SourceSystemName);
+        BHPreference.setProcessTypeOfEmployee(info.ProcessType);
+        BHPreference.setTeamCode(info.TeamCode);
+        BHPreference.setSubTeamCode(info.SubTeamCode);
+
 
             try {
                 String TeamCode= BHApplication.getInstance().getPrefManager().getPreferrence("TeamCode");
@@ -992,9 +1015,17 @@ public class BHPreference {
 
                 }
                 else {
-                    BHPreference.setSourceSystem("Credit");
-                    BHPreference.setSourceSystemName("ระบบเก็บเงิน/ตรวจสอบ");
-                    BHPreference.setProcessTypeOfEmployee("Credit");
+                    Log.e("info.SourceSystem","666666");
+
+                    if(info.ProcessType.equals("Credit")){
+
+                        BHPreference.setSourceSystem("Credit");
+                        BHPreference.setSourceSystemName("ระบบเก็บเงิน/ตรวจสอบ");
+                        BHPreference.setProcessTypeOfEmployee("Credit");
+                    }
+
+
+
 
                 }
             }
@@ -1006,22 +1037,24 @@ public class BHPreference {
 
                 Log.e("info.SourceSystem","555555");
             }
-        //}
+
+
+
+
+        MODE=  BHGeneral.SERVICE_MODE.toString();
+
+        if(info.ProcessType.equals("Credit")){
+                get_teamcode_select_position2(BHPreference.employeeID(),BHPreference.sourceSystem());
+
+            }
 
 
 
 
 
-       // BHPreference.setSourceSystemName(info.SourceSystemName);
-       // BHPreference.setProcessTypeOfEmployee(info.ProcessType);
 
 
 
-        Log.e("info.SourceSystem",BHPreference.sourceSystem());
-        Log.e("info.SourceSystemName",BHPreference.sourceSystemName());
-        Log.e("info.ProcessType",BHPreference.processTypeOfEmployee());
-
-        Log.e("info.teamCode",BHPreference.teamCode());
         // [BHPROJ-0016-3225] :: [Android+Web-Admin] แก้ไข Code เรื่องการเพิ่ม Field เพื่อระบุ Department สำหรับ ตารางเก็บปักษ์การขาย
 
 
@@ -1058,6 +1091,8 @@ public class BHPreference {
                 BHApplication.getInstance().getPrefManager().setPreferrence("pp3", String.valueOf(pp3));
 
 
+
+
             }
             strPositionCode = strPositionCode.substring(0, strPositionCode.length() - 1);
             BHPreference.setPositionCode(strPositionCode);
@@ -1065,13 +1100,48 @@ public class BHPreference {
             strPositionName = strPositionName.substring(0, strPositionName.length() - 1);
             BHPreference.setPositionName(strPositionName);
 
-            BHPreference.setSaleCode(strSaleCode);
+
+
             BHPreference.setCashCode(strCashCode);
+            try {
+                String TeamCode= BHApplication.getInstance().getPrefManager().getPreferrence("TeamCode");
+                String saleCode= BHApplication.getInstance().getPrefManager().getPreferrence("saleCode");
+
+                if(!TeamCode.equals("null")){
+
+                    BHPreference.setSaleCode(saleCode);
+                }
+                else {
+                    BHPreference.setSaleCode(strSaleCode);
+                }
+
+            }
+            catch (Exception exx){
+                BHPreference.setSaleCode(strSaleCode);
+            }
+
+
+
+           // BHPreference.setSaleCode(strSaleCode);
+
+
+
         }
 
         /*** [START] :: Fixed - [BHPROJ-0026-6574] ลูกค้าพบปัญหาเลขที่ใบเสร็จรับเงินซ้ำ ***/
         BHPreference.setDateFormatGenerateDocument(info.DateFormatGenerateDocument);
+
+
+      //  Log.e("RunningNumberReceipt", String.valueOf(info.RunningNumberReceipt));
+
+
+
+
+
+
+
         BHPreference.setRunningNumberReceipt(info.RunningNumberReceipt);
+
         BHPreference.setRunningNumberChangeContract(info.RunningNumberChangeContract);
         BHPreference.setRunningNumberReturnProduct(info.RunningNumberReturnProduct);
         BHPreference.setRunningNumberImpoundProduct(info.RunningNumberImpoundProduct);
@@ -1127,6 +1197,188 @@ public class BHPreference {
             }
         }
         return false;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static void get_teamcode_select_position2(String employeeID,String  sourceSystem) {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call=null;
+            if(MODE.equals("UAT")){
+                call = request.get_teamcode_select_position_uat(employeeID,sourceSystem);
+
+            }
+            else {
+                call = request.get_teamcode_select_position(employeeID,sourceSystem);
+
+            }
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson = new Gson();
+                    try {
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+                        Log.e("data", "331");
+                        JSON_PARSE_DATA_AFTER_WEBCALL_get_teamcode_select_position2(jsonObject.getJSONArray("data"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("data", "22");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("data", "2");
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("data", "3");
+        }
+    }
+
+
+
+    public static void JSON_PARSE_DATA_AFTER_WEBCALL_get_teamcode_select_position2(JSONArray array) {
+
+
+
+        //Log.e("length1", String.valueOf(array.length()));
+        for (int i = 0; i < array.length(); i++) {
+
+            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
+
+            JSONObject json = null;
+            try {
+                json = array.getJSONObject(i);
+
+                String TeamCode=json.getString("TeamCode");
+                String SubTeamCode=json.getString("SubTeamCode");
+                String saleCode=json.getString("saleCode");
+                String DepartmentCode=json.getString("DepartmentCode");
+                // BHApplication.getInstance().getPrefManager().setPreferrence("TeamCode", TeamCode);
+                // BHApplication.getInstance().getPrefManager().setPreferrence("SubTeamCode",SubTeamCode);
+
+                BHPreference.setTeamCode(TeamCode);
+                BHPreference.setSubTeamCode(SubTeamCode);
+                BHPreference.setSaleCode(saleCode);
+                BHPreference.setCashCode(saleCode);
+               // BHPreference.setDepartmentCode(DepartmentCode);
+
+                get_max_numeber(saleCode,BHApplication.getInstance().getPrefManager().getPreferrence("YearMonthTH"));
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+        }
+
+
+
+    }
+
+
+
+
+    public static void get_max_numeber(String SaleCode,String YearMonthTH) {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call=null;
+            if(MODE.equals("UAT")){
+                call = request.get_max_numeber_uat(SaleCode,YearMonthTH);
+
+            }
+            else {
+                call = request.get_max_numeber(SaleCode,YearMonthTH);
+
+            }
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson = new Gson();
+                    try {
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+                        Log.e("data", "331");
+                        JSON_PARSE_DATA_AFTER_WEBCALL_get_max_numeber(jsonObject.getJSONArray("data"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("data", "22");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("data", "2");
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("data", "3");
+        }
+    }
+
+
+    public static void JSON_PARSE_DATA_AFTER_WEBCALL_get_max_numeber(JSONArray array) {
+
+        //Log.e("length1", String.valueOf(array.length()));
+        for (int i = 0; i < array.length(); i++) {
+
+            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
+
+            JSONObject json = null;
+            try {
+                json = array.getJSONObject(i);
+
+                String MaxRunningNo=json.getString("MaxRunningNo");
+
+                BHPreference.setRunningNumberReceipt(Integer.parseInt(MaxRunningNo));
+
+
+                Log.e("info.SourceSystem",BHPreference.sourceSystem());
+                Log.e("info.SourceSystemName",BHPreference.sourceSystemName());
+                Log.e("info.ProcessType",BHPreference.processTypeOfEmployee());
+
+                Log.e("info.teamCode",BHPreference.teamCode());
+                Log.e("info.saleCode",BHPreference.saleCode());
+                Log.e("info.SubTeamCode",BHPreference.SubTeamCode());
+                Log.e("MaxRunningNo",MaxRunningNo);
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+        }
     }
 
 }

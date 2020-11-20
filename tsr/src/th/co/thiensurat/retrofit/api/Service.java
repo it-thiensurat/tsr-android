@@ -49,20 +49,8 @@ public interface Service {
 
 
 
-    @GET("/api/api-booking-contract.php")
-    Call<Object> load_data_contact_online_preoder();
 
-    @GET("/api/api-productListBooking.php")
-    Call<Object> product(@Query("Empid") String Empid);
 
-    @GET("/api/api-productListBooking_UAT.php")
-    Call<Object> product_UAT(@Query("Empid") String Empid,@Query("ProductCat") String ProductCat);
-
-    @GET("/api/api-booking-contract_UAT.php")
-    Call<Object> load_data_contact_online_preoder_UAT();
-
-    @GET("/api/api-creditScoreQuestion_UAT.php")
-    Call<Object> checkQuestion(@Query("Contno") String data);
 
     @GET("UAT/SurveryAppSale/GetSurvey")
     Call<Object> getSurvey();
@@ -77,12 +65,7 @@ public interface Service {
     @GET("/api/api-LastPeriodUpdate_UAT.php")
     Call<Object> updateCustomerPhone(@Query("telphone") String phoneNumber, @Query("refno") String refno, @Query("CreateBy") String createby);
 
-    @GET("/api/api-productListPreBooking.php")
-    Call<Object> productListPreBooking(@Query("Empid") String Empid);
 
-
-    @GET("/api/api-productListPreBooking_UAT.php")
-    Call<Object> productListPreBooking_UAT(@Query("Empid") String Empid);
 
 
 
@@ -92,8 +75,75 @@ public interface Service {
 
 
 
+
+
+
+
+
+
+
+
+
+    /***** uat  */
+    @GET("/api/api-productListBooking_UAT.php")
+    Call<Object> product_UAT(@Query("Empid") String Empid,@Query("ProductCat") String ProductCat);
+
+    @GET("/api/api-booking-contract_UAT.php")
+    Call<Object> load_data_contact_online_preoder_UAT(@Query("Empid") String EMPID);
+
+    @GET("/api/api-creditScoreQuestion_UAT.php")
+    Call<Object> checkQuestion(@Query("Contno") String data);
+
+
+
+
+    @GET("/assanee_UAT/assanee/bighead_api_new/get_max_numeber.php")
+    Call<Object> get_max_numeber_uat(@Query("SaleCode") String SaleCode,@Query("YearMonthTH") String YearMonthTH);
+
+
+
+
+
+
+    @GET("/api/api-productListPreBooking_UAT.php")
+    Call<Object> productListPreBooking_UAT(@Query("Empid") String Empid);
+
+
     @GET("/assanee_UAT/assanee/bighead_api_new/get_teamcode_select_position.php")
     Call<Object> get_teamcode_select_position(@Query("EmpID") String EmpID,@Query("SourceSystem") String SourceSystem);
+
+
+
+    /***** uat by moo*/
+
+
+
+
+
+
+
+
+    /***** production  */
+
+    @GET("/api/api-productListBooking.php")
+    Call<Object> product(@Query("Empid") String Empid);
+
+
+    @GET("/api/api-booking-contract.php")
+    Call<Object> load_data_contact_online_preoder(@Query("Empid") String EMPID);
+
+    @GET("/assanee_UAT/assanee/bighead_api_new/get_max_numeber.php")
+    Call<Object> get_max_numeber(@Query("SaleCode") String SaleCode,@Query("YearMonthTH") String YearMonthTH);
+
+    @GET("/api/api-productListPreBooking.php")
+    Call<Object> productListPreBooking(@Query("Empid") String Empid);
+
+
+    @GET("/assanee_UAT/assanee/bighead_api_new/get_teamcode_select_position.php")
+    Call<Object> get_teamcode_select_position_uat(@Query("EmpID") String EmpID,@Query("SourceSystem") String SourceSystem);
+
+
+    /***** production  */
 
 }
 

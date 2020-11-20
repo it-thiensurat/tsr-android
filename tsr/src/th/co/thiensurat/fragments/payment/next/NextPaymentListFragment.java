@@ -92,6 +92,9 @@ public class NextPaymentListFragment extends BHFragment {
 
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
+
+
+
         LayoutInflater inflater = activity.getLayoutInflater();
 //        ViewGroup headerListView = (ViewGroup) inflater.inflate(R.layout.list_next_payment_header, lvRequestNextPayment, false);
         ViewGroup headerListView = (ViewGroup) inflater.inflate(R.layout.list_contract_status_header, lvRequestNextPayment, false);

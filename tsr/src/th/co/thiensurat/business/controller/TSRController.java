@@ -3434,6 +3434,7 @@ public class TSRController {
                                         //BHPreference.setRunningNumberReceipt(number);
                                         ReceiptInfo receiptInfo = new ReceiptController().getReceiptByReceiptCode(documentNumber);
                                         if (receiptInfo != null) {
+                                            Log.e("numbernumber", String.valueOf(number));
                                             BHPreference.setRunningNumberReceipt(number);
                                         }
                                         /*** [END] :: Fixed - [BHPROJ-1036-8870] - ใบเสร็จรับเงินหายไปหลังจากเครื่องค้าง  ***/

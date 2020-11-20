@@ -3,6 +3,7 @@ package th.co.thiensurat.fragments.sales;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -131,6 +132,8 @@ public class SalePaymentReceiptFragment extends BHPagerFragment {
 
 	@Override
 	protected void onCreateViewSuccess(Bundle savedInstanceState) {
+
+
 		if (savedInstanceState != null) {
 			data = savedInstanceState.getParcelable(BH_FRAGMENT_DEFAULT_DATA);
 		}

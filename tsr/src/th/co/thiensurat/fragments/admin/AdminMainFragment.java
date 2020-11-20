@@ -146,8 +146,8 @@ public class AdminMainFragment extends BHFragment {
 
 
                               //
-                               // result = TSRController.getUserByUserName(input);
-                                try {
+                                result = TSRController.getUserByUserName(input);
+                       /*         try {
                                     String DD= BHApplication.getInstance().getPrefManager().getPreferrence("select_p");
                                     if(DD.equals("Credit")) {
                                         result = TSRController.getUserByUserName2(input);
@@ -166,7 +166,7 @@ public class AdminMainFragment extends BHFragment {
                                 catch (Exception ex){
                                     result = TSRController.getUserByUserName(input);
 
-                                }
+                                }*/
 
                                 // เพิ่มใหม่
                                 if (result.ResultCode == 0) {
@@ -177,7 +177,7 @@ public class AdminMainFragment extends BHFragment {
 
                                     GetDeviceMenusInputInfo deviceMenuInput = new GetDeviceMenusInputInfo();
 
-                                   // deviceMenuInput.EmployeeCode = result.Info.EmpID;
+                                    //deviceMenuInput.EmployeeCode = result.Info.EmpID;
                                     deviceMenuInput.EmployeeCode = result.Info.EmpID+"_"+result.Info.SourceSystem;
 
                                     menus = TSRController.getDeviceMenus(deviceMenuInput);

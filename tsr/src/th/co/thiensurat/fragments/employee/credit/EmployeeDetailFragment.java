@@ -91,8 +91,11 @@ public class EmployeeDetailFragment extends BHFragment {
                     List<SubTeamInfo> subTeamList;
                     // Check Position Level >= SaleLeader ? AllTeam : SubTeamCode [Who's login IF Position Level < SaleLeader, SubTeamCode is not null]
                     if(employeeDetail != null && employeeDetail.SubTeamCode != null && !employeeDetail.SubTeamCode.equals("")){
+                        Log.e("hhhh","3333");
+
                         subTeamList = new SubTeamController().getSubTeamBySubTeamCode(employeeDetail.SubTeamCode);
                     }else{
+
                         subTeamList = new SubTeamController().getSubTeamByTeamCode(BHPreference.teamCode());
                     }
 
@@ -102,10 +105,18 @@ public class EmployeeDetailFragment extends BHFragment {
                             // ถ้าคน Login มีตำแหน่งเป็นพนักงานขายเพียงตำแหน่งเดียว
                             List<EmployeeDetailInfo> subTeamMember;
                             if(BHPreference.PositionCode().equals(PositionController.PositionCode.Credit.toString())){
-                                subTeamMember = new EmployeeDetailController().getSubTeamMemberByEmpID(BHPreference.organizationCode(), subTeam.SubTeamCode
+                                Log.e("hhhh","4444");
+                              //  subTeamMember = new EmployeeDetailController().getSubTeamMemberByEmpID(BHPreference.organizationCode(), subTeam.SubTeamCode
+                                  //      , BHPreference.employeeID(), BHPreference.PositionCode());
+
+                                subTeamMember = new EmployeeDetailController().getSubTeamMemberByEmpID(BHPreference.organizationCode(), BHPreference.SubTeamCode()
                                         , BHPreference.employeeID(), BHPreference.PositionCode());
+
                             }else{
-                                subTeamMember = new EmployeeDetailController().getSubTeamMemberBySubTeamCode(BHPreference.organizationCode(), subTeam.SubTeamCode);
+                                Log.e("hhhh","5555");
+                               // subTeamMember = new EmployeeDetailController().getSubTeamMemberBySubTeamCode(BHPreference.organizationCode(), subTeam.SubTeamCode);
+
+                                subTeamMember = new EmployeeDetailController().getSubTeamMemberBySubTeamCode(BHPreference.organizationCode(), BHPreference.SubTeamCode());
                             }
                             if(subTeamMember != null && subTeamMember.size() > 0){
                                 subTeam.Member = new ArrayList<EmployeeDetailInfo>();

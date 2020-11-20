@@ -95,6 +95,8 @@ public class CreditListFragment extends BHFragment {
 
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
+        Log.e("XXXX",BHPreference.SubTeamCode()+","+BHPreference.saleCode());
+
         if (isConnectingToInternet()) {
 
             data = getData();

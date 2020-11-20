@@ -94,6 +94,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -242,6 +243,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
     public static  int select_page_preorder=0;
 
     public static  int select_page_list=0;
+    public static  int select_page_bs=0;
 
     public  static  String EMPID="";
     //********************************************************************************//
@@ -388,10 +390,43 @@ Log.e("PositionName",BHPreference.PositionName());
         try {
             String DD= BHApplication.getInstance().getPrefManager().getPreferrence("pp3");
 
-            if((BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต"))|(BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย"))|(BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย,พนักงานเครดิต"))|(BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต"))) {
+            if((BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต"))|(BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย"))|
+                    (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย,พนักงานเครดิต"))|
+                    (BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต"))|
+                    (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย,พนักงานเครดิต"))|
+                    (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานเครดิต,พนักงานขาย"))|
+            (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย,พนักงานเครดิต"))|
+            (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,พนักงานเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย"))|
+            (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,พนักงานเครดิต,พนักงานขาย,หัวหน้าหน่วยเครดิต"))|
+            (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,พนักงานขาย,หัวหน้าหน่วยเครดิต,พนักงานเครดิต"))|
+            (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,พนักงานขาย,พนักงานเครดิต,หัวหน้าหน่วยเครดิต"))|
+            (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานเครดิต,พนักงานขาย"))|
+            (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย,พนักงานเครดิต"))|
+            (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,พนักงานเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย"))|
+            (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,พนักงานเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต"))|
+            (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต,พนักงานเครดิต"))|
+            (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,พนักงานขาย,พนักงานเครดิต,หัวหน้าทีมเครดิต"))|
+            (BHPreference.PositionName().equals("พนักงานเครดิต,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย"))|
+            (BHPreference.PositionName().equals("พนักงานเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย,หัวหน้าหน่วยเครดิต"))|
+            (BHPreference.PositionName().equals("พนักงานเครดิต,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย"))|
+            (BHPreference.PositionName().equals("พนักงานเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต"))|
+            (BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต"))|
+            (BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต"))|
+            (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานเครดิต"))|
+            (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าทีมเครดิต,พนักงานเครดิต,หัวหน้าหน่วยเครดิต"))|
+            (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานเครดิต"))|
+            (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าหน่วยเครดิต,พนักงานเครดิต,หัวหน้าทีมเครดิต"))|
+            (BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต"))|
+            (BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต")))
+            {
+
+
+
+
+
                 tvUserDetail2.setVisibility(View.VISIBLE);
-                tvUserDetail2.setText("ปลี่ยนเมนูตำแหน่ง");
-               // tvUserDetail2.setVisibility(View.GONE);
+                tvUserDetail2.setText("ปลี่ยนเมนูตำแหน่ง"+" ตอนนี้ใช้เมนู >>> "+BHPreference.sourceSystem() );
+                //tvUserDetail2.setVisibility(View.GONE);
             }
             else {
                 tvUserDetail2.setVisibility(View.GONE);
@@ -432,88 +467,94 @@ Log.e("PositionName",BHPreference.PositionName());
                     @Override
                     public void onClick(View view) {
 
+                        if(BHPreference.sourceSystem().equals("Sale")){
+                            dialog.cancel();
+                        }
+                        else {
+                            BHPreference.setSourceSystem("Sale");
+                            BHApplication.getInstance().getPrefManager().setPreferrence("select_p", "Sale");
+                            get_teamcode_select_position();
 
+                            List<TransactionLogInfo> trInfo = null;
+                            trInfo = TSRController.getTransactionLogBySyncStatus(false);
+                            if (trInfo == null) {
 
-                        BHPreference.setSourceSystem("Sale");
-                        BHApplication.getInstance().getPrefManager().setPreferrence("select_p", "Sale");
-                        get_teamcode_select_position();
+                                if (isConnectingToInternet()) {
+                                    (new AsyncTask<String, Void, Boolean>() {
+                                        @Override
+                                        protected void onPreExecute() {
+                                            BHLoading.show(activity);
+                                        }
 
-                        List<TransactionLogInfo> trInfo = null;
-                        trInfo = TSRController.getTransactionLogBySyncStatus(false);
-                        if (trInfo == null) {
+                                        @Override
+                                        protected Boolean doInBackground(String... urls) {
 
-                            if (isConnectingToInternet()) {
-                                (new AsyncTask<String, Void, Boolean>() {
-                                    @Override
-                                    protected void onPreExecute() {
-                                        BHLoading.show(activity);
-                                    }
+                                            boolean result = false;
+                                            try {
+                                                HttpGet httpGet = new HttpGet(urls[0]);
+                                                HttpClient client = new DefaultHttpClient();
+                                                //TimeOut 20s
+                                                HttpParams params = client.getParams();
+                                                HttpConnectionParams.setConnectionTimeout(params, timeOut);
+                                                HttpConnectionParams.setSoTimeout(params, timeOut);
 
-                                    @Override
-                                    protected Boolean doInBackground(String... urls) {
+                                                HttpResponse response = client.execute(httpGet);
 
-                                        boolean result = false;
-                                        try {
-                                            HttpGet httpGet = new HttpGet(urls[0]);
-                                            HttpClient client = new DefaultHttpClient();
-                                            //TimeOut 20s
-                                            HttpParams params = client.getParams();
-                                            HttpConnectionParams.setConnectionTimeout(params, timeOut);
-                                            HttpConnectionParams.setSoTimeout(params, timeOut);
+                                                int statusCode = response.getStatusLine().getStatusCode();
 
-                                            HttpResponse response = client.execute(httpGet);
+                                                if (statusCode == 200) {
+                                                    result = true;
+                                                }
 
-                                            int statusCode = response.getStatusLine().getStatusCode();
+                                            } catch (ClientProtocolException e) {
 
-                                            if (statusCode == 200) {
-                                                result = true;
+                                            } catch (IOException e) {
+
                                             }
 
-                                        } catch (ClientProtocolException e) {
-
-                                        } catch (IOException e) {
-
+                                            return result;
                                         }
 
-                                        return result;
-                                    }
-
-                                    protected void onPostExecute(Boolean result) {
-                                        if (!result) {
-                                            showWarningDialog("Connecting To Server", "เกิดการผิดพลาด ไม่สามารถเชื่อมต่อกับเซิฟเวอร์ได้");
-                                            BHLoading.close();
-                                        } else {
-                                            logout2(BHPreference.userID(), BHPreference.userDeviceId(), AddUserDeviceLogInputInfo.UserDeviceLogProcessType.ANDROID_LOGOUT.toString(),"Sale");
+                                        protected void onPostExecute(Boolean result) {
+                                            if (!result) {
+                                                showWarningDialog("Connecting To Server", "เกิดการผิดพลาด ไม่สามารถเชื่อมต่อกับเซิฟเวอร์ได้");
+                                                BHLoading.close();
+                                            } else {
+                                                logout2(BHPreference.userID(), BHPreference.userDeviceId(), AddUserDeviceLogInputInfo.UserDeviceLogProcessType.ANDROID_LOGOUT.toString(),"Sale");
+                                            }
                                         }
-                                    }
-                                }).execute(BHPreference.TSR_SERVICE_URL);
+                                    }).execute(BHPreference.TSR_SERVICE_URL);
+                                } else {
+
+                                    showWarningDialog("Connecting To Internet", "ไม่พบการเชื่อมต่ออินเตอร์เน็ต");
+                                }
+
+
                             } else {
+                                Builder setupAlert;
+                                //success = showView(BHFragment.newInstance(SynchronizeMainFragment.class));
+                                setupAlert = new AlertDialog.Builder(MainActivity.this)
+                                        .setTitle("แจ้งเตือน ปรับปรุงฐานข้อมูล")
+                                        .setMessage("กรุณาปรับปรุงข้อมูลก่อนออกจากระบบ")
+                                        .setCancelable(false)
+                                        .setPositiveButton("ปรับปรุง", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                checkLogout = true;
+                                                startSyncLogout();
+                                            }
+                                        })
+                                        .setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                                setupAlert.show();
 
-                                showWarningDialog("Connecting To Internet", "ไม่พบการเชื่อมต่ออินเตอร์เน็ต");
                             }
-
-
-                        } else {
-                            Builder setupAlert;
-                            //success = showView(BHFragment.newInstance(SynchronizeMainFragment.class));
-                            setupAlert = new AlertDialog.Builder(MainActivity.this)
-                                    .setTitle("แจ้งเตือน ปรับปรุงฐานข้อมูล")
-                                    .setMessage("กรุณาปรับปรุงข้อมูลก่อนออกจากระบบ")
-                                    .setCancelable(false)
-                                    .setPositiveButton("ปรับปรุง", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int whichButton) {
-                                            checkLogout = true;
-                                            startSyncLogout();
-                                        }
-                                    })
-                                    .setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int whichButton) {
-                                            dialog.cancel();
-                                        }
-                                    });
-                            setupAlert.show();
-
                         }
+
+
+
 
 
 
@@ -530,86 +571,93 @@ Log.e("PositionName",BHPreference.PositionName());
                     public void onClick(View view) {
 
 
-                        BHPreference.setSourceSystem("Credit");
-                        BHApplication.getInstance().getPrefManager().setPreferrence("select_p", "Credit");
-                        get_teamcode_select_position();
+                        if(BHPreference.sourceSystem().equals("Credit")){
+                            dialog.cancel();
+                        }
+                        else {
+                            BHPreference.setSourceSystem("Credit");
+                            BHApplication.getInstance().getPrefManager().setPreferrence("select_p", "Credit");
+                            get_teamcode_select_position();
 
-                        List<TransactionLogInfo> trInfo = null;
-                        trInfo = TSRController.getTransactionLogBySyncStatus(false);
-                        if (trInfo == null) {
+                            List<TransactionLogInfo> trInfo = null;
+                            trInfo = TSRController.getTransactionLogBySyncStatus(false);
+                            if (trInfo == null) {
 
-                            if (isConnectingToInternet()) {
-                                (new AsyncTask<String, Void, Boolean>() {
-                                    @Override
-                                    protected void onPreExecute() {
-                                        BHLoading.show(activity);
-                                    }
+                                if (isConnectingToInternet()) {
+                                    (new AsyncTask<String, Void, Boolean>() {
+                                        @Override
+                                        protected void onPreExecute() {
+                                            BHLoading.show(activity);
+                                        }
 
-                                    @Override
-                                    protected Boolean doInBackground(String... urls) {
+                                        @Override
+                                        protected Boolean doInBackground(String... urls) {
 
-                                        boolean result = false;
-                                        try {
-                                            HttpGet httpGet = new HttpGet(urls[0]);
-                                            HttpClient client = new DefaultHttpClient();
-                                            //TimeOut 20s
-                                            HttpParams params = client.getParams();
-                                            HttpConnectionParams.setConnectionTimeout(params, timeOut);
-                                            HttpConnectionParams.setSoTimeout(params, timeOut);
+                                            boolean result = false;
+                                            try {
+                                                HttpGet httpGet = new HttpGet(urls[0]);
+                                                HttpClient client = new DefaultHttpClient();
+                                                //TimeOut 20s
+                                                HttpParams params = client.getParams();
+                                                HttpConnectionParams.setConnectionTimeout(params, timeOut);
+                                                HttpConnectionParams.setSoTimeout(params, timeOut);
 
-                                            HttpResponse response = client.execute(httpGet);
+                                                HttpResponse response = client.execute(httpGet);
 
-                                            int statusCode = response.getStatusLine().getStatusCode();
+                                                int statusCode = response.getStatusLine().getStatusCode();
 
-                                            if (statusCode == 200) {
-                                                result = true;
+                                                if (statusCode == 200) {
+                                                    result = true;
+                                                }
+
+                                            } catch (ClientProtocolException e) {
+
+                                            } catch (IOException e) {
+
                                             }
 
-                                        } catch (ClientProtocolException e) {
-
-                                        } catch (IOException e) {
-
+                                            return result;
                                         }
 
-                                        return result;
-                                    }
-
-                                    protected void onPostExecute(Boolean result) {
-                                        if (!result) {
-                                            showWarningDialog("Connecting To Server", "เกิดการผิดพลาด ไม่สามารถเชื่อมต่อกับเซิฟเวอร์ได้");
-                                            BHLoading.close();
-                                        } else {
-                                            logout2(BHPreference.userID(), BHPreference.userDeviceId(), AddUserDeviceLogInputInfo.UserDeviceLogProcessType.ANDROID_LOGOUT.toString(),"Credit");
+                                        protected void onPostExecute(Boolean result) {
+                                            if (!result) {
+                                                showWarningDialog("Connecting To Server", "เกิดการผิดพลาด ไม่สามารถเชื่อมต่อกับเซิฟเวอร์ได้");
+                                                BHLoading.close();
+                                            } else {
+                                                logout2(BHPreference.userID(), BHPreference.userDeviceId(), AddUserDeviceLogInputInfo.UserDeviceLogProcessType.ANDROID_LOGOUT.toString(),"Credit");
+                                            }
                                         }
-                                    }
-                                }).execute(BHPreference.TSR_SERVICE_URL);
+                                    }).execute(BHPreference.TSR_SERVICE_URL);
+                                } else {
+
+                                    showWarningDialog("Connecting To Internet", "ไม่พบการเชื่อมต่ออินเตอร์เน็ต");
+                                }
+
+
                             } else {
+                                Builder setupAlert;
+                                //success = showView(BHFragment.newInstance(SynchronizeMainFragment.class));
+                                setupAlert = new AlertDialog.Builder(MainActivity.this)
+                                        .setTitle("แจ้งเตือน ปรับปรุงฐานข้อมูล")
+                                        .setMessage("กรุณาปรับปรุงข้อมูลก่อนออกจากระบบ")
+                                        .setCancelable(false)
+                                        .setPositiveButton("ปรับปรุง", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                checkLogout = true;
+                                                startSyncLogout();
+                                            }
+                                        })
+                                        .setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                                setupAlert.show();
 
-                                showWarningDialog("Connecting To Internet", "ไม่พบการเชื่อมต่ออินเตอร์เน็ต");
                             }
 
-
-                        } else {
-                            Builder setupAlert;
-                            //success = showView(BHFragment.newInstance(SynchronizeMainFragment.class));
-                            setupAlert = new AlertDialog.Builder(MainActivity.this)
-                                    .setTitle("แจ้งเตือน ปรับปรุงฐานข้อมูล")
-                                    .setMessage("กรุณาปรับปรุงข้อมูลก่อนออกจากระบบ")
-                                    .setCancelable(false)
-                                    .setPositiveButton("ปรับปรุง", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int whichButton) {
-                                            checkLogout = true;
-                                            startSyncLogout();
-                                        }
-                                    })
-                                    .setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int whichButton) {
-                                            dialog.cancel();
-                                        }
-                                    });
-                            setupAlert.show();
-
                         }
+
 
 
 
@@ -1160,7 +1208,7 @@ Log.e("PositionName",BHPreference.PositionName());
         fragmentResultData = data;
     }
 
-    static String MODE="";
+     static String MODE="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1241,26 +1289,34 @@ Log.e("PositionName",BHPreference.PositionName());
 
 
 
- /*               try {
-            String DD= BHApplication.getInstance().getPrefManager().getPreferrence("pp3");
-
-                    if(!DD.equals("2")) {
-                        tvUserDetail2.setVisibility(View.VISIBLE);
-                        tvUserDetail2.setText("ปลี่ยนเมนูตำแหน่ง ต้อนนี้ใช้เมนู "+BHPreference.sourceSystem());
-                    }
-                    else {
-                        tvUserDetail2.setVisibility(View.GONE);
-                       // tvUserDetail2.setText("ปลี่ยนเมนูตำแหน่ง ต้อนนี้ใช้เมนู Credit");
-                    }
-        }
-        catch (Exception ex){
-
-        }*/
+        Log.e("TeamCode_Main",BHPreference.teamCode());
+        Log.e("saleCode_Main",BHPreference.saleCode());
+        Log.e("processType_Main",BHPreference.processTypeOfEmployee());
+        Log.e("XXXX2",BHPreference.SubTeamCode()+","+BHPreference.saleCode());
 
 
+        String YY=getDateTime_Y();
+        int yy_i1= Integer.parseInt(YY);
+        int yy_i= yy_i1+543;
+        String yy_s= String.valueOf(yy_i);
+        String YearMonthTH = yy_s.substring(2, 4);
+
+        Log.e("ass",YearMonthTH+","+getDateTime_M());
+
+        BHApplication.getInstance().getPrefManager().setPreferrence("YearMonthTH",YearMonthTH+getDateTime_M());
+    }
 
 
-        }
+    public static String getDateTime_Y() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+    public static String getDateTime_M() {
+        DateFormat dateFormat = new SimpleDateFormat("MM");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
 
     @Override
     protected void onPause() {
@@ -1650,6 +1706,7 @@ Log.e("PositionName",BHPreference.PositionName());
                 case R.string.main_menu_sales: // not require SaleCode
                     select_page_preorder=0;
                     select_page_list=0;
+                    select_page_bs=0;
                     success = showView(BHFragment.newInstance(SaleMainFragment.class));
                     break;
 
@@ -1668,6 +1725,7 @@ Log.e("PositionName",BHPreference.PositionName());
 
 
                 case R.string.main_menu_first: // not require SaleCode
+
                     success = showView(BHFragment.newInstance(FirstPaymentMainMenuFragment.class));
                     break;
 
@@ -1765,7 +1823,7 @@ Log.e("PositionName",BHPreference.PositionName());
                 case R.string.main_menu_credit_salepaymentperiod_credit_customers: // not require SaleCode
                     ///success = showView(BHFragment.newInstance(CreditMainFragment.class));
 
-
+                    select_page_bs=1;
 
                 // success = showView(BHFragment.newInstance(CreditMainFragment_intro.class));
 
@@ -3823,6 +3881,8 @@ Log.e("PositionName",BHPreference.PositionName());
                             EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
 
                             GetDepartmentSignatureImageInputInfo departmentSignatureInput = new GetDepartmentSignatureImageInputInfo();
+
+                            Log.e("DepartmentCode",saleLeader.DepartmentCode);
                             departmentSignatureInput.DepartmentCode = saleLeader.DepartmentCode;
                             GetDepartmentSignatureImageOutputInfo departmentSignatureImage = TSRService.GetDepartmentSignatureImage(departmentSignatureInput, false);
                             if (departmentSignatureImage.Info != null) {
@@ -4399,7 +4459,7 @@ Log.e("PositionName",BHPreference.PositionName());
             Service request = retrofit.create(Service.class);
             Call call=null;
             if(MODE.equals("UAT")){
-                call = request.get_teamcode_select_position(BHPreference.employeeID(),BHPreference.sourceSystem());
+                call = request.get_teamcode_select_position_uat(BHPreference.employeeID(),BHPreference.sourceSystem());
 
             }
             else {
@@ -4448,10 +4508,12 @@ Log.e("PositionName",BHPreference.PositionName());
 
                 String TeamCode=json.getString("TeamCode");
                 String SubTeamCode=json.getString("SubTeamCode");
+                String saleCode=json.getString("saleCode");
 
                 BHApplication.getInstance().getPrefManager().setPreferrence("TeamCode", TeamCode);
                 BHApplication.getInstance().getPrefManager().setPreferrence("SubTeamCode",SubTeamCode);
-              //  Log.e("TeamCode_M",TeamCode);
+                BHApplication.getInstance().getPrefManager().setPreferrence("saleCode",saleCode);
+               Log.e("TeamCode_M",TeamCode);
 
             } catch (JSONException e) {
 
@@ -4459,6 +4521,7 @@ Log.e("PositionName",BHPreference.PositionName());
             }
         }
     }
+
 
 
 
@@ -4472,11 +4535,11 @@ Log.e("PositionName",BHPreference.PositionName());
             Service request = retrofit.create(Service.class);
             Call call=null;
             if(MODE.equals("UAT")){
-                 call = request.load_data_contact_online_preoder_UAT();
+                 call = request.load_data_contact_online_preoder_UAT(BHPreference.employeeID());
 
             }
             else {
-                 call = request.load_data_contact_online_preoder();
+                 call = request.load_data_contact_online_preoder(BHPreference.employeeID());
 
             }
 

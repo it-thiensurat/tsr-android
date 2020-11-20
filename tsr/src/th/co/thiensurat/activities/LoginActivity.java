@@ -339,7 +339,7 @@ public class LoginActivity extends BHActivity {
 
                                                      Log.e("Info.ProcessType",result.Info.ProcessType);
                                                    GetDeviceMenusInputInfo deviceMenuInput = new GetDeviceMenusInputInfo();
-                                                        //deviceMenuInput.EmployeeCode = result.Info.EmpID;
+                                                    //    deviceMenuInput.EmployeeCode = result.Info.EmpID;
                                                         deviceMenuInput.EmployeeCode = result.Info.EmpID+"_"+result.Info.SourceSystem;
                                                         //Log.e("SourceSystem555",result.Info.SourceSystem);
                                                         menus = TSRController.getDeviceMenus(deviceMenuInput);

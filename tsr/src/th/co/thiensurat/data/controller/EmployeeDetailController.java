@@ -117,7 +117,7 @@ public class EmployeeDetailController extends BaseController {
 				" LEFT OUTER JOIN Employee SupervisorHead ON SupervisorHead.EmpID = ed.SupervisorHeadCode" +
 				" LEFT OUTER JOIN Employee SubDepartmentHead ON SubDepartmentHead.EmpID = ed.SubDepartmentHeadCode" +
 				" LEFT OUTER JOIN Employee DepartmentHead ON DepartmentHead.EmpID = ed.DepartmentHeadCode" +
-				" WHERE (e.OrganizationCode = ?) AND (e.EmpID = ?) AND (ed.TeamCode = ?) " +
+				" WHERE (e.OrganizationCode = ?) AND (e.EmpID = ?) AND ((ed.TeamCode = ?)  OR (ed.TeamCode = 'SFAC-00')) " +
 				" ORDER BY p.PositionLevel DESC LIMIT 1";
 		return executeQueryObject(sql, new String[]{OrganizationCode, empID, teamCode}, EmployeeDetailInfo.class);
 	}

@@ -834,6 +834,7 @@ public class SaleReceiptPayment_old extends BHFragment {
 
             txtSaleEmpName.setText(String.format("(%s)", payments.get(position).SaleEmployeeName != null ? payments.get(position).SaleEmployeeName : ""));
             txtSaleTeamName.setText(String.format("(ทีม %s)", payments.get(position).TeamCode != null ? payments.get(position).TeamCode : ""));
+            //txtSaleTeamName.setText(String.format("(ทีม %s)", payments.get(position).TeamCode != null ? payments.get(position).CashCode : ""));
 
             /*if(employeeInfo != null) {
                 txtSaleEmpName.setText(String.format("(%s)", employeeInfo.SaleEmployeeName != null ? employeeInfo.SaleEmployeeName : ""));

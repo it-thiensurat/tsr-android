@@ -314,6 +314,9 @@ public class SynchronizeMainFragment extends BHFragment {
                             @Override
                             protected void calling() {
                                 // TODO Auto-generated method stub]
+                                result = TSRController.getUserByUserName(input);
+
+/*
                                 try {
                                     String DD= BHApplication.getInstance().getPrefManager().getPreferrence("select_p");
                                     if(DD.equals("Credit")) {
@@ -337,7 +340,7 @@ public class SynchronizeMainFragment extends BHFragment {
                                     Log.e("rrrr","4");
                                     result = TSRController.getUserByUserName(input);
 
-                                }
+                                }*/
 
 
 
@@ -391,6 +394,164 @@ public class SynchronizeMainFragment extends BHFragment {
             showWarningDialog("Connecting To Internet", "ไม่พบการเชื่อมต่ออินเตอร์เน็ต");
         }
     }
+
+
+
+
+
+    public void updateUserInfo2(final String userName,String SourceSystem, final updateUserInfoAsyncResponse finish) {
+        if (isConnectingToInternet()) {
+            (new AsyncTask<String, Void, Boolean>() {
+
+                @Override
+                protected void onPreExecute() {
+                    BHLoading.show(activity);
+                }
+
+                @Override
+                protected Boolean doInBackground(String... urls) {
+
+                    boolean result = false;
+                    try {
+                        HttpGet httpGet = new HttpGet(urls[0]);
+                        HttpClient client = new DefaultHttpClient();
+                        //TimeOut 20s
+                        HttpParams params = client.getParams();
+                        HttpConnectionParams.setConnectionTimeout(params, timeOut);
+                        HttpConnectionParams.setSoTimeout(params, timeOut);
+
+                        HttpResponse response = client.execute(httpGet);
+
+                        int statusCode = response.getStatusLine().getStatusCode();
+
+                        if (statusCode == 200) {
+                            result = true;
+                        }
+
+                    } catch (ClientProtocolException e) {
+
+                    } catch (IOException e) {
+
+                    }
+
+                    return result;
+                }
+
+                protected void onPostExecute(Boolean result) {
+                    if (!result) {
+                        showWarningDialog("Connecting To Server", "เกิดการผิดพลาด ไม่สามารถเชื่อมต่อกับเซิฟเวอร์ได้");
+                        BHLoading.close();
+                    } else {
+
+                        (new BackgroundProcess(activity) {
+
+                            private GetUserByUserNameInputInfo input;
+                            private GetUserByUserNameOutputInfo result = null;
+
+                            private GetCurrentFortnightOutputInfo outputGetCurrentFortnight = null;
+                            private GetDeviceMenusOutputInfo menus = null;
+
+                            @Override
+                            protected void before() {
+                                // TODO Auto-generated method stub
+
+                                input = new GetUserByUserNameInputInfo();
+
+                                //Log.e("moo_SourceSystem",SourceSystem);
+                                input.UserName = userName;
+                            }
+
+                            @Override
+                            protected void calling() {
+                                // TODO Auto-generated method stub]
+                                result = TSRController.getUserByUserName(input);
+
+/*
+                                try {
+                                    String DD= BHApplication.getInstance().getPrefManager().getPreferrence("select_p");
+                                    if(DD.equals("Credit")) {
+                                        Log.e("rrrr","1");
+                                       result = TSRController.getUserByUserName2(input);
+
+                                    }
+                                    else if(DD.equals("Sale")) {
+                                        Log.e("rrrr","2");
+                                        result = TSRController.getUserByUserName3(input);
+
+                                    }
+                                    else {
+                                        Log.e("rrrr","3");
+                                        result = TSRController.getUserByUserName(input);
+                                    }
+
+
+                                }
+                                catch (Exception ex){
+                                    Log.e("rrrr","4");
+                                    result = TSRController.getUserByUserName(input);
+
+                                }*/
+
+
+
+
+
+                                // เพิ่มใหม่
+                                if (result.ResultCode == 0) {
+                                    GetCurrentFortnightInputInfo inputGetCurrentFortnight = new GetCurrentFortnightInputInfo();
+                                    inputGetCurrentFortnight.OrganizationCode = result.Info.OrganizationCode;
+                                    inputGetCurrentFortnight.ProcessType = ((result.Info.ProcessType == null) || (result.Info.ProcessType == "")) ? "Sale" : result.Info.ProcessType;         // [BHPROJ-0016-3225] :: [Android+Web-Admin] แก้ไข Code เรื่องการเพิ่ม Field เพื่อระบุ Department สำหรับ ตารางเก็บปักษ์การขาย
+                                    outputGetCurrentFortnight = TSRController.getCurrentFortnight(inputGetCurrentFortnight);
+
+                                    GetDeviceMenusInputInfo deviceMenuInput = new GetDeviceMenusInputInfo();
+                                    // deviceMenuInput.EmployeeCode = result.Info.EmpID;
+                                    deviceMenuInput.EmployeeCode = result.Info.EmpID+"_"+SourceSystem;
+                                    //  deviceMenuInput.position = result.Info.SourceSystem;
+                                    menus = TSRController.getDeviceMenus(deviceMenuInput);
+                                }
+                            }
+
+                            @Override
+                            protected void after() {
+                                // TODO Auto-generated method stub
+                                if (result.ResultCode == 0) {
+
+                                    if (menus != null) {
+                                        if(BHPreference.IsAdmin()) {
+                                            menus.Info.add(getDeviceMenuAdmin());
+                                        }
+                                        BHPreference.setUserMenus(menus.Info);
+
+                                        activity.menusInfo.clear();
+                                        activity.menusInfo.addAll(BHPreference.getUserMenus());
+
+                                        activity.mainMenuAdapter.refresh();
+                                        activity.mainMenuAdapter.notifyDataSetChanged();
+                                    }
+
+                                    if (result.Info != null) {
+                                       // BHPreference.initPreference(result.Info, outputGetCurrentFortnight);
+                                        finish.updateUserInfoProcessFinish();
+
+                                        //startSynchronize();
+                                    }
+                                }
+                            }
+                        }).start();
+                    }
+                }
+            }).execute(BHPreference.TSR_SERVICE_URL);
+        } else {
+            showWarningDialog("Connecting To Internet", "ไม่พบการเชื่อมต่ออินเตอร์เน็ต");
+        }
+    }
+
+
+
+
+
+
+
 
     public boolean isConnectingToInternet() {
         ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -681,32 +842,202 @@ public class SynchronizeMainFragment extends BHFragment {
                                 }
                             });*/
 
-                            new SynchronizeMainFragment().updateUserInfo(BHPreference.userID(), new updateUserInfoAsyncResponse() {
-                                @Override
-                                public void updateUserInfoProcessFinish() {
-                                    MainActivity.checkLogin = true;
-                                    //
-                                    final MainActivity.DownloadTask downloadTask = new MainActivity.DownloadTask(activity);
 
-                                    if (BHGeneral.isOpenDepartmentSignature) {
-                                        String[] URL = {
-                                                String.format("%s/%s/%s/%s", BHPreference.TSR_DB_URL, BHPreference.teamCode(), BHPreference.employeeID() + (BHPreference.IsAdmin() ? BHGeneral.FOLDER_ADMIN : ""), "tsr.db.zip"),
-                                                String.format("%s/%s", BHPreference.TSR_SERVICE_URL, "GetSignatureImages")
-                                        };
-                                        downloadTask.execute(URL);
-                                    } else {
-                                        String URL = String.format("%s/%s/%s/%s", BHPreference.TSR_DB_URL, BHPreference.teamCode(), BHPreference.employeeID() + (BHPreference.IsAdmin() ? BHGeneral.FOLDER_ADMIN : ""), "tsr.db.zip");
-                                        downloadTask.execute(URL);
+
+
+
+
+                            try {
+
+                                if((BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต"))|(BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย"))|
+                                        (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย,พนักงานเครดิต"))|
+                                        (BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต"))|
+                                        (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย,พนักงานเครดิต"))|
+                                        (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานเครดิต,พนักงานขาย"))|
+                                        (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย,พนักงานเครดิต"))|
+                                        (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,พนักงานเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย"))|
+                                        (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,พนักงานเครดิต,พนักงานขาย,หัวหน้าหน่วยเครดิต"))|
+                                        (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,พนักงานขาย,หัวหน้าหน่วยเครดิต,พนักงานเครดิต"))|
+                                        (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,พนักงานขาย,พนักงานเครดิต,หัวหน้าหน่วยเครดิต"))|
+                                        (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานเครดิต,พนักงานขาย"))|
+                                        (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย,พนักงานเครดิต"))|
+                                        (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,พนักงานเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย"))|
+                                        (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,พนักงานเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต"))|
+                                        (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต,พนักงานเครดิต"))|
+                                        (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,พนักงานขาย,พนักงานเครดิต,หัวหน้าทีมเครดิต"))|
+                                        (BHPreference.PositionName().equals("พนักงานเครดิต,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย"))|
+                                        (BHPreference.PositionName().equals("พนักงานเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย,หัวหน้าหน่วยเครดิต"))|
+                                        (BHPreference.PositionName().equals("พนักงานเครดิต,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย"))|
+                                        (BHPreference.PositionName().equals("พนักงานเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต"))|
+                                        (BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต"))|
+                                        (BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต"))|
+                                        (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานเครดิต"))|
+                                        (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าทีมเครดิต,พนักงานเครดิต,หัวหน้าหน่วยเครดิต"))|
+                                        (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานเครดิต"))|
+                                        (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าหน่วยเครดิต,พนักงานเครดิต,หัวหน้าทีมเครดิต"))|
+                                        (BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต"))|
+                                        (BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต")))
+                                {
+
+
+
+                                    BHApplication.getInstance().getPrefManager().setPreferrence("select_p", BHPreference.sourceSystem());
+
+                                    try {
+                                        String DD= BHApplication.getInstance().getPrefManager().getPreferrence("select_p");
+
+                                        if((DD.equals("Sale"))|(DD.equals("Credit"))) {
+
+                                            Log.e("VVVV","1111");
+
+
+                                            new SynchronizeMainFragment().updateUserInfo2(BHPreference.userID(),BHPreference.sourceSystem(), new updateUserInfoAsyncResponse() {
+                                                @Override
+                                                public void updateUserInfoProcessFinish() {
+                                                    MainActivity.checkLogin = true;
+                                                    //
+                                                    final MainActivity.DownloadTask downloadTask = new MainActivity.DownloadTask(activity);
+
+                                                    if (BHGeneral.isOpenDepartmentSignature) {
+                                                        String[] URL = {
+                                                                String.format("%s/%s/%s/%s", BHPreference.TSR_DB_URL, BHPreference.teamCode(), BHPreference.employeeID() + (BHPreference.IsAdmin() ? BHGeneral.FOLDER_ADMIN : ""), "tsr.db.zip"),
+                                                                String.format("%s/%s", BHPreference.TSR_SERVICE_URL, "GetSignatureImages")
+                                                        };
+                                                        downloadTask.execute(URL);
+                                                    } else {
+                                                        String URL = String.format("%s/%s/%s/%s", BHPreference.TSR_DB_URL, BHPreference.teamCode(), BHPreference.employeeID() + (BHPreference.IsAdmin() ? BHGeneral.FOLDER_ADMIN : ""), "tsr.db.zip");
+                                                        downloadTask.execute(URL);
+                                                    }
+
+                                                    downloadTask.mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                                        @Override
+                                                        public void onCancel(DialogInterface dialog) {
+                                                            downloadTask.cancel(true);
+                                                        }
+                                                    });
+                                                }
+                                            });
+
+
+                                            BHApplication.getInstance().getPrefManager().setPreferrence("select_p","null");
+
+                                        }
+
+                                    }
+                                    catch (Exception ex){
+
+
+
                                     }
 
-                                    downloadTask.mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+
+
+
+
+
+
+
+                                }
+                                else {
+
+
+                                    Log.e("VVVV","2222");
+
+                                    new SynchronizeMainFragment().updateUserInfo(BHPreference.userID(), new updateUserInfoAsyncResponse() {
                                         @Override
-                                        public void onCancel(DialogInterface dialog) {
-                                            downloadTask.cancel(true);
+                                        public void updateUserInfoProcessFinish() {
+                                            MainActivity.checkLogin = true;
+                                            //
+                                            final MainActivity.DownloadTask downloadTask = new MainActivity.DownloadTask(activity);
+
+                                            if (BHGeneral.isOpenDepartmentSignature) {
+                                                String[] URL = {
+                                                        String.format("%s/%s/%s/%s", BHPreference.TSR_DB_URL, BHPreference.teamCode(), BHPreference.employeeID() + (BHPreference.IsAdmin() ? BHGeneral.FOLDER_ADMIN : ""), "tsr.db.zip"),
+                                                        String.format("%s/%s", BHPreference.TSR_SERVICE_URL, "GetSignatureImages")
+                                                };
+                                                downloadTask.execute(URL);
+                                            } else {
+                                                String URL = String.format("%s/%s/%s/%s", BHPreference.TSR_DB_URL, BHPreference.teamCode(), BHPreference.employeeID() + (BHPreference.IsAdmin() ? BHGeneral.FOLDER_ADMIN : ""), "tsr.db.zip");
+                                                downloadTask.execute(URL);
+                                            }
+
+                                            downloadTask.mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                                @Override
+                                                public void onCancel(DialogInterface dialog) {
+                                                    downloadTask.cancel(true);
+                                                }
+                                            });
                                         }
                                     });
+
                                 }
-                            });
+                            }
+                            catch (Exception ex){
+
+                                new SynchronizeMainFragment().updateUserInfo(BHPreference.userID(), new updateUserInfoAsyncResponse() {
+                                    @Override
+                                    public void updateUserInfoProcessFinish() {
+                                        MainActivity.checkLogin = true;
+                                        //
+                                        final MainActivity.DownloadTask downloadTask = new MainActivity.DownloadTask(activity);
+
+                                        if (BHGeneral.isOpenDepartmentSignature) {
+                                            String[] URL = {
+                                                    String.format("%s/%s/%s/%s", BHPreference.TSR_DB_URL, BHPreference.teamCode(), BHPreference.employeeID() + (BHPreference.IsAdmin() ? BHGeneral.FOLDER_ADMIN : ""), "tsr.db.zip"),
+                                                    String.format("%s/%s", BHPreference.TSR_SERVICE_URL, "GetSignatureImages")
+                                            };
+                                            downloadTask.execute(URL);
+                                        } else {
+                                            String URL = String.format("%s/%s/%s/%s", BHPreference.TSR_DB_URL, BHPreference.teamCode(), BHPreference.employeeID() + (BHPreference.IsAdmin() ? BHGeneral.FOLDER_ADMIN : ""), "tsr.db.zip");
+                                            downloadTask.execute(URL);
+                                        }
+
+                                        downloadTask.mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                            @Override
+                                            public void onCancel(DialogInterface dialog) {
+                                                downloadTask.cancel(true);
+                                            }
+                                        });
+                                    }
+                                });
+
+                            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         }
                     }
                     stop();

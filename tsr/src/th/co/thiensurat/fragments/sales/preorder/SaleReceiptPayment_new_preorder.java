@@ -1041,6 +1041,7 @@ public class SaleReceiptPayment_new_preorder extends BHFragment {
             else {
                 txtSaleEmpName.setText(String.format("(%s)", payments.get(position).SaleEmployeeName != null ? payments.get(position).SaleEmployeeName : ""));
                 txtSaleTeamName.setText(String.format("(ทีม %s)", payments.get(position).TeamCode != null ? payments.get(position).TeamCode : ""));
+               // txtSaleTeamName.setText(String.format("(ทีม %s)", payments.get(position).TeamCode != null ? payments.get(position).CashCode : ""));
 
                 txtSaleTeamName.setVisibility(View.VISIBLE);
             }

@@ -150,6 +150,7 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
 
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
+        Log.e("page","9");
         if (BHPreference.ProcessType().equals(ProcessType.Sale.toString())) {
             txtNumber1.setText("...");
             txtNumber2.setText("8");
@@ -430,6 +431,7 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
         txtSaleEmpName.setText(String.format("(%s)", BHPreference.userFullName()));
         //txtSaleTeamName.setText("(ทีม "+ data.contract.SaleTeamCode + ")");
         txtSaleTeamName.setText(String.format("(ทีม %s)", BHPreference.teamCode()));
+        //txtSaleTeamName.setText(String.format("(ทีม %s)", BHPreference.cashCode()));
 
         txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(data.PartlyPaidPrice)));
         txtThaiBahtNum.setText(BHUtilities.numericFormat(data.PartlyPaidPrice));
