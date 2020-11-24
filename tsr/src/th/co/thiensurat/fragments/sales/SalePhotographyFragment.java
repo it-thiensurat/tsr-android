@@ -329,6 +329,7 @@ import th.co.bighead.utilities.BHStorage.FolderType;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.bighead.utilities.save_image_to_gallery;
 import th.co.thiensurat.R;
+import th.co.thiensurat.activities.CameraActivity;
 import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.controller.ContractImageController.ImageType;
@@ -594,12 +595,15 @@ public class SalePhotographyFragment extends BHFragment {
 
             @Override
             public void onSuccess(BHPermissions bhPermissions) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-
                 Uri photoURI = FileProvider.getUriForFile(getActivity(),getActivity().getApplicationContext().getPackageName() + ".provider", new File(fileUri.getPath()));
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-
+//                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+                Intent intent = new Intent(getActivity(), CameraActivity.class);
+                intent.putExtra("DIR_NAME", IMAGE_DIRECTORY_NAME);
+                intent.putExtra("IMAGE_NAME", imageID);
+                intent.putExtra("IMAGE_TYPE", imageTypeCode);
                 startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
             }
 
