@@ -105,7 +105,17 @@ public class SaleMainFinishedFragment_preorder extends BHPagerFragment {
 								contractList = TSRController.getContractStatusFinishForCRD_ContractInfo_preorder(BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
 								Log.e("1111","3333");
 							}
-						} else {
+						}
+						else if (BHPreference.IsSaleForTS()) {
+							if (isContractDetails) {
+								contractList = TSRController.getContractStatusFinishForCreditBySearch_ContractInfo_preorder_CREDIT(BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%",BHPreference.employeeID());
+								Log.e("1111","2222");
+							} else {
+								contractList = TSRController.getContractStatusFinishForCRD_ContractInfo_preorder(BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
+								Log.e("1111","3333");
+							}
+						}
+						else {
 							contractList = TSRController.getContractStatusFinish_ContractInfo_preorder(BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString());
 							Log.e("1111","4444");
 						}

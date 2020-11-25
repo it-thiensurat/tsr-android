@@ -2350,8 +2350,8 @@ public class TSRController {
         return new ContractController().getContractBySaleTeamCode(organizationCode, saleTeamCode);
     }
 
-    public static List<ContractInfo> getContractStatusFinish(String EMPID,String organizationCode, String saleTeamCode, String StatusName) {
-        return new ContractController().getContractStatusFinish(EMPID,organizationCode, saleTeamCode, StatusName);
+    public static List<ContractInfo> getContractStatusFinish(String EMPID,String organizationCode, String saleTeamCode, String StatusName,String DD) {
+        return new ContractController().getContractStatusFinish(EMPID,organizationCode, saleTeamCode, StatusName,DD);
     }
 
     public static List<ContractInfo> getContractStatusFinish_ContractInfo_preorder(String organizationCode, String saleTeamCode, String StatusName) {
@@ -2365,13 +2365,16 @@ public class TSRController {
         return new ContractController().getContractStatusFinish_ContractInfo_preorder_SETTING_S(S);
     }
 
-    public static List<ContractInfo> getContractStatusFinish_ContractInfo_preorder_setting2(String organizationCode, String saleTeamCode, String StatusName) {
-        return new ContractController().getContractStatusFinish_ContractInfo_preorder_setting2(organizationCode, saleTeamCode, StatusName);
+    public static List<ContractInfo> getContractStatusFinish_ContractInfo_preorder_setting2(String organizationCode, String saleTeamCode, String StatusName,String DD) {
+        return new ContractController().getContractStatusFinish_ContractInfo_preorder_setting2(organizationCode, saleTeamCode, StatusName,DD);
     }
 
 
-    public static List<ContractInfo> getContractStatusFinishForCRD(String EMPID,String organizationCode, String saleTeamCode, String StatusName, String EmployeeID) {
-        return new ContractController().getContractStatusFinishForCRD(EMPID,organizationCode, saleTeamCode, StatusName, EmployeeID);
+    public static List<ContractInfo> getContractStatusFinishForCRD(String EMPID,String organizationCode, String saleTeamCode, String StatusName, String EmployeeID,String DD) {
+        return new ContractController().getContractStatusFinishForCRD(EMPID,organizationCode, saleTeamCode, StatusName, EmployeeID,DD);
+    }
+    public static List<ContractInfo> getContractStatusFinishForCRD_SETTING(String EMPID,String organizationCode, String saleTeamCode, String StatusName, String EmployeeID,String DD) {
+        return new ContractController().getContractStatusFinishForCRD_SETTING(EMPID,organizationCode, saleTeamCode, StatusName, EmployeeID,DD);
     }
     public static List<ContractInfo> getContractStatusFinishForCRD_ContractInfo_preorder(String organizationCode, String saleTeamCode, String StatusName, String EmployeeID) {
         return new ContractController().getContractStatusFinishForCRD_ContractInfo_preorder(organizationCode, saleTeamCode, StatusName, EmployeeID);
@@ -2388,8 +2391,11 @@ public class TSRController {
     }
     */
 
-    public static List<ContractInfo> getContractStatusFinishForCreditBySearch(String EMPID,String organizationCode, String StatusName, String strSearch) {
-        return new ContractController().getContractStatusFinishForCreditBySearch(EMPID,organizationCode, StatusName, strSearch);
+    public static List<ContractInfo> getContractStatusFinishForCreditBySearch(String EMPID,String organizationCode, String StatusName, String strSearch,String DD) {
+        return new ContractController().getContractStatusFinishForCreditBySearch(EMPID,organizationCode, StatusName, strSearch,DD);
+    }
+    public static List<ContractInfo> getContractStatusFinishForCreditBySearch_SETTING(String EMPID,String organizationCode, String StatusName, String strSearch,String DD) {
+        return new ContractController().getContractStatusFinishForCreditBySearch_SETTING(EMPID,organizationCode, StatusName, strSearch,DD);
     }
 
     public static List<ContractInfo> getContractStatusFinishForCreditBySearch_all(String organizationCode, String StatusName, String strSearch) {
@@ -2404,11 +2410,11 @@ public class TSRController {
         return new ContractController().getContractStatusFinishForCreditBySearch_ContractInfo_preorder_CREDIT(organizationCode, StatusName, strSearch,EMPID);
     }
 
-    public static List<ContractInfo> getContractStatusUnFinish(String EMPID, String organizationCode, String saleTeamCode, String StatusName) {
-        return new ContractController().getContractStatusUnFinish(EMPID,organizationCode, saleTeamCode, StatusName);
+    public static List<ContractInfo> getContractStatusUnFinish(String EMPID, String organizationCode, String saleTeamCode, String StatusName,String DD) {
+        return new ContractController().getContractStatusUnFinish(EMPID,organizationCode, saleTeamCode, StatusName,DD);
     }
-    public static List<ContractInfo> getContractStatusUnFinish_SETTING(String organizationCode, String saleTeamCode, String StatusName) {
-        return new ContractController().getContractStatusUnFinish_SETTING(organizationCode, saleTeamCode, StatusName);
+    public static List<ContractInfo> getContractStatusUnFinish_SETTING(String organizationCode, String saleTeamCode, String StatusName,String DD) {
+        return new ContractController().getContractStatusUnFinish_SETTING(organizationCode, saleTeamCode, StatusName,DD);
     }
 
     public static List<ContractInfo> getContractStatusUnFinish_ContractInfo_preorder(String organizationCode, String saleTeamCode, String StatusName) {
@@ -2416,13 +2422,13 @@ public class TSRController {
     }
 
 
-    public static List<ContractInfo> getContractStatusUnFinishForCRD(String EMPID,String organizationCode, String saleTeamCode, String StatusName, String SaleEmployeeCode) {
-        return new ContractController().getContractStatusUnFinishForCRD(EMPID,organizationCode, saleTeamCode, StatusName, SaleEmployeeCode);
+    public static List<ContractInfo> getContractStatusUnFinishForCRD(String EMPID,String organizationCode, String saleTeamCode, String StatusName, String SaleEmployeeCode,String DD) {
+        return new ContractController().getContractStatusUnFinishForCRD(EMPID,organizationCode, saleTeamCode, StatusName, SaleEmployeeCode,DD);
     }
 
 
-    public static List<ContractInfo> getContractStatusUnFinishForCRD_SETTING(String organizationCode, String saleTeamCode, String StatusName, String SaleEmployeeCode) {
-        return new ContractController().getContractStatusUnFinishForCRD_SETTING(organizationCode, saleTeamCode, StatusName, SaleEmployeeCode);
+    public static List<ContractInfo> getContractStatusUnFinishForCRD_SETTING(String organizationCode, String saleTeamCode, String StatusName, String SaleEmployeeCode,String DD) {
+        return new ContractController().getContractStatusUnFinishForCRD_SETTING(organizationCode, saleTeamCode, StatusName, SaleEmployeeCode,DD);
     }
 
 

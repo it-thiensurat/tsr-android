@@ -79,7 +79,13 @@ public class SaleMainUnfinishedFragment_preorder extends BHPagerFragment {
 				if (BHPreference.IsSaleForCRD()) {
 					contractList = TSRController.getContractStatusUnFinishForCRD_ContractInfo_preorder(BHPreference.organizationCode(), BHPreference.teamCode(),
 							ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
-				} else {
+				}
+				else if (BHPreference.IsSaleForTS()) {
+					contractList = TSRController.getContractStatusUnFinishForCRD_ContractInfo_preorder(BHPreference.organizationCode(), BHPreference.teamCode(),
+							ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
+				}
+				else {
+					Log.e("ss2","1111");
 					contractList = TSRController.getContractStatusUnFinish_ContractInfo_preorder(BHPreference.organizationCode(), BHPreference.teamCode(),
 							ContractStatusName.COMPLETED.toString());
 				}
@@ -103,7 +109,14 @@ public class SaleMainUnfinishedFragment_preorder extends BHPagerFragment {
 						List<ContractInfo> contractListUpdate = TSRController.getContractStatusUnFinishForCRD_ContractInfo_preorder(BHPreference.organizationCode(), BHPreference.teamCode(),
 								ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
 						contractList.addAll(contractListUpdate);
-					} else {
+					}
+					if (BHPreference.IsSaleForTS()) {
+						List<ContractInfo> contractListUpdate = TSRController.getContractStatusUnFinishForCRD_ContractInfo_preorder(BHPreference.organizationCode(), BHPreference.teamCode(),
+								ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
+						contractList.addAll(contractListUpdate);
+					}
+					else {
+						Log.e("ss2","2222");
 						List<ContractInfo> contractListUpdate = TSRController.getContractStatusUnFinish_ContractInfo_preorder(BHPreference.organizationCode(), BHPreference.teamCode(),
 								ContractStatusName.COMPLETED.toString());
 						contractList.addAll(contractListUpdate);

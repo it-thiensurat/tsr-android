@@ -113,6 +113,17 @@ public interface Service {
     Call<Object> get_teamcode_select_position_uat(@Query("EmpID") String EmpID,@Query("SourceSystem") String SourceSystem);
 
 
+
+
+    @GET("/assanee_UAT/assanee/bighead_api_new/get_ProductSerialNumber_by_preorder.php")
+    Call<Object> get_ProductSerialNumber_by_preorder_uat();
+
+
+
+    @GET("/assanee_UAT/assanee/bighead_api_new/get_ProductSerialNumber_by_preorder_setting.php")
+    Call<Object> get_ProductSerialNumber_by_preorder_setting_uat();
+
+
     /***** uat by moo*/
 
 
@@ -143,6 +154,15 @@ public interface Service {
     @GET("/assanee/bighead_api_new/get_teamcode_select_position.php")
     Call<Object> get_teamcode_select_position(@Query("EmpID") String EmpID,@Query("SourceSystem") String SourceSystem);
 
+
+
+    @GET("/assanee/bighead_api_new/get_ProductSerialNumber_by_preorder.php")
+    Call<Object> get_ProductSerialNumber_by_preorder();
+
+
+
+    @GET("/assanee/bighead_api_new/get_ProductSerialNumber_by_preorder_setting.php")
+    Call<Object> get_ProductSerialNumber_by_preorder_setting();
 
     /***** production  */
 

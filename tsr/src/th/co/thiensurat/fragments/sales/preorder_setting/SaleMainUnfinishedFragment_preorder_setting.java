@@ -83,11 +83,19 @@ public class SaleMainUnfinishedFragment_preorder_setting extends BHPagerFragment
 				// TODO Auto-generated method stub
 
 				if (BHPreference.IsSaleForCRD()) {
+					Log.e("qqqqq","1");
 					contractList = TSRController.getContractStatusUnFinishForCRD_SETTING(BHPreference.organizationCode(), BHPreference.teamCode(),
-							ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
-				} else {
+							ContractStatusName.COMPLETED.toString(), BHPreference.employeeID(),BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_MS"));
+				}
+				else if (BHPreference.IsSaleForTS()) {
+					Log.e("qqqqq","2");
+					contractList = TSRController.getContractStatusUnFinishForCRD_SETTING(BHPreference.organizationCode(), BHPreference.teamCode(),
+							ContractStatusName.COMPLETED.toString(), BHPreference.employeeID(),BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_MS"));
+				}
+				else {
+					Log.e("qqqqq","3");
 					contractList = TSRController.getContractStatusUnFinish_SETTING(BHPreference.organizationCode(), BHPreference.teamCode(),
-							ContractStatusName.COMPLETED.toString());
+							ContractStatusName.COMPLETED.toString(),BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_MS"));
 				}
 
                 boolean updateContractList = false;
@@ -107,11 +115,18 @@ public class SaleMainUnfinishedFragment_preorder_setting extends BHPagerFragment
                     contractList.clear();
 					if (BHPreference.IsSaleForCRD()) {
 						List<ContractInfo> contractListUpdate = TSRController.getContractStatusUnFinishForCRD_SETTING(BHPreference.organizationCode(), BHPreference.teamCode(),
-								ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
+								ContractStatusName.COMPLETED.toString(), BHPreference.employeeID(),BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_MS"));
 						contractList.addAll(contractListUpdate);
-					} else {
+					}
+					else  if (BHPreference.IsSaleForTS()) {
+						List<ContractInfo> contractListUpdate = TSRController.getContractStatusUnFinishForCRD_SETTING(BHPreference.organizationCode(), BHPreference.teamCode(),
+								ContractStatusName.COMPLETED.toString(), BHPreference.employeeID(),BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_MS"));
+						contractList.addAll(contractListUpdate);
+					}
+
+					else {
 						List<ContractInfo> contractListUpdate = TSRController.getContractStatusUnFinish_SETTING(BHPreference.organizationCode(), BHPreference.teamCode(),
-								ContractStatusName.COMPLETED.toString());
+								ContractStatusName.COMPLETED.toString(),BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_MS"));
 						contractList.addAll(contractListUpdate);
 					}
                 }
