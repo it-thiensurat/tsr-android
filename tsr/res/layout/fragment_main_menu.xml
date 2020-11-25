@@ -2,11 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-
-
-
+    android:orientation="vertical"
+    android:background="@color/main_menu_default"
+    android:paddingBottom="?android:attr/actionBarSize">
 
     <TextView
         android:id="@+id/tvUserDetail"
@@ -38,10 +36,11 @@
     <ListView
         android:id="@+id/lvMainMenu"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:choiceMode="singleChoice"
         android:background="@color/main_menu_default"
         android:divider="@color/main_menu_divider"
+        android:nestedScrollingEnabled="true"
         android:dividerHeight="1dp" />
 
 </LinearLayout>

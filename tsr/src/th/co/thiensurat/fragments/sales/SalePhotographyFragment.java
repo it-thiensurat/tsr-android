@@ -591,35 +591,58 @@ public class SalePhotographyFragment extends BHFragment {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
         startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);*/
 
-        new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
+        Intent intent = new Intent(getActivity(), CameraActivity.class);
+        intent.putExtra("DIR_NAME", IMAGE_DIRECTORY_NAME);
+        intent.putExtra("IMAGE_NAME", imageID);
+        intent.putExtra("IMAGE_TYPE", imageTypeCode);
+        startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
 
-            @Override
-            public void onSuccess(BHPermissions bhPermissions) {
+//        new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
+//
+//            @Override
+//            public void onSuccess(BHPermissions bhPermissions) {
 //                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-                Uri photoURI = FileProvider.getUriForFile(getActivity(),getActivity().getApplicationContext().getPackageName() + ".provider", new File(fileUri.getPath()));
+//                fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+//                Uri photoURI = FileProvider.getUriForFile(getActivity(),getActivity().getApplicationContext().getPackageName() + ".provider", new File(fileUri.getPath()));
 //                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 //                startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
-                Intent intent = new Intent(getActivity(), CameraActivity.class);
-                intent.putExtra("DIR_NAME", IMAGE_DIRECTORY_NAME);
-                intent.putExtra("IMAGE_NAME", imageID);
-                intent.putExtra("IMAGE_TYPE", imageTypeCode);
-                startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
-            }
-
-            @Override
-            public void onNotSuccess(BHPermissions bhPermissions) {
-                bhPermissions.openAppSettings(getActivity());
-            }
-
-            @Override
-            public void onShouldShowRequest(BHPermissions bhPermissions, BHPermissions.PermissionType... permissionType) {
-                bhPermissions.showMessage(getActivity(), permissionType);
-            }
-
-        }, BHPermissions.PermissionType.CAMERA,BHPermissions.PermissionType.STORAGE);
+//            }
+//
+//            @Override
+//            public void onNotSuccess(BHPermissions bhPermissions) {
+//                bhPermissions.openAppSettings(getActivity());
+//            }
+//
+//            @Override
+//            public void onShouldShowRequest(BHPermissions bhPermissions, BHPermissions.PermissionType... permissionType) {
+//                bhPermissions.showMessage(getActivity(), permissionType);
+//            }
+//
+//        }, BHPermissions.PermissionType.CAMERA,BHPermissions.PermissionType.STORAGE);
         /*** [END] :: Permission ***/
 
+//        new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
+//
+//            @Override
+//            public void onSuccess(BHPermissions bhPermissions) {
+//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+//                Uri photoURI = FileProvider.getUriForFile(getActivity(),getActivity().getApplicationContext().getPackageName() + ".provider", new File(fileUri.getPath()));
+//                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+//            }
+//
+//            @Override
+//            public void onNotSuccess(BHPermissions bhPermissions) {
+//                bhPermissions.openAppSettings(getActivity());
+//            }
+//
+//            @Override
+//            public void onShouldShowRequest(BHPermissions bhPermissions, BHPermissions.PermissionType... permissionType) {
+//                bhPermissions.showMessage(getActivity(), permissionType);
+//            }
+//
+//        }, BHPermissions.PermissionType.CAMERA);
 
     }
     private File createImageFile() throws IOException {
@@ -662,7 +685,7 @@ public class SalePhotographyFragment extends BHFragment {
 
     private File getOutputMediaFile(int type) {
         File mediaStorageDir = new File(Parth + "/" + IMAGE_DIRECTORY_NAME + "/" + imageTypeCode);
-       // File mediaStorageDir = new File("/sdcard/Android/data/"+activity.getApplicationContext().getPackageName()+"/files/pictures/"  + IMAGE_DIRECTORY_NAME + "/" + imageTypeCode);
+//       File mediaStorageDir = new File("/sdcard/Android/data/"+activity.getApplicationContext().getPackageName()+"/files/pictures/"  + IMAGE_DIRECTORY_NAME + "/" + imageTypeCode);
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
               //  Log.d(IMAGE_DIRECTORY_NAME, "" + IMAGE_DIRECTORY_NAME + " directory");
@@ -704,8 +727,8 @@ String DD="",NAME_IMAGE="",IMAGE_TYPE="";
                 input.ImageName = imageID + ".jpg";
                 input.ImageTypeCode = imageTypeCode;
                 input.SyncedDate = new Date();
-
-                DD="/sdcard/Android/data/"+activity.getApplicationContext().getPackageName()+"/files/pictures/"+IMAGE_DIRECTORY_NAME + "/"+ input.ImageTypeCode+ "/" +input.ImageName;
+                DD = String.format("%s/%s/%s/%s", Environment.getExternalStorageDirectory(), IMAGE_DIRECTORY_NAME, imageTypeCode, input.ImageName);
+//                DD="/sdcard/Android/data/"+activity.getApplicationContext().getPackageName()+"/files/pictures/"+IMAGE_DIRECTORY_NAME + "/"+ input.ImageTypeCode+ "/" +input.ImageName;
                 NAME_IMAGE=input.ImageName;
                 IMAGE_TYPE=input.ImageTypeCode;
 

@@ -108,26 +108,20 @@ public class CameraActivity extends AppCompatActivity {
         applyPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                layoutPreview.setVisibility(View.INVISIBLE);
-//                File savedPhoto = new File(photoURI);
-
-                File direct = new File(String.format("%s/%s/%s",Environment.getExternalStorageDirectory(), dirName, typeName));
-//
-                if (!direct.exists()) {
-//                    File wallpaperDirectory = new File("/sdcard/DirName/");
-                    direct.mkdirs();
-                }
-//
-                File savedPhoto = new File(direct.getAbsolutePath(), imageID + ".jpg");
-//                if (savedPhoto.exists()) {
-//                    savedPhoto.delete();
-//                }
                 try{
-//                    savedPhoto.createNewFile();
+                    File direct = new File(String.format("%s/%s/%s",Environment.getExternalStorageDirectory(), dirName, typeName));
+                    if (!direct.exists()) {
+                        direct.mkdirs();
+                    }
+
+                    File savedPhoto = new File(direct.getAbsolutePath(), imageID + ".jpg");
+                    if (savedPhoto.exists()) {
+                        savedPhoto.delete();
+                    }
+
                     FileOutputStream outputStream = new FileOutputStream(savedPhoto);
                     bitmap = BitmapFactory.decodeByteArray(fileStream, 0, fileStream.length);
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-//                    outputStream.write(fileStream);
                     outputStream.flush();
                     outputStream.close();
 
