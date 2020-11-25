@@ -27,6 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHArrayAdapter;
 import th.co.bighead.utilities.BHPagerFragment;
 import th.co.bighead.utilities.BHPreference;
@@ -92,20 +93,32 @@ public class SaleMainFinishedFragment_SETTING extends BHPagerFragment {
 					if(isCredit){
 						//-- Fixed - [BHPROJ-0026-3283][Android-รายละเอียดสัญญา] ให้ Sort ตาม วันที่ Payment ล่าสุดเรียงลงไป (Comment ตัวนี้ไปใช้ getContractStatusFinishForCreditBySearch แทน)
 						//contractList = TSRController.getContractStatusFinishForCredit(BHPreference.organizationCode(), ContractStatusName.COMPLETED.toString());
-						contractList = TSRController.getContractStatusFinishForCreditBySearch(BHPreference.employeeID(),BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%");
+						contractList = TSRController.getContractStatusFinishForCreditBySearch_SETTING(BHPreference.employeeID(),BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%", BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_MS"));
 						//Log.e("user",contractList.toString());
 						//Log.e("1111","1111");
 					} else {
 						if (BHPreference.IsSaleForCRD()) {
 							if (isContractDetails) {
-								contractList = TSRController.getContractStatusFinishForCreditBySearch(BHPreference.employeeID(),BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%");
+								contractList = TSRController.getContractStatusFinishForCreditBySearch_SETTING(BHPreference.employeeID(),BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%", BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_MS"));
 								Log.e("1111","2222");
 							} else {
-								contractList = TSRController.getContractStatusFinishForCRD(BHPreference.employeeID(),BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
+								contractList = TSRController.getContractStatusFinishForCRD_SETTING(BHPreference.employeeID(),BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), BHPreference.employeeID(), BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_MS"));
 								Log.e("1111","3333");
 							}
-						} else {
-							contractList = TSRController.getContractStatusFinish_ContractInfo_preorder_setting2(BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString());
+						}
+
+						else if (BHPreference.IsSaleForTS()) {
+							if (isContractDetails) {
+								contractList = TSRController.getContractStatusFinishForCreditBySearch_SETTING(BHPreference.employeeID(),BHPreference.organizationCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), "%%", BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_MS"));
+								Log.e("1111","2222");
+							} else {
+								contractList = TSRController.getContractStatusFinishForCRD_SETTING(BHPreference.employeeID(),BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), BHPreference.employeeID(), BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_MS"));
+								Log.e("1111","3333");
+							}
+						}
+
+						else {
+							contractList = TSRController.getContractStatusFinish_ContractInfo_preorder_setting2(BHPreference.organizationCode(), BHPreference.teamCode(), ContractInfo.ContractStatusName.COMPLETED.toString(), BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_MS"));
 							Log.e("1111","4444");
 						}
 					}

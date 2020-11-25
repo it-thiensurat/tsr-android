@@ -20,6 +20,7 @@ import android.widget.TextView;
 import java.util.Date;
 import java.util.List;
 
+import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHArrayAdapter;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHPagerFragment;
@@ -78,16 +79,19 @@ public class SaleMainUnfinishedFragment extends BHPagerFragment {
 				// TODO Auto-generated method stub
 
 				if (BHPreference.IsSaleForCRD()) {
+					Log.e("ss4","4444");
 					contractList = TSRController.getContractStatusUnFinishForCRD(BHPreference.employeeID(),BHPreference.organizationCode(), BHPreference.teamCode(),
-							ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
+							ContractStatusName.COMPLETED.toString(), BHPreference.employeeID(),BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_M"));
 				}
 				else if (BHPreference.IsSaleForTS()) {
+					Log.e("ss3","3333");
 					contractList = TSRController.getContractStatusUnFinishForCRD(BHPreference.employeeID(),BHPreference.organizationCode(), BHPreference.teamCode(),
-							ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
+							ContractStatusName.COMPLETED.toString(), BHPreference.employeeID(),BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_M"));
 				}
 				else {
+					Log.e("ss1","1111");
 					contractList = TSRController.getContractStatusUnFinish(BHPreference.employeeID(),BHPreference.organizationCode(), BHPreference.teamCode(),
-							ContractStatusName.COMPLETED.toString());
+							ContractStatusName.COMPLETED.toString(),BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_M"));
 				}
 
                 boolean updateContractList = false;
@@ -106,18 +110,21 @@ public class SaleMainUnfinishedFragment extends BHPagerFragment {
                 if(updateContractList && contractList != null && contractList.size() > 0){
                     contractList.clear();
 					if (BHPreference.IsSaleForCRD()) {
+						Log.e("ss1","4444");
 						List<ContractInfo> contractListUpdate = TSRController.getContractStatusUnFinishForCRD(BHPreference.employeeID(),BHPreference.organizationCode(), BHPreference.teamCode(),
-								ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
+								ContractStatusName.COMPLETED.toString(), BHPreference.employeeID(),BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_M"));
 						contractList.addAll(contractListUpdate);
 					}
 					else if (BHPreference.IsSaleForTS()) {
+						Log.e("ss1","3333");
 						List<ContractInfo> contractListUpdate = TSRController.getContractStatusUnFinishForCRD(BHPreference.employeeID(),BHPreference.organizationCode(), BHPreference.teamCode(),
-								ContractStatusName.COMPLETED.toString(), BHPreference.employeeID());
+								ContractStatusName.COMPLETED.toString(), BHPreference.employeeID(),BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_M"));
 						contractList.addAll(contractListUpdate);
 					}
 					else {
+						Log.e("ss1","2222");
 						List<ContractInfo> contractListUpdate = TSRController.getContractStatusUnFinish(BHPreference.employeeID(),BHPreference.organizationCode(), BHPreference.teamCode(),
-								ContractStatusName.COMPLETED.toString());
+								ContractStatusName.COMPLETED.toString(), BHApplication.getInstance().getPrefManager().getPreferrence("ProductSerialNumber_M"));
 						contractList.addAll(contractListUpdate);
 					}
                 }

@@ -1304,6 +1304,9 @@ Log.e("PositionName",BHPreference.PositionName());
         Log.e("ass",YearMonthTH+","+getDateTime_M());
 
         BHApplication.getInstance().getPrefManager().setPreferrence("YearMonthTH",YearMonthTH+getDateTime_M());
+
+        load_data_get_ProductSerialNumber_by_preorder();
+        load_data_get_ProductSerialNumber_by_preorder_setting();
     }
 
 
@@ -5077,4 +5080,164 @@ Log.e("PositionName",BHPreference.PositionName());
         else
             DatabaseManager.getInstance().closeDatabase();
     }
+
+
+
+
+
+    public static void load_data_get_ProductSerialNumber_by_preorder() {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call=null;
+            if(MODE.equals("UAT")){
+                call = request.get_ProductSerialNumber_by_preorder_uat();
+
+            }
+            else {
+                call = request.get_ProductSerialNumber_by_preorder();
+
+            }
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson = new Gson();
+                    try {
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+
+                        JSON_PARSE_DATA_AFTER_WEBCALL_load_data_get_ProductSerialNumber_by_preorder(jsonObject.getJSONArray("data"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("data", "2");
+                }
+            });
+
+        } catch (Exception e) {
+
+        }
+    }
+
+
+    public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_get_ProductSerialNumber_by_preorder(JSONArray array) {
+
+        // Log.e("length1", String.valueOf(array.length()));
+        for (int i = 0; i < array.length(); i++) {
+
+            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
+
+            JSONObject json = null;
+            try {
+                json = array.getJSONObject(i);
+
+                String ProductSerialNumber= json.getString("ProductSerialNumber");
+
+
+                  Log.e("ProductSerialNumber_M","("+ProductSerialNumber+")");
+                try {
+                    BHApplication.getInstance().getPrefManager().setPreferrence("ProductSerialNumber_M","("+ProductSerialNumber+")");
+                }
+                catch (Exception ex){
+
+                }
+
+                //  Log.e("A3_AddressID",AddressID);
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+    public static void load_data_get_ProductSerialNumber_by_preorder_setting() {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call=null;
+            if(MODE.equals("UAT")){
+                call = request.get_ProductSerialNumber_by_preorder_setting_uat();
+
+            }
+            else {
+                call = request.get_ProductSerialNumber_by_preorder_setting();
+
+            }
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson = new Gson();
+                    try {
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+
+                        JSON_PARSE_DATA_AFTER_WEBCALL_load_data_get_ProductSerialNumber_by_preorder_setting(jsonObject.getJSONArray("data"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("data", "2");
+                }
+            });
+
+        } catch (Exception e) {
+
+        }
+    }
+
+
+    public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_get_ProductSerialNumber_by_preorder_setting(JSONArray array) {
+
+        // Log.e("length1", String.valueOf(array.length()));
+        for (int i = 0; i < array.length(); i++) {
+
+            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
+
+            JSONObject json = null;
+            try {
+                json = array.getJSONObject(i);
+
+                String ProductSerialNumber= json.getString("ProductSerialNumber");
+
+
+                Log.e("ProductSerialNumber_MS","("+ProductSerialNumber+")");
+                try {
+                    BHApplication.getInstance().getPrefManager().setPreferrence("ProductSerialNumber_MS","("+ProductSerialNumber+")");
+                }
+                catch (Exception ex){
+
+                }
+
+                //  Log.e("A3_AddressID",AddressID);
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
 }
