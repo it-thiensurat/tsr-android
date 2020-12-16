@@ -3665,6 +3665,30 @@ public class DocumentController_preorder {
         return bmp;
     }
 
+    public static Bitmap shortHeaderPrintTSRL() {
+        Bitmap bmp = null;
+        try {
+            ins = mContext.getResources().getAssets().open("tsrl_logo.png");
+            bmp = BitmapFactory.decodeStream(ins);
+            ins.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bmp;
+    }
+
+    public static Bitmap shortHeaderPrintAlpine() {
+        Bitmap bmp = null;
+        try {
+            ins = mContext.getResources().getAssets().open("alpine_logo.png");
+            bmp = BitmapFactory.decodeStream(ins);
+            ins.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bmp;
+    }
+
     public static Bitmap backgroundTitle() {
         Bitmap bmp = null;
         try {
@@ -3829,24 +3853,23 @@ public class DocumentController_preorder {
 
     private static int RECEIPT_WIDTH = 576;
     public static  Bitmap getNewContactImage(ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
-
-
-
-
         ReceiptBuilder receiptBuilder = new ReceiptBuilder(RECEIPT_WIDTH);
         receiptBuilder.setMargin(5, 0);
         receiptBuilder.setTextSize(24);
         receiptBuilder.setAlign(Align.LEFT);
         receiptBuilder.setColor(Color.BLACK);
-        receiptBuilder.addText("บริษัท เธียรสุรัตน์ จำกัด (มหาชน)", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addText("43/9 หมู่ 7 ซ.ชูชาติอนุสรณ์ 4 ต.บางตลาด", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addText("อ.ปากเกร็ด จ.นนทบุรี 11120", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addText("โทร. 0 2819 8888 แฟกซ์ 0 2962 6951-3", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addText("อีเมล thiensurat@thiensurat.co.th", true);
+//        receiptBuilder.addText("บริษัท เธียรสุรัตน์ จำกัด (มหาชน)", true);
+//        receiptBuilder.addParagraph();
+//        receiptBuilder.addText("43/9 หมู่ 7 ซ.ชูชาติอนุสรณ์ 4 ต.บางตลาด", true);
+//        receiptBuilder.addParagraph();
+//        receiptBuilder.addText("อ.ปากเกร็ด จ.นนทบุรี 11120", true);
+//        receiptBuilder.addParagraph();
+//        receiptBuilder.addText("โทร. 0 2819 8888 แฟกซ์ 0 2962 6951-3", true);
+//        receiptBuilder.addParagraph();
+//        receiptBuilder.addText("อีเมล thiensurat@thiensurat.co.th", true);
+//        receiptBuilder.addParagraph();
+//        receiptBuilder.addBlankSpace(10);
+        receiptBuilder.addImage(shortHeaderPrint());
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
         receiptBuilder.setAlign(Align.CENTER);

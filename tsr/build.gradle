@@ -7,8 +7,8 @@ android {
     buildToolsVersion '29.0.2'
 
     def versionCodes = { ->
-//        return 161   //<-- current version
-        return 162   //<-- New version
+//        return 162   //<-- current version
+        return 163   //<-- New version
     }
 
     def tsrAppVersion = { ->

@@ -4436,10 +4436,6 @@ public class DocumentController {
         return scaleBitmap(bmp, bmp.getWidth(), bmp.getHeight());
     }
 
-
-
-
-
     public static Bitmap getNewReceiptImage(PaymentInfo paymentInfo, DebtorCustomerInfo debtorCustomerInfo, AddressInfo addressInfo) {
         ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
         receiptBuilder.setMargin(5, 0);
