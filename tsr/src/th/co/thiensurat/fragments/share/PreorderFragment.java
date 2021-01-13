@@ -128,7 +128,7 @@ public class PreorderFragment extends BHFragment {
 
 
 	String C_ID="",getProductID="",getProductName="",getProductSerialNumber="",
-			getCONTNO="",getRefNo="",getContractReferenceNo="",getReceiptCode="",getReceiptID="";
+			getCONTNO="",getRefNo="",getContractReferenceNo="",getReceiptCode="",getReceiptID="",getOrganizationCode="";
 
 	int C_ID_int;
 	@Override
@@ -360,7 +360,7 @@ public class PreorderFragment extends BHFragment {
 				call = request.product_UAT(BHPreference.employeeID(), String.valueOf(C_ID_int));
 			}
 			else {
-				call = request.product(BHPreference.employeeID());
+				call = request.product(BHPreference.employeeID(), String.valueOf(C_ID_int));
 			}
 
             call.enqueue(new Callback() {
@@ -413,7 +413,7 @@ public class PreorderFragment extends BHFragment {
 				GetDataAdapter2.setContractReferenceNo(json.getString("ContractReferenceNo"));
 				GetDataAdapter2.setReceiptCode(json.getString("ReceiptCode"));
 				GetDataAdapter2.setReceiptID(json.getString("ReceiptID"));
-
+				GetDataAdapter2.setOrganizationCode(json.getString("OrganizationCode"));
 
 
 			} catch (JSONException e) {
@@ -486,13 +486,16 @@ public class PreorderFragment extends BHFragment {
 					getContractReferenceNo= contact.getContractReferenceNo();
 					getReceiptCode= contact.getReceiptCode();
 					getReceiptID= contact.getReceiptID();
+					getOrganizationCode= contact.getOrganizationCode();
 
-
+Log.e("getOrganizationCode",getOrganizationCode);
 
 					BHApplication.getInstance().getPrefManager().setPreferrence("getRefNo", getRefNo);
 					BHApplication.getInstance().getPrefManager().setPreferrence("getContractReferenceNo", getContractReferenceNo);
 					BHApplication.getInstance().getPrefManager().setPreferrence("getReceiptCode", getReceiptCode);
 					BHApplication.getInstance().getPrefManager().setPreferrence("getReceiptID", getReceiptID);
+					BHApplication.getInstance().getPrefManager().setPreferrence("getOrganizationCode", getOrganizationCode);
+
 
 					Log.e("getReceiptCode",getReceiptCode);
 					Log.e("getProductID",getProductID);

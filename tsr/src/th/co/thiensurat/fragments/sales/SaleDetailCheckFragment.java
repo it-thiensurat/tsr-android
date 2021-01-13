@@ -233,15 +233,15 @@ public class SaleDetailCheckFragment extends BHFragment {
 		case R.string.button_detail_contract:
 			// UpdateContractDB();
 
-			Log.e("select_page_preorder", String.valueOf(select_page_preorder));
-	/*		if(select_page_preorder==1){
-				showNextView(new SaleDetailCheckContractFragment_preorder());
+			//Log.e("select_page_preorder", String.valueOf(select_page_preorder));
+			//if(select_page_preorder==1){
+			//	showNextView(new SaleDetailCheckContractFragment_preorder());
 
-			}
-			else {*/
+			//}
+			//else {
 				showNextView(new SaleDetailCheckContractFragment());
 
-		//	}
+			//}
 
 
 			break;

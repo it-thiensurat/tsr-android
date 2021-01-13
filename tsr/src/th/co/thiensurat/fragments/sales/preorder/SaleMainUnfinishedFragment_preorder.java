@@ -16,12 +16,23 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHArrayAdapter;
 import th.co.bighead.utilities.BHFragment;
+import th.co.bighead.utilities.BHGeneral;
 import th.co.bighead.utilities.BHPagerFragment;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHUtilities;
@@ -37,6 +48,9 @@ import th.co.thiensurat.data.info.ProductStockInfo;
 import th.co.thiensurat.data.info.SalePaymentPeriodInfo;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
 import th.co.thiensurat.fragments.sales.SaleUnfinishedFragment;
+import th.co.thiensurat.retrofit.api.Service;
+
+import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 
 public class SaleMainUnfinishedFragment_preorder extends BHPagerFragment {
 
@@ -267,6 +281,8 @@ public class SaleMainUnfinishedFragment_preorder extends BHPagerFragment {
 				data.ProcessType = ProcessType.Sale;
 				data.ProductSerialNumber = contractList.get(position).ProductSerialNumber;
 
+				Log.e("RefNoRefNo",contractList.get(position).RefNo);
+				checkCompanyReceipt(contractList.get(position).RefNo);
 				BHApplication.getInstance().getPrefManager().setPreferrence("getContractReferenceNo", contractList.get(position).CONTNO);
 
 
@@ -320,4 +336,79 @@ public class SaleMainUnfinishedFragment_preorder extends BHPagerFragment {
 			
 		}).start();
 	 }
+
+
+
+	static String MODE="";
+	public static void checkCompanyReceipt(String refno) {
+		MODE=  BHGeneral.SERVICE_MODE.toString();
+
+		try {
+			Retrofit retrofit = new Retrofit.Builder()
+					.baseUrl(BASE_URL)
+					.addConverterFactory(GsonConverterFactory.create())
+					.build();
+			Service request = retrofit.create(Service.class);
+			Call call=null;
+			if(MODE.equals("UAT")){
+				call = request.checkCompanyReceipt(refno);
+
+			}
+			else {
+				call = request.checkCompanyReceipt(refno);
+
+			}
+
+			call.enqueue(new Callback() {
+				@Override
+				public void onResponse(Call call, retrofit2.Response response) {
+					Gson gson = new Gson();
+					try {
+						JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+
+						JSON_PARSE_DATA_AFTER_WEBCALL_load_data_checkCompanyReceipt(jsonObject.getJSONArray("data"));
+
+					} catch (JSONException e) {
+						e.printStackTrace();
+
+					}
+				}
+
+				@Override
+				public void onFailure(Call call, Throwable t) {
+					Log.e("data", "2");
+				}
+			});
+
+		} catch (Exception e) {
+
+		}
+	}
+
+	public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_checkCompanyReceipt(JSONArray array) {
+
+		//Log.e("length1", String.valueOf(array.length()));
+		for (int i = 0; i < array.length(); i++) {
+
+			//  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
+
+			JSONObject json = null;
+			try {
+				json = array.getJSONObject(i);
+
+				String OrganizationCode=json.getString("OrganizationCode");
+
+
+				BHApplication.getInstance().getPrefManager().setPreferrence("getOrganizationCode", OrganizationCode);
+
+				Log.e("OrganizationCode",OrganizationCode);
+
+			} catch (JSONException e) {
+
+				e.printStackTrace();
+			}
+		}
+	}
+
+
 }

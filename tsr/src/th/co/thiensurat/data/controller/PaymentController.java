@@ -303,6 +303,7 @@ public class PaymentController extends BaseController {
                 "     LEFT  JOIN SalePaymentPeriod AS ssp1 ON ssp1.SalePaymentPeriodID = cca.SalePaymentPeriodID " +
                 "WHERE p.RefNo = ? " +
                 "AND p.OrganizationCode = ? " +
+
                 //"AND  (spp.PaymentPeriodNumber <= ssp1.PaymentPeriodNumber OR ssp1.PaymentPeriodNumber IS NULL) " +
                 //"ORDER BY spp.PaymentPeriodNumber,p.PayDate  ASC";
                 "ORDER BY p.PayDate ASC, spp.PaymentPeriodNumber ASC";

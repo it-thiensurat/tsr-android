@@ -50,6 +50,41 @@ public class ContractController extends BaseController {
         return ret;
     }
 
+    public ContractInfo getContractByRefNo_tsrl(String organizationCode, String refNO) {
+        ContractInfo ret = null;
+        String sql =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT c.*"
+                " SELECT c.[RefNo],c.[CONTNO],c.[CustomerID],c.[OrganizationCode],c.[STATUS],c.[StatusCode],c.[SALES],c.[TotalPrice],c.[EFFDATE],c.[HasTradeIn]"
+                        + "     ,c.[TradeInProductCode],c.[TradeInBrandCode],c.[TradeInProductModel],c.[TradeInDiscount]"
+                        + "     ,c.[PreSaleSaleCode],c.[PreSaleEmployeeCode],c.[PreSaleTeamCode],c.[SaleCode],c.[SaleEmployeeCode],c.[SaleTeamCode] "
+                        + "     ,c.[InstallerSaleCode],c.[InstallerEmployeeCode],c.[InstallerTeamCode],c.[InstallDate],ifnull(c.[ProductSerialNumber],'') AS ProductSerialNumber,c.[ProductID]"
+                        + "     ,c.[SaleEmployeeLevelPath],c.[MODE],c.[FortnightID],c.[ProblemID],c.[svcontno],c.[isActive],c.[MODEL]"
+                        + "     ,c.[fromrefno],c.[fromcontno],c.[todate],c.[tocontno],c.[torefno],c.[CreateDate],c.[CreateBy],c.[LastUpdateDate],c.[LastUpdateBy],c.[SyncedDate]"
+                        + "     ,c.[PreSaleEmployeeLevelPath],c.[InstallerEmployeeLevelPath],c.[PreSaleEmployeeName],c.[EmployeeHistoryID],c.[SaleSubTeamCode],c.[TradeInReturnFlag], c.[IsReadyForSaleAudit], c.[ContractReferenceNo], c.[IsMigrate]"
+                        /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
+                        + "     , dc.CustomerType, dc.PrefixName || ifnull(dc.CustomerName,'') as CustomerFullName, ifnull(dc.CompanyName, '') as CompanyName, dc.IDCard "
+                        + "     , p.ProductCode, p.ProductName, p.ProductModel "
+                        + "     , e.EmpID, e.FirstName || ' ' || ifnull (e.LastName,'') as SaleEmployeeName, t.Name as SaleTeamName, ed.TeamCode "
+                        + "     , upperemp.EmpID AS upperEmployeeID, IFNULL(upperemp.FirstName,'') || ' ' || IFNULL(upperemp.LastName,'') AS upperEmployeeName"
+                        + "     , cs.StatusName,  ifnull(spp.PaymentAmount,0) as PaymentAmount"
+                        + " FROM Contract AS c "
+                        + "     INNER JOIN DebtorCustomer AS dc ON (c.OrganizationCode=dc.OrganizationCode) AND (c.CustomerID=dc.CustomerID) "
+                        + "     INNER JOIN Product AS p ON (c.OrganizationCode=p.OrganizationCode) AND (c.ProductID=p.ProductID) "
+                        + "     INNER JOIN Employee AS e ON (c.OrganizationCode=e.OrganizationCode) AND (c.SaleEmployeeCode=e.EmpID) "
+                        + "     LEFT OUTER JOIN EmployeeDetailHistory AS ed ON (ed.TreeHistoryID = c.SaleEmployeeLevelPath) "
+                        + "             AND (ed.PositionCode = 'Sale') AND (ed.OrganizationCode=e.OrganizationCode) AND  (ed.EmployeeCode=e.EmpID) "
+                        + "             AND (ed.TeamCode = c.SaleTeamCode) AND (ed.SaleCode = c.SaleCode) "
+                        + "     LEFT OUTER JOIN Team AS t ON (ed.TeamCode=t.Code) "
+                        + "     LEFT OUTER JOIN Employee AS upperemp ON (ed.OrganizationCode=upperemp.OrganizationCode) AND (ed.TeamHeadCode=upperemp.EmpID) "
+                        + "     LEFT OUTER JOIN ContractStatus AS cs ON (c.StatusCode=cs.StatusCode) "
+                        + "     LEFT OUTER JOIN SalePaymentPeriod AS spp ON (c.RefNo=spp.RefNo) AND (spp.PaymentPeriodNumber='1')"
+                        + " WHERE (c.isActive='1') AND (c.OrganizationCode=?) AND (c.RefNo=?) ";
+
+        ret = executeQueryObject(sql, new String[]{organizationCode, refNO}, ContractInfo.class);
+        return ret;
+    }
+
     public ContractInfo getContractByRefNoNotCheckActive(String organizationCode, String refNO) {
         ContractInfo ret = null;
         String sql =
@@ -77,6 +112,38 @@ public class ContractController extends BaseController {
                 + "     ContractStatus as cs on c.StatusCode=cs.StatusCode left outer join"
                 + "     SalePaymentPeriod as spp on c.RefNo=spp.RefNo and spp.PaymentPeriodNumber='1'"
                 + " WHERE (c.OrganizationCode=?) AND (c.RefNo=?)";
+
+        ret = executeQueryObject(sql, new String[]{organizationCode, refNO}, ContractInfo.class);
+        return ret;
+    }
+
+    public ContractInfo getContractByRefNoNotCheckActive_tsrl(String organizationCode, String refNO) {
+        ContractInfo ret = null;
+        String sql =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT c.*"
+                " SELECT c.[RefNo],c.[CONTNO],c.[CustomerID],c.[OrganizationCode],c.[STATUS],c.[StatusCode],c.[SALES],c.[TotalPrice],c.[EFFDATE],c.[HasTradeIn]"
+                        + "     ,c.[TradeInProductCode],c.[TradeInBrandCode],c.[TradeInProductModel],c.[TradeInDiscount]"
+                        + "     ,c.[PreSaleSaleCode],c.[PreSaleEmployeeCode],c.[PreSaleTeamCode],c.[SaleCode],c.[SaleEmployeeCode],c.[SaleTeamCode] "
+                        + "     ,c.[InstallerSaleCode],c.[InstallerEmployeeCode],c.[InstallerTeamCode],c.[InstallDate],ifnull(c.[ProductSerialNumber],'') AS ProductSerialNumber,c.[ProductID]"
+                        + "     ,c.[SaleEmployeeLevelPath],c.[MODE],c.[FortnightID],c.[ProblemID],c.[svcontno],c.[isActive],c.[MODEL]"
+                        + "     ,c.[fromrefno],c.[fromcontno],c.[todate],c.[tocontno],c.[torefno],c.[CreateDate],c.[CreateBy],c.[LastUpdateDate],c.[LastUpdateBy],c.[SyncedDate]"
+                        + "     ,c.[PreSaleEmployeeLevelPath],c.[InstallerEmployeeLevelPath],c.[PreSaleEmployeeName],c.[EmployeeHistoryID],c.[SaleSubTeamCode],c.[TradeInReturnFlag], c.[IsReadyForSaleAudit], c.[ContractReferenceNo], c.[IsMigrate]"
+                        /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
+
+                        + "     , dc.CustomerType, dc.PrefixName || ifnull(dc.CustomerName,'') as CustomerFullName, ifnull(dc.CompanyName, '') as CompanyName, dc.IDCard, p.ProductCode, p.ProductName, p.ProductModel, "
+                        + "     e.EmpID, e.FirstName || ' ' || ifnull (e.LastName,'') as SaleEmployeeName, t.Name as SaleTeamName, ed.TeamCode, "
+                        + "     upperemp.EmpID as upperEmployeeID, upperemp.FirstName || ' ' || upperemp.LastName as upperEmployeeName, cs.StatusName,  ifnull(spp.PaymentAmount,0) as PaymentAmount"
+                        + " FROM Contract as c inner join DebtorCustomer as dc on c.OrganizationCode=dc.OrganizationCode and c.CustomerID=dc.CustomerID inner join"
+                        + "     Product as p on c.OrganizationCode=p.OrganizationCode and c.ProductID=p.ProductID inner join"
+                        + "     Employee as e on c.OrganizationCode=e.OrganizationCode and c.SaleEmployeeCode=e.EmpID left outer join"
+                        + "     EmployeeDetailHistory as ed on ed.PositionCode = 'Sale' AND ed.TreeHistoryID = c.SaleEmployeeLevelPath and ed.OrganizationCode=e.OrganizationCode and  ed.EmployeeCode=e.EmpID " +
+                        "           AND ed.TeamCode = c.SaleTeamCode AND ed.SaleCode = c.SaleCode left outer join"
+                        + "     Team as t on ed.TeamCode=t.Code left outer join "
+                        + "     Employee as upperemp on ed.OrganizationCode=upperemp.OrganizationCode and ed.TeamHeadCode=upperemp.EmpID left outer join "
+                        + "     ContractStatus as cs on c.StatusCode=cs.StatusCode left outer join"
+                        + "     SalePaymentPeriod as spp on c.RefNo=spp.RefNo and spp.PaymentPeriodNumber='1'"
+                        + " WHERE (c.OrganizationCode=?) AND (c.RefNo=?)";
 
         ret = executeQueryObject(sql, new String[]{organizationCode, refNO}, ContractInfo.class);
         return ret;
@@ -139,6 +206,36 @@ public class ContractController extends BaseController {
         return ret;
     }
 
+    public ContractInfo getContractByRefNoForSendDocuments_tsrl(String organizationCode, String refNO) {
+        ContractInfo ret = null;
+        String sql =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT c.*"
+                " SELECT c.[RefNo],c.[CONTNO],c.[CustomerID],c.[OrganizationCode],c.[STATUS],c.[StatusCode],c.[SALES],c.[TotalPrice],c.[EFFDATE],c.[HasTradeIn]"
+                        + "     ,c.[TradeInProductCode],c.[TradeInBrandCode],c.[TradeInProductModel],c.[TradeInDiscount]"
+                        + "     ,c.[PreSaleSaleCode],c.[PreSaleEmployeeCode],c.[PreSaleTeamCode],c.[SaleCode],c.[SaleEmployeeCode],c.[SaleTeamCode] "
+                        + "     ,c.[InstallerSaleCode],c.[InstallerEmployeeCode],c.[InstallerTeamCode],c.[InstallDate],ifnull(c.[ProductSerialNumber],'') AS ProductSerialNumber,c.[ProductID]"
+                        + "     ,c.[SaleEmployeeLevelPath],c.[MODE],c.[FortnightID],c.[ProblemID],c.[svcontno],c.[isActive],c.[MODEL]"
+                        + "     ,c.[fromrefno],c.[fromcontno],c.[todate],c.[tocontno],c.[torefno],c.[CreateDate],c.[CreateBy],c.[LastUpdateDate],c.[LastUpdateBy],c.[SyncedDate]"
+                        + "     ,c.[PreSaleEmployeeLevelPath],c.[InstallerEmployeeLevelPath],c.[PreSaleEmployeeName],c.[EmployeeHistoryID],c.[SaleSubTeamCode],c.[TradeInReturnFlag], c.[IsReadyForSaleAudit], c.[ContractReferenceNo], c.[IsMigrate]"
+                        /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
+
+                        + "     , dc.CustomerType, dc.PrefixName || ifnull(dc.CustomerName,'') as CustomerFullName, ifnull(dc.CompanyName, '') as CompanyName, dc.IDCard, p.ProductCode, p.ProductName, p.ProductModel, "
+                        + "     e.EmpID, e.FirstName || ' ' || ifnull (e.LastName,'') as SaleEmployeeName, t.Name as SaleTeamName, ed.TeamCode, "
+                        + "     upperemp.EmpID as upperEmployeeID, upperemp.FirstName || ' ' || upperemp.LastName as upperEmployeeName, cs.StatusName,  ifnull(spp.PaymentAmount,0) as PaymentAmount"
+                        + " FROM Contract as c inner join DebtorCustomer as dc on c.OrganizationCode=dc.OrganizationCode and c.CustomerID=dc.CustomerID inner join"
+                        + "     Product as p on c.OrganizationCode=p.OrganizationCode and c.ProductID=p.ProductID inner join"
+                        + "     Employee as e on c.OrganizationCode=e.OrganizationCode and c.SaleEmployeeCode=e.EmpID left outer join"
+                        + "     EmployeeDetailHistory as ed on ed.PositionCode = 'Sale' AND ed.TreeHistoryID = c.SaleEmployeeLevelPath and ed.OrganizationCode=e.OrganizationCode and  ed.EmployeeCode=e.EmpID AND ed.TeamCode = c.SaleTeamCode AND ed.SaleCode = c.SaleCode left outer join"
+                        + "     Team as t on ed.TeamCode=t.Code left outer join "
+                        + "     Employee as upperemp on ed.OrganizationCode=upperemp.OrganizationCode and ed.TeamHeadCode=upperemp.EmpID left outer join "
+                        + "     ContractStatus as cs on c.StatusCode=cs.StatusCode left outer join"
+                        + "     SalePaymentPeriod as spp on c.RefNo=spp.RefNo and spp.PaymentPeriodNumber='1'"
+                        + " WHERE (c.OrganizationCode = ?) AND (c.RefNo = ?)";
+
+        ret = executeQueryObject(sql, new String[]{organizationCode, refNO}, ContractInfo.class);
+        return ret;
+    }
     public ContractInfo getContractByRefNoForPrintChangeContract(String organizationCode, String refNO) {
         ContractInfo ret = null;
         String sql =
@@ -356,7 +453,7 @@ public class ContractController extends BaseController {
                 + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
                 + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
                 + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
-                + " WHERE     (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')  AND " +
+                + " WHERE (Cont.ProductSerialNumber != '-')  AND (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')  AND " +
                         "(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(Cont.ProductSerialNumber, '0', ''),'1', ''),'2', ''),'3', ''),'4', ''),'5', ''),'6', ''),'7', ''),'8', ''),'9', ''))  " +
                         " NOT IN" +
                         DD
@@ -388,7 +485,7 @@ public class ContractController extends BaseController {
                         + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
                         + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
                         + " WHERE   (Cont.ProductSerialNumber = '-') AND  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
-                        + " ORDER BY Cont.CONTNO ASC";
+                        + " ORDER BY Cont.CONTNO DESC";
 
         return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName}, ContractInfo.class);
     }
@@ -600,7 +697,7 @@ public class ContractController extends BaseController {
                         + "                         Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN"
                         + "                         Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN"
                         + "                         ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode"
-                        + " WHERE     (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
+                        + " WHERE   (Cont.ProductSerialNumber != '-')  AND  (Cont.isActive = 1) AND (Cont.OrganizationCode = ?) AND (Cont.SaleTeamCode = ?) AND (ContST.StatusName = ?) AND (Cont.Status != 'T')"
                         //+ "            AND (Cont.CONTNO LIKE  ? OR Cont.ProductSerialNumber LIKE  ? OR CustomerFullName2 LIKE  ?)"
                         + "            AND (Cont.CONTNO LIKE  ? OR CustomerFullName2 LIKE  ?)"
                         + " ORDER BY Cont.CONTNO ASC";

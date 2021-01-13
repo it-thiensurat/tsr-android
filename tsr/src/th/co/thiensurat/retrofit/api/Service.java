@@ -124,6 +124,13 @@ public interface Service {
     Call<Object> get_ProductSerialNumber_by_preorder_setting_uat();
 
 
+
+
+    @GET("/api/api-checkCompanyReceipt-UAT.php")
+    Call<Object> checkCompanyReceipt(@Query("refno") String refno);
+
+
+
     /***** uat by moo*/
 
 
@@ -136,7 +143,7 @@ public interface Service {
     /***** production  */
 
     @GET("/api/api-productListBooking.php")
-    Call<Object> product(@Query("Empid") String Empid);
+    Call<Object> product(@Query("Empid") String Empid,@Query("ProductCat") String ProductCat);
 
 
     @GET("/api/api-booking-contract.php")

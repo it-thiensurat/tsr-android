@@ -184,7 +184,7 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
     @InjectView ImageView imgSignature;
 
     @InjectView
-    private TextView txt_contno,txt_date_contno,txt_name1,txt_name2;
+    private TextView txt_contno,txt_date_contno,txt_name1,txt_name2,txt_d1;
 
 
     public static int sizee=0;
@@ -266,9 +266,90 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
                 // TODO Auto-generated method stub
                 Log.e("Process", ProcessType.SendDocument.toString() + ": " + BHPreference.ProcessType());
                 if (BHPreference.ProcessType().equals(ProcessType.SendDocument.toString())) {
+
+
+
                     contract = getContractByRefNoForSendDocuments(BHPreference.organizationCode(), BHPreference.RefNo());
+
+
+                    try {
+                        String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
+
+                        if (getOrganizationCode.equals("1")) {
+
+                            contract = getContractByRefNoForSendDocuments(BHPreference.organizationCode(), BHPreference.RefNo());
+
+                            // tsr
+                        } else {
+                            if (contract.MODE == 1) {
+
+                                contract = getContractByRefNoForSendDocuments(BHPreference.organizationCode(), BHPreference.RefNo());
+
+                                // alpine
+                            } else {
+
+
+                                contract = getContractByRefNoForSendDocuments_tsrl(BHPreference.organizationCode(), BHPreference.RefNo());
+
+                                // tsrl
+                            }
+                        }
+
+                    }
+                    catch (Exception ec){
+
+
+                    }
+
+
+
+
+
+
+
+
+
+
                 } else {
                     contract = new ContractController().getContractByRefNoNotCheckActive(BHPreference.organizationCode(), BHPreference.RefNo());
+
+
+
+
+
+
+
+                    try {
+                        String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
+
+                        if (getOrganizationCode.equals("1")) {
+
+                            contract = new ContractController().getContractByRefNoNotCheckActive(BHPreference.organizationCode(), BHPreference.RefNo());
+
+                            // tsr
+                        } else {
+                            if (contract.MODE == 1) {
+
+                                contract = new ContractController().getContractByRefNoNotCheckActive(BHPreference.organizationCode(), BHPreference.RefNo());
+
+                                // alpine
+                            } else {
+
+
+                                contract = new ContractController().getContractByRefNoNotCheckActive_tsrl(BHPreference.organizationCode(), BHPreference.RefNo());
+
+                                // tsrl
+                            }
+                        }
+
+                    }
+                    catch (Exception ec){
+
+
+                    }
+
+
+
                 }
 
                 // YIM Change TSR_COMMITTEE_NAME
@@ -280,22 +361,9 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
                 }
                 addressIDCard = getAddress(BHPreference.RefNo(), AddressType.AddressIDCard);
                 addressInstall = getAddress(BHPreference.RefNo(), AddressType.AddressInstall);
-                // packagePeriodDetailList = getPackagePeriodDetail(
-                // contract.OrganizationCode, contract.MODEL);
-                //maxPackagePeriod = getMaxPackagePeriodDetailByModel(BHPreference.organizationCode(), contract.MODEL);
-                //paymentPeriodOutput = getSalePaymentPeriodByRefNo(BHPreference.RefNo());
-
-
-             //   new PaymentController().deletePaymentByRefNo(BHPreference.RefNo());
-                //select_page=1;
-                //new SynchronizeMainFragment().startSynchronize();
-
-                // TSRController.importContractFromServer(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.RefNo());
 
                 paymentPeriodOutput = new SalePaymentPeriodController().getSalePaymentPeriodByRefNoORDERBYPaymentPeriodNumber(BHPreference.RefNo());
-               // paymentController.deletePaymentByRefNo(BHPreference.RefNo());
-                // sppList = getSalePaymentPeriodByRefNo(BHPreference
-                // .RefNo());
+
             }
 
             @Override
@@ -358,22 +426,6 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
                                 + getResources().getString(R.string.change_contract_customer_fullname_cash);
                         lblCustomerFullName.setText("ผู้จอง");
                     }
-                    /*** [START] :: Fixed - [BHPROJ-0024-3080] :: [Android-รายละเอียดสัญญา] แก้ไขให้แสดงค่า 'เลขที่อ้างอิง' โดยเปลี่ยนให้ดึงมาจากค่าข้อมูลใน [Contract].ContractReferenceNo แทน ***/
-
-                    /*manual = TSRController.getManualDocumentContractByDocumentNumber(contract.RefNo);
-                    // int ManualRunningNo_Integer = manual.ManualRunningNo ;
-                    if (manual != null) {
-                        String ManualDocumentBookRunningNo = String.format("%4d", manual.ManualRunningNo).replace(' ', '0');
-                        txtRef.setText(ManualDocumentBookRunningNo);
-                    } else {
-                        txtRef.setText("");
-                    }*/
-
-
-                    //li_xx.setVisibility(View.GONE);
-
-
-                    //txtRef.setText(contract.ContractReferenceNo != null ? contract.ContractReferenceNo : "");
 
                     contract.ContractReferenceNo=BHApplication.getInstance().getPrefManager().getPreferrence("getContractReferenceNo");
                     txtRef.setText(BHApplication.getInstance().getPrefManager().getPreferrence("getContractReferenceNo"));
@@ -409,11 +461,6 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
                     txtTotalPrice.setText(BHUtilities.numericFormat(contract.TotalPrice));
                     textViewModel.setText(contract.MODEL);
 
-//                    get_data_payment_onlines.clear();
-
-//                    SQLiteDataBaseBuild();
-//                    SQLiteTableBuild();
-//                    sqLiteDatabase.execSQL("DELETE FROM " + SQLiteHelper.TABLE_NAME + "");
 
 
                     load_data(BHUtilities.trim(contract.CONTNO));
@@ -450,59 +497,9 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
 
 
 
-/*                        linearLayoutCredit.setVisibility(View.VISIBLE);
-                        linearLayoutCash.setVisibility(View.GONE);
-
-
-
-                        txtTSRCommittee.setText(BHUtilities.trim("(" + TSR_COMMITTEE_NAME + ")"));
-                        txtCustomerName.setText(String.format("(%s%s)", BHUtilities.trim(contract.CustomerFullName), BHUtilities.trim(contract.CompanyName)));
-
-                        // txtCustomerName.setText(BHUtilities.trim("("
-                        // + contract.CustomerFullName + ")"));
-                        try {
-                            txtSaleLeaderName.setText(BHUtilities.trim("("
-                                    + ((contract.upperEmployeeName == null || contract.upperEmployeeName.isEmpty()) ? "" : contract.upperEmployeeName) + ")"));
-                            txtSaleTeamName.setText(BHUtilities.trim(""
-                                    + ((contract.SaleTeamName == null || contract.SaleTeamName.isEmpty()) ? "" : contract.SaleTeamName)));
-                            *//**
-                             *
-                             * Edit by Teerayut Klinsanga
-                             * 2020-03-10
-                             *
-                             *//*
-                            if (contract.SaleEmployeeName.equals(contract.upperEmployeeName)) {
-                                txtSaleEmpName.setText("(                   )");
-                                txtSaleEmpID.setText(BHUtilities.trim("รหัส "));
-                            } else {
-                                txtSaleEmpName.setText(BHUtilities.trim("(" + contract.SaleEmployeeName + ")"));
-                                txtSaleEmpID.setText(BHUtilities.trim("รหัส " + contract.SaleCode));
-                            }
-                            *//**
-                             *
-                             * End
-                             *
-                             *//*
-                        } catch (NullPointerException ex) {
-
-                        }*/
-
-
 
 
                     } else {
-                        // YIM Dummy Signature image into view
-                        /*
-                        if(BHGeneral.isOpenDepartmentSignature) {
-                            ThemalPrintController themalPrintController = new ThemalPrintController(null, null);
-                            Bitmap imgSignature = themalPrintController.GenerateSignature("");
-
-                            LinearLayout linearLayoutTSRCommittee = (LinearLayout) txtTSRCommittee.getParent();
-                            ImageView imvSignature = new ImageView(getActivity());
-                            imvSignature.setImageBitmap(imgSignature);
-                            linearLayoutTSRCommittee.addView(imvSignature, 0);
-                        }
-                        */
 
                         linearLayoutCash.setVisibility(View.VISIBLE);
                         linearLayoutCredit.setVisibility(View.GONE);
@@ -515,57 +512,10 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
 
                         txtCustomer.setText(String.format("(%s%s)", BHUtilities.trim(contract.CustomerFullName), BHUtilities.trim(contract.CompanyName)));
 
-
-
-
-
-
-
-      /*                  linearLayoutCredit.setVisibility(View.VISIBLE);
-                        linearLayoutCash.setVisibility(View.GONE);
-
-
-
-                        txtTSRCommittee.setText(BHUtilities.trim("(" + TSR_COMMITTEE_NAME + ")"));
-                        txtCustomerName.setText(String.format("(%s%s)", BHUtilities.trim(contract.CustomerFullName), BHUtilities.trim(contract.CompanyName)));
-
-                        // txtCustomerName.setText(BHUtilities.trim("("
-                        // + contract.CustomerFullName + ")"));
-                        try {
-                            txtSaleLeaderName.setText(BHUtilities.trim("("
-                                    + ((contract.upperEmployeeName == null || contract.upperEmployeeName.isEmpty()) ? "" : contract.upperEmployeeName) + ")"));
-                            txtSaleTeamName.setText(BHUtilities.trim(""
-                                    + ((contract.SaleTeamName == null || contract.SaleTeamName.isEmpty()) ? "" : contract.SaleTeamName)));
-                            *//**
-                             *
-                             * Edit by Teerayut Klinsanga
-                             * 2020-03-10
-                             *
-                             *//*
-                            if (contract.SaleEmployeeName.equals(contract.upperEmployeeName)) {
-                                txtSaleEmpName.setText("(                   )");
-                                txtSaleEmpID.setText(BHUtilities.trim("รหัส "));
-                            } else {
-                                txtSaleEmpName.setText(BHUtilities.trim("(" + contract.SaleEmployeeName + ")"));
-                                txtSaleEmpID.setText(BHUtilities.trim("รหัส " + contract.SaleCode));
-                            }
-
-                        } catch (NullPointerException ex) {
-
-                        }
-                        */
-
                     }
                     txtFirstPaymentAmount.setText(BHUtilities.numericFormat(contract.PaymentAmount - contract.TradeInDiscount));
 
 
-                    /*if (addressIDCard != null) {
-                        txtAddressIDCard.setText(BHUtilities.trim(addressIDCard.Address()));
-                    }
-
-                    if (addressInstall != null) {
-                        txtAddressInstall.setText(BHUtilities.trim(addressInstall.Address()));
-                    }*/
 
                     if( addressIDCard != null && addressInstall != null){
                         txtAddressIDCard.setText(BHUtilities.trim(addressIDCard.Address()));
@@ -606,8 +556,45 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
                     }
 
 
+
+
+
+
+
                     if (paymentPeriodOutput != null && paymentPeriodOutput.size() > 0) {
-                        txtNextPaymentAmountLabel.setText(String.format("งวดที่ 2 ถึงงวดที่ %d ต้องชำระงวดละ", contract.MODE));
+
+                        try {
+                            String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
+
+                            if (getOrganizationCode.equals("1")) {
+                                txtNextPaymentAmountLabel.setText(String.format("งวดที่ 2 ถึงงวดที่ %d ต้องชำระงวดละ", contract.MODE));
+                                txt_d1.setText("งวดที่ 1 ที่ต้องชำระ");
+                                // tsr
+                            } else {
+                                if (contract.MODE == 1) {
+
+
+                                    // alpine
+                                } else {
+
+                                    txtNextPaymentAmountLabel.setText(String.format("งวดที่ 1 ถึงงวดที่ %d ต้องชำระงวดละ", contract.MODE-1));
+                                    txt_d1.setText("มัดจำที่ต้องชำระ");
+                                    // tsrl
+                                }
+                            }
+
+                        }
+                        catch (Exception ec){
+
+
+                        }
+
+
+
+
+
+
+
 
                         for (SalePaymentPeriodInfo item : paymentPeriodOutput) {
                             txtNextPaymentAmountValue.setText(BHUtilities.numericFormat(item.NetAmount));
@@ -1085,20 +1072,9 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
                     paymentAmount = (strPaymentAmount == null || strPaymentAmount.isEmpty()) ? 0 : Float.parseFloat(strPaymentAmount);
                 }
 
-                /*** [START] :: Fixed - [BHPROJ-0024-3080] :: [Android-รายละเอียดสัญญา] แก้ไขให้แสดงค่า 'เลขที่อ้างอิง' โดยเปลี่ยนให้ดึงมาจากค่าข้อมูลใน [Contract].ContractReferenceNo แทน ***/
 
-                /*if (manual != null) {
 
-                    SaleFirstPaymentChoiceFragment.Data paymentData = new SaleFirstPaymentChoiceFragment.Data(BHPreference.RefNo(), ProcessType.Sale, paymentAmount);
-                    BHPreference.setProcessType(ProcessType.Sale.toString());
-                    SaleFirstPaymentChoiceFragment fragment = BHFragment.newInstance(SaleFirstPaymentChoiceFragment.class, paymentData);
-                    showNextView(fragment);
-                } else {
-                    String title = "กรุณาตรวจสอบข้อมูล";
-                    String message = "กรุณาบันทึกใบสัญญามือ";
-                    showNoticeDialogBox(title, message);
-                }*/
-
+                Log.e("paymentAmount", String.valueOf(paymentAmount));
                 SaleFirstPaymentChoiceFragment_preorder.Data paymentData = new SaleFirstPaymentChoiceFragment_preorder.Data(BHPreference.RefNo(), ProcessType.Sale, paymentAmount);
                 BHPreference.setProcessType(ProcessType.Sale.toString());
                 SaleFirstPaymentChoiceFragment_preorder fragment = BHFragment.newInstance(SaleFirstPaymentChoiceFragment_preorder.class, paymentData);

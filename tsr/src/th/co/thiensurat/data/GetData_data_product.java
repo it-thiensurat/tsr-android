@@ -9,6 +9,7 @@ public class GetData_data_product {
     String ContractReferenceNo;
     String ReceiptCode;
     String ReceiptID;
+    String OrganizationCode;
 
     public String getProductName() {
         return ProductName;
@@ -73,5 +74,13 @@ public class GetData_data_product {
 
     public void setReceiptID(String receiptID) {
         ReceiptID = receiptID;
+    }
+
+    public String getOrganizationCode() {
+        return OrganizationCode;
+    }
+
+    public void setOrganizationCode(String organizationCode) {
+        OrganizationCode = organizationCode;
     }
 }

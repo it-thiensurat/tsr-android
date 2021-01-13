@@ -83,7 +83,7 @@ public class SaleDetailCheckContractFragment_preorder extends BHFragment {
     @InjectView private TextView txtNumber3;
     @InjectView private TextView txtNumber4;
     @InjectView private TextView txtNumber5;
-    @InjectView private TextView textViewModel,txt_date_contno,txt_contno;
+    @InjectView private TextView textViewModel,txt_date_contno,txt_contno,txt_dd1;
     @InjectView
     private TextView txtAddressInstallPhoneNumber, txtAddressIDCardPhoneNumber;
     @InjectView
@@ -129,6 +129,7 @@ public class SaleDetailCheckContractFragment_preorder extends BHFragment {
         txt_contno.setText("เลขที่ใบจอง");
         txt_date_contno.setText("วันที่ทำใบจอง");
 
+
         // Not save Status Code
         // if (BHPreference.ProcessType().equals(ProcessType.Sale.toString())) {
         // saveStatusCode();
@@ -158,7 +159,47 @@ public class SaleDetailCheckContractFragment_preorder extends BHFragment {
             @Override
             protected void calling() {
                 // TODO Auto-generated method stub
+
+
+
                 contract = getContractByRefNo(BHPreference.organizationCode(), BHPreference.RefNo());
+                try {
+                    String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
+
+                    if (getOrganizationCode.equals("1")) {
+
+                        contract = getContractByRefNo(BHPreference.organizationCode(), BHPreference.RefNo());
+
+                        // tsr
+                    } else {
+                        if (contract.MODE == 1) {
+
+                            contract = getContractByRefNo(BHPreference.organizationCode(), BHPreference.RefNo());
+
+                            // alpine
+                        } else {
+
+
+                            contract = getContractByRefNo_tsrl(BHPreference.organizationCode(), BHPreference.RefNo());
+
+                            // tsrl
+                        }
+                    }
+
+                }
+                catch (Exception ec){
+
+
+                }
+
+
+
+
+
+
+
+
+
 
                 // debtorCustomer = getDebtorCustomerInfo(contract.CustomerID);
                 addressIDCard = getAddress(BHPreference.RefNo(), AddressType.AddressIDCard);
@@ -256,22 +297,57 @@ public class SaleDetailCheckContractFragment_preorder extends BHFragment {
                     textViewProduct.setText(productInfo.ProductName);
                 }
 
-                // No use
-                // if (packagePeriodOutput != null) {
-                // packagePreiodDetailInfo = packagePeriodOutput;
-                // for (PackagePeriodDetailInfo item : packagePreiodDetailInfo)
-                // {
-                // textViewInstallment.setText("งวดที่ 2 ถึงงวดที่ " +
-                // item.PaymentPeriodNumber + " ต้องชำระ");
-                // MODE = item.PaymentPeriodNumber;
-                // }
-                // if (MODE == 1) {
-                // textViewInstallment.setText("");
-                // textViewNextPaymentCurrency.setText("");
-                // }
-                // }
+
                 if (maxPackagePeriod != null) {
-                    textViewInstallment.setText(String.format("งวดที่ 2 ถึงงวดที่ %d ต้องชำระงวดละ", maxPackagePeriod.PaymentPeriodNumber));
+
+
+
+
+                    try {
+                        String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
+
+                        if (getOrganizationCode.equals("1")) {
+
+                            txt_dd1.setText("งวดที่ 1 ที่ต้องชำระ");
+                            textViewInstallment.setText(String.format("งวดที่ 2 ถึงงวดที่ %d ต้องชำระงวดละ", maxPackagePeriod.PaymentPeriodNumber));
+
+
+
+                            // tsr
+                        } else {
+                            if (maxPackagePeriod.PaymentPeriodNumber == 1) {
+
+
+                                // alpine
+                            } else {
+                                txt_dd1.setText("มัดจำที่ต้องชำระ");
+
+                                textViewInstallment.setText(String.format("งวดที่ 1 ถึงงวดที่ %d ต้องชำระงวดละ", maxPackagePeriod.PaymentPeriodNumber-1));
+
+
+
+
+                                // tsrl
+                            }
+                        }
+
+                    }
+                    catch (Exception ec){
+
+
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
 
                     for (SalePaymentPeriodInfo item : paymentPeriodOutput) {
                         textViewPriceInstallment.setText(BHUtilities.numericFormat(item.PaymentAmount));
@@ -285,20 +361,7 @@ public class SaleDetailCheckContractFragment_preorder extends BHFragment {
                 }
 
 
-                // No use
-                // if (paymentPeriodOutput != null) {
-                // textViewPriceFirstInstallment.setText(BHUtilities.numericFormat(paymentPeriodOutput.get(0).NetAmount));//
-                // SaleDetailCheckFragment.PAYMENT_FIRST));
-                // paymentPeriodOutput.remove(0);
-                // if (paymentPeriodOutput.size() > 1) {
-                // float totalNextPeriodPayment = 0;
-                // for (SalePaymentPeriodInfo pay : paymentPeriodOutput) {
-                // totalNextPeriodPayment += pay.NetAmount;
-                // }
-                // textViewPriceInstallment.setText(BHUtilities.numericFormat(totalNextPeriodPayment));
-                // // SaleDetailCheckFragment.PAYMENT_SECOND));
-                // }
-                // }
+
             }
         }).start();
     }
@@ -380,7 +443,41 @@ public class SaleDetailCheckContractFragment_preorder extends BHFragment {
             protected void calling() {
                 // TODO Auto-generated method stub
                 if(contract == null){
+
                     contract = getContractByRefNo(BHPreference.organizationCode(), BHPreference.RefNo());
+
+
+                    try {
+                        String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
+
+                        if (getOrganizationCode.equals("1")) {
+
+                            contract = getContractByRefNo(BHPreference.organizationCode(), BHPreference.RefNo());
+
+                            // tsr
+                        } else {
+                            if (contract.MODE == 1) {
+
+                                contract = getContractByRefNo(BHPreference.organizationCode(), BHPreference.RefNo());
+
+                                // alpine
+                            } else {
+
+
+                                contract = getContractByRefNo_tsrl(BHPreference.organizationCode(), BHPreference.RefNo());
+
+                                // tsrl
+                            }
+                        }
+
+                    }
+                    catch (Exception ec){
+
+
+                    }
+
+
+
                 }
                 if(contract != null){
 

@@ -185,7 +185,7 @@ public class SaleMainUnfinishedFragment extends BHPagerFragment {
 						if (Integer.parseInt(info.StatusCode) >= 7) {
 							vh.imageDelete.setVisibility(View.GONE);
 						} else {
-							vh.imageDelete.setVisibility(View.VISIBLE);
+							vh.imageDelete.setVisibility(View.GONE);
 						}
 					}
 					vh.imageDelete.setOnClickListener(new OnClickListener() {

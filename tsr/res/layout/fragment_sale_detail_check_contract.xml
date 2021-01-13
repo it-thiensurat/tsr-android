@@ -469,6 +469,7 @@
                 android:layout_marginTop="@dimen/change_product_detail_top" >
 
                 <TextView
+                    android:id="@+id/txt_dd1"
                     style="@style/TextView.Label.bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

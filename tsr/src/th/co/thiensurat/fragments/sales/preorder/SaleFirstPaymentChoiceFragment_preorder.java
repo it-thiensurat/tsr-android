@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHParcelable;
 import th.co.bighead.utilities.BHPreference;
@@ -556,106 +558,7 @@ public class SaleFirstPaymentChoiceFragment_preorder extends BHFragment {
                 protected void after() {
                 }
             }.start();
-//            if (paymentType.equals("Cash")) {
-//                float paymentAmount = Float.valueOf(editTextPrice.getText().toString().replace(",", ""));
-//                String typeOfLimit = LimitController.LimitType.Moneyonhand.toString();
-//                if (BHPreference.sourceSystem().contains(EmployeeController.SourceSystem.Credit.toString())) {
-//                    typeOfLimit = LimitController.LimitType.MoneyonhandCredit.toString();
-//                }
-//                LimitInfo limitInfo = new LimitController().getLimitByLimitTypeAndEmployee(typeOfLimit, BHPreference.employeeID());
-//                PaymentInfo paymentInfo = new PaymentController().getMoneyOnHand(BHPreference.organizationCode(), paymentType, BHPreference.teamCode(), BHPreference.employeeID());
-//                if (((paymentInfo != null ? paymentInfo.MoneyOnHand : 0) + paymentAmount) > (limitInfo != null ? limitInfo.LimitMax : 0)) {
-//                    String title = "คำเตือน";
-//                    String msg = "วงเงินของคุณเกินยอดที่กำหนด กรุณาติดต่อเจ้าหน้าที่";
-//                    showNoticeDialogBox(title, msg);
-//                    return;
-//                }
-//            }
-//            SaleConfirmBeforeReceiptFragment.Data cbr = new SaleConfirmBeforeReceiptFragment.Data();
-//
-//            cbr.contract = data.contract;
-//            cbr.refNo = data.refNo;
-//            cbr.processType = data.processType;
-//            cbr.paymentAmount = data.paymentAmount;
-//            cbr.bank = data.bank;
-//            cbr.trip = data.trip;
-//            cbr.paymentType = paymentType;
-//            cbr.payPartial = payPartial;
-//            cbr.isPostPone = isPostPone;
-//
-//            float PartlyPaidPrice = Float.valueOf(editTextPrice.getText().toString().replace(",", ""));
-//            cbr.PartlyPaidPrice = PartlyPaidPrice;
-//
-//
-//            /*** [START] Fixed - [BHPROJ-0026-750] [Android-ชำระเงิน] หากชำระเงินบางส่วน ให้สามารถนัดชำระส่วนที่เหลือได้เลย ***/
-//            if (checkBoxPartlyPaid.isChecked() && !editTextAppointmentsForPartlyPaid.getText().toString().equals("")) {
-//                float number = editTextPrice.getText().toString().equals("") ? 0f : Float.valueOf(editTextPrice.getText().toString().replace(",", ""));
-//                if (number < data.contract.PAYAMT) {
-//                    String Date = editTextAppointmentsForPartlyPaid.getText().toString();
-//
-//                    String strDay = Date.split("/")[0];
-//                    String strMonth = Date.split("/")[1];
-//                    String strYear = Date.split("/")[2];
-//
-//                    Calendar cNewAppointmentDate = Calendar.getInstance(new Locale("th"));
-//                    cNewAppointmentDate.set(Calendar.YEAR, Integer.parseInt(strYear) - 543);
-//                    cNewAppointmentDate.set(Calendar.MONTH, Integer.parseInt(strMonth) - 1);
-//                    cNewAppointmentDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(strDay));
-//                    cNewAppointmentDate.set(Calendar.HOUR_OF_DAY, 0);
-//                    cNewAppointmentDate.set(Calendar.MINUTE, 0);
-//                    cNewAppointmentDate.set(Calendar.SECOND, 0);
-//                    cNewAppointmentDate.set(Calendar.MILLISECOND, 0);
-//
-//                    cbr.dateOfAppointmentsForPartlyPaid = cNewAppointmentDate.getTime();
-//
-//                } else {
-//                    cbr.dateOfAppointmentsForPartlyPaid = null;
-//                }
-//            } else {
-//                cbr.dateOfAppointmentsForPartlyPaid = null;
-//            }
-//            /*** [END] Fixed - [BHPROJ-0026-750] [Android-ชำระเงิน] หากชำระเงินบางส่วน ให้สามารถนัดชำระส่วนที่เหลือได้เลย ***/
-//            cbr.maxPaymentPeriodNumber = maxPaymentPeriodNumber;
-//
-//            if (paymentType.equals("Credit")) {
-//                cbr.creditCardNumber = editTextBankSeries.getText().toString();
-//                cbr.creditCardApproveCode = editTextAuthorizationCode.getText().toString();
-//            } else if (paymentType.equals("Cheque")) {
-//                cbr.chequeBankBranch = editTextBranch.getText().toString();
-//                cbr.chequeNumber = editTextChequeNumber.getText().toString();
-//                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-//                cbr.chequeDate = formatter.format(myCal.getTime()) + " 00:00:00";
-//            }
-//
-//            cbr.receiptCode = TSRController.getAutoGenerateDocumentID(TSRController.DocumentGenType.Receipt, BHPreference.SubTeamCode(), BHPreference.saleCode());
-//
-//            if (data.processType == ProcessType.NextPayment && data.requestNextPaymentID != null) {
-//                cbr.requestNextPaymentID = data.requestNextPaymentID;
-//            }
-//
-//            if (checkBoxContractCloseAccount.isChecked()) {
-//                /*ContractCloseAccountInfo contractCloseAccount = new ContractCloseAccountInfo();
-//                contractCloseAccount.SalePaymentPeriodID = data.contract.MinSalePaymentPeriodID;
-//                contractCloseAccount.OutstandingAmount = data.contract.TotalOutstandingAmount;
-//                contractCloseAccount.DiscountAmount = data.contract.CloseDiscountAmount;
-//                contractCloseAccount.NetAmount = data.contract.TotalOutstandingAmount - data.contract.CloseDiscountAmount;
-//                cbr.contractCloseAccount = contractCloseAccount;*/
-//
-//                float TotalOutstandingAmount = salePaymentPeriodInfoListForContractCloseAccount.get(0).TotalOutstandingAmount;
-//                float CloseDiscountAmount = salePaymentPeriodInfoListForContractCloseAccount.get(0).CloseDiscountAmount;
-//
-//                ContractCloseAccountInfo contractCloseAccount = new ContractCloseAccountInfo();
-//                contractCloseAccount.SalePaymentPeriodID = salePaymentPeriodInfoListForContractCloseAccount.get(0).MinSalePaymentPeriodIDForContractCloseAccount;
-//                contractCloseAccount.OutstandingAmount = TotalOutstandingAmount;
-//                contractCloseAccount.DiscountAmount = CloseDiscountAmount;
-//                contractCloseAccount.NetAmount = TotalOutstandingAmount - CloseDiscountAmount;
-//                cbr.contractCloseAccount = contractCloseAccount;
-//            }
-//
-//            cbr.selectedDate = data.selectedDate;
-//
-//            SaleConfirmBeforeReceiptFragment fm = BHFragment.newInstance(SaleConfirmBeforeReceiptFragment.class, cbr);
-//            showNextView(fm);
+
         }
     }
 
@@ -669,54 +572,6 @@ public class SaleFirstPaymentChoiceFragment_preorder extends BHFragment {
                     if(checkBoxAppointments.isChecked() && maxPaymentPeriodNumber != 1){
                         /*** [START] :: Fixed - [BHPROJ-1036-8595] - [LINE@17/09/2561] ทีม NBAH04 รหัสพนักงาน A55345 ส่วนที่รับชำระบางส่วนไม่ได้ ตามรูป ***/
 
-                        /*String Date = editTextappointment.getText().toString();
-                        SalePaymentPeriodInfo periods = new SalePaymentPeriodController().getSalePaymentPeriodByRefNoAndPaymentPeriodNumber(data.refNo, maxPaymentPeriodNumber + 1);
-
-                        if (periods != null) {
-                            String strDay = Date.split("/")[0];
-                            String strMonth = Date.split("/")[1];
-                            String strYear = Date.split("/")[2];
-
-                            Calendar cPaymentAppointmentDate = Calendar.getInstance(new Locale("th"));
-                            cPaymentAppointmentDate.setTime(periods.PaymentAppointmentDate);
-                            cPaymentAppointmentDate.set(Calendar.HOUR_OF_DAY, 0);
-                            cPaymentAppointmentDate.set(Calendar.MINUTE, 0);
-                            cPaymentAppointmentDate.set(Calendar.SECOND, 0);
-                            cPaymentAppointmentDate.set(Calendar.MILLISECOND, 0);
-
-                            Calendar cNewAppointmentDate = Calendar.getInstance(new Locale("th"));
-                            cNewAppointmentDate.set(Calendar.YEAR, Integer.parseInt(strYear) - 543);
-                            cNewAppointmentDate.set(Calendar.MONTH, Integer.parseInt(strMonth) - 1);
-                            cNewAppointmentDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(strDay));
-                            cNewAppointmentDate.set(Calendar.HOUR_OF_DAY, 0);
-                            cNewAppointmentDate.set(Calendar.MINUTE, 0);
-                            cNewAppointmentDate.set(Calendar.SECOND, 0);
-                            cNewAppointmentDate.set(Calendar.MILLISECOND, 0);
-
-                            if (cNewAppointmentDate.before(cPaymentAppointmentDate)) {
-                                buttonNext();
-                            } else {
-                                Builder setupAlert;
-                                setupAlert = new Builder(activity)
-                                        .setTitle("แจ้งเตือน")
-                                        .setMessage("วันที่เลื่อนนัดเกินวันที่นัดชำระของงวดถัดไป ต้องการทำต่อหรือไม่")
-                                        .setCancelable(false)
-                                        .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int whichButton) {
-                                                buttonNext();
-                                                dialog.cancel();
-                                            }
-                                        })
-                                        .setPositiveButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int whichButton) {
-                                                dialog.cancel();
-                                            }
-                                        });
-                                setupAlert.show();
-                            }
-                        } else {
-                            buttonNext();
-                        }*/
 
                         SalePaymentPeriodInfo periods = new SalePaymentPeriodController().getSalePaymentPeriodByRefNoAndPaymentPeriodNumber(data.refNo, maxPaymentPeriodNumber + 1);
 
@@ -761,58 +616,6 @@ public class SaleFirstPaymentChoiceFragment_preorder extends BHFragment {
 
                         /*** [START] :: Fixed - [BHPROJ-1036-8595] - [LINE@17/09/2561] ทีม NBAH04 รหัสพนักงาน A55345 ส่วนที่รับชำระบางส่วนไม่ได้ ตามรูป ***/
 
-                        /*if (number < data.contract.PAYAMT && !editTextAppointmentsForPartlyPaid.getText().toString().equals("")) {
-                            String Date = editTextAppointmentsForPartlyPaid.getText().toString();
-                            SalePaymentPeriodInfo periods = new SalePaymentPeriodController().getSalePaymentPeriodByRefNoAndPaymentPeriodNumber(data.refNo, maxPaymentPeriodNumber + 1);
-
-                            if (periods != null) {
-                                String strDay = Date.split("/")[0];
-                                String strMonth = Date.split("/")[1];
-                                String strYear = Date.split("/")[2];
-
-                                Calendar cPaymentAppointmentDate = Calendar.getInstance(new Locale("th"));
-                                cPaymentAppointmentDate.setTime(periods.PaymentAppointmentDate);
-                                cPaymentAppointmentDate.set(Calendar.HOUR_OF_DAY, 0);
-                                cPaymentAppointmentDate.set(Calendar.MINUTE, 0);
-                                cPaymentAppointmentDate.set(Calendar.SECOND, 0);
-                                cPaymentAppointmentDate.set(Calendar.MILLISECOND, 0);
-
-                                Calendar cNewAppointmentDate = Calendar.getInstance(new Locale("th"));
-                                cNewAppointmentDate.set(Calendar.YEAR, Integer.parseInt(strYear) - 543);
-                                cNewAppointmentDate.set(Calendar.MONTH, Integer.parseInt(strMonth) - 1);
-                                cNewAppointmentDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(strDay));
-                                cNewAppointmentDate.set(Calendar.HOUR_OF_DAY, 0);
-                                cNewAppointmentDate.set(Calendar.MINUTE, 0);
-                                cNewAppointmentDate.set(Calendar.SECOND, 0);
-                                cNewAppointmentDate.set(Calendar.MILLISECOND, 0);
-
-                                if (cNewAppointmentDate.before(cPaymentAppointmentDate)) {
-                                    buttonNext();
-                                } else {
-                                    Builder setupAlert;
-                                    setupAlert = new Builder(activity)
-                                            .setTitle("แจ้งเตือน")
-                                            .setMessage("วันที่เลื่อนนัดชำระบางส่วนเกินวันที่นัดชำระของงวดถัดไป ต้องการทำต่อหรือไม่")
-                                            .setCancelable(false)
-                                            .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int whichButton) {
-                                                    buttonNext();
-                                                    dialog.cancel();
-                                                }
-                                            })
-                                            .setPositiveButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int whichButton) {
-                                                    dialog.cancel();
-                                                }
-                                            });
-                                    setupAlert.show();
-                                }
-                            } else {
-                                buttonNext();
-                            }
-                        } else {
-                            buttonNext();
-                        }*/
 
                         if (number < data.contract.PAYAMT && calendarAppointmentsForPartlyPaid != null) {
                             SalePaymentPeriodInfo periods = new SalePaymentPeriodController().getSalePaymentPeriodByRefNoAndPaymentPeriodNumber(data.refNo, maxPaymentPeriodNumber + 1);
@@ -1064,9 +867,12 @@ public class SaleFirstPaymentChoiceFragment_preorder extends BHFragment {
                     payPartial = false;
                     checkBoxPartlyPaid.setChecked(false);
                     editTextPrice.setText(BHUtilities.numericFormat(data.contract.PAYAMT));
+                    Log.e("ssss",data.contract.PAYAMT+"");
                 } else {
                     if (data.processType == ProcessType.Credit || data.processType == ProcessType.NextPayment) {
                         editTextPrice.setText(BHUtilities.numericFormat(defaultAmountPaid));
+                        Log.e("gggg",BHUtilities.numericFormat(defaultAmountPaid)+"");
+
                     }
                 }
 
@@ -1199,7 +1005,6 @@ public class SaleFirstPaymentChoiceFragment_preorder extends BHFragment {
                         txtTotalOutStanding.setText(BHUtilities.numericFormat(TotalOutstandingAmount));
                     }
 
-                    //editTextPrice.setText(BHUtilities.numericFormat(data.contract.TotalOutstandingAmount - data.contract.CloseDiscountAmount));
                     editTextPrice.setText(BHUtilities.numericFormat(TotalOutstandingAmount));
                     editTextPrice.setEnabled(false);
                 } else {
@@ -1239,10 +1044,52 @@ public class SaleFirstPaymentChoiceFragment_preorder extends BHFragment {
 
                 if (data.contract == null) {
                     if (data.processType == ProcessType.Credit || data.processType == ProcessType.NextPayment) {
+
                         data.contract = new ContractController().getContractByRefNoForNextPayment(BHPreference.organizationCode(), BHPreference.RefNo());
+
                     } else {
+
                         data.contract = getContractByRefNoByPaymentPeriodNumberNotTeam(BHPreference.organizationCode(), BHPreference.RefNo(), "1");
+
+
+                        try {
+                            String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
+
+                            if (getOrganizationCode.equals("1")) {
+
+                                data.contract = getContractByRefNoByPaymentPeriodNumberNotTeam(BHPreference.organizationCode(), BHPreference.RefNo(), "1");
+
+                                // tsr
+                            } else {
+                                if (data.contract.MODE == 1) {
+
+                                    data.contract = getContractByRefNoByPaymentPeriodNumberNotTeam(BHPreference.organizationCode(), BHPreference.RefNo(), "1");
+
+                                    // alpine
+                                } else {
+
+
+                                    data.contract = getContractByRefNoByPaymentPeriodNumberNotTeam(BHPreference.organizationCode(), BHPreference.RefNo(), "1");
+
+                                    // tsrl
+                                }
+                            }
+
+                        }
+                        catch (Exception ec){
+
+
+                        }
+
+
+                       // data.contract = getContractByRefNoByPaymentPeriodNumberNotTeam(BHPreference.organizationCode(), BHPreference.RefNo(), "1");
                     }
+
+
+
+
+
+
 
                     if (data.processType == ProcessType.Sale || data.processType == ProcessType.FirstPayment) {
                         data.contract.LastUpdateBy = BHPreference.employeeID();
@@ -1298,136 +1145,6 @@ public class SaleFirstPaymentChoiceFragment_preorder extends BHFragment {
                         txtTotalOutStanding.setText(BHUtilities.numericFormat(data.contract.PAYAMT));
                     }
 
-                /*if ((data.processType == ProcessType.Credit || data.processType == ProcessType.NextPayment)
-                        && (data.contract != null && data.contract.MinPaymentPeriodNumber > 0 && data.contract.HoldSalePaymentPeriod == 0)) {
-                    layoutForCredit.setVisibility(View.VISIBLE);
-                    listViewContractCloseAccount.setVisibility(View.VISIBLE);
-                    viewContractCloseAccountDiscount.setVisibility(View.VISIBLE);
-                    if (data.contract.MinPaymentPeriodNumber > 2) {
-                        if (data.contract.MinPaymentPeriodNumber == data.contract.MODE) {
-                            // print minPaymentPeriodNumber
-                            String item1 = String.format("งวดที่ %d", data.contract.MinPaymentPeriodNumber);
-                            String item2 = BHUtilities.numericFormat(data.contract.MinOutStandingAmount);
-                            listViewContractCloseAccount.addView(createItemListView(item1, item2, null));
-                        } else {
-                            if (data.contract.MinOutStandingAmount != data.contract.NextNetAmount) {
-                                //print minPaymentPeriodNumber
-                                String item1 = String.format("งวดที่ %d", data.contract.MinPaymentPeriodNumber);
-                                String item2 = BHUtilities.numericFormat(data.contract.MinOutStandingAmount);
-                                listViewContractCloseAccount.addView(createItemListView(item1, item2, null));
-                                //print nextPaymentPeriodNumber == MODE ? nextPaymentPeriodNumber : nextPaymentPeriodNumber - MODE
-                                String item3 = data.contract.NextPaymentPeriodNumber == data.contract.MODE ?
-                                        String.format("งวดที่ %d", data.contract.NextPaymentPeriodNumber) : String.format("งวดที่ %d - %d งวดละ", data.contract.NextPaymentPeriodNumber, data.contract.MODE);
-                                String item4 = BHUtilities.numericFormat(data.contract.NextNetAmount);
-                                listViewContractCloseAccount.addView(createItemListView(item3, item4, null));
-                            } else {
-                                // print minPaymentPeriodNumber - MODE
-                                String item1 = String.format("งวดที่ %d - %d งวดละ", data.contract.MinPaymentPeriodNumber, data.contract.MODE);
-                                String item2 = BHUtilities.numericFormat(data.contract.MinOutStandingAmount);
-                                listViewContractCloseAccount.addView(createItemListView(item1, item2, null));
-                            }
-                        }
-                    } else if (data.contract.MinPaymentPeriodNumber == 2) {
-                        if (data.contract.MODE == 2) {
-                            // print 2
-                            String item1 = String.format("งวดที่ %d ", data.contract.MinPaymentPeriodNumber);
-                            String item2 = BHUtilities.numericFormat(data.contract.MinOutStandingAmount);
-                            listViewContractCloseAccount.addView(createItemListView(item1, item2, null));
-                        } else if (data.contract.MODE > 2) {
-                            if (data.contract.MinOutStandingAmount != data.contract.ThirdNetAmount) {
-                                // print 2
-                                String item1 = String.format("งวดที่ %d ", data.contract.MinPaymentPeriodNumber);
-                                String item2 = BHUtilities.numericFormat(data.contract.MinOutStandingAmount);
-                                listViewContractCloseAccount.addView(createItemListView(item1, item2, null));
-                                // print MODE == 3 ? 3 : 3 - MODE
-                                String item3 = data.contract.NextPaymentPeriodNumber == data.contract.MODE ?
-                                        String.format("งวดที่ %d", data.contract.NextPaymentPeriodNumber) : String.format("งวดที่ %d - %d งวดละ", data.contract.NextPaymentPeriodNumber, data.contract.MODE);
-                                String item4 = BHUtilities.numericFormat(data.contract.NextNetAmount);
-                                listViewContractCloseAccount.addView(createItemListView(item3, item4, null));
-                            } else {
-                                // print 2 - MODE
-                                String item1 = String.format("งวดที่ %d - %d งวดละ", data.contract.MinPaymentPeriodNumber, data.contract.MODE);
-                                String item2 = BHUtilities.numericFormat(data.contract.MinOutStandingAmount);
-                                listViewContractCloseAccount.addView(createItemListView(item1, item2, null));
-                            }
-                        }
-                    } else if (data.contract.MinPaymentPeriodNumber == 1) {
-                        if (data.contract.MODE == 1) {
-                            // print 1
-                            String item1 = String.format("งวดที่ %d ", data.contract.MinPaymentPeriodNumber);
-                            String item2 = BHUtilities.numericFormat(data.contract.MinOutStandingAmount);
-                            listViewContractCloseAccount.addView(createItemListView(item1, item2, null));
-                        } else if (data.contract.MODE == 2) {
-                            if (data.contract.MinOutStandingAmount != data.contract.SecondNetAmount) {
-                                // print 1
-                                String item1 = String.format("งวดที่ %d ", data.contract.MinPaymentPeriodNumber);
-                                String item2 = BHUtilities.numericFormat(data.contract.MinOutStandingAmount);
-                                listViewContractCloseAccount.addView(createItemListView(item1, item2, null));
-                                // print 2
-                                String item3 = String.format("งวดที่ %d ", data.contract.NextPaymentPeriodNumber);
-                                String item4 = BHUtilities.numericFormat(data.contract.NextNetAmount);
-                                listViewContractCloseAccount.addView(createItemListView(item3, item4, null));
-                            } else {
-                                // print 1 - 2
-                                String item1 = String.format("งวดที่ %d - %d งวดละ", data.contract.MinPaymentPeriodNumber, data.contract.MODE);
-                                String item2 = BHUtilities.numericFormat(data.contract.MinOutStandingAmount);
-                                listViewContractCloseAccount.addView(createItemListView(item1, item2, null));
-                            }
-                        } else if (data.contract.MODE > 2) {
-                            if (data.contract.MinOutStandingAmount != data.contract.SecondNetAmount) {
-                                // print 1
-                                String item1 = String.format("งวดที่ %d ", data.contract.MinPaymentPeriodNumber);
-                                String item2 = BHUtilities.numericFormat(data.contract.MinOutStandingAmount);
-                                listViewContractCloseAccount.addView(createItemListView(item1, item2, null));
-                                if (data.contract.SecondNetAmount != data.contract.ThirdNetAmount) {
-                                    // print 2
-                                    String item3 = String.format("งวดที่ %d ", data.contract.NextPaymentPeriodNumber);
-                                    String item4 = BHUtilities.numericFormat(data.contract.NextNetAmount);
-                                    listViewContractCloseAccount.addView(createItemListView(item3, item4, null));
-                                    // print MODE == 3 ? 3 : 3 - MODE
-                                    String item5 = (data.contract.NextPaymentPeriodNumber + 1) == data.contract.MODE ?
-                                            String.format("งวดที่ %d", data.contract.NextPaymentPeriodNumber + 1) : String.format("งวดที่ %d - %d งวดละ", data.contract.NextPaymentPeriodNumber + 1, data.contract.MODE);
-                                    String item6 = BHUtilities.numericFormat(data.contract.ThirdNetAmount);
-                                    listViewContractCloseAccount.addView(createItemListView(item5, item6, null));
-                                } else {
-                                    // print 2 - MODE
-                                    String item3 = String.format("งวดที่ %d - %d งวดละ", data.contract.NextPaymentPeriodNumber, data.contract.MODE);
-                                    String item4 = BHUtilities.numericFormat(data.contract.NextNetAmount);
-                                    listViewContractCloseAccount.addView(createItemListView(item3, item4, null));
-                                }
-                            } else if (data.contract.SecondNetAmount != data.contract.ThirdNetAmount) {
-                                // print 1
-                                String item1 = String.format("งวดที่ %d ", data.contract.MinPaymentPeriodNumber);
-                                String item2 = BHUtilities.numericFormat(data.contract.MinOutStandingAmount);
-                                listViewContractCloseAccount.addView(createItemListView(item1, item2, null));
-                                // print 2
-                                String item3 = String.format("งวดที่ %d ", data.contract.NextPaymentPeriodNumber);
-                                String item4 = BHUtilities.numericFormat(data.contract.NextNetAmount);
-                                listViewContractCloseAccount.addView(createItemListView(item3, item4, null));
-                                // print MODE == 3 ? 3 : 3 - MODE
-                                String item5 = (data.contract.NextPaymentPeriodNumber + 1) == data.contract.MODE ?
-                                        String.format("งวดที่ %d", data.contract.NextPaymentPeriodNumber + 1) : String.format("งวดที่ %d - %d งวดละ", data.contract.NextPaymentPeriodNumber + 1, data.contract.MODE);
-                                String item6 = BHUtilities.numericFormat(data.contract.ThirdNetAmount);
-                                listViewContractCloseAccount.addView(createItemListView(item5, item6, null));
-                            } else {
-                                // print 1 - MODE
-                                String item1 = String.format("งวดที่ %d - %d งวดละ", data.contract.MinPaymentPeriodNumber, data.contract.MODE);
-                                String item2 = BHUtilities.numericFormat(data.contract.MinOutStandingAmount);
-                                listViewContractCloseAccount.addView(createItemListView(item1, item2, null));
-                            }
-                        }
-                    }
-                    txtContractCloseAccountDiscount.setText(BHUtilities.numericFormat(data.contract.CloseDiscountAmount));
-                    listView.setVisibility(checkBoxContractCloseAccount.isChecked() ? View.GONE : View.VISIBLE);
-                    listViewContractCloseAccount.setVisibility(checkBoxContractCloseAccount.isChecked() ? View.VISIBLE : View.GONE);
-                    viewContractCloseAccountDiscount.setVisibility(checkBoxContractCloseAccount.isChecked() ? View.VISIBLE : View.GONE);
-
-                    if (checkBoxContractCloseAccount.isChecked()) {
-                        txtTotalOutStanding.setText(BHUtilities.numericFormat(data.contract.TotalOutstandingAmount - data.contract.CloseDiscountAmount));
-                    }
-                } else {
-                    checkBoxContractCloseAccount.setEnabled(false);
-                }*/
 
 
                     if (salePaymentPeriodInfoListForContractCloseAccount != null
@@ -1468,13 +1185,8 @@ public class SaleFirstPaymentChoiceFragment_preorder extends BHFragment {
 
                         //txtContractCloseAccountDiscount.setText(BHUtilities.numericFormat(data.contract.CloseDiscountAmount));
                         txtContractCloseAccountDiscount.setText(BHUtilities.numericFormat( salePaymentPeriodInfoListForContractCloseAccount.get(0).CloseDiscountAmount));
-                        /*listView.setVisibility(checkBoxContractCloseAccount.isChecked() ? View.GONE : View.VISIBLE);
-                        listViewContractCloseAccount.setVisibility(checkBoxContractCloseAccount.isChecked() ? View.VISIBLE : View.GONE);
-                        viewContractCloseAccountDiscount.setVisibility(checkBoxContractCloseAccount.isChecked() ? View.VISIBLE : View.GONE);
 
-                        if (checkBoxContractCloseAccount.isChecked()) {
-                            txtTotalOutStanding.setText(BHUtilities.numericFormat(data.contract.TotalOutstandingAmount - data.contract.CloseDiscountAmount));
-                        }*/
+
 
                         if (checkBoxContractCloseAccount.isChecked()) {
                             checkBoxContractCloseAccount.callOnClick();
@@ -1490,7 +1202,12 @@ public class SaleFirstPaymentChoiceFragment_preorder extends BHFragment {
 
                 if (editTextPrice.getText().toString().equals("")) {
                     if (data.processType == ProcessType.Sale || data.processType == ProcessType.FirstPayment) {
+
+                        Log.e("data.paymentAmount", String.valueOf(data.paymentAmount));
                         editTextPrice.setText(BHUtilities.numericFormat(data.paymentAmount));
+                        //editTextPrice.setText(BHUtilities.numericFormat(Data.paymentAmount));
+
+
                     } else  {
                         editTextPrice.setText(BHUtilities.numericFormat(defaultAmountPaid));
                     }
@@ -1558,27 +1275,6 @@ public class SaleFirstPaymentChoiceFragment_preorder extends BHFragment {
         return v;
     }
 
-    /*public View createItemListView(String item1, String item2, SalePaymentPeriodInfo s) {
-        LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = layoutInflater.inflate(R.layout.list_credit_detail, null);
-        TextView txtPaymentPeriodNumber = (TextView) v.findViewById(R.id.txtPaymentPeriodNumber);
-        if (txtPaymentPeriodNumber != null) {
-            txtPaymentPeriodNumber.setText(item1);
-        }
-        TextView txtAmount = (TextView) v.findViewById(R.id.txtAmount);
-        if (txtAmount != null) {
-            txtAmount.setText(item2);
-        }
-        if (s == null || (s != null && !s.OverDue)) {
-            txtPaymentPeriodNumber.setTextColor(getResources().getColor(R.color.holo_dark));
-            txtAmount.setTextColor(getResources().getColor(R.color.holo_dark));
-            TextView lblBath = (TextView) v.findViewById(R.id.lblBath);
-            if (lblBath != null) {
-                lblBath.setTextColor(getResources().getColor(R.color.holo_dark));
-            }
-        }
-        return v;
-    }*/
 
     public View createItemListView(String item1, final String item2, SalePaymentPeriodInfo s) {
         LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -1672,25 +1368,6 @@ public class SaleFirstPaymentChoiceFragment_preorder extends BHFragment {
             protected void before() {
                 /*** [START] :: Fixed - [BHPROJ-1036-8595] - [LINE@17/09/2561] ทีม NBAH04 รหัสพนักงาน A55345 ส่วนที่รับชำระบางส่วนไม่ได้ ตามรูป ***/
 
-                /*SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                String strAppointDate = editTextappointment.getText().toString();
-                String strDay = strAppointDate.split("/")[0];
-                String strMonth = strAppointDate.split("/")[1];
-                String strYear = strAppointDate.split("/")[2];
-
-                int intYear = 0;
-                try {
-                    intYear = Integer.parseInt(strYear);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
-
-                String strAppointmentDate = String.format("%s/%s/%d", strDay, strMonth, intYear - 543);
-                try {
-                    dtAppointmentDate = sdf.parse(strAppointmentDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }*/
 
                 if (calendarAppointment != null) {
                     dtAppointmentDate = calendarAppointment.getTime();
@@ -1725,10 +1402,6 @@ public class SaleFirstPaymentChoiceFragment_preorder extends BHFragment {
         if (checkBoxAppointments.isChecked()) {
             isPostPone = true;
 
-            /*** [START] :: Fixed - [BHPROJ-1036-8595] - [LINE@17/09/2561] ทีม NBAH04 รหัสพนักงาน A55345 ส่วนที่รับชำระบางส่วนไม่ได้ ตามรูป ***/
-
-            /*String Date = editTextappointment.getText().toString();
-            if (Date.isEmpty()) {*/
 
             if (calendarAppointment == null) {
             /*** [END] :: Fixed - [BHPROJ-1036-8595] - [LINE@17/09/2561] ทีม NBAH04 รหัสพนักงาน A55345 ส่วนที่รับชำระบางส่วนไม่ได้ ตามรูป  ***/
@@ -1746,58 +1419,6 @@ public class SaleFirstPaymentChoiceFragment_preorder extends BHFragment {
                     case Credit:
                         booleanReturn = true;
                         break;
-                    /*case NextPayment:
-                    case Credit:
-                        List<SalePaymentPeriodInfo> periods = new SalePaymentPeriodController().getNextPayment(data.refNo);
-
-                        if (periods.size() > 1) {
-                            String strDay = Date.split("/")[0];
-                            String strMonth = Date.split("/")[1];
-                            String strYear = Date.split("/")[2];
-
-                            Calendar cPaymentAppointmentDate = Calendar.getInstance(new Locale("th"));
-                            cPaymentAppointmentDate.setTime(periods.get(1).PaymentAppointmentDate);
-                            cPaymentAppointmentDate.set(Calendar.HOUR_OF_DAY, 0);
-                            cPaymentAppointmentDate.set(Calendar.MINUTE, 0);
-                            cPaymentAppointmentDate.set(Calendar.SECOND, 0);
-                            cPaymentAppointmentDate.set(Calendar.MILLISECOND, 0);
-
-                            Calendar cNewAppointmentDate = Calendar.getInstance(new Locale("th"));
-                            cNewAppointmentDate.set(Calendar.YEAR, Integer.parseInt(strYear) - 543);
-                            cNewAppointmentDate.set(Calendar.MONTH, Integer.parseInt(strMonth) - 1);
-                            cNewAppointmentDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(strDay));
-                            cNewAppointmentDate.set(Calendar.HOUR_OF_DAY, 0);
-                            cNewAppointmentDate.set(Calendar.MINUTE, 0);
-                            cNewAppointmentDate.set(Calendar.SECOND, 0);
-                            cNewAppointmentDate.set(Calendar.MILLISECOND, 0);
-
-                            if (cNewAppointmentDate.before(cPaymentAppointmentDate)) {
-                                booleanReturn = true;
-                            } else {
-
-                                Calendar cNewDate = Calendar.getInstance(new Locale("th"));
-                                cNewDate.setTime(new Date());
-                                cNewDate.set(Calendar.HOUR_OF_DAY, 0);
-                                cNewDate.set(Calendar.MINUTE, 0);
-                                cNewDate.set(Calendar.SECOND, 0);
-                                cNewDate.set(Calendar.MILLISECOND, 0);
-                                if (cPaymentAppointmentDate.before(cNewDate)) {
-                                    message = "ไม่สามารถเลื่อนนัดชำระได้";
-                                } else {
-                                    cPaymentAppointmentDate.add(Calendar.DATE, -1);
-
-                                    message = "เลือกวันนัดชำระได้ไม่เกินวันที่ " + BHUtilities.dateFormat(cPaymentAppointmentDate.getTime(), "dd/MM/yyyy");
-                                }
-                                showNoticeDialogBox(title, message);
-
-                                booleanReturn = false;
-                            }
-
-                        } else {
-                            booleanReturn = true;
-                        }
-
-                        break;*/
                 }
 
                 return booleanReturn;
@@ -1884,65 +1505,6 @@ public class SaleFirstPaymentChoiceFragment_preorder extends BHFragment {
                     case Credit:
                         booleanReturn = true;
                         break;
-                    /*case NextPayment:
-                    case Credit:
-                        float number = editTextPrice.getText().toString().equals("") ? 0f : Float.valueOf(editTextPrice.getText().toString().replace(",", ""));
-                        if (number < data.contract.PAYAMT && !editTextAppointmentsForPartlyPaid.getText().toString().equals("")) {
-                            String Date = editTextAppointmentsForPartlyPaid.getText().toString();
-                            List<SalePaymentPeriodInfo> periods = new SalePaymentPeriodController().getNextPayment(data.refNo);
-
-                            if (periods.size() > 1) {
-                                String strDay = Date.split("/")[0];
-                                String strMonth = Date.split("/")[1];
-                                String strYear = Date.split("/")[2];
-
-                                Calendar cPaymentAppointmentDate = Calendar.getInstance(new Locale("th"));
-                                cPaymentAppointmentDate.setTime(periods.get(1).PaymentAppointmentDate);
-                                cPaymentAppointmentDate.set(Calendar.HOUR_OF_DAY, 0);
-                                cPaymentAppointmentDate.set(Calendar.MINUTE, 0);
-                                cPaymentAppointmentDate.set(Calendar.SECOND, 0);
-                                cPaymentAppointmentDate.set(Calendar.MILLISECOND, 0);
-
-                                Calendar cNewAppointmentDate = Calendar.getInstance(new Locale("th"));
-                                cNewAppointmentDate.set(Calendar.YEAR, Integer.parseInt(strYear) - 543);
-                                cNewAppointmentDate.set(Calendar.MONTH, Integer.parseInt(strMonth) - 1);
-                                cNewAppointmentDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(strDay));
-                                cNewAppointmentDate.set(Calendar.HOUR_OF_DAY, 0);
-                                cNewAppointmentDate.set(Calendar.MINUTE, 0);
-                                cNewAppointmentDate.set(Calendar.SECOND, 0);
-                                cNewAppointmentDate.set(Calendar.MILLISECOND, 0);
-
-                                if (cNewAppointmentDate.before(cPaymentAppointmentDate)) {
-                                    booleanReturn = true;
-                                } else {
-
-                                    Calendar cNewDate = Calendar.getInstance(new Locale("th"));
-                                    cNewDate.setTime(new Date());
-                                    cNewDate.set(Calendar.HOUR_OF_DAY, 0);
-                                    cNewDate.set(Calendar.MINUTE, 0);
-                                    cNewDate.set(Calendar.SECOND, 0);
-                                    cNewDate.set(Calendar.MILLISECOND, 0);
-                                    if (cPaymentAppointmentDate.before(cNewDate)) {
-                                        message = "ไม่สามารถเลื่อนนัดชำระบางส่วนได้";
-                                    } else {
-                                        cPaymentAppointmentDate.add(Calendar.DATE, -1);
-
-                                        message = "เลือกวันนัดชำระบางส่วนได้ไม่เกินวันที่ " + BHUtilities.dateFormat(cPaymentAppointmentDate.getTime(), "dd/MM/yyyy");
-                                    }
-                                    showNoticeDialogBox(title, message);
-
-                                    booleanReturn = false;
-                                }
-
-                            } else {
-                                booleanReturn = true;
-                            }
-
-
-                        } else {
-                            booleanReturn = true;
-                        }
-                        break;*/
                 }
                 return booleanReturn;
                 /*** [END] Fixed - [BHPROJ-0026-750] [Android-ชำระเงิน] หากชำระเงินบางส่วน ให้สามารถนัดชำระส่วนที่เหลือได้เลย ***/
@@ -1955,13 +1517,6 @@ public class SaleFirstPaymentChoiceFragment_preorder extends BHFragment {
         } else if (checkBoxAppointments.isChecked()) {
             /*** [START] :: Fixed - [BHPROJ-1036-8595] - [LINE@17/09/2561] ทีม NBAH04 รหัสพนักงาน A55345 ส่วนที่รับชำระบางส่วนไม่ได้ ตามรูป ***/
 
-            /*isPostPone = true;
-            String Date = editTextappointment.getText().toString();
-            if (Date.isEmpty()) {
-                message = "กรุณาเลือกวันนัดชำระ";
-                showNoticeDialogBox(title, message);
-                return false;
-            }*/
 
             isPostPone = true;
             if (calendarAppointment == null) {

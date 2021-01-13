@@ -411,6 +411,7 @@
                 android:background="@color/bg_active" >
 
                 <TextView
+                    android:id="@+id/txt_d1"
                     style="@style/TextView.Label.bold.2"
                     android:layout_width="@dimen/change_product_detail_width2"
                     android:layout_height="wrap_content"

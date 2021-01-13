@@ -310,6 +310,8 @@ public class CreditListFragment extends BHFragment {
             @Override
             protected void calling() {
                 creditList.clear();
+
+                Log.e("ggg",BHPreference.organizationCode()+ ","+BHPreference.teamCode()+ ","+BHPreference.employeeID()+ ","+ data.selectedDate+ ","+ search+ ","+ AddressInfo.AddressType.AddressPayment.toString());
                 List<AssignInfo> result = new AssignController().getSalePaymentPeriodListForAssignCredit(BHPreference.organizationCode(),
                         BHPreference.teamCode(), BHPreference.employeeID(), data.selectedDate, search, AddressInfo.AddressType.AddressPayment.toString());
                 if (result != null && result.size() > 0) {

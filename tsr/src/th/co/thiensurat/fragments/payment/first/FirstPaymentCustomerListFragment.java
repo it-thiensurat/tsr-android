@@ -186,6 +186,7 @@ public class FirstPaymentCustomerListFragment extends BHFragment {
             @Override
             protected void calling() {
                 // TODO Auto-generated method stub
+                Log.e("PAGE","ระบบเก็บเงินงวดแรก");
                 output = getNextSalePaymentPeriodByContractTeam(
                         BHPreference.organizationCode(),
                         BHPreference.teamCode());
@@ -219,6 +220,8 @@ public class FirstPaymentCustomerListFragment extends BHFragment {
             @Override
             protected void calling() {
                 // TODO Auto-generated method stub
+
+
                 output = getNextSalePaymentPeriodByAssigneeEmpID(
                         BHPreference.organizationCode(), BHPreference.teamCode(), mAssigneeEmpID);
             }
@@ -251,6 +254,9 @@ public class FirstPaymentCustomerListFragment extends BHFragment {
             @Override
             protected void calling() {
                 // TODO Auto-generated method stub
+
+
+
                 output = getNextSalePaymentPeriodByContractTeamByAppointmentDate(
                         BHPreference.organizationCode(),
                         BHPreference.teamCode(), mAppointmentDate);

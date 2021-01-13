@@ -279,6 +279,9 @@ public class TSRController {
     public static ContractInfo getContractByRefNo(String organizationCode, String refNo) {
         return new ContractController().getContractByRefNo(organizationCode, refNo);
     }
+    public static ContractInfo getContractByRefNo_tsrl(String organizationCode, String refNo) {
+        return new ContractController().getContractByRefNo_tsrl(organizationCode, refNo);
+    }
 
     public static ContractInfo getContractByRefNoForCredit(String organizationCode, String refNo) {
         return new ContractController().getContractByRefNoForCredit(organizationCode, refNo);
@@ -286,6 +289,9 @@ public class TSRController {
 
     public static ContractInfo getContractByRefNoForSendDocuments(String organizationCode, String refNo) {
         return new ContractController().getContractByRefNoForSendDocuments(organizationCode, refNo);
+    }
+    public static ContractInfo getContractByRefNoForSendDocuments_tsrl(String organizationCode, String refNo) {
+        return new ContractController().getContractByRefNoForSendDocuments_tsrl(organizationCode, refNo);
     }
 
     public static ContractInfo getContractByRefNoForChangeContract(String organizationCode, String refNo) {

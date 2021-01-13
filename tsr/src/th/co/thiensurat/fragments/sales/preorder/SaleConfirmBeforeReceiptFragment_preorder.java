@@ -301,64 +301,272 @@ public class SaleConfirmBeforeReceiptFragment_preorder extends BHFragment {
             if (viewPaymentPeriod.size() == 1 && viewPaymentPeriod.get(0).PaymentPeriodNumber == 1) {
                 for (SalePaymentPeriodInfo into : viewPaymentPeriod) {
                     if (partlyPaidPriceByPaymentPeriod == (into.PaymentAmount - into.Discount)) {
-                        /*strPaymentPeriodNumber += "ค่างวดเงินสด";
-                        strPartlyPaidPrice += BHUtilities.numericFormat(partlyPaidPriceByPaymentPeriod);
-                        strBahtPartlyPaid += "บาท";*/
                         linearLayoutPartlyPaid.addView(getLinearLayoutPartlyPaid("ค่างวดเงินสด", BHUtilities.numericFormat(partlyPaidPriceByPaymentPeriod)));
 
                     } else {
-                        /*strPaymentPeriodNumber += "ค่างวดเงินสด (ชำระบางส่วน)";
-                        strPartlyPaidPrice += BHUtilities.numericFormat(partlyPaidPriceByPaymentPeriod);
-                        strBahtPartlyPaid += "บาท";*/
-                        linearLayoutPartlyPaid.addView(getLinearLayoutPartlyPaid("ค่างวดเงินสด\n(ชำระบางส่วน)", BHUtilities.numericFormat(partlyPaidPriceByPaymentPeriod)));
+
+
+
+                        try {
+                            String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
+
+                            if (getOrganizationCode.equals("1")) {
+
+                                linearLayoutPartlyPaid.addView(getLinearLayoutPartlyPaid("ค่างวดเงินสด\n(ชำระบางส่วน)", BHUtilities.numericFormat(partlyPaidPriceByPaymentPeriod)));
+
+
+                                // tsr
+                            } else {
+                                if (into.MODE == 1) {
+
+                                    linearLayoutPartlyPaid.addView(getLinearLayoutPartlyPaid("ค่ามัดจำ (ชำระบางส่วน)", BHUtilities.numericFormat(partlyPaidPriceByPaymentPeriod)));
+
+
+                                    // alpine
+                                } else {
+
+
+                                    linearLayoutPartlyPaid.addView(getLinearLayoutPartlyPaid("ค่ามัดจำ (ชำระบางส่วน)", BHUtilities.numericFormat(partlyPaidPriceByPaymentPeriod)));
+
+
+                                    // tsrl
+                                }
+                            }
+
+                        }
+                        catch (Exception ec){
+
+
+                        }
+
+
+
+
+
                     }
                 }
             } else {
                 maxPaymentPeriodNumber = viewPaymentPeriod.get(viewPaymentPeriod.size() - 1).PaymentPeriodNumber;
                 for (SalePaymentPeriodInfo into : viewPaymentPeriod) {
                     if (partlyPaidPriceByPaymentPeriod > (into.PaymentAmount - into.Discount)) {
-                        /*strPaymentPeriodNumber += String.format("ค่างวดที่ %d/%d", into.PaymentPeriodNumber, maxPaymentPeriodNumber) + "\n\n";
-                        strPartlyPaidPrice += BHUtilities.numericFormat(into.PaymentAmount - into.Discount) + "\n\n";
-                        strBahtPartlyPaid += "บาท" + "\n\n";*/
-                        linearLayoutPartlyPaid.addView(getLinearLayoutPartlyPaid(String.format("ค่างวดที่ %d/%d", into.PaymentPeriodNumber, maxPaymentPeriodNumber), BHUtilities.numericFormat(into.PaymentAmount - into.Discount)));
-                        partlyPaidPriceByPaymentPeriod = partlyPaidPriceByPaymentPeriod - (into.PaymentAmount - into.Discount);
-                        nextPaymentPeriodNumber = into.PaymentPeriodNumber + 1;
+
+
+
+
+
+                        try {
+                            String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
+
+                            if (getOrganizationCode.equals("1")) {
+
+                                linearLayoutPartlyPaid.addView(getLinearLayoutPartlyPaid(String.format("ค่างวดที่ %d/%d", into.PaymentPeriodNumber, maxPaymentPeriodNumber), BHUtilities.numericFormat(into.PaymentAmount - into.Discount)));
+                                partlyPaidPriceByPaymentPeriod = partlyPaidPriceByPaymentPeriod - (into.PaymentAmount - into.Discount);
+                                nextPaymentPeriodNumber = into.PaymentPeriodNumber + 1;
+
+
+
+                                // tsr
+                            } else {
+                                if (into.MODE == 1) {
+
+
+
+                                    // alpine
+                                } else {
+
+
+
+                                    linearLayoutPartlyPaid.addView(getLinearLayoutPartlyPaid(String.format("ค่ามัดจำ", into.PaymentPeriodNumber, maxPaymentPeriodNumber), BHUtilities.numericFormat(into.PaymentAmount - into.Discount)));
+                                    partlyPaidPriceByPaymentPeriod = partlyPaidPriceByPaymentPeriod - (into.PaymentAmount - into.Discount);
+                                    nextPaymentPeriodNumber = into.PaymentPeriodNumber + 1;
+
+
+                                    // tsrl
+                                }
+                            }
+
+                        }
+                        catch (Exception ec){
+
+
+                        }
+
+
+
+
+
+
+
+
+
                     } else if ((partlyPaidPriceByPaymentPeriod <= (into.PaymentAmount - into.Discount)) && !status) {
                         status = true;
                         if (partlyPaidPriceByPaymentPeriod == (into.PaymentAmount - into.Discount)) {
-                            /*strPaymentPeriodNumber += String.format("ค่างวดที่ %d/%d", into.PaymentPeriodNumber, maxPaymentPeriodNumber);
-                            strPartlyPaidPrice += BHUtilities.numericFormat(partlyPaidPriceByPaymentPeriod);
-                            strBahtPartlyPaid += "บาท";*/
-                            linearLayoutPartlyPaid.addView(getLinearLayoutPartlyPaid(String.format("ค่างวดที่ %d/%d", into.PaymentPeriodNumber, maxPaymentPeriodNumber), BHUtilities.numericFormat(partlyPaidPriceByPaymentPeriod)));
-                            partlyPaidPriceByPaymentPeriod = partlyPaidPriceByPaymentPeriod - (into.PaymentAmount - into.Discount);
-                            nextPaymentPeriodNumber = into.PaymentPeriodNumber + 1;
+
+
+
+
+                            try {
+                                String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
+
+                                if (getOrganizationCode.equals("1")) {
+
+
+                                    linearLayoutPartlyPaid.addView(getLinearLayoutPartlyPaid(String.format("ค่างวดที่ %d/%d", into.PaymentPeriodNumber, maxPaymentPeriodNumber), BHUtilities.numericFormat(partlyPaidPriceByPaymentPeriod)));
+                                    partlyPaidPriceByPaymentPeriod = partlyPaidPriceByPaymentPeriod - (into.PaymentAmount - into.Discount);
+                                    nextPaymentPeriodNumber = into.PaymentPeriodNumber + 1;
+
+
+                                    // tsr
+                                } else {
+                                    if (into.MODE == 1) {
+
+
+
+                                        // alpine
+                                    } else {
+
+
+
+                                        linearLayoutPartlyPaid.addView(getLinearLayoutPartlyPaid(String.format("ค่ามัดจำ", into.PaymentPeriodNumber, maxPaymentPeriodNumber), BHUtilities.numericFormat(partlyPaidPriceByPaymentPeriod)));
+                                        partlyPaidPriceByPaymentPeriod = partlyPaidPriceByPaymentPeriod - (into.PaymentAmount - into.Discount);
+                                        nextPaymentPeriodNumber = into.PaymentPeriodNumber + 1;
+
+                                        // tsrl
+                                    }
+                                }
+
+                            }
+                            catch (Exception ec){
+
+
+                            }
+
+
+
+
+
+
+
                         } else {
-                            /*strPaymentPeriodNumber += String.format("ค่างวดที่ %d/%d (ชำระบางส่วน)", into.PaymentPeriodNumber, maxPaymentPeriodNumber);
-                            strPartlyPaidPrice += BHUtilities.numericFormat(partlyPaidPriceByPaymentPeriod);
-                            strBahtPartlyPaid += "บาท";*/
-                            linearLayoutPartlyPaid.addView(getLinearLayoutPartlyPaid(String.format("ค่างวดที่ %d/%d\n(ชำระบางส่วน)", into.PaymentPeriodNumber, maxPaymentPeriodNumber), BHUtilities.numericFormat(partlyPaidPriceByPaymentPeriod)));
+
+
+
+                            try {
+                                String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
+
+                                if (getOrganizationCode.equals("1")) {
+
+
+
+                                    linearLayoutPartlyPaid.addView(getLinearLayoutPartlyPaid(String.format("ค่างวดที่ %d/%d\n(ชำระบางส่วน)", into.PaymentPeriodNumber, maxPaymentPeriodNumber), BHUtilities.numericFormat(partlyPaidPriceByPaymentPeriod)));
+
+
+
+                                    // tsr
+                                } else {
+                                    if (into.MODE == 1) {
+
+                                        linearLayoutPartlyPaid.addView(getLinearLayoutPartlyPaid(String.format("ค่ามัดจำ (ชำระบางส่วน)", into.PaymentPeriodNumber, maxPaymentPeriodNumber), BHUtilities.numericFormat(partlyPaidPriceByPaymentPeriod)));
+
+
+                                        // alpine
+                                    } else {
+
+
+
+
+                                        linearLayoutPartlyPaid.addView(getLinearLayoutPartlyPaid(String.format("ค่ามัดจำ (ชำระบางส่วน)", into.PaymentPeriodNumber, maxPaymentPeriodNumber), BHUtilities.numericFormat(partlyPaidPriceByPaymentPeriod)));
+
+
+                                        // tsrl
+                                    }
+                                }
+
+                            }
+                            catch (Exception ec){
+
+
+                            }
+
+
+
                             SalePaymentPeriodPaymentInfo sppPaymentList = new SalePaymentPeriodController().getSumSalePaymentPeriodPaymentBySalePaymentPeriodID(into.SalePaymentPeriodID);
+
+
+
                             //งวดแรก ชำระครบแล้วหรือไม่
                             if ((sppPaymentList.SumAmount + partlyPaidPriceByPaymentPeriod) == into.NetAmount) {
                                 ItemLineBalancesOfPeriod.setVisibility(View.GONE);
                                 nextPaymentPeriodNumber = into.PaymentPeriodNumber + 1;
                             } else {
-                                nextPaymentPeriodNumber = into.PaymentPeriodNumber;
-                                data.BalancesOfPeriod = into.NetAmount - (sppPaymentList.SumAmount + partlyPaidPriceByPaymentPeriod);
-                                ItemLineBalancesOfPeriod.setVisibility(View.VISIBLE);
-                                labelBalancesOfPeriod.setText(String.format("คงเหลืองวดที่ %d", nextPaymentPeriodNumber));
-                                txtBalancesOfPeriod.setText(BHUtilities.numericFormat(data.BalancesOfPeriod));
-                                if (nextPaymentPeriodNumber == maxPaymentPeriodNumber) {
-                                    ItemLineBalance.setVisibility(View.GONE);
-                                } else {
-                                    ItemLineBalance.setVisibility(View.VISIBLE);
-                                    nextPaymentPeriodNumber++;
-                                    /*if (nextPaymentPeriodNumber == maxPaymentPeriodNumber) {
-                                        labelBalance.setText(String.format("คงเหลืองวดที่ %d", nextPaymentPeriodNumber));
+
+
+
+                                try {
+                                    String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
+
+                                    if (getOrganizationCode.equals("1")) {
+
+
+
+                                        nextPaymentPeriodNumber = into.PaymentPeriodNumber;
+                                        data.BalancesOfPeriod = into.NetAmount - (sppPaymentList.SumAmount + partlyPaidPriceByPaymentPeriod);
+                                        ItemLineBalancesOfPeriod.setVisibility(View.VISIBLE);
+                                        labelBalancesOfPeriod.setText(String.format("คงเหลืองวดที่ %d", nextPaymentPeriodNumber));
+                                        txtBalancesOfPeriod.setText(BHUtilities.numericFormat(data.BalancesOfPeriod));
+                                        if (nextPaymentPeriodNumber == maxPaymentPeriodNumber) {
+                                            ItemLineBalance.setVisibility(View.GONE);
+                                        } else {
+                                            ItemLineBalance.setVisibility(View.VISIBLE);
+                                            nextPaymentPeriodNumber++;
+                                        }
+
+
+
+                                        // tsr
                                     } else {
-                                        labelBalance.setText(String.format("คงเหลืองวดที่ %d - %d", nextPaymentPeriodNumber, maxPaymentPeriodNumber));
-                                    }*/
+                                        if (data.contract.MODE == 1) {
+
+
+
+                                            // alpine
+                                        } else {
+
+
+
+
+                                            nextPaymentPeriodNumber = into.PaymentPeriodNumber;
+                                            data.BalancesOfPeriod = into.NetAmount - (sppPaymentList.SumAmount + partlyPaidPriceByPaymentPeriod);
+                                            ItemLineBalancesOfPeriod.setVisibility(View.VISIBLE);
+                                            labelBalancesOfPeriod.setText("คงเหลือ");
+                                            txtBalancesOfPeriod.setText(BHUtilities.numericFormat(data.BalancesOfPeriod));
+                                            if (nextPaymentPeriodNumber == maxPaymentPeriodNumber) {
+                                                ItemLineBalance.setVisibility(View.GONE);
+                                            } else {
+                                                ItemLineBalance.setVisibility(View.VISIBLE);
+                                                nextPaymentPeriodNumber++;
+                                            }
+
+
+                                            // tsrl
+                                        }
+                                    }
+
                                 }
+                                catch (Exception ec){
+
+
+                                }
+
+
+
+
+
+
+
+
+
                             }
                             break;
                         }
@@ -366,27 +574,13 @@ public class SaleConfirmBeforeReceiptFragment_preorder extends BHFragment {
                     }
                 }
             }
-            //txtPartlyPaid.setText(strPaymentPeriodNumber);
 
-            /*** [START] :: Fixed - [BHPROJ-0026-751] :: แก้ไขการแสดงผลในส่วนของ ยอดชำระเงิน ให้เป็นตัวสีแดง + ตัวหนา + เพิ่มขนาดตัวหนังสือมา 1 ระดับี ***/
-            /*SpannableString periodAmount = new SpannableString(strPartlyPaidPrice);
-            periodAmount.setSpan(new ForegroundColorSpan(Color.RED), 0, strPartlyPaidPrice.length(), 0);//สี
-            periodAmount.setSpan(new StyleSpan(Typeface.BOLD), 0, strPartlyPaidPrice.length(), 0);//ตัวหนา
-            periodAmount.setSpan(new TextAppearanceSpan(activity, R.style.TextView_Value2), 0 , strPartlyPaidPrice.length(), 0);//ขนาดตัว
-            txtPartlyPaidPrice.setText(periodAmount, TextView.BufferType.SPANNABLE);*/
-
-            //txtPartlyPaidPrice.setText(strPartlyPaidPrice);
-            /*** [END] :: Fixed - [BHPROJ-0026-751] :: แก้ไขการแสดงผลในส่วนของ ยอดชำระเงิน ให้เป็นตัวสีแดง + ตัวหนา + เพิ่มขนาดตัวหนังสือมา 1 ระดับ***/
-            //txtBahtPartlyPaid.setText(strBahtPartlyPaid);
         }
-        //txtPartlyPaid.setText(String.format("ค่างวด %s (ชำระบางส่วน)",spp.PaymentPeriodNumber));
-        //txtPartlyPaidPrice.setText(BHUtilities.numericFormat(data.PartlyPaidPrice));
 
-        //txtSaleEmpName.setText("(" + data.contract.upperEmployeeName + ")");
         txtSaleEmpName.setText(String.format("(%s)", BHPreference.userFullName()));
-        //txtSaleTeamName.setText("(ทีม "+ data.contract.SaleTeamCode + ")");
+
         txtSaleTeamName.setText(String.format("(ทีม %s)", BHPreference.teamCode()));
-       // txtSaleTeamName.setText(String.format("(ทีม %s)", BHPreference.cashCode()));
+
 
         txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(data.PartlyPaidPrice)));
         txtThaiBahtNum.setText(BHUtilities.numericFormat(data.PartlyPaidPrice));
@@ -430,14 +624,143 @@ public class SaleConfirmBeforeReceiptFragment_preorder extends BHFragment {
                 } else {
                     if (data.contract.MODE > 1) {
                         if (finalNextPaymentPeriodNumber == data.contract.MODE) {
-                            labelBalance.setText(String.format("คงเหลืองวดที่ %d", finalNextPaymentPeriodNumber));
+
+
+                            try {
+                                String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
+
+                                if (getOrganizationCode.equals("1")) {
+
+
+
+                                    labelBalance.setText(String.format("คงเหลืองวดที่ %d", finalNextPaymentPeriodNumber));
+
+
+
+                                    // tsr
+                                } else {
+                                    if (data.contract.MODE == 1) {
+
+
+
+                                        // alpine
+                                    } else {
+
+
+
+
+                                        labelBalance.setText("คงเหลือ");
+
+
+                                        // tsrl
+                                    }
+                                }
+
+                            }
+                            catch (Exception ec){
+
+
+                            }
+
+
+
+
+
+
+
+
                         } else {
-                            labelBalance.setText(String.format("คงเหลืองวดที่ %d - %d", finalNextPaymentPeriodNumber, data.contract.MODE));
+
+
+                            try {
+                                String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
+
+                                if (getOrganizationCode.equals("1")) {
+
+
+
+                                    labelBalance.setText(String.format("คงเหลืองวดที่ %d - %d", finalNextPaymentPeriodNumber, data.contract.MODE));
+
+
+
+                                    // tsr
+                                } else {
+                                    if (data.contract.MODE == 1) {
+
+
+
+                                        // alpine
+                                    } else {
+
+
+
+
+                                        labelBalance.setText(String.format("คงเหลืองวดที่ %d - %d", finalNextPaymentPeriodNumber-1, data.contract.MODE-1));
+
+
+                                        // tsrl
+                                    }
+                                }
+
+                            }
+                            catch (Exception ec){
+
+
+                            }
+
+
+
+
+
+
                         }
                         txtBalance.setText(BHUtilities.numericFormat(data.contract.TotalPrice - totalPay - data.paymentAmount - data.BalancesOfPeriod));
                     } else {
-                        labelBalance.setText(String.format("คงเหลือเงินสด"));
-                        txtBalance.setText(BHUtilities.numericFormat(data.contract.TotalPrice - totalPay - data.paymentAmount - data.BalancesOfPeriod));
+
+
+
+                        try {
+                            String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
+
+                            if (getOrganizationCode.equals("1")) {
+
+
+
+
+                                labelBalance.setText(String.format("คงเหลือเงินสด"));
+                                txtBalance.setText(BHUtilities.numericFormat(data.contract.TotalPrice - totalPay - data.paymentAmount - data.BalancesOfPeriod));
+
+
+                                // tsr
+                            } else {
+                                if (data.contract.MODE == 1) {
+
+
+
+                                    labelBalance.setText(String.format("คงเหลือ"));
+                                    txtBalance.setText(BHUtilities.numericFormat(data.contract.TotalPrice - totalPay - data.paymentAmount - data.BalancesOfPeriod));
+                                    // alpine
+                                } else {
+
+
+
+
+
+
+                                    // tsrl
+                                }
+                            }
+
+                        }
+                        catch (Exception ec){
+
+
+                        }
+
+
+
+
+
                     }
 
                 }
@@ -497,11 +820,6 @@ public class SaleConfirmBeforeReceiptFragment_preorder extends BHFragment {
                 input.PayDate = date;
                 input.PAYAMT = data.paymentAmount;
 
-                /*** [START] Fixed - [BHPROJ-0024-573] ***/
-//                input.CashCode = BHPreference.cashCode();
-//                input.EmpID = BHPreference.employeeID();
-//                input.TeamCode = BHPreference.teamCode();
-                /* FIX BHPROJ-0026-930 แก้ไข ถ้าเป็นการเก็บเงินงวดแรกจะให้ EmpID ที่ Table Payment = SaleEmployeeCode ของ Contract นั้นๆ นอกนั้นจะเป็นคน Login */
 
 
                 SalePaymentPeriodInfo spp = new SalePaymentPeriodController().getSalePaymentPeriodInfoByRefNoAndPaymentPeriodNumber(input.RefNo, 1);

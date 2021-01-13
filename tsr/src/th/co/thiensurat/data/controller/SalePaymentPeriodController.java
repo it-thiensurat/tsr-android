@@ -47,6 +47,7 @@ public class SalePaymentPeriodController extends BaseController {
                     + " ) as period"
                     + " on spp.SalePaymentPeriodID=period.SalePaymentPeriodID"
                     + " where c.isActive='1'"
+                    + " and c.ProductSerialNumber != '-'"
                     + " and spp.PaymentPeriodNumber='1'"
                     + " and ifnull(spp.NetAmount, 0)- ifnull(sumperiodpayamt.SummaryPaymentAmount, 0) > 0"
                     + " and spp.PaymentComplete='0'"

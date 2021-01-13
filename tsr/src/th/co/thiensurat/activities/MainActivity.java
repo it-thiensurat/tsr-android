@@ -1289,11 +1289,13 @@ Log.e("PositionName",BHPreference.PositionName());
 
 
 
+/*
         Log.e("TeamCode_Main",BHPreference.teamCode());
         Log.e("saleCode_Main",BHPreference.saleCode());
         Log.e("processType_Main",BHPreference.processTypeOfEmployee());
         Log.e("XXXX2",BHPreference.SubTeamCode()+","+BHPreference.saleCode());
 
+*/
 
         String YY=getDateTime_Y();
         int yy_i1= Integer.parseInt(YY);
@@ -1301,7 +1303,7 @@ Log.e("PositionName",BHPreference.PositionName());
         String yy_s= String.valueOf(yy_i);
         String YearMonthTH = yy_s.substring(2, 4);
 
-        Log.e("ass",YearMonthTH+","+getDateTime_M());
+        //Log.e("ass",YearMonthTH+","+getDateTime_M());
 
         BHApplication.getInstance().getPrefManager().setPreferrence("YearMonthTH",YearMonthTH+getDateTime_M());
 

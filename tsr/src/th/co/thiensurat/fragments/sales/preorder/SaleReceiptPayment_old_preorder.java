@@ -674,156 +674,669 @@ public class SaleReceiptPayment_old_preorder extends BHFragment {
 
 
 
-            /**ส่วนลดตัดสด**/
-            LinearLayout llDiscount = (LinearLayout) view.findViewById(R.id.llDiscount); //ส่วนลดตัดสด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
-            if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
-                llDiscount.setVisibility(View.VISIBLE);
-
-                TextView tvCloseAccountOutstandingAmountLabel = (TextView) view.findViewById(R.id.tvCloseAccountOutstandingAmountLabel); //ชำระงวดที่ 2-n
-                TextView tvCloseAccountOutstandingAmount = (TextView) view.findViewById(R.id.tvCloseAccountOutstandingAmount); //ชำระงวดที่ 2-n จำนวน
-                TextView tvDiscountAmount = (TextView) view.findViewById(R.id.tvDiscountAmount); //ส่วนลดตัดสด
-
-                tvCloseAccountOutstandingAmountLabel.setText(String.format("ชำระงวดที่ %d-%d", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
-                tvCloseAccountOutstandingAmount.setText(BHUtilities.numericFormat(payments.get(position).CloseAccountOutstandingAmount) + bahtLabel);
-
-                tvDiscountAmount.setText(BHUtilities.numericFormat(payments.get(position).CloseAccountDiscountAmount) + bahtLabel);
-            } else {
-                llDiscount.setVisibility(View.GONE);
-            }
 
 
-            /**ยอดเงินที่จ่ายมาตามใบเสร็จ**/
-            TextView tvPeriodAmountLabel = (TextView) view.findViewById(R.id.tvPeriodAmountLabel); //ค่างวดเงินสด หรือ ค่างวดที่ 1/n ((ชำระบางส่วน) ถ้าชำระไม่ครบตามงวด)
-            TextView tvPeriodAmount = (TextView) view.findViewById(R.id.tvPeriodAmount); //ยอดเงินที่จ่ายมาตามใบเสร็จ
-            TextView txtThaiBaht = (TextView) view.findViewById(R.id.txtThaiBaht); //จำนวนเงินที่จ่ายมาตามใบเสร็จเป็นตัวหนังสือ
 
-            if (payments.get(position).MODE == 1) {
-                if (payments.get(position).BalancesOfPeriod == 0) {
-                    tvPeriodAmountLabel.setText("ค่างงวดเงินสด\n(ชำระครบ)");
-                } else {
-                    tvPeriodAmountLabel.setText("ค่างวดเงินสด\n(ชำระบางส่วน)");
-                }
-            } else {
-                if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
-                    tvPeriodAmountLabel.setText("จำนวนที่ชำระ");
-                } else {
-                    if (payments.get(position).BalancesOfPeriod == 0) {
-                        String txtPeriodAmountLabel = "";
-                        if (payments.get(position).PaymentPeriodNumber == payments.get(position).MODE) {
-                            txtPeriodAmountLabel = "ค่างวดที่ %d/%d\n(ชำระครบ)";
-                        } else {
-                            txtPeriodAmountLabel = "ค่างวดที่ %d/%d";
-                        }
-                        tvPeriodAmountLabel.setText(String.format(txtPeriodAmountLabel, payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
-                    } else {
-                        if(payments.get(position).Amount == 0){
-                            tvPeriodAmountLabel.setText(String.format("ค่างวดที่ %d/%d\n", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
 
-                        } else {
-                            tvPeriodAmountLabel.setText(String.format("ค่างวดที่ %d/%d\n(ชำระบางส่วน)", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
 
-                        }
-                    }
-                }
-            }
-            /*** [START] :: Fixed - [BHPROJ-0026-751] :: แก้ไขการแสดงผลในส่วนของ ยอดชำระเงิน ให้เป็นตัวสีแดง + ตัวหนา + เพิ่มขนาดตัวหนังสือมา 1 ระดับี ***/
 
-            if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
-                SpannableString periodAmount = new SpannableString(BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount) + bahtLabel);
-                periodAmount.setSpan(new ForegroundColorSpan(Color.RED), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//สี
-                periodAmount.setSpan(new StyleSpan(Typeface.BOLD), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//ตัวหนา
-                periodAmount.setSpan(new TextAppearanceSpan(activity, R.style.TextView_Value2), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//ขนาดตัว
-                tvPeriodAmount.setText(periodAmount, TextView.BufferType.SPANNABLE);
 
-                txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount)));
-            } else {
-                SpannableString periodAmount = new SpannableString(BHUtilities.numericFormat(payments.get(position).Amount) + bahtLabel);
-                periodAmount.setSpan(new ForegroundColorSpan(Color.RED), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//สี
-                periodAmount.setSpan(new StyleSpan(Typeface.BOLD), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//ตัวหนา
-                periodAmount.setSpan(new TextAppearanceSpan(activity, R.style.TextView_Value2), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//ขนาดตัว
-                tvPeriodAmount.setText(periodAmount, TextView.BufferType.SPANNABLE);
 
-                txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(payments.get(position).Amount)));
 
-            }
 
-            try {
-                txtThaiBaht.setVisibility(payments.get(position).VoidStatus ? View.GONE : View.VISIBLE);
-                tvPeriodAmount.setText(payments.get(position).VoidStatus ? "ยกเลิกการชำระเงิน" : tvPeriodAmount.getText());
 
-            }
-            catch (Exception ex){
 
-            }
 
-            //tvPeriodAmount.setText(BHUtilities.numericFormat(payments.get(position).Amount) + bahtLabel);
-            /*** [END] :: Fixed - [BHPROJ-0026-751] :: แก้ไขการแสดงผลในส่วนของ ยอดชำระเงิน ให้เป็นตัวสีแดง + ตัวหนา + เพิ่มขนาดตัวหนังสือมา 1 ระดับ***/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
             try {
-                //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
-                if ((payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) || payments.get(position).VoidStatus) {
-                    LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
-                    llBalancesOfPeriod.setVisibility(View.GONE);
+                String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
 
-                    LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
-                    llBalanceAmount.setVisibility(View.GONE);
+                if (getOrganizationCode.equals("1")) {
 
-                } else {
-                    /**ยอดเงินคงเหลือของงวดนั้น**/
-                    LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
-                    TextView tvBalancesOfPeriodLabel = (TextView) view.findViewById(R.id.tvBalancesOfPeriodLabel); //คงเหลืองวดที่ n
-                    TextView tvBalancesOfPeriod = (TextView) view.findViewById(R.id.tvBalancesOfPeriod); //จำนวนเงินคงเหลือของงวด
+                    Log.e("SELECT","tsr");
+/****************************************************************TSR********************************************/
 
-                    if (payments.get(position).BalancesOfPeriod == 0) {
-                        llBalancesOfPeriod.setVisibility(View.GONE);
+                    /**ส่วนลดตัดสด**/
+                    LinearLayout llDiscount = (LinearLayout) view.findViewById(R.id.llDiscount); //ส่วนลดตัดสด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                    if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
+
+
+
+                        llDiscount.setVisibility(View.VISIBLE);
+
+                        TextView tvCloseAccountOutstandingAmountLabel = (TextView) view.findViewById(R.id.tvCloseAccountOutstandingAmountLabel); //ชำระงวดที่ 2-n
+                        TextView tvCloseAccountOutstandingAmount = (TextView) view.findViewById(R.id.tvCloseAccountOutstandingAmount); //ชำระงวดที่ 2-n จำนวน
+                        TextView tvDiscountAmount = (TextView) view.findViewById(R.id.tvDiscountAmount); //ส่วนลดตัดสด
+
+                        tvCloseAccountOutstandingAmountLabel.setText(String.format("ชำระงวดที่ %d-%d", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+                        tvCloseAccountOutstandingAmount.setText(BHUtilities.numericFormat(payments.get(position).CloseAccountOutstandingAmount) + bahtLabel);
+
+                        tvDiscountAmount.setText(BHUtilities.numericFormat(payments.get(position).CloseAccountDiscountAmount) + bahtLabel);
+
                     } else {
-                        llBalancesOfPeriod.setVisibility(View.VISIBLE);
-                        if (payments.get(position).MODE == 1) {
-                            tvBalancesOfPeriodLabel.setText("คงเหลือเงินสด");
-                        } else {
-                            tvBalancesOfPeriodLabel.setText(String.format("คงเหลืองวดที่ %d", payments.get(position).PaymentPeriodNumber));
-                        }
-                        tvBalancesOfPeriod.setText(BHUtilities.numericFormat(payments.get(position).BalancesOfPeriod) + bahtLabel);
+                        llDiscount.setVisibility(View.GONE);
                     }
 
 
-                    /**ยอดคงเหลือของงวดถัดไป**/
-                    LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
-                    TextView tvBalanceAmountLabel = (TextView) view.findViewById(R.id.tvBalanceAmountLabel); //คงเหลือเงินสด หรื คงเหลืองวดที่ 1 - n หรือ คงเหลืองวดที่ n
-                    TextView tvBalanceAmount = (TextView) view.findViewById(R.id.tvBalanceAmount); //จำนวนเงินคงเหลือ
+                    /**ยอดเงินที่จ่ายมาตามใบเสร็จ**/
+                    TextView tvPeriodAmountLabel = (TextView) view.findViewById(R.id.tvPeriodAmountLabel); //ค่างวดเงินสด หรือ ค่างวดที่ 1/n ((ชำระบางส่วน) ถ้าชำระไม่ครบตามงวด)
+                    TextView tvPeriodAmount = (TextView) view.findViewById(R.id.tvPeriodAmount); //ยอดเงินที่จ่ายมาตามใบเสร็จ
+                    TextView txtThaiBaht = (TextView) view.findViewById(R.id.txtThaiBaht); //จำนวนเงินที่จ่ายมาตามใบเสร็จเป็นตัวหนังสือ
 
-                    //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
-                    if (payments.get(position).Balances - payments.get(position).BalancesOfPeriod == 0 || payments.get(position).VoidStatus) {
-                        llBalanceAmount.setVisibility(View.GONE);
+                    if (payments.get(position).MODE == 1) {
+
+                        Log.e("GGGGG","22222");
+
+                        if (payments.get(position).BalancesOfPeriod == 0) {
+                            tvPeriodAmountLabel.setText("ค่างงวดเงินสด\n(ชำระครบ)");
+                        } else {
+
+
+                            tvPeriodAmountLabel.setText("ค่างวดเงินสด\n(ชำระบางส่วน)");
+                        }
+
                     } else {
-                        llBalanceAmount.setVisibility(View.VISIBLE);
+                        if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
+
+                            tvPeriodAmountLabel.setText("จำนวนที่ชำระ");
+
+
+                        } else {
+
+
+                            if (payments.get(position).BalancesOfPeriod == 0) {
+
+                                String txtPeriodAmountLabel = "";
+                                if (payments.get(position).PaymentPeriodNumber == payments.get(position).MODE) {
+                                    txtPeriodAmountLabel = "ค่างวดที่ %d/%d\n(ชำระครบ)";
+                                } else {
+                                    txtPeriodAmountLabel = "ค่างวดที่ %d/%d";
+                                }
+                                tvPeriodAmountLabel.setText(String.format(txtPeriodAmountLabel, payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+
+
+                            } else {
+
+
+
+                                if(payments.get(position).Amount == 0){
+                                    tvPeriodAmountLabel.setText(String.format("ค่างวดที่ %d/%d\n", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+
+                                } else {
+                                    tvPeriodAmountLabel.setText(String.format("ค่างวดที่ %d/%d\n(ชำระบางส่วน)", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+
+                                }
+
+                            }
+                        }
+                    }
+
+
+
+
+
+                    if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
+
+                        Log.e("fffff","3");
+
+                        SpannableString periodAmount = new SpannableString(BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount) + bahtLabel);
+                        periodAmount.setSpan(new ForegroundColorSpan(Color.RED), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//สี
+                        periodAmount.setSpan(new StyleSpan(Typeface.BOLD), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//ตัวหนา
+                        periodAmount.setSpan(new TextAppearanceSpan(activity, R.style.TextView_Value2), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//ขนาดตัว
+                        tvPeriodAmount.setText(periodAmount, TextView.BufferType.SPANNABLE);
+
+                        txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount)));
+
+
+                    } else {
+                        SpannableString periodAmount = new SpannableString(BHUtilities.numericFormat(payments.get(position).Amount) + bahtLabel);
+                        periodAmount.setSpan(new ForegroundColorSpan(Color.RED), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//สี
+                        periodAmount.setSpan(new StyleSpan(Typeface.BOLD), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//ตัวหนา
+                        periodAmount.setSpan(new TextAppearanceSpan(activity, R.style.TextView_Value2), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//ขนาดตัว
+                        tvPeriodAmount.setText(periodAmount, TextView.BufferType.SPANNABLE);
+
+                        txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(payments.get(position).Amount)));
+
+                    }
+
+                    try {
+                        txtThaiBaht.setVisibility(payments.get(position).VoidStatus ? View.GONE : View.VISIBLE);
+                        tvPeriodAmount.setText(payments.get(position).VoidStatus ? "ยกเลิกการชำระเงิน" : tvPeriodAmount.getText());
+
+                    }
+                    catch (Exception ex){
+
+                    }
+
+
+                    try {
+                        //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
+                        if ((payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) || payments.get(position).VoidStatus) {
+                            LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                            llBalancesOfPeriod.setVisibility(View.GONE);
+
+                            LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                            llBalanceAmount.setVisibility(View.GONE);
+
+
+
+
+                        } else {
+                            /**ยอดเงินคงเหลือของงวดนั้น**/
+                            LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                            TextView tvBalancesOfPeriodLabel = (TextView) view.findViewById(R.id.tvBalancesOfPeriodLabel); //คงเหลืองวดที่ n
+                            TextView tvBalancesOfPeriod = (TextView) view.findViewById(R.id.tvBalancesOfPeriod); //จำนวนเงินคงเหลือของงวด
+
+                            if (payments.get(position).BalancesOfPeriod == 0) {
+                                llBalancesOfPeriod.setVisibility(View.GONE);
+
+                            } else {
+
+
+                                llBalancesOfPeriod.setVisibility(View.VISIBLE);
+                                if (payments.get(position).MODE == 1) {
+                                    tvBalancesOfPeriodLabel.setText("คงเหลือเงินสด");
+                                } else {
+                                    tvBalancesOfPeriodLabel.setText(String.format("คงเหลืองวดที่ %d", payments.get(position).PaymentPeriodNumber));
+                                }
+                                tvBalancesOfPeriod.setText(BHUtilities.numericFormat(payments.get(position).BalancesOfPeriod) + bahtLabel);
+
+                            }
+
+
+                            /**ยอดคงเหลือของงวดถัดไป**/
+                            LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                            TextView tvBalanceAmountLabel = (TextView) view.findViewById(R.id.tvBalanceAmountLabel); //คงเหลือเงินสด หรื คงเหลืองวดที่ 1 - n หรือ คงเหลืองวดที่ n
+                            TextView tvBalanceAmount = (TextView) view.findViewById(R.id.tvBalanceAmount); //จำนวนเงินคงเหลือ
+
+                            //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
+                            if (payments.get(position).Balances - payments.get(position).BalancesOfPeriod == 0 || payments.get(position).VoidStatus) {
+                                llBalanceAmount.setVisibility(View.GONE);
+
+                            } else {
+
+                                Log.e("AAAA","2");
+
+
+
+                                llBalanceAmount.setVisibility(View.VISIBLE);
+                                if (payments.get(position).MODE == 1) {
+                                    tvBalanceAmountLabel.setText("คงเหลือเงินสด");
+                                } else {
+                                    tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d - %d", payments.get(position).PaymentPeriodNumber + 1, payments.get(position).MODE));
+                                }
+                                tvBalanceAmount.setText(BHUtilities.numericFormat(payments.get(position).Balances - payments.get(position).BalancesOfPeriod) + bahtLabel);
+
+
+
+                            }
+                        }
+                    }
+                    catch (Exception EX){
+
+                    }
+
+/****************************************************************TSR********************************************/
+
+
+
+
+                    // tsr
+                } else {
+                    if (payments.get(position).MODE == 1) {
+                        Log.e("SELECT","alpine");
+
+                        /**ส่วนลดตัดสด**/
+                        LinearLayout llDiscount = (LinearLayout) view.findViewById(R.id.llDiscount); //ส่วนลดตัดสด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                        if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
+
+
+
+                            llDiscount.setVisibility(View.VISIBLE);
+
+                            TextView tvCloseAccountOutstandingAmountLabel = (TextView) view.findViewById(R.id.tvCloseAccountOutstandingAmountLabel); //ชำระงวดที่ 2-n
+                            TextView tvCloseAccountOutstandingAmount = (TextView) view.findViewById(R.id.tvCloseAccountOutstandingAmount); //ชำระงวดที่ 2-n จำนวน
+                            TextView tvDiscountAmount = (TextView) view.findViewById(R.id.tvDiscountAmount); //ส่วนลดตัดสด
+
+                            tvCloseAccountOutstandingAmountLabel.setText(String.format("ชำระงวดที่ %d-%d", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+                            tvCloseAccountOutstandingAmount.setText(BHUtilities.numericFormat(payments.get(position).CloseAccountOutstandingAmount) + bahtLabel);
+
+                            tvDiscountAmount.setText(BHUtilities.numericFormat(payments.get(position).CloseAccountDiscountAmount) + bahtLabel);
+
+                        } else {
+                            llDiscount.setVisibility(View.GONE);
+                        }
+
+
+                        /**ยอดเงินที่จ่ายมาตามใบเสร็จ**/
+                        TextView tvPeriodAmountLabel = (TextView) view.findViewById(R.id.tvPeriodAmountLabel); //ค่างวดเงินสด หรือ ค่างวดที่ 1/n ((ชำระบางส่วน) ถ้าชำระไม่ครบตามงวด)
+                        TextView tvPeriodAmount = (TextView) view.findViewById(R.id.tvPeriodAmount); //ยอดเงินที่จ่ายมาตามใบเสร็จ
+                        TextView txtThaiBaht = (TextView) view.findViewById(R.id.txtThaiBaht); //จำนวนเงินที่จ่ายมาตามใบเสร็จเป็นตัวหนังสือ
+
                         if (payments.get(position).MODE == 1) {
-                            tvBalanceAmountLabel.setText("คงเหลือเงินสด");
+
+                            Log.e("GGGGG","22222");
+
+                            if (payments.get(position).BalancesOfPeriod == 0) {
+                                tvPeriodAmountLabel.setText("ค่างงวดเงินสด\n(ชำระครบ)");
+                            } else {
+
+
+                                tvPeriodAmountLabel.setText("ค่ามัดจำ\n(ชำระบางส่วน)");
+                            }
+
                         } else {
-                    /*if (payments.get(position).BalancesOfPeriod == 0) {
-                        if ((payments.get(position).PaymentPeriodNumber + 1) == payments.get(position).MODE) {
-                            tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d", payments.get(position).MODE));
-                        } else {
-                            tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d - %d", payments.get(position).PaymentPeriodNumber + 1, payments.get(position).MODE));
+                            if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
+
+                                tvPeriodAmountLabel.setText("จำนวนที่ชำระ");
+
+
+                            } else {
+
+
+                                if (payments.get(position).BalancesOfPeriod == 0) {
+
+                                    String txtPeriodAmountLabel = "";
+                                    if (payments.get(position).PaymentPeriodNumber == payments.get(position).MODE) {
+                                        txtPeriodAmountLabel = "ค่างวดที่ %d/%d\n(ชำระครบ)";
+                                    } else {
+                                        txtPeriodAmountLabel = "ค่างวดที่ %d/%d";
+                                    }
+                                    tvPeriodAmountLabel.setText(String.format(txtPeriodAmountLabel, payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+
+
+                                } else {
+
+
+
+                                    if(payments.get(position).Amount == 0){
+                                        tvPeriodAmountLabel.setText(String.format("ค่างวดที่ %d/%d\n", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+
+                                    } else {
+                                        tvPeriodAmountLabel.setText(String.format("ค่างวดที่ %d/%d\n(ชำระบางส่วน)", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+
+                                    }
+
+                                }
+                            }
                         }
+
+
+
+
+
+                        if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
+
+                            Log.e("fffff","3");
+
+                            SpannableString periodAmount = new SpannableString(BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount) + bahtLabel);
+                            periodAmount.setSpan(new ForegroundColorSpan(Color.RED), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//สี
+                            periodAmount.setSpan(new StyleSpan(Typeface.BOLD), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//ตัวหนา
+                            periodAmount.setSpan(new TextAppearanceSpan(activity, R.style.TextView_Value2), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//ขนาดตัว
+                            tvPeriodAmount.setText(periodAmount, TextView.BufferType.SPANNABLE);
+
+                            txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount)));
+
+
+                        } else {
+                            SpannableString periodAmount = new SpannableString(BHUtilities.numericFormat(payments.get(position).Amount) + bahtLabel);
+                            periodAmount.setSpan(new ForegroundColorSpan(Color.RED), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//สี
+                            periodAmount.setSpan(new StyleSpan(Typeface.BOLD), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//ตัวหนา
+                            periodAmount.setSpan(new TextAppearanceSpan(activity, R.style.TextView_Value2), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//ขนาดตัว
+                            tvPeriodAmount.setText(periodAmount, TextView.BufferType.SPANNABLE);
+
+                            txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(payments.get(position).Amount)));
+
+                        }
+
+                        try {
+                            txtThaiBaht.setVisibility(payments.get(position).VoidStatus ? View.GONE : View.VISIBLE);
+                            tvPeriodAmount.setText(payments.get(position).VoidStatus ? "ยกเลิกการชำระเงิน" : tvPeriodAmount.getText());
+
+                        }
+                        catch (Exception ex){
+
+                        }
+
+
+                        try {
+                            //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
+                            if ((payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) || payments.get(position).VoidStatus) {
+                                LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                                llBalancesOfPeriod.setVisibility(View.GONE);
+
+                                LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                                llBalanceAmount.setVisibility(View.GONE);
+
+
+
+
+                            } else {
+                                /**ยอดเงินคงเหลือของงวดนั้น**/
+                                LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                                TextView tvBalancesOfPeriodLabel = (TextView) view.findViewById(R.id.tvBalancesOfPeriodLabel); //คงเหลืองวดที่ n
+                                TextView tvBalancesOfPeriod = (TextView) view.findViewById(R.id.tvBalancesOfPeriod); //จำนวนเงินคงเหลือของงวด
+
+                                if (payments.get(position).BalancesOfPeriod == 0) {
+                                    llBalancesOfPeriod.setVisibility(View.GONE);
+
+                                } else {
+
+
+                                    llBalancesOfPeriod.setVisibility(View.VISIBLE);
+                                    if (payments.get(position).MODE == 1) {
+                                        tvBalancesOfPeriodLabel.setText("คงเหลือ");
+                                    } else {
+                                        tvBalancesOfPeriodLabel.setText(String.format("คงเหลืองวดที่ %d", payments.get(position).PaymentPeriodNumber));
+                                    }
+                                    tvBalancesOfPeriod.setText(BHUtilities.numericFormat(payments.get(position).BalancesOfPeriod) + bahtLabel);
+
+                                }
+
+
+                                /**ยอดคงเหลือของงวดถัดไป**/
+                                LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                                TextView tvBalanceAmountLabel = (TextView) view.findViewById(R.id.tvBalanceAmountLabel); //คงเหลือเงินสด หรื คงเหลืองวดที่ 1 - n หรือ คงเหลืองวดที่ n
+                                TextView tvBalanceAmount = (TextView) view.findViewById(R.id.tvBalanceAmount); //จำนวนเงินคงเหลือ
+
+                                //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
+                                if (payments.get(position).Balances - payments.get(position).BalancesOfPeriod == 0 || payments.get(position).VoidStatus) {
+                                    llBalanceAmount.setVisibility(View.GONE);
+
+                                } else {
+
+                                    Log.e("AAAA","2");
+
+
+
+                                    llBalanceAmount.setVisibility(View.VISIBLE);
+                                    if (payments.get(position).MODE == 1) {
+                                        tvBalanceAmountLabel.setText("คงเหลือ");
+                                    } else {
+                                        tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d - %d", payments.get(position).PaymentPeriodNumber + 1, payments.get(position).MODE));
+                                    }
+                                    tvBalanceAmount.setText(BHUtilities.numericFormat(payments.get(position).Balances - payments.get(position).BalancesOfPeriod) + bahtLabel);
+
+
+
+                                }
+                            }
+                        }
+                        catch (Exception EX){
+
+                        }
+
+                        // alpine
                     } else {
-                        if (payments.get(position).PaymentPeriodNumber == payments.get(position).MODE) {
-                            tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d", payments.get(position).MODE));
+
+                        Log.e("SELECT","tsrl");
+
+
+
+                        /**ส่วนลดตัดสด**/
+                        LinearLayout llDiscount = (LinearLayout) view.findViewById(R.id.llDiscount); //ส่วนลดตัดสด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                        if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
+
+
+
+                            llDiscount.setVisibility(View.VISIBLE);
+
+                            TextView tvCloseAccountOutstandingAmountLabel = (TextView) view.findViewById(R.id.tvCloseAccountOutstandingAmountLabel); //ชำระงวดที่ 2-n
+                            TextView tvCloseAccountOutstandingAmount = (TextView) view.findViewById(R.id.tvCloseAccountOutstandingAmount); //ชำระงวดที่ 2-n จำนวน
+                            TextView tvDiscountAmount = (TextView) view.findViewById(R.id.tvDiscountAmount); //ส่วนลดตัดสด
+
+                            tvCloseAccountOutstandingAmountLabel.setText(String.format("ชำระงวดที่ %d-%d", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+                            tvCloseAccountOutstandingAmount.setText(BHUtilities.numericFormat(payments.get(position).CloseAccountOutstandingAmount) + bahtLabel);
+
+                            tvDiscountAmount.setText(BHUtilities.numericFormat(payments.get(position).CloseAccountDiscountAmount) + bahtLabel);
+
                         } else {
-                            tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d - %d", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+                            llDiscount.setVisibility(View.GONE);
                         }
-                    }*/
-                            tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d - %d", payments.get(position).PaymentPeriodNumber + 1, payments.get(position).MODE));
+
+
+                        /**ยอดเงินที่จ่ายมาตามใบเสร็จ**/
+                        TextView tvPeriodAmountLabel = (TextView) view.findViewById(R.id.tvPeriodAmountLabel); //ค่างวดเงินสด หรือ ค่างวดที่ 1/n ((ชำระบางส่วน) ถ้าชำระไม่ครบตามงวด)
+                        TextView tvPeriodAmount = (TextView) view.findViewById(R.id.tvPeriodAmount); //ยอดเงินที่จ่ายมาตามใบเสร็จ
+                        TextView txtThaiBaht = (TextView) view.findViewById(R.id.txtThaiBaht); //จำนวนเงินที่จ่ายมาตามใบเสร็จเป็นตัวหนังสือ
+
+                        if (payments.get(position).MODE == 1) {
+
+                            Log.e("GGGGG","22222");
+
+                            if (payments.get(position).BalancesOfPeriod == 0) {
+                                tvPeriodAmountLabel.setText("ค่างงวดเงินสด\n(ชำระครบ)");
+                            } else {
+
+
+                                tvPeriodAmountLabel.setText("ค่างวดเงินสด\n(ชำระบางส่วน)");
+                            }
+
+                        } else {
+                            if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
+
+                                tvPeriodAmountLabel.setText("จำนวนที่ชำระ");
+
+
+                            } else {
+
+
+                                if (payments.get(position).BalancesOfPeriod == 0) {
+
+                                    String txtPeriodAmountLabel = "";
+                                    if (payments.get(position).PaymentPeriodNumber == payments.get(position).MODE) {
+                                        txtPeriodAmountLabel = "ค่างวดที่ %d/%d\n(ชำระครบ)";
+                                    } else {
+                                        txtPeriodAmountLabel = "ค่ามัดจำ";
+                                    }
+                                    tvPeriodAmountLabel.setText(String.format(txtPeriodAmountLabel, payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+
+
+                                } else {
+
+
+
+                                    if(payments.get(position).Amount == 0){
+                                        tvPeriodAmountLabel.setText(String.format("ค่างวดที่ %d/%d\n", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+
+                                    } else {
+                                        tvPeriodAmountLabel.setText(String.format("ค่ามัดจำ \n(ชำระบางส่วน)", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
+
+                                    }
+
+                                }
+                            }
                         }
-                        tvBalanceAmount.setText(BHUtilities.numericFormat(payments.get(position).Balances - payments.get(position).BalancesOfPeriod) + bahtLabel);
+
+
+
+
+
+                        if (payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) {
+
+                            Log.e("fffff","3");
+
+                            SpannableString periodAmount = new SpannableString(BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount) + bahtLabel);
+                            periodAmount.setSpan(new ForegroundColorSpan(Color.RED), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//สี
+                            periodAmount.setSpan(new StyleSpan(Typeface.BOLD), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//ตัวหนา
+                            periodAmount.setSpan(new TextAppearanceSpan(activity, R.style.TextView_Value2), 0, BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount).length(), 0);//ขนาดตัว
+                            tvPeriodAmount.setText(periodAmount, TextView.BufferType.SPANNABLE);
+
+                            txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(payments.get(position).CloseAccountNetAmount)));
+
+
+                        } else {
+                            SpannableString periodAmount = new SpannableString(BHUtilities.numericFormat(payments.get(position).Amount) + bahtLabel);
+                            periodAmount.setSpan(new ForegroundColorSpan(Color.RED), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//สี
+                            periodAmount.setSpan(new StyleSpan(Typeface.BOLD), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//ตัวหนา
+                            periodAmount.setSpan(new TextAppearanceSpan(activity, R.style.TextView_Value2), 0, BHUtilities.numericFormat(payments.get(position).Amount).length(), 0);//ขนาดตัว
+                            tvPeriodAmount.setText(periodAmount, TextView.BufferType.SPANNABLE);
+
+                            txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(payments.get(position).Amount)));
+
+                        }
+
+                        try {
+                            txtThaiBaht.setVisibility(payments.get(position).VoidStatus ? View.GONE : View.VISIBLE);
+                            tvPeriodAmount.setText(payments.get(position).VoidStatus ? "ยกเลิกการชำระเงิน" : tvPeriodAmount.getText());
+
+                        }
+                        catch (Exception ex){
+
+                        }
+
+
+                        try {
+                            //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
+                            if ((payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) || payments.get(position).VoidStatus) {
+                                LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                                llBalancesOfPeriod.setVisibility(View.GONE);
+
+                                LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                                llBalanceAmount.setVisibility(View.GONE);
+
+
+
+
+                            } else {
+                                /**ยอดเงินคงเหลือของงวดนั้น**/
+                                LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                                TextView tvBalancesOfPeriodLabel = (TextView) view.findViewById(R.id.tvBalancesOfPeriodLabel); //คงเหลืองวดที่ n
+                                TextView tvBalancesOfPeriod = (TextView) view.findViewById(R.id.tvBalancesOfPeriod); //จำนวนเงินคงเหลือของงวด
+
+                                if (payments.get(position).BalancesOfPeriod == 0) {
+                                    llBalancesOfPeriod.setVisibility(View.GONE);
+
+                                } else {
+
+
+                                    llBalancesOfPeriod.setVisibility(View.VISIBLE);
+                                    if (payments.get(position).MODE == 1) {
+                                        tvBalancesOfPeriodLabel.setText("คงเหลือเงินสด");
+                                    } else {
+                                        tvBalancesOfPeriodLabel.setText("คงเหลือ");
+                                    }
+                                    tvBalancesOfPeriod.setText(BHUtilities.numericFormat(payments.get(position).BalancesOfPeriod) + bahtLabel);
+
+                                }
+
+
+                                /**ยอดคงเหลือของงวดถัดไป**/
+                                LinearLayout llBalanceAmount = (LinearLayout) view.findViewById(R.id.llBalanceAmount); //ยอดคงเหลือ ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
+                                TextView tvBalanceAmountLabel = (TextView) view.findViewById(R.id.tvBalanceAmountLabel); //คงเหลือเงินสด หรื คงเหลืองวดที่ 1 - n หรือ คงเหลืองวดที่ n
+                                TextView tvBalanceAmount = (TextView) view.findViewById(R.id.tvBalanceAmount); //จำนวนเงินคงเหลือ
+
+                                //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
+                                if (payments.get(position).Balances - payments.get(position).BalancesOfPeriod == 0 || payments.get(position).VoidStatus) {
+                                    llBalanceAmount.setVisibility(View.GONE);
+
+                                } else {
+
+                                    Log.e("AAAA","2");
+
+
+
+                                    llBalanceAmount.setVisibility(View.VISIBLE);
+                                    if (payments.get(position).MODE == 1) {
+                                        tvBalanceAmountLabel.setText("คงเหลือเงินสด");
+                                    } else {
+                                        tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d - %d", payments.get(position).PaymentPeriodNumber , payments.get(position).MODE-1));
+                                    }
+                                    tvBalanceAmount.setText(BHUtilities.numericFormat(payments.get(position).Balances - payments.get(position).BalancesOfPeriod) + bahtLabel);
+
+
+
+                                }
+                            }
+                        }
+                        catch (Exception EX){
+
+                        }
+
+
+
+                        // tsrl
                     }
                 }
-            }
-            catch (Exception EX){
 
             }
+            catch (Exception ec){
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
