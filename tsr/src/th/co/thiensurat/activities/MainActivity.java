@@ -2847,6 +2847,7 @@ Log.e("PositionName",BHPreference.PositionName());
             this.activity = activity;
         }
 
+        @SuppressLint("MissingPermission")
         @Override
         public void onReceive(Context context, Intent intent) {
             activity.showMessage("ระบบกำลังทำการ Logout");
@@ -4071,9 +4072,7 @@ Log.e("PositionName",BHPreference.PositionName());
                     fileDB.delete();
                 }*/
                 new BaseController().removeDatabase();
-
-                Builder setupAlert;
-                setupAlert = new AlertDialog.Builder(activity)
+                Builder setupAlert = new AlertDialog.Builder(activity)
                         .setTitle("แจ้งเตือน ปรับปรุงฐานข้อมูล")
                         .setCancelable(false)
                         .setMessage("เกิดข้อผิดพลาดในการปรับปรุงฐานข้อมูล กรุณาลองใหม่อีกครั้ง")
@@ -4098,16 +4097,7 @@ Log.e("PositionName",BHPreference.PositionName());
                         });
                 setupAlert.show();
             }
-
-
-
-
-
-
-
-
             load_data_contact_online_preoder();
-
         }
     }
 

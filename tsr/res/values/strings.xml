@@ -8,7 +8,7 @@
     <!--<string name="tsr_app_name">TSR CR_T</string>-->
     <!--<string name="tsr_app_name">TSR DEV</string>-->
     <!--<string name="tsr_app_name">TSR DEV Migrate</string>-->
-    <!--<string name="tsr_app_version">v. 00.10.05.10441</string>-->
+<!--    <string name="tsr_app_version">v. 00.10.05.10441</string>-->
 
     <!--Permissions-->
     <string name="permission_message_title">แจ้งเตือน</string>

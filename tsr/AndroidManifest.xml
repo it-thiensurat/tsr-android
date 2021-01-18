@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="th.co.thiensurat">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:name="th.co.bighead.utilities.BHApplication"
         android:allowBackup="false"
