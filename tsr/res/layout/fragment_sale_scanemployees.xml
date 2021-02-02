@@ -115,7 +115,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp">
+        android:layout_margin="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -132,7 +132,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:src="@drawable/barcode"/>
             </LinearLayout>
 
@@ -181,6 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
+                android:visibility="gone"
                 android:layout_marginLeft="@dimen/sale_scan_employees_layout_marginLeft"
                 android:layout_marginRight="@dimen/sale_scan_employees_layout_marginRight"
                 android:orientation="vertical">
@@ -197,6 +198,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/sale_scan_employees_layout_marginLeft"
                 android:layout_marginRight="@dimen/sale_scan_employees_layout_marginRight"
+                android:visibility="gone"
                 android:background="#ECF0F1"
                 android:orientation="vertical">
 
@@ -209,6 +211,20 @@
                     android:layout_margin="@dimen/sale_scan_emp__textview_margin"
                     android:text=""
                     style="@style/TextView.Value"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                    app:spanCount="2"/>
+
             </LinearLayout>
 
             <!--<LinearLayout
@@ -248,7 +264,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="20dp"
+                    android:layout_margin="10dp"
                     android:text="พนักงานผู้แนะนำ (ถ้ามี)"
                     style="@style/TextView.Value"/>
 

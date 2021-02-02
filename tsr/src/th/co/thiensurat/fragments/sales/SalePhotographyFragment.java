@@ -301,6 +301,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.gson.Gson;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -317,10 +327,19 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHPermissions;
 import th.co.bighead.utilities.BHPreference;
@@ -337,9 +356,12 @@ import th.co.thiensurat.data.controller.DatabaseHelper;
 import th.co.thiensurat.data.controller.ImageTypeController;
 import th.co.thiensurat.data.info.ContractImageInfo;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
+import th.co.thiensurat.retrofit.api.Service;
 
 import static org.acra.ACRA.LOG_TAG;
 import static org.acra.ACRA.getACRASharedPreferences;
+import static th.co.thiensurat.retrofit.api.client.BASE_URL;
+import static th.co.thiensurat.retrofit.api.client.GIS_BASE_URL;
 
 public class SalePhotographyFragment extends BHFragment {
 
@@ -549,28 +571,32 @@ public class SalePhotographyFragment extends BHFragment {
                 SalePhotographyMapFragment fm = BHFragment.newInstance(SalePhotographyMapFragment.class, data1);
                 showNextView(fm);*/
 
-                new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
+                imageTypeCode = ImageType.MAPPAYMENT.toString();
+                imageID = DatabaseHelper.getUUID();
+                captureImage();
 
-                    @Override
-                    public void onSuccess(BHPermissions bhPermissions) {
-                        SalePhotographyMapFragment.Data data1 = new SalePhotographyMapFragment.Data();
-                        data1.imageTypeCode = ImageType.MAPPAYMENT.toString();
-                        data1.title = titleID();
-                        SalePhotographyMapFragment fm = BHFragment.newInstance(SalePhotographyMapFragment.class, data1);
-                        showNextView(fm);
-                    }
-
-                    @Override
-                    public void onNotSuccess(BHPermissions bhPermissions) {
-                        bhPermissions.openAppSettings(getActivity());
-                    }
-
-                    @Override
-                    public void onShouldShowRequest(BHPermissions bhPermissions, BHPermissions.PermissionType... permissionType) {
-                        bhPermissions.showMessage(getActivity(), permissionType);
-                    }
-
-                }, BHPermissions.PermissionType.LOCATION);
+//                new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
+//
+//                    @Override
+//                    public void onSuccess(BHPermissions bhPermissions) {
+//                        SalePhotographyMapFragment.Data data1 = new SalePhotographyMapFragment.Data();
+//                        data1.imageTypeCode = ImageType.MAPPAYMENT.toString();
+//                        data1.title = titleID();
+//                        SalePhotographyMapFragment fm = BHFragment.newInstance(SalePhotographyMapFragment.class, data1);
+//                        showNextView(fm);
+//                    }
+//
+//                    @Override
+//                    public void onNotSuccess(BHPermissions bhPermissions) {
+//                        bhPermissions.openAppSettings(getActivity());
+//                    }
+//
+//                    @Override
+//                    public void onShouldShowRequest(BHPermissions bhPermissions, BHPermissions.PermissionType... permissionType) {
+//                        bhPermissions.showMessage(getActivity(), permissionType);
+//                    }
+//
+//                }, BHPermissions.PermissionType.LOCATION);
                 /*** [END] :: Permission ***/
             }
         });
@@ -799,12 +825,90 @@ String DD="",NAME_IMAGE="",IMAGE_TYPE="";
                 break;
             case R.string.button_cheak_photo:
                 showNextView(new SaleListPhotoFragment());
+//                getImageContract();
                 break;
             case R.string.button_back:
                 showLastView();
                 break;
+//            case R.string.button_send_image:
+//                getImageContract();
+//                break;
             default:
                 break;
         }
     }
+
+//    List<ContractImageInfo> contractImageInfoList = null;
+//    public void getImageContract() {
+//        (new BackgroundProcess(activity) {
+//
+//            @Override
+//            protected void before() {
+//                contractImageInfoList = new ArrayList<ContractImageInfo>();
+//            }
+//
+//            @Override
+//            protected void calling() {
+//                contractImageInfoList = TSRController.getContractImageByRefno(BHPreference.RefNo());
+//            }
+//
+//            @Override
+//            protected void after() {
+//                uploadToServer();
+//                Log.e("Image list", String.valueOf(contractImageInfoList));
+//            }
+//        }).start();
+//    }
+//
+//    public void uploadToServer() {
+//        List<MultipartBody.Part> parts = new ArrayList<>();
+//        MultipartBody.Part[] imageList = new MultipartBody.Part[contractImageInfoList.size()];
+//        if (contractImageInfoList != null && contractImageInfoList.size() > 0) {
+//            for (int i = 0; i < contractImageInfoList.size(); i++) {
+//                ContractImageInfo info = contractImageInfoList.get(i);
+//                File imageFile = new File(Parth + "/" + info.RefNo + "/" + info.ImageTypeCode + "/" + info.ImageName);
+//                RequestBody imageBody = RequestBody.create(MediaType.parse("multipart/form-data"), imageFile);
+//                parts.add(MultipartBody.Part.createFormData("files[]", info.ImageTypeCode + "_" + info.ImageName, imageBody));
+//            }
+//        }
+//
+//        RequestBody refnoBody = RequestBody.create(MediaType.parse("text/plain"), BHPreference.RefNo());
+//
+//        try {
+//            Retrofit retrofit = new Retrofit.Builder()
+//                    .baseUrl(GIS_BASE_URL)
+//                    .addConverterFactory(GsonConverterFactory.create())
+//                    .build();
+//            Service request = retrofit.create(Service.class);
+//            Call call = request.uploadImageToServer(parts, refnoBody);
+//            call.enqueue(new Callback() {
+//                @Override
+//                public void onResponse(Call call, retrofit2.Response response) {
+//                    Gson gson=new Gson();
+//                    try {
+//                        Log.e("GSON response", String.valueOf(gson.toJson(response.body())));
+//                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+//                        Log.e("onResponse jsonObject", String.valueOf(jsonObject));
+//                        JSONArray array = jsonObject.getJSONArray("data");
+//                        Log.e("onResponse jsonArray", String.valueOf(array));
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                        Log.e("onResponse",e.getLocalizedMessage());
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call call, Throwable t) {
+//                    Log.e("onFailure",t.getLocalizedMessage());
+//                }
+//            });
+//
+//        } catch (Exception e) {
+//            Log.e("Exception",e.getLocalizedMessage());
+//        }
+//    }
+//
+//    public static RequestBody createRequestBody(@NonNull File file){
+//        return RequestBody.create(MediaType.parse("multipart/form-data"),file);
+//    }
 }

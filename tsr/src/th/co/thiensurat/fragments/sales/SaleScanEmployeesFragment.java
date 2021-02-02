@@ -4,7 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -17,10 +21,12 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 //import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.Intents;
@@ -36,6 +42,7 @@ import th.co.bighead.utilities.BHSpinnerAdapter;
 import th.co.bighead.utilities.BHUtilities;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
+import th.co.thiensurat.adapter.EmployeeAdapter;
 import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.info.ContractInfo;
@@ -43,7 +50,7 @@ import th.co.thiensurat.data.info.EmployeeInfo;
 import th.co.thiensurat.data.info.ProductStockInfo;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
 
-public class SaleScanEmployeesFragment extends BHFragment {
+public class SaleScanEmployeesFragment extends BHFragment implements EmployeeAdapter.ItemClickListener {
 
     private String STATUS_CODE = "02";
     private int REQUEST_QR_SCAN = 0;
@@ -74,6 +81,9 @@ public class SaleScanEmployeesFragment extends BHFragment {
     @InjectView
     private TextView txtNumber5;
 
+    @InjectView
+    private RecyclerView recyclerview;
+
     // private ContractInfo CONTRACT;
     private ContractInfo contract;
     // private ProductStockInfo PRODUCTSTOCK;
@@ -87,6 +97,8 @@ public class SaleScanEmployeesFragment extends BHFragment {
 
     private boolean isAutoCompletePreSaleEmployeeCode;
     private List<EmployeeInfo> employeeForPreSaleList = null;
+
+    private EmployeeAdapter employeeAdapter;
 
     /*@InjectView
     public EditText PreSaleEmployeeCode; // รหัสพนักงานผู้แนะนำ*/
@@ -191,25 +203,13 @@ public class SaleScanEmployeesFragment extends BHFragment {
                 // TODO Auto-generated method stub
                 selectedEmpID = (String) parent.getItemAtPosition(position);
                 if (!parent.getItemAtPosition(position).toString().trim().equals("")) {
-                    // selectedEmployee = employeeList.get(position - 1);
-                    //String empID = employeeList.get(position - 1).EmpID;
-
                     String empID = employeeListTemp.get(position - 1).EmpID;
-                    // showSelectedEmployee();
-                    // TeamEmp();
-
                     bindSelectedEmployee(empID, BHPreference.teamCode());
-
                     Log.e("sale_select",empID+","+BHPreference.teamCode());
-                }
-                else {
-                    //String empID = employeeListTemp.get(position).EmpID;
-
+                } else {
                     Log.e("sale_select2",BHPreference.teamCode());
                     bindSelectedEmployee(BHPreference.employeeID(), BHPreference.teamCode());
-
                 }
-
             }
 
             @Override
@@ -237,6 +237,10 @@ public class SaleScanEmployeesFragment extends BHFragment {
                     autoCompletePreSaleEmployeeCode.setThreshold(0);
                     autoCompletePreSaleEmployeeCode.setAdapter(adapter);
                     autoCompletePreSaleEmployeeCode.setDropDownHeight(LinearLayout.LayoutParams.MATCH_PARENT);
+
+                    Log.e("Emp list", String.valueOf(employeeForPreSaleList));
+
+
                 }
 
             }
@@ -350,16 +354,10 @@ public class SaleScanEmployeesFragment extends BHFragment {
                 if(BHPreference.sourceSystem().equals("Credit")) {
                     Log.e("po","credit");
                     employee = getEmpByempID_for_credit(empID,teamCode);
-                }
-                else {
+                } else {
                     Log.e("po","sale");
-
                     employee = getEmpByempID(empID, teamCode);
-
                 }
-
-               // employee = getEmpByempID(empID, teamCode);
-
             }
 
             @Override
@@ -375,11 +373,7 @@ public class SaleScanEmployeesFragment extends BHFragment {
                         int empPosition = empAdapter.getPosition(empFullName);
                         spinnerEmp.setSelection(empPosition);
                     }
-
-
                 }
-
-
             }
 
         }).start();
@@ -535,8 +529,14 @@ public class SaleScanEmployeesFragment extends BHFragment {
 
         }
         BHSpinnerAdapter<String> arrayemp = new BHSpinnerAdapter<String>(activity, emp);
-        spinnerEmp.setAdapter(arrayemp);
+//        spinnerEmp.setAdapter(arrayemp);
 
+        recyclerview.setLayoutManager(new GridLayoutManager(activity, 2, GridLayout.VERTICAL, false));
+        recyclerview.setHasFixedSize(true);
+        employeeAdapter = new EmployeeAdapter(activity, employeeList);
+        recyclerview.setAdapter(employeeAdapter);
+        employeeAdapter.setClickListener(this);
+        employeeAdapter.notifyDataSetChanged();
     }
 
     // private void showSelectedEmployee() {
@@ -580,10 +580,8 @@ public class SaleScanEmployeesFragment extends BHFragment {
         // TODO Auto-generated method stub
         switch (buttonID) {
             case R.string.button_save_employee:
-
                 if (employee == null || selectedEmpID == null || (selectedEmpID != null && selectedEmpID.trim().isEmpty())) {
                     // if (empID == null || empID.equals("")) {
-
                     showWarningDialog("คำเตือน","กรุณาเลือกพนักงาน");
 //                    final String title = "คำเตือน";
 //                    String message = "กรุณาเลือกพนักงาน";
@@ -598,12 +596,7 @@ public class SaleScanEmployeesFragment extends BHFragment {
 //                            });
 //                    setupAlert.show();
                 } else {
-                    // updateContractDB();
-
-
-                        updateContract();
-
-
+                    updateContract();
                 }
                 break;
             case R.string.button_back:
@@ -618,12 +611,6 @@ public class SaleScanEmployeesFragment extends BHFragment {
         (new BackgroundProcess(activity) {
             @Override
             protected void before() {
-
-                // TODO Auto-generated method stub
-
-
-
-
                 try {
                     contract.SaleCode = employee.SaleCode;
                     contract.SaleEmployeeCode = employee.EmpID;
@@ -636,8 +623,7 @@ public class SaleScanEmployeesFragment extends BHFragment {
                     contract.PreSaleEmployeeName =  PreSaleEmployeeName.getText().toString(); // ชื่อ-นามสกุลผู้แนะนำ
                     contract.SaleEmployeeLevelPath = BHPreference.currentTreeHistoryID();
 
-                }
-                catch (Exception ex){
+                } catch (Exception ex){
                     contract.SaleCode = "BBAI0020000";
                     contract.SaleEmployeeCode = "A16086";
                     contract.SaleTeamCode = "BBAI-02";// productStock.TeamCode;
@@ -649,14 +635,6 @@ public class SaleScanEmployeesFragment extends BHFragment {
                     contract.PreSaleEmployeeName =  ""; // ชื่อ-นามสกุลผู้แนะนำ
                     contract.SaleEmployeeLevelPath ="";
                 }
-
-
-
-
-
-
-
-                // contract.ser
             }
 
             @Override
@@ -680,5 +658,15 @@ public class SaleScanEmployeesFragment extends BHFragment {
 
     private void clearData() {
         textShowName.setText("");
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        employee = employeeList.get(position);
+        selectedEmpID = employee.EmpID;
+        employeeAdapter.setBackgroundItemClick(position);
+        employeeAdapter.notifyDataSetChanged();
+
+        bindSelectedEmployee(selectedEmpID, BHPreference.teamCode());
     }
 }

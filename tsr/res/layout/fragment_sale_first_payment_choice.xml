@@ -456,6 +456,41 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:background="#ECF0F1">
+
+                        <TextView
+                            style="@style/TextView.Value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_large"
+                            android:layout_weight="0.8"
+                            android:text="คิวอาร์โค้ด ท้ายสัญญา" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxQrcode"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.2" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutQrcode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_marginTop="15dp">
+
+                        <ImageView
+                            android:id="@+id/imageViewQr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/linearLayoutBank"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

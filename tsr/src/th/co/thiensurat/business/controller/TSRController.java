@@ -3748,6 +3748,10 @@ public class TSRController {
         return new ContractImageController().getContractImageList(RefNo, ImageTypeCode);
     }
 
+    public static List<ContractImageInfo> getContractImageByRefno(String RefNo) {
+        return new ContractImageController().getContractImage(RefNo);
+    }
+
     public static void addContractImage(ContractImageInfo ContractImage,
                                         boolean isSchedule) {
         if (ContractImage != null) {

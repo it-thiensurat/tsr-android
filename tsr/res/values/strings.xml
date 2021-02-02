@@ -8,7 +8,7 @@
     <!--<string name="tsr_app_name">TSR CR_T</string>-->
     <!--<string name="tsr_app_name">TSR DEV</string>-->
     <!--<string name="tsr_app_name">TSR DEV Migrate</string>-->
-<!--    <string name="tsr_app_version">v. 00.10.05.10441</string>-->
+    <!--    <string name="tsr_app_version">v. 00.10.05.10441</string>-->
 
     <!--Permissions-->
     <string name="permission_message_title">แจ้งเตือน</string>
@@ -60,6 +60,7 @@
     <string name="button_more">ข้อมูลลูกค้าเพิ่มเติม</string>
     <string name="button_receipt">ข้อมูลใบรับเงิน</string>
     <string name="button_update_list">ปรับปรุงรายการ</string>
+    <string name="button_send_image">ส่งรูปตรวจสอบ</string>
     <string name="button_save">บันทึก</string>
     <string name="button_confirm">ยืนยัน</string>
     <string name="button_confirm_print">ยืนยัน/พิมพ์</string>
@@ -166,6 +167,8 @@
     <string name="main_menu_credit_pc">C07FCC694E284F469B9AC4C99C96DDCF</string>
     <string name="main_menu_proorder_credit">C07FCC694E284F469B9AC4C99C96DDCG</string>
 
+    <string name="main_menu_customer_status">0BF75CB7521F47B585FDDED33726575A</string>
+
     <!-- Fixed - [BHPROJ-0026-3265] [Backend+Frontend] เพิ่มเมนูสำหรับทำการ ย้ายเข้า/ย้ายออก ข้อมูล Assign การเก็บเงิน -->
     <string name="main_menu_credit_assign_push_pull">42340AAEECA6495082198378374B8706</string>
 
@@ -254,6 +257,7 @@
     <string name="caption_complain_action_search">ค้นหาลูกค้าที่จะแก้ไขปัญหา</string>
     <string name="caption_complain_action_detail">รายละเอียดลูกค้าที่จะแก้ไขปัญหา</string>
     <string name="caption_first_payment_summary">รายละเอียดการเก็บเงิน</string>
+    <string name="caption_customer_status">ตรวจสอบสถานะลูกค้า</string>
     <!-- Label -->
     <string name="label_contract_date">วันที่ทำสัญญา</string>
     <string name="label_contract_no">เลขที่สัญญา</string>
@@ -473,15 +477,20 @@
     <!-- Sale Photo -->
 
     <!-- Sale Photo -->
-    <string name="sale_photo_home">ภาพที่อยู่อาศัย</string>
-    <string name="sale_photo_id">ภาพบัตรประชาชน</string>
-    <string name="sale_photo_gps">ภาพพิกัดแผนที (GPS) ที่อยู่ติดตั้ง</string>
-    <string name="sale_photo_gps_payment">ภาพพิกัดแผนที (GPS) ที่อยู่เก็บเงิน</string>
-    <!--<string name="sale_photo_product">ภาพเครื่องที่ติดตั้ง</string>-->
-    <string name="sale_photo_product">ภาพเครื่องเทิร์น</string>
+    <!--    <string name="sale_photo_home">ภาพที่อยู่อาศัย</string>-->
+    <!--    <string name="sale_photo_id">ภาพบัตรประชาชน</string>-->
+    <!--    <string name="sale_photo_gps">ภาพพิกัดแผนที (GPS) ที่อยู่ติดตั้ง</string>-->
+    <!--    <string name="sale_photo_gps_payment">ภาพพิกัดแผนที (GPS) ที่อยู่เก็บเงิน</string>-->
+    <!--    <string name="sale_photo_product">ภาพเครื่องเทิร์น</string>-->
+    <!--    <string name="sale_photo_payment_card">ภาพวาดแผนที่</string>-->
 
-    <!--<string name="sale_photo_payment_card">ภาพถ่ายการ์ด</string>-->
-    <string name="sale_photo_payment_card">ภาพวาดแผนที่</string>
+
+    <string name="sale_photo_id">รูปบัตรประชาชน</string>
+    <string name="sale_photo_gps_payment">รูปติดตั้งเครื่อง</string>
+    <string name="sale_photo_gps">รูปแผนที่ GPS</string>
+    <string name="sale_photo_product">รูปเครื่องเทิร์น</string>
+    <string name="sale_photo_payment_card">รูปแผนที่ (การ์ดเก็บเงิน)</string>
+    <string name="sale_photo_home">รูปบ้านลูกค้า</string>
 
     <!--  Menu Report -->
     <string name="menu_report_sale_summary">รายงานสรุปยอดขาย</string>
@@ -593,6 +602,8 @@
     <string name="button_scan">Scan for devices</string>
     <string name="folder_picture_tsr">tsr_temp</string>
     <string name="title_assign_employee">Assign employee</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--end for print version 2-->
 

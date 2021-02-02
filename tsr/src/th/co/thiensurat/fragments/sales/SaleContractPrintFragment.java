@@ -1004,6 +1004,7 @@ public class SaleContractPrintFragment extends BHFragment {
         // TODO Auto-generated method stub
         switch (buttonID) {
             case R.string.button_pay:
+//                printDocument();
                 float paymentAmount;
                 //final String strModel = (contract.MODEL == null) ? "" : contract.MODEL;
                 //if (strModel.equals("SA01P") || strModel.equals("PH01P")) {

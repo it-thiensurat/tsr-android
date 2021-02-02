@@ -28,6 +28,7 @@
         <item>@string/main_menu_sales</item>
         <item>@string/main_menu_preorder</item>
         <item>@string/main_menu_money</item>
+        <item>@string/main_menu_customer_status</item>
         <item>@string/main_menu_remove</item>
         <item>@string/main_menu_change</item>
         <item>@string/main_menu_document</item>
@@ -199,12 +200,12 @@
 
 
     <array name="sale_photo">
-        <item>@string/sale_photo_home</item>
         <item>@string/sale_photo_id</item>
-        <item>@string/sale_photo_gps</item>
-        <item>@string/sale_photo_gps_payment</item>
-        <item>@string/sale_photo_product</item>
         <item>@string/sale_photo_payment_card</item>
+        <item>@string/sale_photo_gps</item>
+        <item>@string/sale_photo_product</item>
+        <item>@string/sale_photo_gps_payment</item>
+        <item>@string/sale_photo_home</item>
     </array>
 
     <array name="report_sale_menu">

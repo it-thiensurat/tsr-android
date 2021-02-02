@@ -178,12 +178,12 @@ public class DocumentController {
     private static String[] getTextByPrintText(String text, int maxLength) {
         List<String> result = new ArrayList<String>();
 
-        if(ThemalPrintController.getAlphabetOnly(text).length() <= maxLength){
+        if (ThemalPrintController.getAlphabetOnly(text).length() <= maxLength) {
             result.add(text);
         } else {
             String[] textArray = text.split("\\s+");
             result.add("");
-            for(int i = 0; i < textArray.length; i++){
+            for (int i = 0; i < textArray.length; i++) {
                 int index = result.size() - 1;
                 String tempText = result.get(index);
 
@@ -193,19 +193,19 @@ public class DocumentController {
                     tempText += " " + textArray[i];
                 }
 
-                if(ThemalPrintController.getAlphabetOnly(tempText).length() <= maxLength){
+                if (ThemalPrintController.getAlphabetOnly(tempText).length() <= maxLength) {
                     result.set(index, tempText);
                 } else {
                     String[] tempTextArray = tempText.split("\\s+");
                     String resultTempText1 = "";
                     String resultTempText2 = "";
 
-                    if(tempTextArray.length != 1) {
+                    if (tempTextArray.length != 1) {
                         for (int j = 0; j < tempTextArray.length; j++) {
                             if (j == (tempTextArray.length - 1)) {
                                 resultTempText2 = tempTextArray[j];
                             } else {
-                                if(resultTempText1.equals("")) {
+                                if (resultTempText1.equals("")) {
                                     resultTempText1 += tempTextArray[j];
                                 } else {
                                     resultTempText1 += " " + tempTextArray[j];
@@ -217,10 +217,10 @@ public class DocumentController {
                     } else {
                         List<String> tempStr = alignTextByLength(tempTextArray[0], maxLength);
 
-                        for(int j = 0; j< tempStr.size(); j++){
-                            if(j == 0 ){
+                        for (int j = 0; j < tempStr.size(); j++) {
+                            if (j == 0) {
                                 result.set(index, tempStr.get(j));
-                            } else{
+                            } else {
                                 result.add(tempStr.get(j));
                             }
                         }
@@ -233,22 +233,22 @@ public class DocumentController {
         return result.toArray(new String[result.size()]);
     }
 
-    private static List<String> alignTextByLength(String text, int length){
+    private static List<String> alignTextByLength(String text, int length) {
         List<String> result = new ArrayList<String>();
 
-        if(ThemalPrintController.getAlphabetOnly(text).length() <= length){
+        if (ThemalPrintController.getAlphabetOnly(text).length() <= length) {
             result.add(text);
         } else {
             result.add("");
             int start = 0;
-            for (int i = 0; i < text.length(); i++){
+            for (int i = 0; i < text.length(); i++) {
                 int index = result.size() - 1;
                 String tempText = text.substring(start, i + 1);
 
-                if(ThemalPrintController.getAlphabetOnly(tempText).length() <= length){
+                if (ThemalPrintController.getAlphabetOnly(tempText).length() <= length) {
                     result.set(index, tempText);
                 } else {
-                    if(i != text.length() - 1){
+                    if (i != text.length() - 1) {
                         start = i;
                         result.add("");
                     }
@@ -258,29 +258,29 @@ public class DocumentController {
         return result;
     }
 
-    private static List<PrintTextInfo> getTextAlignCenter(String text){
+    private static List<PrintTextInfo> getTextAlignCenter(String text) {
         List<PrintTextInfo> result = new ArrayList<>();
 
-        String[] tempText = getTextByPrintText(text, ThemalPrintController.maxTextLength );
+        String[] tempText = getTextByPrintText(text, ThemalPrintController.maxTextLength);
 
-        for(int i = 0; i < tempText.length; i++){
+        for (int i = 0; i < tempText.length; i++) {
             result.add(new PrintTextInfo(ThemalPrintController.calculateCenter(tempText[i])));
         }
         return result;
     }
 
-    private static List<PrintTextInfo> getTextAlignCenter(String text, PrintTextInfo.FontType fontType){
+    private static List<PrintTextInfo> getTextAlignCenter(String text, PrintTextInfo.FontType fontType) {
         List<PrintTextInfo> result = new ArrayList<>();
 
-        String[] tempText = getTextByPrintText(text, ThemalPrintController.maxTextLength );
+        String[] tempText = getTextByPrintText(text, ThemalPrintController.maxTextLength);
 
-        for(int i = 0; i < tempText.length; i++){
+        for (int i = 0; i < tempText.length; i++) {
             result.add(new PrintTextInfo(ThemalPrintController.calculateCenter(tempText[i]), fontType));
         }
         return result;
     }
 
-    private static List<PrintTextInfo> getTextAlignLeftByOffSetLeft(String left, String right){
+    private static List<PrintTextInfo> getTextAlignLeftByOffSetLeft(String left, String right) {
         List<PrintTextInfo> result = new ArrayList<>();
 
         int offSetLeft = 20;
@@ -289,13 +289,13 @@ public class DocumentController {
 
         int size = Math.max(tempLeft.length, tempRight.length);
 
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             result.add(new PrintTextInfo(ThemalPrintController.calculateOffSetLeft(i < tempLeft.length ? tempLeft[i] : "", i < tempRight.length ? tempRight[i] : "", offSetLeft)));
         }
         return result;
     }
 
-    private static List<PrintTextInfo> getTextAlignLeftByOffSetLeft(String left, String right, int offSetLeft){
+    private static List<PrintTextInfo> getTextAlignLeftByOffSetLeft(String left, String right, int offSetLeft) {
         List<PrintTextInfo> result = new ArrayList<>();
 
         String[] tempLeft = getTextByPrintText(left, offSetLeft);
@@ -303,13 +303,13 @@ public class DocumentController {
 
         int size = Math.max(tempLeft.length, tempRight.length);
 
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             result.add(new PrintTextInfo(ThemalPrintController.calculateOffSetLeft(i < tempLeft.length ? tempLeft[i] : "", i < tempRight.length ? tempRight[i] : "", offSetLeft)));
         }
         return result;
     }
 
-    private static List<PrintTextInfo> getTextAlignLeftByOffSetLeft(String left, String right, PrintTextInfo.FontType fontType){
+    private static List<PrintTextInfo> getTextAlignLeftByOffSetLeft(String left, String right, PrintTextInfo.FontType fontType) {
         List<PrintTextInfo> result = new ArrayList<>();
 
         int offSetLeft = 20;
@@ -318,13 +318,13 @@ public class DocumentController {
 
         int size = Math.max(tempLeft.length, tempRight.length);
 
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             result.add(new PrintTextInfo(ThemalPrintController.calculateOffSetLeft(i < tempLeft.length ? tempLeft[i] : "", i < tempRight.length ? tempRight[i] : "", offSetLeft), fontType));
         }
         return result;
     }
 
-    private static List<PrintTextInfo> getTextAlignLeftByOffSetLeft(String left, String right, int offSetLeft, PrintTextInfo.FontType fontType){
+    private static List<PrintTextInfo> getTextAlignLeftByOffSetLeft(String left, String right, int offSetLeft, PrintTextInfo.FontType fontType) {
         List<PrintTextInfo> result = new ArrayList<>();
 
         String[] tempLeft = getTextByPrintText(left, offSetLeft);
@@ -332,16 +332,16 @@ public class DocumentController {
 
         int size = Math.max(tempLeft.length, tempRight.length);
 
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             result.add(new PrintTextInfo(ThemalPrintController.calculateOffSetLeft(i < tempLeft.length ? tempLeft[i] : "", i < tempRight.length ? tempRight[i] : "", offSetLeft), fontType));
         }
         return result;
     }
 
-    private static List<PrintTextInfo> getTextAlignLeftRight(String left, String right){
+    private static List<PrintTextInfo> getTextAlignLeftRight(String left, String right) {
         List<PrintTextInfo> result = new ArrayList<>();
 
-        if(ThemalPrintController.getAlphabetOnly(String.format("%s %s", left, right)).length() <=  ThemalPrintController.maxTextLength){
+        if (ThemalPrintController.getAlphabetOnly(String.format("%s %s", left, right)).length() <= ThemalPrintController.maxTextLength) {
             result.add(new PrintTextInfo(ThemalPrintController.calculateLeghtRight(left, right)));
         } else {
             String[] tempLeft = getTextByPrintText(left, (ThemalPrintController.maxTextLength / 2) - 2);
@@ -349,17 +349,17 @@ public class DocumentController {
 
             int size = Math.max(tempLeft.length, tempRight.length);
 
-            for(int i = 0; i < size; i++){
+            for (int i = 0; i < size; i++) {
                 result.add(new PrintTextInfo(ThemalPrintController.calculateLeghtRight(i < tempLeft.length ? tempLeft[i] : "", i < tempRight.length ? tempRight[i] : "")));
             }
         }
         return result;
     }
 
-    private static List<PrintTextInfo> getTextAlignLeftRight(String left, String right, PrintTextInfo.FontType fontType){
+    private static List<PrintTextInfo> getTextAlignLeftRight(String left, String right, PrintTextInfo.FontType fontType) {
         List<PrintTextInfo> result = new ArrayList<>();
 
-        if(ThemalPrintController.getAlphabetOnly(String.format("%s %s", left, right)).length() <=  ThemalPrintController.maxTextLength){
+        if (ThemalPrintController.getAlphabetOnly(String.format("%s %s", left, right)).length() <= ThemalPrintController.maxTextLength) {
             result.add(new PrintTextInfo(ThemalPrintController.calculateLeghtRight(left, right), fontType));
         } else {
             String[] tempLeft = getTextByPrintText(left, (ThemalPrintController.maxTextLength / 2) - 2);
@@ -367,18 +367,18 @@ public class DocumentController {
 
             int size = Math.max(tempLeft.length, tempRight.length);
 
-            for(int i = 0; i < size; i++){
+            for (int i = 0; i < size; i++) {
                 result.add(new PrintTextInfo(ThemalPrintController.calculateLeghtRight(i < tempLeft.length ? tempLeft[i] : "", i < tempRight.length ? tempRight[i] : ""), fontType));
             }
         }
         return result;
     }
 
-    private static List<PrintTextInfo> getTextLeftRightAlignCenter(String left, String right){
-        return getTextLeftRightAlignCenter( left,  right,  "TH");
+    private static List<PrintTextInfo> getTextLeftRightAlignCenter(String left, String right) {
+        return getTextLeftRightAlignCenter(left, right, "TH");
     }
 
-    private static List<PrintTextInfo> getTextLeftRightAlignCenter(String left, String right, String Language){
+    private static List<PrintTextInfo> getTextLeftRightAlignCenter(String left, String right, String Language) {
         List<PrintTextInfo> result = new ArrayList<>();
 
         String[] tempLeft = getTextByPrintText(left, (ThemalPrintController.maxTextLength / 2) - 2);
@@ -386,7 +386,7 @@ public class DocumentController {
 
         int size = Math.max(tempLeft.length, tempRight.length);
 
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             result.add(new PrintTextInfo(String.format(" %s  %s ",
                     ThemalPrintController.calculateCenterByLength(i < tempLeft.length ? tempLeft[i] : "", (ThemalPrintController.maxTextLength / 2) - 2),
                     ThemalPrintController.calculateCenterByLength(i < tempRight.length ? tempRight[i] : "", (ThemalPrintController.maxTextLength / 2) - 2))
@@ -395,7 +395,7 @@ public class DocumentController {
         return result;
     }
 
-    private static List<PrintTextInfo> getTextLeftRightAlignCenter(String left, String right, PrintTextInfo.FontType fontType){
+    private static List<PrintTextInfo> getTextLeftRightAlignCenter(String left, String right, PrintTextInfo.FontType fontType) {
         List<PrintTextInfo> result = new ArrayList<>();
 
         String[] tempLeft = getTextByPrintText(left, (ThemalPrintController.maxTextLength / 2) - 2);
@@ -403,7 +403,7 @@ public class DocumentController {
 
         int size = Math.max(tempLeft.length, tempRight.length);
 
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             result.add(new PrintTextInfo(String.format(" %s  %s ",
                     ThemalPrintController.calculateCenterByLength(i < tempLeft.length ? tempLeft[i] : "", (ThemalPrintController.maxTextLength / 2) - 2),
                     ThemalPrintController.calculateCenterByLength(i < tempRight.length ? tempRight[i] : "", (ThemalPrintController.maxTextLength / 2) - 2)), fontType
@@ -412,44 +412,44 @@ public class DocumentController {
         return result;
     }
 
-    private static List<PrintTextInfo> getTextAlignLeft(String left){
+    private static List<PrintTextInfo> getTextAlignLeft(String left) {
         return getTextAlignLeft(left, "TH");
     }
 
-    private static List<PrintTextInfo> getTextAlignLeft(String left, String language){
+    private static List<PrintTextInfo> getTextAlignLeft(String left, String language) {
         List<PrintTextInfo> result = new ArrayList<>();
 
-        if(ThemalPrintController.getAlphabetOnly(left).length() <=  ThemalPrintController.maxTextLength){
+        if (ThemalPrintController.getAlphabetOnly(left).length() <= ThemalPrintController.maxTextLength) {
             result.add(new PrintTextInfo(left, language));
         } else {
             String[] tempLeft = getTextByPrintText(left, ThemalPrintController.maxTextLength);
 
-            for(int i = 0; i < tempLeft.length; i++){
+            for (int i = 0; i < tempLeft.length; i++) {
                 result.add(new PrintTextInfo(tempLeft[i], language));
             }
         }
         return result;
     }
 
-    private static List<PrintTextInfo> getTextAlignLeft(String left, PrintTextInfo.FontType fontType){
+    private static List<PrintTextInfo> getTextAlignLeft(String left, PrintTextInfo.FontType fontType) {
         List<PrintTextInfo> result = new ArrayList<>();
 
-        if(ThemalPrintController.getAlphabetOnly(left).length() <=  ThemalPrintController.maxTextLength){
+        if (ThemalPrintController.getAlphabetOnly(left).length() <= ThemalPrintController.maxTextLength) {
             result.add(new PrintTextInfo(left, fontType));
         } else {
             String[] tempLeft = getTextByPrintText(left, ThemalPrintController.maxTextLength);
 
-            for(int i = 0; i < tempLeft.length; i++){
+            for (int i = 0; i < tempLeft.length; i++) {
                 result.add(new PrintTextInfo(tempLeft[i], fontType));
             }
         }
         return result;
     }
 
-    private static List<PrintTextInfo> getTextForDocumentHistory(String num, String left, String right){
+    private static List<PrintTextInfo> getTextForDocumentHistory(String num, String left, String right) {
         List<PrintTextInfo> result = new ArrayList<>();
 
-        if(ThemalPrintController.getAlphabetOnly(String.format("%s  %s %s", num, left, right)).length() <=  ThemalPrintController.maxTextLength){
+        if (ThemalPrintController.getAlphabetOnly(String.format("%s  %s %s", num, left, right)).length() <= ThemalPrintController.maxTextLength) {
             result.add(new PrintTextInfo(ThemalPrintController.calculateLeghtRight(String.format("%s  %s", num, left), right)));
         } else {
             String[] tempNum = getTextByPrintText(num, 3);
@@ -459,7 +459,7 @@ public class DocumentController {
             int size = Math.max(tempLeft.length, tempRight.length);
             size = Math.max(size, tempNum.length);
 
-            for(int i = 0; i < size; i++){
+            for (int i = 0; i < size; i++) {
                 //result.add(new PrintTextInfo(ThemalPrintController.calculateLeghtRight(i < tempLeft.length ? tempLeft[i] : "", i < tempRight.length ? tempRight[i] : "")));
 
                 result.add(new PrintTextInfo(ThemalPrintController.calculateLeghtRight(String.format("%s  %s", i < tempNum.length ? tempNum[i] : "   ", i < tempLeft.length ? tempLeft[i] : ""), i < tempRight.length ? tempRight[i] : "")));
@@ -874,10 +874,10 @@ public class DocumentController {
             yy += 200;
             String TSR = "";
             // YIM Change TSR_COMMITTEE_NAME
-            if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
+            if (BHGeneral.isOpenDepartmentSignature && BHPreference.hasDepartmentSignatureImage()) {
                 EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
                 if (saleLeader != null) {
-                    TSR = "("+saleLeader.DepartmentHeadName+")";
+                    TSR = "(" + saleLeader.DepartmentHeadName + ")";
                 }
             }
             cv.drawText(String.format("%sผู้ให้เช่าซื้อ", getSignatureUnderline(pSignature, (LAYOUT_WIDTH / 2) - (getWidth("ผู้ให้เช่าซื้อ", pSignature) + 50))), LAYOUT_WIDTH / 4, yy, pSignature);
@@ -1018,7 +1018,7 @@ public class DocumentController {
         switch (contract.CustomerType) {
             case "0":
             case "2":
-                if(defaultAddress.TelMobile.equals(installAddress.TelMobile)){
+                if (defaultAddress.TelMobile.equals(installAddress.TelMobile)) {
                     listText.addAll(getTextAlignLeftByOffSetLeft(" ที่อยู่บัตร", defaultAddress.Address()));
                     listText.addAll(getTextAlignLeftByOffSetLeft(" ที่ติดตั้ง", installAddress.Address()));
                     listText.addAll(getTextAlignLeftByOffSetLeft(" เบอร์โทรติดต่อ", installAddress.TelMobile));
@@ -1030,7 +1030,7 @@ public class DocumentController {
                 }
                 break;
             case "1":
-                if(defaultAddress.TelMobile.equals(installAddress.TelMobile)){
+                if (defaultAddress.TelMobile.equals(installAddress.TelMobile)) {
                     listText.addAll(getTextAlignLeftByOffSetLeft(" ที่อยู่บัตร", defaultAddress.Address()));
                     listText.addAll(getTextAlignLeftByOffSetLeft(" ที่ติดตั้ง", installAddress.Address()));
                     listText.addAll(getTextAlignLeftByOffSetLeft(" เบอร์โทรติดต่อ", installAddress.TelHome));
@@ -1075,10 +1075,10 @@ public class DocumentController {
             listText.addAll(getTextLeftRightAlignCenter("           ผู้ขาย       ", "          ผู้ซื้อ        "));
             String TSR = "";
             // YIM Change TSR_COMMITTEE_NAME
-            if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
+            if (BHGeneral.isOpenDepartmentSignature && BHPreference.hasDepartmentSignatureImage()) {
                 EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
                 if (saleLeader != null) {
-                    TSR = "("+saleLeader.DepartmentHeadName+")";
+                    TSR = "(" + saleLeader.DepartmentHeadName + ")";
                 }
             }
             listText.addAll(getTextLeftRightAlignCenter(TSR, customer));
@@ -1091,10 +1091,10 @@ public class DocumentController {
             listText.addAll(getTextLeftRightAlignCenter("     ผู้ให้เช่าซื้อ       ", "       ผู้เช่าซื้อ        "));
             String TSR = "(นายวิรัช วงศ์นิรันดร์)";
             // YIM Change TSR_COMMITTEE_NAME
-            if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
+            if (BHGeneral.isOpenDepartmentSignature && BHPreference.hasDepartmentSignatureImage()) {
                 EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
                 if (saleLeader != null) {
-                    TSR = "("+saleLeader.DepartmentHeadName+")";
+                    TSR = "(" + saleLeader.DepartmentHeadName + ")";
                 }
             }
             listText.addAll(getTextLeftRightAlignCenter(TSR, customer));
@@ -1271,10 +1271,10 @@ public class DocumentController {
         } else {
             if (paymentInfo.CloseAccountPaymentPeriodNumber == paymentInfo.PaymentPeriodNumber && paymentInfo.BalancesOfPeriod == 0) {
                 texts = getText("จำนวนที่ชำระ", pValue, LAYOUT_WIDTH / 3);
-            } else{
+            } else {
                 if (paymentInfo.BalancesOfPeriod == 0) {
                     String txtPeriodAmountLabel = "";
-                    if(paymentInfo.PaymentPeriodNumber == paymentInfo.MODE){
+                    if (paymentInfo.PaymentPeriodNumber == paymentInfo.MODE) {
                         txtPeriodAmountLabel = "ค่างวดที่ %d/%d (ชำระครบ)";
                     } else {
                         txtPeriodAmountLabel = "ค่างวดที่ %d/%d";
@@ -1343,7 +1343,7 @@ public class DocumentController {
 
         if (paymentInfo.CloseAccountPaymentPeriodNumber == paymentInfo.PaymentPeriodNumber && paymentInfo.BalancesOfPeriod == 0) {
 
-        } else{
+        } else {
             /**ยอดเงินคงเหลือของงวดนั้น**/
             if (paymentInfo.BalancesOfPeriod != 0) {
                 yy += fontSize + lineSpace;
@@ -1452,7 +1452,6 @@ public class DocumentController {
     }
 
 
-
     public static ShortReceiptInfo getShortReceipt(PaymentInfo paymentInfo, DebtorCustomerInfo debtorCustomerInfo, AddressInfo addressInfo) {
 
         ShortReceiptInfo shortReceiptInfo = new ShortReceiptInfo();
@@ -1481,23 +1480,22 @@ public class DocumentController {
         cv.drawText("ใบรับเงิน", LAYOUT_WIDTH / 2, yy, p);
 
 
-
         Bitmap resultHeader = Bitmap.createBitmap(LAYOUT_WIDTH, (int) yy, Config.ARGB_8888);
         cv = new Canvas(resultHeader);
         cv.drawBitmap(receiptHeader, 0, 0, null);
         receiptHeader.recycle();
 
-        shortReceiptInfo.receiptHeader =  scaleBitmapByWidth(resultHeader);
+        shortReceiptInfo.receiptHeader = scaleBitmapByWidth(resultHeader);
 
         //zone detail
-        String detail="\n";
-        detail += "Receipt No. "+paymentInfo.ReceiptCode+" (VAT Included)\n";
-        detail += "Receipt Date. "+BHUtilities.dateFormat(paymentInfo.PayDate)+"\n";
-        detail += "Contract No. "+paymentInfo.CONTNO;
+        String detail = "\n";
+        detail += "Receipt No. " + paymentInfo.ReceiptCode + " (VAT Included)\n";
+        detail += "Receipt Date. " + BHUtilities.dateFormat(paymentInfo.PayDate) + "\n";
+        detail += "Contract No. " + paymentInfo.CONTNO;
 
         if (paymentInfo.ManualVolumeNo != null && paymentInfo.ManualRunningNo > 0) {
             String ManualDocumentBookRunningNo = String.format("%s/%d", BHUtilities.trim(paymentInfo.ManualVolumeNo), paymentInfo.ManualRunningNo).replace(' ', '0');
-            detail += "Ref No. "+ManualDocumentBookRunningNo;
+            detail += "Ref No. " + ManualDocumentBookRunningNo;
         }
         detail += "\n";
         //detail += paymentInfo.ProductName;
@@ -1533,13 +1531,13 @@ public class DocumentController {
         /**ยอดเงินที่จ่ายมาตามใบเสร็จ**/
         if (paymentInfo.MODE == 1) {
             if (paymentInfo.BalancesOfPeriod == 0) {
-               // detail +=BHUtilities.trim("งวด 1");
+                // detail +=BHUtilities.trim("งวด 1");
 
                 cv.drawText(BHUtilities.trim("งวด 1"), 650, yy, pValue);
             }
         } else {
             if (paymentInfo.CloseAccountPaymentPeriodNumber == paymentInfo.PaymentPeriodNumber && paymentInfo.BalancesOfPeriod == 0) {
-            } else{
+            } else {
                 if (paymentInfo.BalancesOfPeriod == 0) {
                     //detail += BHUtilities.trim(String.format("งวด %d/%d", paymentInfo.PaymentPeriodNumber, paymentInfo.MODE))+"\n";
                     cv.drawText(BHUtilities.trim(String.format("งวด %d/%d", paymentInfo.PaymentPeriodNumber, paymentInfo.MODE)), 650, yy, pValue);
@@ -1565,13 +1563,13 @@ public class DocumentController {
 
         if (paymentInfo.CloseAccountPaymentPeriodNumber == paymentInfo.PaymentPeriodNumber && paymentInfo.BalancesOfPeriod == 0) {
 
-        } else{
+        } else {
             /**ยอดเงินคงเหลือของงวดนั้น**/
             if (paymentInfo.BalancesOfPeriod != 0) {
                 if (paymentInfo.MODE == 1) {
 
                 } else {
-                    detail += String.format("คงขาด งวด %d", paymentInfo.PaymentPeriodNumber) + " "+BHUtilities.numericFormat(paymentInfo.BalancesOfPeriod) + " บาท";
+                    detail += String.format("คงขาด งวด %d", paymentInfo.PaymentPeriodNumber) + " " + BHUtilities.numericFormat(paymentInfo.BalancesOfPeriod) + " บาท";
 
                 }
 
@@ -1582,7 +1580,7 @@ public class DocumentController {
 
                 if (paymentInfo.MODE == 1) {
                 } else {
-                    detail +=String.format("คงขาด งวด %d-%d", paymentInfo.PaymentPeriodNumber + 1, paymentInfo.MODE) + " "+BHUtilities.numericFormat(paymentInfo.Balances - paymentInfo.BalancesOfPeriod)+" บาท";
+                    detail += String.format("คงขาด งวด %d-%d", paymentInfo.PaymentPeriodNumber + 1, paymentInfo.MODE) + " " + BHUtilities.numericFormat(paymentInfo.Balances - paymentInfo.BalancesOfPeriod) + " บาท";
                 }
 
             }
@@ -1637,7 +1635,7 @@ public class DocumentController {
         cv.drawBitmap(receiptTailer, 0, 0, null);
         receiptTailer.recycle();
 
-        shortReceiptInfo.receiptTailer =  scaleBitmapByWidth(resultTailer);
+        shortReceiptInfo.receiptTailer = scaleBitmapByWidth(resultTailer);
 
         return shortReceiptInfo;
 
@@ -1681,17 +1679,17 @@ public class DocumentController {
             shortReceiptInfo.listTxt.add(ThemalPrintController.calculateLeght("        ", "รวม " + BHUtilities.numericFormat(paymentInfo.Amount) + " บาท"));
         } else {
             if (paymentInfo.CloseAccountPaymentPeriodNumber == paymentInfo.PaymentPeriodNumber && paymentInfo.BalancesOfPeriod == 0) {
-                if(paymentInfo.PaymentPeriodNumber == paymentInfo.MODE) {
+                if (paymentInfo.PaymentPeriodNumber == paymentInfo.MODE) {
                     shortReceiptInfo.listTxt.add(ThemalPrintController.calculateLeght(BHUtilities.trim(String.format("งวด %d", paymentInfo.MODE)), BHUtilities.numericFormat(paymentInfo.CloseAccountOutstandingAmount) + " บาท"));
                 } else {
                     shortReceiptInfo.listTxt.add(ThemalPrintController.calculateLeght(BHUtilities.trim(String.format("งวด %d-%d", paymentInfo.PaymentPeriodNumber, paymentInfo.MODE)), BHUtilities.numericFormat(paymentInfo.CloseAccountOutstandingAmount) + " บาท"));
                 }
-            } else{
+            } else {
                 String txtPeriodAmountLabel = "";
                 if (paymentInfo.BalancesOfPeriod == 0) {
                     //detail += BHUtilities.trim(String.format("งวด %d/%d", paymentInfo.PaymentPeriodNumber, paymentInfo.MODE))+"\n";
 
-                    if(paymentInfo.PaymentPeriodNumber == paymentInfo.MODE){
+                    if (paymentInfo.PaymentPeriodNumber == paymentInfo.MODE) {
                         txtPeriodAmountLabel = "งวด %d/%d (ชำระครบ)";
                     } else {
                         txtPeriodAmountLabel = "งวด %d/%d";
@@ -1710,7 +1708,7 @@ public class DocumentController {
             shortReceiptInfo.listTxt.add(ThemalPrintController.calculateLeght("ส่วนลดตัดสด", BHUtilities.numericFormat(paymentInfo.CloseAccountDiscountAmount) + " บาท"));
             shortReceiptInfo.listTxt.add(ThemalPrintController.calculateLeght("จำนวนที่ชำระ", BHUtilities.numericFormat(paymentInfo.CloseAccountOutstandingAmount - paymentInfo.CloseAccountDiscountAmount) + " บาท"));
 
-        } else{
+        } else {
             /**ยอดเงินคงเหลือของงวดนั้น**/
             if (paymentInfo.BalancesOfPeriod != 0) {
                 shortReceiptInfo.listTxt.add(ThemalPrintController.calculateLeght(String.format("คงเหลืองวดที่ %d", paymentInfo.PaymentPeriodNumber), "ราคา " + BHUtilities.numericFormat(paymentInfo.BalancesOfPeriod) + " บาท"));
@@ -1721,9 +1719,9 @@ public class DocumentController {
             if (paymentInfo.Balances - paymentInfo.BalancesOfPeriod != 0) {
                 if (paymentInfo.MODE == 1) {
                 } else {
-                    if((paymentInfo.PaymentPeriodNumber + 1) == paymentInfo.MODE){
+                    if ((paymentInfo.PaymentPeriodNumber + 1) == paymentInfo.MODE) {
                         shortReceiptInfo.listTxt.add(ThemalPrintController.calculateLeght(String.format("คงขาด งวด %d", paymentInfo.MODE), BHUtilities.numericFormat(paymentInfo.Balances - paymentInfo.BalancesOfPeriod) + " บาท"));
-                    }else {
+                    } else {
                         shortReceiptInfo.listTxt.add(ThemalPrintController.calculateLeght(String.format("คงขาด งวด %d-%d", paymentInfo.PaymentPeriodNumber + 1, paymentInfo.MODE), BHUtilities.numericFormat(paymentInfo.Balances - paymentInfo.BalancesOfPeriod) + " บาท"));
                     }
                 }
@@ -1753,7 +1751,6 @@ public class DocumentController {
 
         ThemalPrintController.addLongText(shortReceiptInfo.listTxt, "ผู้รับเงิน " + sale);
         ThemalPrintController.addLongText(shortReceiptInfo.listTxt, "ชื่อลูกค้า " + debtorCustomerInfo.CustomerFullName());
-
 
 
         return shortReceiptInfo;
@@ -1796,15 +1793,15 @@ public class DocumentController {
             listText.addAll(getTextAlignLeftRight(" ", "รวม " + BHUtilities.numericFormat(paymentInfo.Amount) + " บาท"));
         } else {
             if (paymentInfo.CloseAccountPaymentPeriodNumber == paymentInfo.PaymentPeriodNumber && paymentInfo.BalancesOfPeriod == 0) {
-                if(paymentInfo.PaymentPeriodNumber == paymentInfo.MODE) {
+                if (paymentInfo.PaymentPeriodNumber == paymentInfo.MODE) {
                     listText.addAll(getTextAlignLeftRight(BHUtilities.trim(String.format(" งวด %d", paymentInfo.MODE)), BHUtilities.numericFormat(paymentInfo.CloseAccountOutstandingAmount) + " บาท"));
                 } else {
                     listText.addAll(getTextAlignLeftRight(BHUtilities.trim(String.format(" งวด %d-%d", paymentInfo.PaymentPeriodNumber, paymentInfo.MODE)), BHUtilities.numericFormat(paymentInfo.CloseAccountOutstandingAmount) + " บาท"));
                 }
-            } else{
+            } else {
                 String txtPeriodAmountLabel = "";
                 if (paymentInfo.BalancesOfPeriod == 0) {
-                    if(paymentInfo.PaymentPeriodNumber == paymentInfo.MODE){
+                    if (paymentInfo.PaymentPeriodNumber == paymentInfo.MODE) {
                         txtPeriodAmountLabel = "ชำระงวดที่ %d (ชำระครบ)";
                     } else {
                         txtPeriodAmountLabel = "ชำระงวดที่ %d";
@@ -1821,7 +1818,7 @@ public class DocumentController {
         if (paymentInfo.CloseAccountPaymentPeriodNumber == paymentInfo.PaymentPeriodNumber && paymentInfo.BalancesOfPeriod == 0) {
             listText.addAll(getTextAlignLeftRight(" ส่วนลดตัดสด", BHUtilities.numericFormat(paymentInfo.CloseAccountDiscountAmount) + " บาท"));
             listText.addAll(getTextAlignLeftRight(" จำนวนที่ชำระ", BHUtilities.numericFormat(paymentInfo.CloseAccountOutstandingAmount - paymentInfo.CloseAccountDiscountAmount) + " บาท"));
-        } else{
+        } else {
             /**ยอดเงินคงเหลือของงวดนั้น**/
             if (paymentInfo.BalancesOfPeriod != 0) {
                 listText.addAll(getTextAlignLeftRight(String.format(" คงเหลืองวดที่ %d", paymentInfo.PaymentPeriodNumber), "ราคา " + BHUtilities.numericFormat(paymentInfo.BalancesOfPeriod) + " บาท"));
@@ -1832,9 +1829,9 @@ public class DocumentController {
             if (paymentInfo.Balances - paymentInfo.BalancesOfPeriod != 0) {
                 if (paymentInfo.MODE == 1) {
                 } else {
-                    if((paymentInfo.PaymentPeriodNumber + 1) == paymentInfo.MODE){
+                    if ((paymentInfo.PaymentPeriodNumber + 1) == paymentInfo.MODE) {
                         listText.addAll(getTextAlignLeftRight(String.format(" คงเหลือ งวดที่ %d เป็นเงิน", paymentInfo.MODE), BHUtilities.numericFormat(paymentInfo.Balances - paymentInfo.BalancesOfPeriod) + " บาท"));
-                    }else {
+                    } else {
                         listText.addAll(getTextAlignLeftRight(String.format(" คงเหลือ งวดที่ %d ถึง %d เป็นเงิน", paymentInfo.PaymentPeriodNumber + 1, paymentInfo.MODE), BHUtilities.numericFormat(paymentInfo.Balances - paymentInfo.BalancesOfPeriod) + " บาท"));
                     }
                 }
@@ -1961,10 +1958,10 @@ public class DocumentController {
                     cv.drawText(BHUtilities.trim(String.format("งวด %d-%d", paymentInfo.PaymentPeriodNumber, paymentInfo.MODE)), xTitle, yy, pTitle);
                     cv.drawText(BHUtilities.numericFormat(paymentInfo.CloseAccountOutstandingAmount) + " บาท", xValueAlignRIGHT, yy, pValue);
                 }
-            } else{
+            } else {
                 String txtPeriodAmountLabel = "";
                 if (paymentInfo.BalancesOfPeriod == 0) {
-                    if(paymentInfo.PaymentPeriodNumber == paymentInfo.MODE){
+                    if (paymentInfo.PaymentPeriodNumber == paymentInfo.MODE) {
                         txtPeriodAmountLabel = "ชำระงวดที่ %d (ชำระครบ)";
                     } else {
                         txtPeriodAmountLabel = "ชำระงวดที่ %d";
@@ -1992,7 +1989,7 @@ public class DocumentController {
             yy += fontSize + lineSpace;
             cv.drawText("จำนวนที่ชำระ", xTitle, yy, pTitle);
             cv.drawText(BHUtilities.numericFormat(paymentInfo.CloseAccountOutstandingAmount - paymentInfo.CloseAccountDiscountAmount) + " บาท", xValueAlignRIGHT, yy, pValue);
-        } else{
+        } else {
             /**ยอดเงินคงเหลือของงวดนั้น**/
             if (paymentInfo.BalancesOfPeriod != 0) {
                 yy += fontSize + lineSpace;
@@ -2009,11 +2006,11 @@ public class DocumentController {
             if (paymentInfo.Balances - paymentInfo.BalancesOfPeriod != 0) {
                 if (paymentInfo.MODE == 1) {
                 } else {
-                    if((paymentInfo.PaymentPeriodNumber + 1) == paymentInfo.MODE){
+                    if ((paymentInfo.PaymentPeriodNumber + 1) == paymentInfo.MODE) {
                         yy += fontSize + lineSpace;
                         cv.drawText(String.format("คงเหลือ งวดที่ %d เป็นเงิน", paymentInfo.MODE), xTitle, yy, pTitle);
                         cv.drawText(BHUtilities.numericFormat(paymentInfo.Balances - paymentInfo.BalancesOfPeriod) + " บาท", xValueAlignRIGHT, yy, pValue);
-                    }else {
+                    } else {
                         yy += fontSize + lineSpace;
                         cv.drawText(String.format("คงเหลือ งวดที่ %d ถึง %d เป็นเงิน", paymentInfo.PaymentPeriodNumber + 1, paymentInfo.MODE), xTitle, yy, pTitle);
                         cv.drawText(BHUtilities.numericFormat(paymentInfo.Balances - paymentInfo.BalancesOfPeriod) + " บาท", xValueAlignRIGHT, yy, pValue);
@@ -2330,7 +2327,7 @@ public class DocumentController {
         listText.addAll(getTextAlignCenter(String.format("ใบนำส่ง%s", sendMoney.PaymentTypeName), PrintTextInfo.FontType.Bold));
 
         listText.addAll(getTextAlignCenter(String.format("(%s)", sendMoney.ChannelItemName), PrintTextInfo.FontType.Bold));
-        if(sendMoney.Reference2.length() > 8){
+        if (sendMoney.Reference2.length() > 8) {
             String strBarcodeNo = sendMoney.Reference2;
             listText.add(new PrintTextInfo(strBarcodeNo, PrintTextInfo.FontType.Normal, true));
         }
@@ -2359,7 +2356,7 @@ public class DocumentController {
         listText.add(new PrintTextInfo("endPage"));
         listText.add(new PrintTextInfo("selectStandardMode"));
 
-        if(sendMoney.Reference2.length() == 8) {
+        if (sendMoney.Reference2.length() == 8) {
 
             listText.addAll(getTextAlignLeft("----------------------------------------", "EN"));
             listText.addAll(getTextAlignLeft(" สำหรับธนาคาร", PrintTextInfo.FontType.Normal));
@@ -2367,7 +2364,7 @@ public class DocumentController {
             listText.add(new PrintTextInfo(SendMoneyBarcode, PrintTextInfo.FontType.Normal, true, true));
             listText.addAll(getTextAlignLeft(String.format(" | 010755600021300 %s %s", sendMoney.Reference1, BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", "")), "EN"));
             listText.addAll(getTextAlignCenter("", PrintTextInfo.FontType.Normal));
-            listText.addAll(getTextAlignLeft(String.format(" เพื่อเข้าบัญชี %s",sendMoney.ChannelItemName)));
+            listText.addAll(getTextAlignLeft(String.format(" เพื่อเข้าบัญชี %s", sendMoney.ChannelItemName)));
             listText.addAll(getTextAlignLeft(String.format(" EMPID(Ref.1): %s", BHUtilities.trim(sendMoney.Reference1)), "EN"));
             listText.addAll(getTextAlignLeft(" ", "EN"));
             listText.addAll(getTextAlignLeft(String.format(" TNSNO(Ref.2): %s", BHUtilities.trim(sendMoney.Reference2)), "EN"));
@@ -2728,13 +2725,13 @@ public class DocumentController {
     }
 
     public static List<PrintTextInfo> getTextDocumentHistory(List<DocumentHistoryInfo> outputContract,
-                                            List<DocumentHistoryInfo> outputReceipt,
-                                            List<DocumentHistoryInfo> outputChangeProduct,
-                                            List<DocumentHistoryInfo> outputImpoundProduct,
-                                            List<DocumentHistoryInfo> outputChangeContract,
-                                            List<DocumentHistoryInfo> outputManualDocument,
-                                            List<DocumentHistoryInfo> outputPayInSlipBank,
-                                            List<DocumentHistoryInfo> outputPayInSlipPayPoint) {
+                                                             List<DocumentHistoryInfo> outputReceipt,
+                                                             List<DocumentHistoryInfo> outputChangeProduct,
+                                                             List<DocumentHistoryInfo> outputImpoundProduct,
+                                                             List<DocumentHistoryInfo> outputChangeContract,
+                                                             List<DocumentHistoryInfo> outputManualDocument,
+                                                             List<DocumentHistoryInfo> outputPayInSlipBank,
+                                                             List<DocumentHistoryInfo> outputPayInSlipPayPoint) {
         List<PrintTextInfo> listText = new ArrayList<>();
         int num = 0;
 
@@ -2748,7 +2745,7 @@ public class DocumentController {
         }
 
         if (outputContract != null) {
-            num +=  outputContract.size();
+            num += outputContract.size();
             listText.addAll(getTextAlignLeftRight("เอกสารใบสัญญา", String.format("%d ใบ", outputContract.size())));
             for (int i = 0; i < outputContract.size(); i++) {
                 listText.addAll(getTextForDocumentHistory(String.format("%3d", i + 1), outputContract.get(i).DocumentNo, outputContract.get(i).CustomerFullName));
@@ -2756,7 +2753,7 @@ public class DocumentController {
         }
 
         if (outputReceipt != null) {
-            num +=  outputReceipt.size();
+            num += outputReceipt.size();
             listText.addAll(getTextAlignLeftRight("เอกสารใบเสร็จ", String.format("%d ใบ", outputReceipt.size())));
             for (int i = 0; i < outputReceipt.size(); i++) {
                 listText.addAll(getTextForDocumentHistory(String.format("%3d", i + 1), outputReceipt.get(i).DocumentNo, outputReceipt.get(i).CustomerFullName));
@@ -2764,7 +2761,7 @@ public class DocumentController {
         }
 
         if (outputChangeProduct != null) {
-            num +=  outputChangeProduct.size();
+            num += outputChangeProduct.size();
             listText.addAll(getTextAlignLeftRight("เอกสารใบเปลี่ยนเครื่อง", String.format("%d ใบ", outputChangeProduct.size())));
             for (int i = 0; i < outputChangeProduct.size(); i++) {
                 listText.addAll(getTextForDocumentHistory(String.format("%3d", i + 1), outputChangeProduct.get(i).DocumentNo, outputChangeProduct.get(i).CustomerFullName));
@@ -2772,7 +2769,7 @@ public class DocumentController {
         }
 
         if (outputImpoundProduct != null) {
-            num +=  outputImpoundProduct.size();
+            num += outputImpoundProduct.size();
             listText.addAll(getTextAlignLeftRight("เอกสารใบถอดเครื่อง", String.format("%d ใบ", outputImpoundProduct.size())));
             for (int i = 0; i < outputImpoundProduct.size(); i++) {
                 listText.addAll(getTextForDocumentHistory(String.format("%3d", i + 1), outputImpoundProduct.get(i).DocumentNo, outputImpoundProduct.get(i).CustomerFullName));
@@ -2780,7 +2777,7 @@ public class DocumentController {
         }
 
         if (outputChangeContract != null) {
-            num +=  outputChangeContract.size();
+            num += outputChangeContract.size();
             listText.addAll(getTextAlignLeftRight("เอกสารใบเปลี่ยนสัญญา", String.format("%d ใบ", outputChangeContract.size())));
             for (int i = 0; i < outputChangeContract.size(); i++) {
                 listText.addAll(getTextForDocumentHistory(String.format("%3d", i + 1), outputChangeContract.get(i).DocumentNo, outputChangeContract.get(i).CustomerFullName));
@@ -2788,11 +2785,11 @@ public class DocumentController {
         }
 
         if (outputManualDocument != null) {
-            num +=  outputManualDocument.size();
+            num += outputManualDocument.size();
             listText.addAll(getTextAlignLeftRight("เอกสารมือ", String.format("%d ใบ", outputManualDocument.size())));
             for (int i = 0; i < outputManualDocument.size(); i++) {
                 if (outputManualDocument.get(i).ManualDocumentTypeID.equals("0")) {
-                    listText.addAll(getTextForDocumentHistory(String.format("%3d",  i + 1), outputManualDocument.get(i).con0CONTNO, outputManualDocument.get(i).dc0CustomerFullName));
+                    listText.addAll(getTextForDocumentHistory(String.format("%3d", i + 1), outputManualDocument.get(i).con0CONTNO, outputManualDocument.get(i).dc0CustomerFullName));
                 } else if (outputManualDocument.get(i).ManualDocumentTypeID.equals("1")) {
                     listText.addAll(getTextForDocumentHistory(String.format("%3d", i + 1), outputManualDocument.get(i).re1ReceiptCode, outputManualDocument.get(i).dc1CustomerFullName));
                 }
@@ -2800,7 +2797,7 @@ public class DocumentController {
         }
 
         if (outputPayInSlipBank != null) {
-            num +=  outputPayInSlipBank.size();
+            num += outputPayInSlipBank.size();
             listText.addAll(getTextAlignLeftRight("เอกสาร Slip ธนาคาร", String.format("%d ใบ", outputPayInSlipBank.size())));
             for (int i = 0; i < outputPayInSlipBank.size(); i++) {
                 listText.addAll(getTextForDocumentHistory(String.format("%3d", i + 1), outputPayInSlipBank.get(i).TransactionNo, outputPayInSlipBank.get(i).employeeFullName));
@@ -2808,7 +2805,7 @@ public class DocumentController {
         }
 
         if (outputPayInSlipPayPoint != null) {
-            num +=  outputPayInSlipPayPoint.size();
+            num += outputPayInSlipPayPoint.size();
             listText.addAll(getTextAlignLeftRight("เอกสาร Slip เพย์พอยท์", String.format("%d ใบ", outputPayInSlipPayPoint.size())));
             for (int i = 0; i < outputPayInSlipPayPoint.size(); i++) {
                 listText.addAll(getTextForDocumentHistory(String.format("%3d", i + 1), outputPayInSlipPayPoint.get(i).TransactionNo, outputPayInSlipPayPoint.get(i).employeeFullName));
@@ -3404,10 +3401,10 @@ public class DocumentController {
             yy += 200;
             String TSR = "(นายวิรัช วงศ์นิรันดร์)";
             // YIM Change TSR_COMMITTEE_NAME
-            if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
+            if (BHGeneral.isOpenDepartmentSignature && BHPreference.hasDepartmentSignatureImage()) {
                 EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
                 if (saleLeader != null) {
-                    TSR = "("+saleLeader.DepartmentHeadName+")";
+                    TSR = "(" + saleLeader.DepartmentHeadName + ")";
                 }
             }
 
@@ -3590,10 +3587,10 @@ public class DocumentController {
             listText.addAll(getTextLeftRightAlignCenter("       ผู้ให้เช่าซื้อ       ", "       ผู้เช่าซื้อ        "));
             String TSR = "";
             // YIM Change TSR_COMMITTEE_NAME
-            if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
+            if (BHGeneral.isOpenDepartmentSignature && BHPreference.hasDepartmentSignatureImage()) {
                 EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
                 if (saleLeader != null) {
-                    TSR = "("+saleLeader.DepartmentHeadName+")";
+                    TSR = "(" + saleLeader.DepartmentHeadName + ")";
                 }
             }
 
@@ -3618,13 +3615,11 @@ public class DocumentController {
     }
 
     /**
-     *
      * Edit by Teerayut Klinsanga
-     *
+     * <p>
      * Created: 2019-07-11 11:00.00
-     *
+     * <p>
      * == Print with image ==
-     *
      */
 
 //    public static Bitmap getPaymentReceiptImage(PaymentInfo paymentInfo, DebtorCustomerInfo debtorCustomerInfo, AddressInfo addressInf) {
@@ -3640,6 +3635,7 @@ public class DocumentController {
 //    }
 //
     private static InputStream ins = null;
+
     public static Bitmap headerPrint() {
         Bitmap bmp = null;
         try {
@@ -3688,16 +3684,16 @@ public class DocumentController {
         return getResizedBitmap(bmp, 120, 120);
     }
 
-    public static Bitmap drawableToBitmap (Drawable drawable) {
+    public static Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap bitmap = null;
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if(bitmapDrawable.getBitmap() != null) {
+            if (bitmapDrawable.getBitmap() != null) {
                 return bitmapDrawable.getBitmap();
             }
         }
 
-        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
             bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
         } else {
             bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
@@ -3711,7 +3707,7 @@ public class DocumentController {
 
     public static Bitmap mergeSignature(Bitmap bmp1, Bitmap bmp2, File path) {
 //        Bitmap result = Bitmap.createBitmap((bmp1.getWidth() + bmp2.getWidth()), bmp1.getHeight(), Config.ARGB_8888 );
-        Bitmap result = Bitmap.createBitmap(RECEIPT_WIDTH, bmp1.getHeight(), Config.ARGB_8888 );
+        Bitmap result = Bitmap.createBitmap(RECEIPT_WIDTH, bmp1.getHeight(), Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         canvas.drawColor(Color.WHITE);
         canvas.drawBitmap(bmp1, 0, 0, null);
@@ -3730,7 +3726,7 @@ public class DocumentController {
     }
 
     public static Bitmap mergeBMP(Bitmap bmp1, Bitmap bmp2, File path) {
-        Bitmap result = Bitmap.createBitmap(RECEIPT_WIDTH, bmp1.getHeight(), Config.ARGB_8888 );
+        Bitmap result = Bitmap.createBitmap(RECEIPT_WIDTH, bmp1.getHeight(), Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         canvas.drawColor(Color.WHITE);
         canvas.drawBitmap(bmp1, 0, 0, null);
@@ -3750,21 +3746,22 @@ public class DocumentController {
 
     public static int signatureWidthLimit = 220;
     public static int signatureHeightLimit = 80;
+
     public static Bitmap generatSignature() {
-        Bitmap tempSignature = null,signature;
+        Bitmap tempSignature = null, signature;
         Bitmap img = null;
         Canvas cv;
         try {
-            if (BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()) {
+            if (BHGeneral.isOpenDepartmentSignature && BHPreference.hasDepartmentSignatureImage()) {
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                 tempSignature = BitmapFactory.decodeFile(BHPreference.departmentSignaturePath + BHPreference.departmentSignatureName, options);
-            }else{
+            } else {
                 Context mContext = BHApplication.getContext();
                 tempSignature = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.sample_signature);
             }
 
-            if(tempSignature != null){
+            if (tempSignature != null) {
                 signature = scaleBitmapByHeight(tempSignature);
                 img = Bitmap.createBitmap(signature.getWidth(), signature.getHeight(), Bitmap.Config.ARGB_8888);
                 img.setHasAlpha(true);
@@ -3772,14 +3769,14 @@ public class DocumentController {
                 cv.drawBitmap(signature, 0, 0, null);
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return img;
     }
 
     public static Bitmap generateCustomerSignature(String contract) {
-        Bitmap tempSignature = null,signature;
+        Bitmap tempSignature = null, signature;
         Bitmap img = null;
         Canvas cv;
 
@@ -3790,7 +3787,7 @@ public class DocumentController {
             tempSignature = Bitmap.createScaledBitmap(tempSignature, tempSignature.getWidth(), tempSignature.getHeight(), true);
         }
 
-        if(tempSignature != null){
+        if (tempSignature != null) {
             img = Bitmap.createBitmap(tempSignature.getWidth(), tempSignature.getHeight(), Bitmap.Config.ARGB_8888);
             img.setHasAlpha(true);
             cv = new Canvas(img);
@@ -3815,15 +3812,15 @@ public class DocumentController {
     }
 
     public static Bitmap scaleBitmapByHeight(Bitmap bm) {
-        int width =  bm.getWidth();
+        int width = bm.getWidth();
         int height = bm.getHeight();
 
-        if(bm.getHeight() > signatureHeightLimit){
+        if (bm.getHeight() > signatureHeightLimit) {
             width = (int) (1f * signatureHeightLimit / height * width);
             height = signatureHeightLimit;
         }
 
-        if(width > signatureWidthLimit){
+        if (width > signatureWidthLimit) {
             height = (int) (1f * signatureWidthLimit / width * height);
             width = signatureWidthLimit;
         }
@@ -3844,7 +3841,8 @@ public class DocumentController {
     }
 
     private static int RECEIPT_WIDTH = 576;
-    public static  Bitmap getNewContactImage(ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
+
+    public static Bitmap getNewContactImage(ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
         ReceiptBuilder receiptBuilder = new ReceiptBuilder(RECEIPT_WIDTH);
         receiptBuilder.setMargin(5, 0);
         receiptBuilder.setTextSize(24);
@@ -3935,7 +3933,7 @@ public class DocumentController {
             case "0":
             case "2":
                 Log.e("Address", String.valueOf(defaultAddress.Address()));
-                if(defaultAddress.TelMobile.equals(installAddress.TelMobile)){
+                if (defaultAddress.TelMobile.equals(installAddress.TelMobile)) {
                     receiptBuilder.addParagraph();
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("ที่อยู่บัตร", false);
@@ -3946,7 +3944,7 @@ public class DocumentController {
                         yy += fontSize + lineSpace;
                     }
 
-                    Bitmap result1 = Bitmap.createBitmap(RECEIPT_WIDTH, (int)yy, Config.ARGB_8888);
+                    Bitmap result1 = Bitmap.createBitmap(RECEIPT_WIDTH, (int) yy, Config.ARGB_8888);
                     cvAddr = new Canvas(result1);
                     cvAddr.drawBitmap(imgAddress, RECEIPT_WIDTH / 2, 0, null);
                     imgAddress.recycle();
@@ -3972,7 +3970,7 @@ public class DocumentController {
                         yy += fontSize + lineSpace;
                     }
 
-                    Bitmap result2 = Bitmap.createBitmap(RECEIPT_WIDTH, (int)yy, Config.ARGB_8888);
+                    Bitmap result2 = Bitmap.createBitmap(RECEIPT_WIDTH, (int) yy, Config.ARGB_8888);
                     cvInstall = new Canvas(result2);
                     cvInstall.drawBitmap(imgInstall, RECEIPT_WIDTH / 2, 0, null);
                     imgInstall.recycle();
@@ -4002,7 +4000,7 @@ public class DocumentController {
                         yy += fontSize + lineSpace;
                     }
 
-                    Bitmap result1 = Bitmap.createBitmap(RECEIPT_WIDTH, (int)yy, Config.ARGB_8888);
+                    Bitmap result1 = Bitmap.createBitmap(RECEIPT_WIDTH, (int) yy, Config.ARGB_8888);
                     cvAddr = new Canvas(result1);
                     cvAddr.drawBitmap(imgAddress, RECEIPT_WIDTH / 2, 0, null);
                     imgAddress.recycle();
@@ -4036,7 +4034,7 @@ public class DocumentController {
                         yy += fontSize + lineSpace;
                     }
 
-                    Bitmap result2 = Bitmap.createBitmap(RECEIPT_WIDTH, (int)yy, Config.ARGB_8888);
+                    Bitmap result2 = Bitmap.createBitmap(RECEIPT_WIDTH, (int) yy, Config.ARGB_8888);
                     cvInstall = new Canvas(result2);
                     cvInstall.drawBitmap(imgInstall, RECEIPT_WIDTH / 2, 0, null);
                     imgInstall.recycle();
@@ -4058,7 +4056,7 @@ public class DocumentController {
                 }
                 break;
             case "1":
-                if(defaultAddress.TelMobile.equals(installAddress.TelMobile)){
+                if (defaultAddress.TelMobile.equals(installAddress.TelMobile)) {
                     receiptBuilder.addParagraph();
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("ที่อยู่บัตร", false);
@@ -4069,7 +4067,7 @@ public class DocumentController {
                         yy += fontSize + lineSpace;
                     }
 
-                    Bitmap result1 = Bitmap.createBitmap(RECEIPT_WIDTH, (int)yy, Config.ARGB_8888);
+                    Bitmap result1 = Bitmap.createBitmap(RECEIPT_WIDTH, (int) yy, Config.ARGB_8888);
                     cvAddr = new Canvas(result1);
                     cvAddr.drawBitmap(imgAddress, RECEIPT_WIDTH / 2, 0, null);
                     imgAddress.recycle();
@@ -4098,7 +4096,7 @@ public class DocumentController {
                         yy += fontSize + lineSpace;
                     }
 
-                    Bitmap result2 = Bitmap.createBitmap(RECEIPT_WIDTH, (int)yy, Config.ARGB_8888);
+                    Bitmap result2 = Bitmap.createBitmap(RECEIPT_WIDTH, (int) yy, Config.ARGB_8888);
                     cvInstall = new Canvas(result2);
                     cvInstall.drawBitmap(imgInstall, RECEIPT_WIDTH / 2, 0, null);
                     imgInstall.recycle();
@@ -4128,7 +4126,7 @@ public class DocumentController {
                         yy += fontSize + lineSpace;
                     }
 
-                    Bitmap result1 = Bitmap.createBitmap(RECEIPT_WIDTH, (int)yy, Config.ARGB_8888);
+                    Bitmap result1 = Bitmap.createBitmap(RECEIPT_WIDTH, (int) yy, Config.ARGB_8888);
                     cvAddr = new Canvas(result1);
                     cvAddr.drawBitmap(imgAddress, RECEIPT_WIDTH / 2, 0, null);
                     imgAddress.recycle();
@@ -4158,7 +4156,7 @@ public class DocumentController {
                         yy += fontSize + lineSpace;
                     }
 
-                    Bitmap result2 = Bitmap.createBitmap(RECEIPT_WIDTH, (int)yy, Config.ARGB_8888);
+                    Bitmap result2 = Bitmap.createBitmap(RECEIPT_WIDTH, (int) yy, Config.ARGB_8888);
                     cvInstall = new Canvas(result2);
                     cvInstall.drawBitmap(imgInstall, RECEIPT_WIDTH / 2, 0, null);
                     imgInstall.recycle();
@@ -4283,10 +4281,10 @@ public class DocumentController {
             yy += 25;
 
             String TSR = "";
-            if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
+            if (BHGeneral.isOpenDepartmentSignature && BHPreference.hasDepartmentSignatureImage()) {
                 EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
                 if (saleLeader != null) {
-                    TSR = "("+saleLeader.DepartmentHeadName+")";
+                    TSR = "(" + saleLeader.DepartmentHeadName + ")";
                 }
             }
 
@@ -4329,10 +4327,10 @@ public class DocumentController {
             receiptBuilder.addImage(contractSign);
             yy += 25;
             String TSR = "";
-            if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
+            if (BHGeneral.isOpenDepartmentSignature && BHPreference.hasDepartmentSignatureImage()) {
                 EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
                 if (saleLeader != null) {
-                    TSR = "("+saleLeader.DepartmentHeadName+")";
+                    TSR = "(" + saleLeader.DepartmentHeadName + ")";
                 }
             }
             cv.drawText(String.format("%sผู้ให้เช่าซื้อ", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - (getWidth("ผู้ให้เช่าซื้อ", pSignature) + 50))), RECEIPT_WIDTH / 4, yy, pSignature);
@@ -4360,8 +4358,7 @@ public class DocumentController {
 
             yy += 120;
             String salename = "(" + BHUtilities.trim(contract.SaleEmployeeName != null ? contract.SaleEmployeeName : "") + ")";
-            String salecode=  "รหัส " + BHUtilities.trim(contract.SaleCode);
-
+            String salecode = "รหัส " + BHUtilities.trim(contract.SaleCode);
 
 
             String saleteamname = "(" + BHUtilities.trim(contract.upperEmployeeName != null ? contract.upperEmployeeName : "") + ")";
@@ -4413,6 +4410,12 @@ public class DocumentController {
         receiptBuilder.addParagraph();
         receiptBuilder.setAlign(Paint.Align.LEFT);
         receiptBuilder.addText(String.format(" %s %s", BHUtilities.trim(contract.SaleTeamName), BHUtilities.trim(contract.upperEmployeeName)), true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addBlankSpace(10);
+
+        receiptBuilder.setAlign(Paint.Align.CENTER);
+        Bitmap bmpPromtpay = createQRCodePromtpay(contract);
+        receiptBuilder.addImage(bmpPromtpay);
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
 
@@ -4510,7 +4513,7 @@ public class DocumentController {
             receiptBuilder.addText("รวม " + BHUtilities.numericFormat(paymentInfo.Amount) + " บาท", true);
         } else {
             if (paymentInfo.CloseAccountPaymentPeriodNumber == paymentInfo.PaymentPeriodNumber && paymentInfo.BalancesOfPeriod == 0) {
-                if(paymentInfo.PaymentPeriodNumber == paymentInfo.MODE) {
+                if (paymentInfo.PaymentPeriodNumber == paymentInfo.MODE) {
                     receiptBuilder.addParagraph();
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText(BHUtilities.trim(String.format(" งวด %d", paymentInfo.MODE)), false);
@@ -4523,10 +4526,10 @@ public class DocumentController {
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
                     receiptBuilder.addText(BHUtilities.numericFormat(paymentInfo.CloseAccountOutstandingAmount) + " บาท", true);
                 }
-            } else{
+            } else {
                 String txtPeriodAmountLabel = "";
                 if (paymentInfo.BalancesOfPeriod == 0) {
-                    if(paymentInfo.PaymentPeriodNumber == paymentInfo.MODE){
+                    if (paymentInfo.PaymentPeriodNumber == paymentInfo.MODE) {
                         txtPeriodAmountLabel = "ชำระงวดที่ %d (ชำระครบ)";
                     } else {
                         txtPeriodAmountLabel = "ชำระงวดที่ %d";
@@ -4559,7 +4562,7 @@ public class DocumentController {
             receiptBuilder.addText("จำนวนที่ชำระ", false);
             receiptBuilder.setAlign(Paint.Align.RIGHT);
             receiptBuilder.addText(BHUtilities.numericFormat(paymentInfo.CloseAccountOutstandingAmount - paymentInfo.CloseAccountDiscountAmount) + " บาท", true);
-        } else{
+        } else {
             /**ยอดเงินคงเหลือของงวดนั้น**/
             if (paymentInfo.BalancesOfPeriod != 0) {
                 receiptBuilder.addParagraph();
@@ -4578,13 +4581,13 @@ public class DocumentController {
             if (paymentInfo.Balances - paymentInfo.BalancesOfPeriod != 0) {
                 if (paymentInfo.MODE == 1) {
                 } else {
-                    if((paymentInfo.PaymentPeriodNumber + 1) == paymentInfo.MODE){
+                    if ((paymentInfo.PaymentPeriodNumber + 1) == paymentInfo.MODE) {
                         receiptBuilder.addParagraph();
                         receiptBuilder.setAlign(Paint.Align.LEFT);
                         receiptBuilder.addText(String.format(" คงเหลือ งวดที่ %d เป็นเงิน", paymentInfo.MODE), false);
                         receiptBuilder.setAlign(Paint.Align.RIGHT);
                         receiptBuilder.addText(BHUtilities.numericFormat(paymentInfo.Balances - paymentInfo.BalancesOfPeriod) + " บาท", true);
-                    }else {
+                    } else {
                         receiptBuilder.addParagraph();
                         receiptBuilder.setAlign(Paint.Align.LEFT);
                         receiptBuilder.addText(String.format(" คงเหลือ งวดที่ %d ถึง %d เป็นเงิน", paymentInfo.PaymentPeriodNumber + 1, paymentInfo.MODE), false);
@@ -4645,7 +4648,6 @@ public class DocumentController {
         receiptBuilder.addBlankSpace(10);
 
 
-
         receiptBuilder.setTextSize(20);
         if (paymentInfo.PaymentPeriodNumber == 1) {
             receiptBuilder.setAlign(Align.RIGHT);
@@ -4677,8 +4679,6 @@ public class DocumentController {
         receiptBuilder.setAlign(Paint.Align.CENTER);
         receiptBuilder.addText("ขอเชิญร่วมแสดงความคิดเห็น เพื่อนำมาพัฒนาและปรับปรุงบริการของเรา", true);
         receiptBuilder.addParagraph();
-//        receiptBuilder.setAlign(Paint.Align.CENTER);
-//        receiptBuilder.addText("เพื่อนำมาพัฒนาและปรับปรุงบริการของเรา", true);
 
         receiptBuilder.setTextSize(26);
         receiptBuilder.setAlign(Paint.Align.CENTER);
@@ -4692,7 +4692,8 @@ public class DocumentController {
         return receiptBuilder.build();
     }
 
-    public final static char CR  = (char) 0x0D;
+    public final static char CR = (char) 0x0D;
+
     public static Bitmap getNewSendMoneyImage(SendMoneyInfo sendMoney) {
         ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
         receiptBuilder.setMargin(5, 0);
@@ -4708,7 +4709,7 @@ public class DocumentController {
         receiptBuilder.addParagraph();
         receiptBuilder.addText(String.format("(%s)", sendMoney.ChannelItemName));
 
-        if(sendMoney.Reference2.length() > 8){
+        if (sendMoney.Reference2.length() > 8) {
             String strBarcodeNo = sendMoney.Reference2;
             receiptBuilder.addParagraph();
             receiptBuilder.addImage(BHBarcode.generateCode128(strBarcodeNo, 560, 125));
@@ -4770,7 +4771,7 @@ public class DocumentController {
         receiptBuilder.setAlign(Paint.Align.RIGHT);
         receiptBuilder.addText(BHUtilities.numericFormat(sendMoney.SendAmount) + " บาท", true);
 
-        if(sendMoney.Reference2.length() == 8) {
+        if (sendMoney.Reference2.length() == 8) {
 
             receiptBuilder.addParagraph();
             receiptBuilder.setAlign(Paint.Align.LEFT);
@@ -4794,7 +4795,7 @@ public class DocumentController {
             receiptBuilder.addParagraph();
 
             receiptBuilder.setAlign(Paint.Align.LEFT);
-            receiptBuilder.addText(String.format("เพื่อเข้าบัญชี %s",sendMoney.ChannelItemName));
+            receiptBuilder.addText(String.format("เพื่อเข้าบัญชี %s", sendMoney.ChannelItemName));
             receiptBuilder.addParagraph();
 
             receiptBuilder.setAlign(Paint.Align.LEFT);
@@ -4820,7 +4821,7 @@ public class DocumentController {
 
     public static String barcodeString(SendMoneyInfo sendMoney) {
         String SendMoneyBarcode = "";
-        if(sendMoney.Reference2.length() > 8){
+        if (sendMoney.Reference2.length() > 8) {
             SendMoneyBarcode = sendMoney.Reference2;
         } else if (sendMoney.Reference2.length() == 8) {
             SendMoneyBarcode = String.format("|010755600021300" + CR + "%s" + CR + "%s" + CR + "%s", sendMoney.Reference1, "", BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", ""));
@@ -4879,7 +4880,85 @@ public class DocumentController {
     public static Bitmap createQRCode(String contents) {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(contents, BarcodeFormat.QR_CODE,250,250);
+            BitMatrix bitMatrix = multiFormatWriter.encode(contents, BarcodeFormat.QR_CODE, 250, 250);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            return bitmap;
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Bitmap createQRCodePromtpay(ContractInfo contract) {
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            String payload          = "000201010212";
+            String merchant         = "30";
+            String AIDField         = "00";
+            String AID              = "A000000677010112";
+            String AIDLength        = "16";
+            String billerID         = "0115010755600021389";
+            String ref1             = contract.ProductSerialNumber;
+            String ref2             = contract.CONTNO;
+            String ref1Field        = "02";
+            String ref2Field        = "03";
+            String ref1Length       = ref1.length() < 10 ? "0" + ref1.length() : String.valueOf(ref1.length());
+            String ref2Length       = ref2.length() < 10 ? "0" + ref2.length() : String.valueOf(ref2.length());
+            String compField        = "59";
+            String comp             = "THIENSURAT PUBLIC CO";
+            String compLength       = String.valueOf(comp.length());
+            String qrcodeField      = "62";
+            String qrcodeIDField    = "07";
+            String qrcodeID         = "DTSR" + ref1;
+            String qrcodeIDLength   = String.valueOf((qrcodeID.length() + qrcodeIDField.length()) + 2);
+            String checkSumField    = "6304";
+            String currencyTHB      = "5303764";
+            String currencyTag      = "54";
+            String currencyCode     = "5802TH";
+
+            String amount           = String.format("%.2f", (contract.PaymentAmount - contract.TradeInDiscount));
+
+            String tag30Length      = String.valueOf(AIDField.length()
+                    + AIDLength.length()
+                    + AID.length()
+                    + billerID.length()
+                    + ref1Field.length()
+                    + ref1Length.length()
+                    + ref1.length()
+                    + ref2Field.length()
+                    + ref2Length.length()
+                    + ref2.length());
+
+            String qrcode = payload
+                    + merchant
+                    + tag30Length
+                    + AIDField
+                    + AIDLength
+                    + AID
+                    + billerID
+                    + ref1Field
+                    + ref1Length
+                    + ref1
+                    + ref2Field
+                    + ref2Length
+                    + ref2
+                    + currencyTHB
+                    + currencyTag
+                    + String.valueOf(amount.length() < 10 ? "0" + amount.length() : amount.length())
+                    + amount
+                    + currencyCode
+                    + compField
+                    + compLength
+                    + comp
+                    + qrcodeField
+                    + qrcodeIDLength
+                    + qrcodeIDField
+                    + String.valueOf(qrcodeID.length())
+                    + qrcodeID
+                    + checkSumField;
+            qrcode = qrcode + checksumQRcode(qrcode);
+            BitMatrix bitMatrix = multiFormatWriter.encode(qrcode, BarcodeFormat.QR_CODE, 250, 250);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             return bitmap;
@@ -4892,7 +4971,7 @@ public class DocumentController {
     public static Bitmap createQRCodeForReceipt(String contents) {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(contents, BarcodeFormat.QR_CODE,150,150);
+            BitMatrix bitMatrix = multiFormatWriter.encode(contents, BarcodeFormat.QR_CODE, 150, 150);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             return bitmap;
@@ -4905,7 +4984,7 @@ public class DocumentController {
     public static Bitmap createQRCodeForSurvey(String contents) {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(contents, BarcodeFormat.QR_CODE,300,300);
+            BitMatrix bitMatrix = multiFormatWriter.encode(contents, BarcodeFormat.QR_CODE, 300, 300);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             return bitmap;
@@ -4954,6 +5033,26 @@ public class DocumentController {
 
 //        Code128 code128 = new Code128();
         return bitmap;
+    }
+
+    public static String checksumQRcode(String input) {
+        try {
+            int crc = 0xFFFF;
+            int polynomial = 0x1021;
+            byte[] bytes = input.getBytes();
+            for (byte b : bytes) {
+                for (int i = 0; i < 8; i++) {
+                    boolean bit = ((b >> (7 - i) & 1) == 1);
+                    boolean c15 = ((crc >> 15 & 1) == 1);
+                    crc <<= 1;
+                    if (c15 ^ bit) crc ^= polynomial;
+                }
+            }
+            crc &= 0xffff;
+            return String.format("%04x", crc).toUpperCase();
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     /**

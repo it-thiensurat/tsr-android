@@ -83,7 +83,7 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
         public TripInfo trip;
         public BankInfo bank;
 
-        public String paymentType; // ช่องทางการชำระ/เงินสด/บัตรเครดิต/เช็ค
+        public String paymentType; // ช่องทางการชำระ/เงินสด/บัตรเครดิต/เช็ค/คิวอาร์โค้ด
         public boolean payPartial; // สถานะ จ่ายเต็มบ่างส่วน
         public boolean isPostPone;
         public ContractCloseAccountInfo contractCloseAccount;
@@ -792,7 +792,6 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
     }
 
     private void updateCustomerPhone(String phone) {
-//        Toast.makeText(activity, phone, Toast.LENGTH_SHORT).show();
         if (lastPeriod && phone.isEmpty()) {
             AlertDialog.Builder setupAlert;
             setupAlert = new AlertDialog.Builder(activity)
@@ -851,6 +850,47 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
             } catch (Exception e) {
                 Log.e("Update", e.getLocalizedMessage());
             }
+        }
+    }
+
+    private void getQrcodeReceipt() {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.getLastPeriod(data.contract.CONTNO);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson=new Gson();
+                    try {
+                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+                        JSONArray array = jsonObject.getJSONArray("data");
+                        JSONObject obj = null;
+                        for (int i = 0; i < array.length(); i++) {
+                            obj = array.getJSONObject(i);
+//                            lastPeriod = obj.getBoolean("Status");
+                        }
+
+//                        if (lastPeriod) {
+//                            List<Integer> listId = new ArrayList<Integer>();
+//                            listId.add(R.string.button_confirm_print);
+//                            activity.setViewProcessButtons(listId, View.GONE);
+//                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                @Override
+                public void onFailure(Call call, Throwable t) {
+
+                }
+            });
+
+        } catch (Exception e) {
+
         }
     }
     /**

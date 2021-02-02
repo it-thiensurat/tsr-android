@@ -157,6 +157,7 @@ import th.co.thiensurat.fragments.credit.SortOrderDefault.SortOrderDefaultForCre
 import th.co.thiensurat.fragments.credit.SortOrderDefault.SortOrderDefaultMainFragment;
 import th.co.thiensurat.fragments.credit.credit.CreditListFragment;
 import th.co.thiensurat.fragments.credit.pc.CreditListFragment_pc;
+import th.co.thiensurat.fragments.customerstatus.CustomerStatusFragment;
 import th.co.thiensurat.fragments.cutdivisor.contract.CutDivisorContractListFragment;
 import th.co.thiensurat.fragments.cutoff.contract.CutOffContractMainFragment;
 import th.co.thiensurat.fragments.document.DocumentHistoryMainFragment;
@@ -632,8 +633,6 @@ Log.e("PositionName",BHPreference.PositionName());
 
                                     showWarningDialog("Connecting To Internet", "ไม่พบการเชื่อมต่ออินเตอร์เน็ต");
                                 }
-
-
                             } else {
                                 Builder setupAlert;
                                 //success = showView(BHFragment.newInstance(SynchronizeMainFragment.class));
@@ -657,42 +656,11 @@ Log.e("PositionName",BHPreference.PositionName());
                             }
 
                         }
-
-
-
-
-
-
-
-
-
-
-
-
                     }
                 });
-
-
-
-
-
                 dialog.show();
-
-
-
-
-
-
-
-
             }
         });
-
-
-
-
-
-
 
         menusInfo = BHPreference.getUserMenus();
         mainMenuAdapter = new MainMenuAdapter(MainActivity.this, R.layout.list_main_menu, menusInfo);
@@ -1456,6 +1424,7 @@ Log.e("PositionName",BHPreference.PositionName());
                 R.string.main_menu_first,
                 R.string.main_menu_next_period,
                 R.string.main_menu_money,
+                R.string.main_menu_customer_status,
                 R.string.main_menu_remove,
                 R.string.main_menu_change,
                 R.string.main_menu_document,
@@ -1721,6 +1690,9 @@ Log.e("PositionName",BHPreference.PositionName());
                     success = showView(BHFragment.newInstance(SaleMainFragment_peoorder.class));
                     break;
 
+                case R.string.main_menu_customer_status:
+                    success = showView(BHFragment.newInstance(CustomerStatusFragment.class));
+                    break;
                 case R.string.main_menu_preorder_setting: // preorder stting
 
                     success = showView(BHFragment.newInstance(SaleMainFragment_preorder_setting.class));
@@ -2958,6 +2930,7 @@ Log.e("PositionName",BHPreference.PositionName());
                     put(r.getString(R.string.main_menu_preorder_setting), R.drawable.ic_menu_sales);
                     put(r.getString(R.string.main_menu_money), R.drawable.ic_menu_money);
                     put(r.getString(R.string.main_menu_first), R.drawable.ic_menu_first);
+                    put(r.getString(R.string.main_menu_customer_status), R.drawable.customer_search);
                     put(r.getString(R.string.main_menu_other), R.drawable.ic_menu_fix_request);     //-- Fixed - [BHPROJ-0026-3184] :: Change ic_tsr_logo to be new menu icon
                     put(r.getString(R.string.main_menu_logout), R.drawable.ic_menu_logout);
 
