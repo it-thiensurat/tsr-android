@@ -90,7 +90,7 @@ public class CustomerStatusFragment extends BHFragment implements CustomerStatus
 
     @Override
     protected int[] processButtons() {
-        return new int[0];
+        return null;
     }
 
     @Override

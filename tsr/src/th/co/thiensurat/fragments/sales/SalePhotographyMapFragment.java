@@ -16,6 +16,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -417,20 +418,12 @@ public class SalePhotographyMapFragment extends BHFragment {
                     addressInfo.Longitude =  lng;
                 }
 
-
-
-
-
+//                DD = String.format("%s/%s/%s/%s", Environment.getExternalStorageDirectory(), IMAGE_DIRECTORY_NAME, imageTypeCode, input.ImageName);
                 DD="/sdcard/Android/data/"+activity.getApplicationContext().getPackageName()+"/files/pictures/"+IMAGE_DIRECTORY_NAME + "/"+ input.ImageTypeCode+ "/" +input.ImageName;
                 NAME_IMAGE=input.ImageName;
                 IMAGE_TYPE=input.ImageTypeCode;
 
-
-
                 checkPermissions();
-
-
-
 
             }
 
@@ -496,8 +489,6 @@ public class SalePhotographyMapFragment extends BHFragment {
                         return;
                     }
                 }
-
-
                 File file21 = new File(DD);
 
                 String filePath = file21.getPath();
@@ -505,13 +496,7 @@ public class SalePhotographyMapFragment extends BHFragment {
 
                 save_image_to_gallery.SaveImage(bitmap,NAME_IMAGE,IMAGE_TYPE);
                 //  getResizedBiBitmaptmap(bitmap,NAME_IMAGE,IMAGE_TYPE);
-
-
                 break;
         }
     }
-
-
-
-
 }

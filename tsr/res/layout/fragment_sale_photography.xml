@@ -185,7 +185,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
                             android:textColor="@android:color/white"
-                            android:text="2. รูปแผนที่(การ์ดเก็บเงิน)"/>
+                            android:text="2. รูปวาดแผนที่"/>
 
                     </LinearLayout>
 
@@ -271,7 +271,7 @@
                             android:id="@+id/imgGpsAddressPayment"
                             android:layout_width="wrap_content"
                             android:layout_height="80dp"
-                            android:src="@drawable/alkaline"
+                            android:src="@drawable/install_icon"
                             android:adjustViewBounds="true"
                             android:scaleType="fitCenter"/>
 

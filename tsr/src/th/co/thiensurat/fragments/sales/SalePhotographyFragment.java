@@ -709,24 +709,43 @@ public class SalePhotographyFragment extends BHFragment {
     }
 
 
-    private File getOutputMediaFile(int type) {
+//    private File getOutputMediaFile(int type) {
+//        File mediaStorageDir = new File(Parth + "/" + IMAGE_DIRECTORY_NAME + "/" + imageTypeCode);
+////       File mediaStorageDir = new File("/sdcard/Android/data/"+activity.getApplicationContext().getPackageName()+"/files/pictures/"  + IMAGE_DIRECTORY_NAME + "/" + imageTypeCode);
+//        if (!mediaStorageDir.exists()) {
+//            if (!mediaStorageDir.mkdirs()) {
+//              //  Log.d(IMAGE_DIRECTORY_NAME, "" + IMAGE_DIRECTORY_NAME + " directory");
+//                return null;
+//            }
+//        }
+//
+//        File mediaFile;
+//        if (type == MEDIA_TYPE_IMAGE) {
+//            mediaFile = new File(mediaStorageDir.getPath() + File.separator + imageID + ".jpg");
+//        } else {
+//            return null;
+//        }
+//        return mediaFile ;
+//
+//    }
+
+    private static File getOutputMediaFile(int type) {
         File mediaStorageDir = new File(Parth + "/" + IMAGE_DIRECTORY_NAME + "/" + imageTypeCode);
-//       File mediaStorageDir = new File("/sdcard/Android/data/"+activity.getApplicationContext().getPackageName()+"/files/pictures/"  + IMAGE_DIRECTORY_NAME + "/" + imageTypeCode);
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
-              //  Log.d(IMAGE_DIRECTORY_NAME, "" + IMAGE_DIRECTORY_NAME + " directory");
+                Log.d(IMAGE_DIRECTORY_NAME, "" + IMAGE_DIRECTORY_NAME + " directory");
                 return null;
             }
         }
-
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator + imageID + ".jpg");
         } else {
             return null;
         }
-        return mediaFile ;
 
+        Log.e("Media file", String.valueOf((mediaFile.getAbsolutePath())));
+        return mediaFile;
     }
 
 
@@ -807,11 +826,11 @@ String DD="",NAME_IMAGE="",IMAGE_TYPE="";
                     }
                 }
 
-                File file21 = new File(DD);
-                String filePath = file21.getPath();
-                Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+//                File file21 = new File(DD);
+//                String filePath = file21.getPath();
+                Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath());
                 save_image_to_gallery.getResizedBiBitmaptmap(bitmap,NAME_IMAGE,IMAGE_TYPE);
-             //  getResizedBiBitmaptmap(bitmap,NAME_IMAGE,IMAGE_TYPE);
+//               getResizedBiBitmaptmap(bitmap,NAME_IMAGE,IMAGE_TYPE);
                 break;
         }
     }

@@ -104,9 +104,6 @@ public class CreditListFragment extends BHFragment {
             LayoutInflater inflater = activity.getLayoutInflater();
             ViewGroup headerListView = (ViewGroup) inflater.inflate(R.layout.list_credit_header, listView, false);
             listView.addHeaderView(headerListView, null, false);
-
-
-
             chkHeader = (CheckBox) headerListView.findViewById(R.id.chkHeader);
             chkHeader.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -114,6 +111,7 @@ public class CreditListFragment extends BHFragment {
                     selectedChkHeader = b;
                 }
             });
+
             chkHeader.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -127,6 +125,7 @@ public class CreditListFragment extends BHFragment {
                     }
                 }
             });
+
             chkHeader.setChecked(selectedChkHeader);
 
             if (creditList == null) {
@@ -147,8 +146,6 @@ public class CreditListFragment extends BHFragment {
             customerAdapter = new CustomerAdapter(activity, R.layout.list_credit, creditList);
             listView.setAdapter(customerAdapter);
 
-
-
             btnSearch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -161,32 +158,19 @@ public class CreditListFragment extends BHFragment {
                 }
             });
 
-
-
-
             btnRefresh.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     load_data();
-
-
-
                 }
             });
-
-
-            load_data_test();
-
-          } else {
-
+            load_data();
+        } else {
             data = getData();
 
             LayoutInflater inflater = activity.getLayoutInflater();
             ViewGroup headerListView = (ViewGroup) inflater.inflate(R.layout.list_credit_header, listView, false);
             listView.addHeaderView(headerListView, null, false);
-
-
 
             chkHeader = (CheckBox) headerListView.findViewById(R.id.chkHeader);
             chkHeader.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -195,6 +179,7 @@ public class CreditListFragment extends BHFragment {
                     selectedChkHeader = b;
                 }
             });
+
             chkHeader.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -238,44 +223,29 @@ public class CreditListFragment extends BHFragment {
                 }
             });
 
-
-
-
             btnRefresh.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     load_data();
-
-
-
                 }
             });
         }
-
-
-
-
     }
+
     public boolean isConnectingToInternet() {
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
-
         return isConnected;
     }
 
-    public void    showNextView(BHFragment fragment) {
-
+    public void showNextView(BHFragment fragment) {
         Calendar c = Calendar.getInstance();
         int month = c.get(Calendar.MONTH);
-
         activity.showNextView(fragment);
-
-
     }
+
     public void callCreditDetail(AssignInfo assign) {
         // next payment
         CreditDetailFragment.Data input = new CreditDetailFragment.Data();
@@ -286,9 +256,7 @@ public class CreditListFragment extends BHFragment {
         showNextView(fragment);
     }
 
-
     public void callCreditPayment(AssignInfo assign){
-
         float total = Double.valueOf("0").floatValue();
         SaleFirstPaymentChoiceFragment.Data paymentData = new SaleFirstPaymentChoiceFragment.Data(assign.RefNo,
                 SaleFirstPaymentChoiceFragment.ProcessType.Credit, total, assign.AssignID, data.selectedDate);
@@ -314,8 +282,18 @@ public class CreditListFragment extends BHFragment {
                 Log.e("ggg",BHPreference.organizationCode()+ ","+BHPreference.teamCode()+ ","+BHPreference.employeeID()+ ","+ data.selectedDate+ ","+ search+ ","+ AddressInfo.AddressType.AddressPayment.toString());
                 List<AssignInfo> result = new AssignController().getSalePaymentPeriodListForAssignCredit(BHPreference.organizationCode(),
                         BHPreference.teamCode(), BHPreference.employeeID(), data.selectedDate, search, AddressInfo.AddressType.AddressPayment.toString());
+                String cotno = "";
                 if (result != null && result.size() > 0) {
-                    creditList.addAll(result);
+                    for (int i = 0; i < result.size(); i++) {
+                        if (cotno.equals(result.get(i).CONTNO)) {
+                            cotno = result.get(i).CONTNO;
+                            result.remove(i);
+                        } else {
+                            cotno = result.get(i).CONTNO;
+                            creditList.add(result.get(i));
+                        }
+                    }
+//                    creditList.addAll(result);
                 }
             }
 
@@ -354,14 +332,10 @@ public class CreditListFragment extends BHFragment {
                     creditList.addAll(result);
                 }*/
 
-
-
                result = new AssignController().getNewSalePaymentPeriodListForAssignCredit(BHPreference.organizationCode(),
                         BHPreference.teamCode(), BHPreference.employeeID(), search, AddressInfo.AddressType.AddressPayment.toString());
 
 //                Log.e("sqlsql",result.toString());
-
-
             }
 
             @Override
@@ -433,70 +407,75 @@ public class CreditListFragment extends BHFragment {
             public LinearLayout fakeClick;
         }
 
+        private String cNo = "";
         @Override
         protected void onViewItem(final int position, View view, Object holder, AssignInfo info) {
             final ViewHolder viewHolder = (ViewHolder) holder;
 
-            /*** [START] :: Fixed - [BHPROJ-0026-3278] :: [Android-ระบบเก็บเงินค่างวด] การแสดงลำดับในหน้าแสดงรายชื่อลูกค้าเก็บเงิน นำตัวเลข Order Expect มาแสดงได้เลย  ***/
-            viewHolder.txtNo.setText(String.valueOf(info.OrderExpect));
-            /*** [END] :: Fixed - [BHPROJ-0026-3278] :: [Android-ระบบเก็บเงินค่างวด] การแสดงลำดับในหน้าแสดงรายชื่อลูกค้าเก็บเงิน นำตัวเลข Order Expect มาแสดงได้เลย  ***/
+            if (cNo != info.CONTNO) {
+                cNo = info.CONTNO;
+                /*** [START] :: Fixed - [BHPROJ-0026-3278] :: [Android-ระบบเก็บเงินค่างวด] การแสดงลำดับในหน้าแสดงรายชื่อลูกค้าเก็บเงิน นำตัวเลข Order Expect มาแสดงได้เลย  ***/
+                viewHolder.txtNo.setText(String.valueOf(info.OrderExpect));
+                /*** [END] :: Fixed - [BHPROJ-0026-3278] :: [Android-ระบบเก็บเงินค่างวด] การแสดงลำดับในหน้าแสดงรายชื่อลูกค้าเก็บเงิน นำตัวเลข Order Expect มาแสดงได้เลย  ***/
 
-            /*** [START] :: Fixed - [BHPROJ-0026-740] :: [Android-ระบบเก็บเงิน] แก้ไขการแสดงผลของหน้าจอ List รายการสัญญา  ***/
+                /*** [START] :: Fixed - [BHPROJ-0026-740] :: [Android-ระบบเก็บเงิน] แก้ไขการแสดงผลของหน้าจอ List รายการสัญญา  ***/
 //            AddressInfo addressInfo = TSRController.getAddress(info.RefNo, AddressInfo.AddressType.AddressPayment);
 
-            SpannableString txtCustomer = new SpannableString( info.CustomerFullName + "\n" + info.CONTNO + "\n" + info.getAddress().Address() + "\nTel. " + info.getAddress().Telephone());
-            txtCustomer.setSpan(new ForegroundColorSpan(getResources().getColor(getColor(info.HoldSalePaymentPeriod))), 0, info.CustomerFullName.length(), 0);
-            txtCustomer.setSpan(new ForegroundColorSpan(Color.BLACK), info.CustomerFullName.length(), txtCustomer.length(), 0);
-            txtCustomer.setSpan(new ForegroundColorSpan(Color.GRAY), info.CustomerFullName.length() + info.CONTNO.length() + 1, txtCustomer.length(), 0);
-            viewHolder.txtCustomerFullNameAndCONTNO.setText(txtCustomer, TextView.BufferType.SPANNABLE);
+                SpannableString txtCustomer = new SpannableString(info.CustomerFullName + "\n" + info.CONTNO + "\n" + info.getAddress().Address() + "\nTel. " + info.getAddress().Telephone());
+                txtCustomer.setSpan(new ForegroundColorSpan(getResources().getColor(getColor(info.HoldSalePaymentPeriod))), 0, info.CustomerFullName.length(), 0);
+                txtCustomer.setSpan(new ForegroundColorSpan(Color.BLACK), info.CustomerFullName.length(), txtCustomer.length(), 0);
+                txtCustomer.setSpan(new ForegroundColorSpan(Color.GRAY), info.CustomerFullName.length() + info.CONTNO.length() + 1, txtCustomer.length(), 0);
+                viewHolder.txtCustomerFullNameAndCONTNO.setText(txtCustomer, TextView.BufferType.SPANNABLE);
 
-            //viewHolder.txtCustomerFullNameAndCONTNO.setText(info.CustomerFullName + "\n" + info.CONTNO);
-            /*** [END] :: Fixed - [BHPROJ-0026-74            0] :: [Android-ระบบเก็บเงิน] แก้ไขการแสดงผลของหน้าจอ List รายการสัญญา  ***/
+                //viewHolder.txtCustomerFullNameAndCONTNO.setText(info.CustomerFullName + "\n" + info.CONTNO);
+                /*** [END] :: Fixed - [BHPROJ-0026-74            0] :: [Android-ระบบเก็บเงิน] แก้ไขการแสดงผลของหน้าจอ List รายการสัญญา  ***/
 
-            /*** [START] :: Fixed - [BHPROJ-0026-3280] :: [Android-ระบบเก็บเงินค่างวด] ในหน้าจอรายการสัญญาทั้งหมดของวัน AppointmentDate ที่ถูกเลือก การแสดงตัวเลขงวดเก็บเงิน ให้แสดงงวดต่ำสุด  ***/
-            if(info.MinPaymentPeriodNumber == info.PaymentPeriodNumber) {
-                viewHolder.txtPaymentPeriodNumber.setText(String.valueOf(info.PaymentPeriodNumber));
-            } else {
-                viewHolder.txtPaymentPeriodNumber.setText(String.format("%d-%d", info.MinPaymentPeriodNumber, info.PaymentPeriodNumber));
-            }
-            /*** [END] :: Fixed - [BHPROJ-0026-3280] :: [Android-ระบบเก็บเงินค่างวด] ในหน้าจอรายการสัญญาทั้งหมดของวัน AppointmentDate ที่ถูกเลือก การแสดงตัวเลขงวดเก็บเงิน ให้แสดงงวดต่ำสุด  ***/
+                /*** [START] :: Fixed - [BHPROJ-0026-3280] :: [Android-ระบบเก็บเงินค่างวด] ในหน้าจอรายการสัญญาทั้งหมดของวัน AppointmentDate ที่ถูกเลือก การแสดงตัวเลขงวดเก็บเงิน ให้แสดงงวดต่ำสุด  ***/
+                if (info.MinPaymentPeriodNumber == info.PaymentPeriodNumber) {
+                    viewHolder.txtPaymentPeriodNumber.setText(String.valueOf(info.PaymentPeriodNumber));
+                } else {
+                    viewHolder.txtPaymentPeriodNumber.setText(String.format("%d-%d", info.MinPaymentPeriodNumber, info.PaymentPeriodNumber));
+                }
+                /*** [END] :: Fixed - [BHPROJ-0026-3280] :: [Android-ระบบเก็บเงินค่างวด] ในหน้าจอรายการสัญญาทั้งหมดของวัน AppointmentDate ที่ถูกเลือก การแสดงตัวเลขงวดเก็บเงิน ให้แสดงงวดต่ำสุด  ***/
 
-            viewHolder.txtNetAmount.setText(BHUtilities.numericFormat(Double.valueOf(info.OutStandingPayment)));
-            viewHolder.chkSelected.setChecked(info.Selected);
-            viewHolder.chkSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    creditList.get(position).Selected = b;
-                    if (!b) {
-                        selectedChkHeader = false;
-                        chkHeader.setChecked(selectedChkHeader);
-                    } else {
-                        int count = 0;
-                        for (AssignInfo assign : creditList) {
-                            if (assign.Selected) {
-                                count++;
+                viewHolder.txtNetAmount.setText(BHUtilities.numericFormat(Double.valueOf(info.OutStandingPayment)));
+                viewHolder.chkSelected.setChecked(info.Selected);
+                viewHolder.chkSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        creditList.get(position).Selected = b;
+                        if (!b) {
+                            selectedChkHeader = false;
+                            chkHeader.setChecked(selectedChkHeader);
+                        } else {
+                            int count = 0;
+                            for (AssignInfo assign : creditList) {
+                                if (assign.Selected) {
+                                    count++;
+                                }
+                            }
+                            if (count == creditList.size()) {
+                                selectedChkHeader = true;
+                                chkHeader.setChecked(selectedChkHeader);
                             }
                         }
-                        if (count == creditList.size()) {
-                            selectedChkHeader = true;
-                            chkHeader.setChecked(selectedChkHeader);
-                        }
                     }
-                }
-            });
-            viewHolder.fakeClick.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    viewHolder.chkSelected.setChecked(!viewHolder.chkSelected.isChecked());
-                }
-            });
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //callCreditDetail(creditList.get(position));
-                    callCreditPayment(creditList.get(position));
-                }
-            });
+                });
+
+                viewHolder.fakeClick.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        viewHolder.chkSelected.setChecked(!viewHolder.chkSelected.isChecked());
+                    }
+                });
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //callCreditDetail(creditList.get(position));
+                        callCreditPayment(creditList.get(position));
+                    }
+                });
+            }
             //view.setBackgroundColor(getResources().getColor(getColor(info.HoldSalePaymentPeriod)));
         }
 
@@ -523,10 +502,7 @@ public class CreditListFragment extends BHFragment {
 
 
     private void load_data_test() {
-
         try {
-
-
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -565,11 +541,9 @@ public class CreditListFragment extends BHFragment {
 
         }
     }
+
     private void load_data() {
-
         try {
-
-
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -588,10 +562,7 @@ public class CreditListFragment extends BHFragment {
                         JSON_PARSE_DATA_AFTER_WEBCALL(jsonObject.getJSONArray("data"));
                     } catch (JSONException e) {
                         e.printStackTrace();
-
                     }
-
-
                 }
 
                 @Override
@@ -741,14 +712,6 @@ public class CreditListFragment extends BHFragment {
     private void closeDatabase(boolean force) {
 
         Log.e("555","555");
-
-
-
-
-
-
-
-
         if(force)
             DatabaseManager.getInstance().forceCloseDatabase();
         else
@@ -757,8 +720,6 @@ public class CreditListFragment extends BHFragment {
     private void closeDatabase2(boolean force) {
 
         Log.e("555","6666");
-
-
 
         CreditListFragment.Data input = new CreditListFragment.Data();
         input.selectedDate =  Calendar.getInstance().getTime();

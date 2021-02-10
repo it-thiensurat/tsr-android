@@ -399,8 +399,6 @@ public class AssignController extends BaseController {
      ***/
     public List<AssignInfo> getSalePaymentPeriodListForAssignCredit(String OrganizationCode, String AssigneeTeamCode, String AssigneeEmpID, Date selectedDate, String search, String AddressTypeCode) {
         /*** Fixed - [BHPROJ-0026-3280] :: [Android-ระบบเก็บเงินค่างวด] ในหน้าจอรายการสัญญาทั้งหมดของวัน AppointmentDate ที่ถูกเลือก การแสดงตัวเลขงวดเก็บเงิน ให้แสดงงวดต่ำสุด  ***/
-
-
         String sql = "SELECT a.*" +
                 "		, spp.PaymentPeriodNumber, spp.NetAmount" +
                 "		, c.CONTNO" +
@@ -462,6 +460,7 @@ public class AssignController extends BaseController {
                 //    "   	AND DATE(spp.PaymentAppointmentDate) = DATE(?)" +
                 "		AND IFNULL(dc.CustomerName, '') || IFNULL(dc.CompanyName, '') || IFNULL(c.ProductSerialNumber, '') || c.CONTNO LIKE ?" +
                 " ORDER BY a.[OrderExpect], c.CONTNO ASC";
+        Log.e("Query", sql);
         //return executeQueryList(sql, new String[]{OrganizationCode, AssigneeTeamCode, AssigneeEmpID, AssigneeEmpID, AddressTypeCode, valueOf(new TripController().getDueDate()), OrganizationCode, AssigneeTeamCode, AssigneeEmpID, valueOf(selectedDate), search}, AssignInfo.class);
        // return executeQueryList(sql, new String[]{OrganizationCode, AssigneeEmpID, AssigneeEmpID, AddressTypeCode, valueOf(new TripController().getDueDate()), OrganizationCode, AssigneeEmpID, valueOf(selectedDate), search}, AssignInfo.class);
         return executeQueryList(sql, new String[]{OrganizationCode, AssigneeEmpID, AssigneeEmpID, AddressTypeCode, valueOf(new TripController().getDueDate()), OrganizationCode, AssigneeEmpID, search}, AssignInfo.class);
@@ -612,9 +611,6 @@ public class AssignController extends BaseController {
                 "       AND IFNULL(dc.CustomerName, '') || IFNULL(dc.CompanyName, '') || IFNULL(c.ProductSerialNumber, '') || c.CONTNO LIKE ?" +
                 " ORDER BY a.[OrderExpect], c.CONTNO ASC";
         //return executeQueryList(sql, new String[]{OrganizationCode, AssigneeTeamCode, AssigneeEmpID,   AddressTypeCode , valueOf(new TripController().getDueDate()), OrganizationCode, AssigneeTeamCode, AssigneeEmpID,   search}, AssignInfo.class);
-
-
-
         return executeQueryList(sql, new String[]{OrganizationCode, AssigneeEmpID,   AddressTypeCode , valueOf(new TripController().getDueDate()), OrganizationCode, AssigneeEmpID,   search}, AssignInfo.class);
     }
 

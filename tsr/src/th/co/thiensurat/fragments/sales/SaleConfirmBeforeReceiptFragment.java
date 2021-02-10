@@ -1,6 +1,7 @@
 package th.co.thiensurat.fragments.sales;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
@@ -18,6 +19,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -183,7 +185,12 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
             case R.string.button_confirm_print:
                 final String title = "คำเตือน";
                 final String message = "คุณต้องการออกใบเสร็จรับเงิน?";
-                showYesNoDialogBox(title, message);
+                if (lastPeriod) {
+                    showDialogUpdate();
+                } else {
+                    showYesNoDialogBox(title, message);
+                }
+
                 break;
             case R.string.button_back:
                 showLastView();
@@ -691,12 +698,6 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
         return layout;
     }
 
-
-
-
-
-
-
     @Override
     public void onStart() {
         try {
@@ -714,12 +715,6 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
         super.onStop();
         currentLoc.disConnectGoogleApi();
     }
-
-
-
-
-
-
 
     private void save_gps(String ReceiptID,String EmpID,String Latitude,String Longitude) {
         try {
@@ -766,6 +761,7 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
                         JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
                         JSONArray array = jsonObject.getJSONArray("data");
                         JSONObject obj = null;
+                        Log.e("Last period", String.valueOf(array));
                         for (int i = 0; i < array.length(); i++) {
                             obj = array.getJSONObject(i);
                             lastPeriod = obj.getBoolean("Status");
@@ -806,50 +802,81 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
                     });
             setupAlert.show();
         } else {
-            try {
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(BASE_URL)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                Service request = retrofit.create(Service.class);
-                Call call = request.updateCustomerPhone(phone, data.contract.RefNo, BHPreference.employeeID());
-                call.enqueue(new Callback() {
-                    @Override
-                    public void onResponse(Call call, retrofit2.Response response) {
-                        Gson gson=new Gson();
-                        try {
-                            JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
-                            JSONArray array = jsonObject.getJSONArray("data");
-                            Log.e("Update", String.valueOf(array));
-                            JSONObject obj = null;
-                            String status = null;
-                            for (int i = 0; i < array.length(); i++) {
-                                obj = array.getJSONObject(i);
-                                status = obj.getString("StatusUpdate");
-                            }
+            if (isValidMobile(phone)) {
+                try {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(BASE_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    Service request = retrofit.create(Service.class);
+                    Call call = request.updateCustomerPhone(phone, data.contract.RefNo, BHPreference.employeeID());
+                    call.enqueue(new Callback() {
+                        @Override
+                        public void onResponse(Call call, retrofit2.Response response) {
+                            Gson gson=new Gson();
+                            try {
+                                JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+                                JSONArray array = jsonObject.getJSONArray("data");
+                                Log.e("Update", String.valueOf(array));
+                                JSONObject obj = null;
+                                String status = null;
+                                for (int i = 0; i < array.length(); i++) {
+                                    obj = array.getJSONObject(i);
+                                    status = obj.getString("StatusUpdate");
+                                }
 
-                            if (status.equals("SUCCESS")) {
-                                List<Integer> listId = new ArrayList<Integer>();
-                                listId.add(R.string.button_confirm_print);
-                                activity.setViewProcessButtons(listId, View.VISIBLE);
+                                if (status.equals("SUCCESS")) {
+                                    lastPeriod = false;
+                                    hideKeyboard(getActivity());
+                                    List<Integer> listId = new ArrayList<Integer>();
+                                    listId.add(R.string.button_confirm_print);
+                                    activity.setViewProcessButtons(listId, View.VISIBLE);
 
-                                List<Integer> list = new ArrayList<Integer>();
-                                list.add(R.string.button_update_customer_phone);
-                                activity.setViewProcessButtons(list, View.GONE);
+                                    List<Integer> list = new ArrayList<Integer>();
+                                    list.add(R.string.button_update_customer_phone);
+                                    activity.setViewProcessButtons(list, View.GONE);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                    @Override
-                    public void onFailure(Call call, Throwable t) {
-                        Log.e("Update", String.valueOf(t.getLocalizedMessage()));
-                    }
-                });
+                        @Override
+                        public void onFailure(Call call, Throwable t) {
+                            Log.e("Update", String.valueOf(t.getLocalizedMessage()));
+                        }
+                    });
 
-            } catch (Exception e) {
-                Log.e("Update", e.getLocalizedMessage());
+                } catch (Exception e) {
+                    Log.e("Update", e.getLocalizedMessage());
+                }
+            } else {
+                AlertDialog.Builder setupAlert;
+                setupAlert = new AlertDialog.Builder(activity)
+                        .setTitle("แจ้งเตือน")
+                        .setMessage("เบอร์โทรศัพท์ไม่ถูกต้อง")
+                        .setCancelable(false)
+                        .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dialog.cancel();
+                                showDialogUpdate();
+                            }
+                        });
+                setupAlert.show();
             }
+        }
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
+
+    private boolean isValidMobile(String phone) {
+        String reg = "^[0]{1}+[0-9]{4}+[0-9]{5}";
+        if (phone.matches(reg)) {
+            return true;
+        } else {
+            return false;
         }
     }
 
