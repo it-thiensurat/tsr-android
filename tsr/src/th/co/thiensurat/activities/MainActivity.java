@@ -222,13 +222,6 @@ import static th.co.bighead.utilities.BHPreference.pp3;
 import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 import static th.co.thiensurat.retrofit.api.client.GIS_BASE_URL;
 
-//import th.co.bighead.utilities.BHActivity;
-//import th.co.thiensurat.retrofit.api.Service;
-
-//import static th.co.thiensurat.retrofit.api.client.BASE_URL;
-
-//import com.zj.btsdk.PrintPic;
-
 public class MainActivity extends BHActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     public static final Integer[] RequireSaleCode = new Integer[]{
@@ -329,8 +322,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
     };
     /**********************************************************************************************/
 
-
-
     public static void checkTransactionLog() {
 
         try {
@@ -384,10 +375,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         userProfileString = String.format("%s\nRun on : %s", userProfileString, BHGeneral.SERVICE_MODE.toString());
         tvUserDetail.setText(userProfileString);
 
-
-
-
-Log.e("PositionName",BHPreference.PositionName());
+        Log.e("PositionName",BHPreference.PositionName());
         try {
             String DD= BHApplication.getInstance().getPrefManager().getPreferrence("pp3");
 
@@ -396,34 +384,30 @@ Log.e("PositionName",BHPreference.PositionName());
                     (BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต"))|
                     (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย,พนักงานเครดิต"))|
                     (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานเครดิต,พนักงานขาย"))|
-            (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย,พนักงานเครดิต"))|
-            (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,พนักงานเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย"))|
-            (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,พนักงานเครดิต,พนักงานขาย,หัวหน้าหน่วยเครดิต"))|
-            (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,พนักงานขาย,หัวหน้าหน่วยเครดิต,พนักงานเครดิต"))|
-            (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,พนักงานขาย,พนักงานเครดิต,หัวหน้าหน่วยเครดิต"))|
-            (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานเครดิต,พนักงานขาย"))|
-            (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย,พนักงานเครดิต"))|
-            (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,พนักงานเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย"))|
-            (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,พนักงานเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต"))|
-            (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต,พนักงานเครดิต"))|
-            (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,พนักงานขาย,พนักงานเครดิต,หัวหน้าทีมเครดิต"))|
-            (BHPreference.PositionName().equals("พนักงานเครดิต,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย"))|
-            (BHPreference.PositionName().equals("พนักงานเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย,หัวหน้าหน่วยเครดิต"))|
-            (BHPreference.PositionName().equals("พนักงานเครดิต,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย"))|
-            (BHPreference.PositionName().equals("พนักงานเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต"))|
-            (BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต"))|
-            (BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต"))|
-            (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานเครดิต"))|
-            (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าทีมเครดิต,พนักงานเครดิต,หัวหน้าหน่วยเครดิต"))|
-            (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานเครดิต"))|
-            (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าหน่วยเครดิต,พนักงานเครดิต,หัวหน้าทีมเครดิต"))|
-            (BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต"))|
-            (BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต")))
+                    (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย,พนักงานเครดิต"))|
+                    (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,พนักงานเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย"))|
+                    (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,พนักงานเครดิต,พนักงานขาย,หัวหน้าหน่วยเครดิต"))|
+                    (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,พนักงานขาย,หัวหน้าหน่วยเครดิต,พนักงานเครดิต"))|
+                    (BHPreference.PositionName().equals("หัวหน้าทีมเครดิต,พนักงานขาย,พนักงานเครดิต,หัวหน้าหน่วยเครดิต"))|
+                    (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานเครดิต,พนักงานขาย"))|
+                    (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย,พนักงานเครดิต"))|
+                    (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,พนักงานเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย"))|
+                    (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,พนักงานเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต"))|
+                    (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต,พนักงานเครดิต"))|
+                    (BHPreference.PositionName().equals("หัวหน้าหน่วยเครดิต,พนักงานขาย,พนักงานเครดิต,หัวหน้าทีมเครดิต"))|
+                    (BHPreference.PositionName().equals("พนักงานเครดิต,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย"))|
+                    (BHPreference.PositionName().equals("พนักงานเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย,หัวหน้าหน่วยเครดิต"))|
+                    (BHPreference.PositionName().equals("พนักงานเครดิต,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานขาย"))|
+                    (BHPreference.PositionName().equals("พนักงานเครดิต,หัวหน้าหน่วยเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต"))|
+                    (BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต"))|
+                    (BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต"))|
+                    (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต,พนักงานเครดิต"))|
+                    (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าทีมเครดิต,พนักงานเครดิต,หัวหน้าหน่วยเครดิต"))|
+                    (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานเครดิต"))|
+                    (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าหน่วยเครดิต,พนักงานเครดิต,หัวหน้าทีมเครดิต"))|
+                    (BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต"))|
+                    (BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต")))
             {
-
-
-
-
 
                 tvUserDetail2.setVisibility(View.VISIBLE);
                 tvUserDetail2.setText("ปลี่ยนเมนูตำแหน่ง"+" ตอนนี้ใช้เมนู >>> "+BHPreference.sourceSystem() );
@@ -438,18 +422,9 @@ Log.e("PositionName",BHPreference.PositionName());
 
         }
 
-
-
-
         tvUserDetail2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-
-
-
-
                 final Dialog dialog = new Dialog(MainActivity.this);
                 dialog.requestWindowFeature(dialog.getWindow().FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.select_position_user);
@@ -459,10 +434,6 @@ Log.e("PositionName",BHPreference.PositionName());
 
                 final LinearLayout sale_button = (LinearLayout) dialog.findViewById(R.id.sale_button);
                 final LinearLayout  credit_button = (LinearLayout) dialog.findViewById(R.id.credit_button);
-
-
-
-
 
                 sale_button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -529,8 +500,6 @@ Log.e("PositionName",BHPreference.PositionName());
 
                                     showWarningDialog("Connecting To Internet", "ไม่พบการเชื่อมต่ออินเตอร์เน็ต");
                                 }
-
-
                             } else {
                                 Builder setupAlert;
                                 //success = showView(BHFragment.newInstance(SynchronizeMainFragment.class));
@@ -553,24 +522,12 @@ Log.e("PositionName",BHPreference.PositionName());
 
                             }
                         }
-
-
-
-
-
-
-
-
-
-
-
                     }
                 });
 
                 credit_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
 
                         if(BHPreference.sourceSystem().equals("Credit")){
                             dialog.cancel();
@@ -652,9 +609,7 @@ Log.e("PositionName",BHPreference.PositionName());
                                             }
                                         });
                                 setupAlert.show();
-
                             }
-
                         }
                     }
                 });
@@ -857,68 +812,28 @@ Log.e("PositionName",BHPreference.PositionName());
             } else {
                 /*** [START] :: Fixed - [BHPROJ-0016-1064] :: [Android-Auto-Full-Synch] เปิดให้ Auto Full-Synch แค่กรณีหลังจาก Login เสร็จแล้วเท่านั้น (ส่วน Full-Synch ตอนที่เปิด App. ให้ตัดทิ้งไปเลย)  ***/
                 //startSyncLogin();
-
-
                 if (checkDatabase()) {
                     Log.e("fff","2");
-
-
-
-
-
                     try {
                         String DD= BHApplication.getInstance().getPrefManager().getPreferrence("select_p");
 
                         if((DD.equals("Sale"))|(DD.equals("Credit"))) {
                             startSyncLogin();
                             BHApplication.getInstance().getPrefManager().setPreferrence("select_p","null");
-
-                        }
-                        else {
-
+                        } else {
                             BHPreference.setLastloginID(BHPreference.userID());
                             checkLogin = true;
-
                         }
-                    }
-                    catch (Exception ex){
-
+                    } catch (Exception ex){
                         BHPreference.setLastloginID(BHPreference.userID());
                         checkLogin = true;
-
                     }
-
-
-
-
-
-
-
-
-
                 } else {
                     Log.e("fff","3");
                     startSyncLogin();
                 }
                 /*** [END] :: Fixed - [BHPROJ-0016-1064] :: [Android-Auto-Full-Synch] เปิดให้ Auto Full-Synch แค่กรณีหลังจาก Login เสร็จแล้วเท่านั้น (ส่วน Full-Synch ตอนที่เปิด App. ให้ตัดทิ้งไปเลย) ***/
-
-
-
-
-
-                    /*Builder setupAlert;
-                    setupAlert = new AlertDialog.Builder(this)
-                            .setTitle("แจ้งเตือน ปรับปรุงฐานข้อมูล")
-                            .setMessage("กรุณาปรับปรุงข้อมูลก่อนใช้ระบบ")
-                            .setCancelable(false)
-                            .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    startSyncLogin();
-                                }
-                            });
-                    setupAlert.show();*/
             }
-            //checkLogin();
         }
         getLastLocation();
         lvMainMenu.setEnabled(true);
@@ -1000,8 +915,6 @@ Log.e("PositionName",BHPreference.PositionName());
     }
 
     public void setLayoutProcessButtons(List<Integer> listCount, int maxWidth) {
-
-
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -1065,8 +978,6 @@ Log.e("PositionName",BHPreference.PositionName());
                 btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14.0f);
                 btn.setText(id);
                 btn.setTextColor(getResources().getColor(R.color.font_color_white));
-
-
                 btn.measure(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT);
                 int width = btn.getMeasuredWidth();
                 maxWidth = Math.max(width, maxWidth);
@@ -1181,12 +1092,7 @@ Log.e("PositionName",BHPreference.PositionName());
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
        MODE=  BHGeneral.SERVICE_MODE.toString();
-
-
-
         Log.e("MODE",MODE);
         //load_data_contact_online_preoder();
 
@@ -1234,37 +1140,11 @@ Log.e("PositionName",BHPreference.PositionName());
             }
         }).start();
 
-
-
         try {
             currentLoc = new GetCurrentLocation(this);
+        } catch (Exception ex){
 
         }
-        catch (Exception ex){
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-        Log.e("TeamCode_Main",BHPreference.teamCode());
-        Log.e("saleCode_Main",BHPreference.saleCode());
-        Log.e("processType_Main",BHPreference.processTypeOfEmployee());
-        Log.e("XXXX2",BHPreference.SubTeamCode()+","+BHPreference.saleCode());
-
-*/
-
         String YY=getDateTime_Y();
         int yy_i1= Integer.parseInt(YY);
         int yy_i= yy_i1+543;
@@ -1278,7 +1158,6 @@ Log.e("PositionName",BHPreference.PositionName());
         load_data_get_ProductSerialNumber_by_preorder();
         load_data_get_ProductSerialNumber_by_preorder_setting();
     }
-
 
     public static String getDateTime_Y() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy");
@@ -1309,33 +1188,23 @@ Log.e("PositionName",BHPreference.PositionName());
             mService.stop();
         mService = null;
         con_dev = null;
-
         ThemalPrintController.delTempPrint(this); //clear tmp print
-
     }
-
-
 
     @Override
     public void onStart() {
         try {
             super.onStart();
-        }
-        catch (Exception ex){
+        } catch (Exception ex){
 
         }
-
         currentLoc.connectGoogleApi();
     }
-
-
 
     @Override
     protected void onStop() {
         super.onStop();
-
         currentLoc.disConnectGoogleApi();
-
     }
 
     @Override
@@ -1453,8 +1322,6 @@ Log.e("PositionName",BHPreference.PositionName());
                 R.string.main_menu_goto_tssm,
                 R.string.main_menu_credit_pc,
                 R.string.main_menu_proorder_credit
-
-
         };
 
         for (int id : menuIDs) {
@@ -1462,7 +1329,6 @@ Log.e("PositionName",BHPreference.PositionName());
                 return id;
             }
         }
-
         return -1;
     }
 
@@ -1697,9 +1563,7 @@ Log.e("PositionName",BHPreference.PositionName());
 
                     success = showView(BHFragment.newInstance(SaleMainFragment_preorder_setting.class));
                   // success = showView(BHFragment.newInstance(SaleMainFragment_preorder_setting2.class));
-
                     break;
-
 
                 case R.string.main_menu_first: // not require SaleCode
 
@@ -1788,14 +1652,7 @@ Log.e("PositionName",BHPreference.PositionName());
 
                case R.string.main_menu_credit_audit_check_customers: //ระบบตรวจสอบลูกค้า credit // not require SaleCode
                   success = showView(BHFragment.newInstance(CheckCustomersMainFragment.class));
-
-
-
                     break;
-
-
-
-
 
                 case R.string.main_menu_credit_salepaymentperiod_credit_customers: // not require SaleCode
                     ///success = showView(BHFragment.newInstance(CreditMainFragment.class));
@@ -1803,18 +1660,11 @@ Log.e("PositionName",BHPreference.PositionName());
                     select_page_bs=1;
 
                 // success = showView(BHFragment.newInstance(CreditMainFragment_intro.class));
-
-
-
                     CreditListFragment.Data input = new CreditListFragment.Data();
                     input.selectedDate =  Calendar.getInstance().getTime();
                     CreditListFragment fragment = BHFragment
                             .newInstance(CreditListFragment.class, input);
                     success = showNextView(fragment);
-
-
-
-
 
                     break;
                 case R.string.main_menu_credit_pc: // not require SaleCode
@@ -1874,11 +1724,6 @@ Log.e("PositionName",BHPreference.PositionName());
                     break;
                     /*** [END] :: Fixed - [BHPROJ-0026-3266][LINE@20/09/2016][Android-เพิ่มเมนูใหม่] คุณหนุ๋ยแจ้งขอเพิ่มเมนูระบบ TSSM เพื่อ Link ไปยัง URL ข้างนอกโดยส่งค่า EmpID ออกไปให้ ***/
                 case R.string.main_menu_logout: //ออกจากระบบ // not require SaleCode
-
-
-
-
-
                     List<TransactionLogInfo> trInfo = null;
                     trInfo = TSRController.getTransactionLogBySyncStatus(false);
                     if (trInfo == null) {
@@ -1932,11 +1777,8 @@ Log.e("PositionName",BHPreference.PositionName());
                                 }
                             }).execute(BHPreference.TSR_SERVICE_URL);
                         } else {
-
                             showWarningDialog("Connecting To Internet", "ไม่พบการเชื่อมต่ออินเตอร์เน็ต");
                         }
-
-
                     } else {
                         Builder setupAlert;
                         //success = showView(BHFragment.newInstance(SynchronizeMainFragment.class));
@@ -1959,17 +1801,7 @@ Log.e("PositionName",BHPreference.PositionName());
                         break;
                     }
 
-
-
-                    //logout();
                     return;
-
-
-
-
-
-
-
 
                 default:
                     break;
@@ -2255,10 +2087,6 @@ Log.e("PositionName",BHPreference.PositionName());
         }
     }
 
-
-
-
-
     public void logout2(final String userName, final String deviceID, final String userDeviceLogProcessType,String position) {
         //final BHLoading dialog = BHLoading.show(MainActivity.this);
         final Handler handler = new Handler();
@@ -2371,11 +2199,7 @@ Log.e("PositionName",BHPreference.PositionName());
                             BHPreference.setUserNotAllowLogin(UserController.LoginType.ALLOW.toString());
                             BHPreference.setTimeOutLogin(false);
 
-
-
                             authenticateInputInfo = new AuthenticateInputInfo();
-
-
                            // Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                             BHPreference.setSourceSystem(position);
                             BHApplication.getInstance().getPrefManager().setPreferrence("pp3", "2");
@@ -2389,9 +2213,6 @@ Log.e("PositionName",BHPreference.PositionName());
 
                             intent.putExtras(bun);
                             startActivity(intent);
-
-
-
 
                             //dialog.dismiss();
                             checkLogin = false;
@@ -2425,9 +2246,6 @@ Log.e("PositionName",BHPreference.PositionName());
             }).start(true, true);
         }
     }
-
-
-
 
     public void showDialogBox(String title, String message) {
         Builder setupAlert;
@@ -2510,8 +2328,6 @@ Log.e("PositionName",BHPreference.PositionName());
             }
         });
     }
-
-    
 
     /**********************************************************************************************/
     public void doJob(final Runnable job, final int resId) {
@@ -3142,6 +2958,8 @@ Log.e("PositionName",BHPreference.PositionName());
             HttpURLConnection connection = null;
             boolean downloadSuccess = false;
 
+            Log.e("Download form url", String.valueOf(url));
+
             try {
                 long downloadFile = 0;
 
@@ -3216,7 +3034,7 @@ Log.e("PositionName",BHPreference.PositionName());
                     downloadSuccess = true;
                 }*/
             }catch (Exception e){
-
+                Log.e("Download form server", e.getLocalizedMessage());
             } finally {
                 if (connection != null)
                     connection.disconnect();
@@ -3834,7 +3652,7 @@ Log.e("PositionName",BHPreference.PositionName());
                         ReCheckSqliteData(strFileUnZip);
 
                     } catch (IOException ex) {
-
+                        Log.e("Downloading exception", ex.getLocalizedMessage());
                     }
 
 
@@ -3911,7 +3729,7 @@ Log.e("PositionName",BHPreference.PositionName());
                     return "NotSuccess";
                 }*/
             } catch (Exception e) {
-
+                Log.e("Download exception", e.getLocalizedMessage());
                 resultInfo.ResultCode = -1;
                 resultInfo.ResultDescription = e.toString();
                 return resultInfo;
@@ -3989,86 +3807,91 @@ Log.e("PositionName",BHPreference.PositionName());
 //                Toast.makeText(context,"Download error: "+result, Toast.LENGTH_LONG).show();
 //            else
 //                Toast.makeText(context,"File downloaded", Toast.LENGTH_SHORT).show();
-            File fileDB = new File(DatabaseManager.getInstance().getDatabasePath());
-            if (result.ResultCode == 0 && fileDB.exists()) {
-                //-- Fixed - [BHPROJ-0016-777] :: [Meeting@BH-28/12/2558] 5. [Android-การบันทึก Transaction ใหม่] ในการบันทึก Transaction ต่าง ๆ ให้บันทึก Version ของโครงสร้างปัจจุบัน (Field TreeHistoryID) จาก ตาราง EmployeeDetail ลงไปด้วย
-                EmployeeDetailInfo empDet = new EmployeeDetailController().getCurrentTreeHistoryID(BHPreference.organizationCode());
-                String currTreeHisID = (empDet != null) ? ((empDet.TreeHistoryID != null) ? empDet.TreeHistoryID : "") : "";
-                BHPreference.setCurrentTreeHistoryID(currTreeHisID);
+            try {
+                File fileDB = new File(DatabaseManager.getInstance().getDatabasePath());
+                Log.e("DB exception", fileDB.getPath() + ", " + result.ResultDescription + " (" + result.ResultCode + ")");
+                if (result.ResultCode == 0 && fileDB.exists()) {
+                    //-- Fixed - [BHPROJ-0016-777] :: [Meeting@BH-28/12/2558] 5. [Android-การบันทึก Transaction ใหม่] ในการบันทึก Transaction ต่าง ๆ ให้บันทึก Version ของโครงสร้างปัจจุบัน (Field TreeHistoryID) จาก ตาราง EmployeeDetail ลงไปด้วย
+                    EmployeeDetailInfo empDet = new EmployeeDetailController().getCurrentTreeHistoryID(BHPreference.organizationCode());
+                    String currTreeHisID = (empDet != null) ? ((empDet.TreeHistoryID != null) ? empDet.TreeHistoryID : "") : "";
+                    BHPreference.setCurrentTreeHistoryID(currTreeHisID);
 //				Log.i("Test Synch Tree", currTreeHisID);
 
-                if (currTreeHisID.equals("")) {
-                    if (fileDB.exists()) {
-                        //fileDB.delete();
+                    if (currTreeHisID.equals("")) {
+                        if (fileDB.exists()) {
+                            //fileDB.delete();
 //                        Toast.makeText(context, "exists DB", Toast.LENGTH_LONG).show();
+                        }
+
+                        Builder setupAlert;
+                        setupAlert = new AlertDialog.Builder(activity)
+                                .setTitle("แจ้งเตือน ปรับปรุงฐานข้อมูล")
+                                .setMessage(
+                                        "ระบบไม่พบข้อมูลโครงสร้างพนักงาน Version ปัจจุบัน \nให้ดำเนินการปรับปรุงข้อมูลก่อนเริ่มใช้งานต่อไป")
+                                .setPositiveButton(activity.getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                                    }
+                                });
+                        setupAlert.show();
+
+                    } else {
+                        if (delegate != null) {
+                            delegate.postResult(result.ResultDescription);
+                        }
+
+                        /**
+                         *
+                         * Edit by Teerayut Klinsanga
+                         *
+                         * Created: 2019-08-02 09:00.00
+                         *
+                         * == Print with image ==
+                         *
+                         */
+                        getLastLocation();
+
+                        Intent i = context.getPackageManager().getLaunchIntentForPackage("com.gps_tracking");
+                        if (i != null) {
+                            Intent in = new Intent(Intent.ACTION_VIEW, Uri.parse("gis://empid/" + BHPreference.employeeID() + "/BH"));
+                            context.startActivity(in);
+                        }
+                        /**
+                         * End
+                         */
                     }
-
-                    Builder setupAlert;
-                    setupAlert = new AlertDialog.Builder(activity)
-                            .setTitle("แจ้งเตือน ปรับปรุงฐานข้อมูล")
-                            .setMessage(
-                                    "ระบบไม่พบข้อมูลโครงสร้างพนักงาน Version ปัจจุบัน \nให้ดำเนินการปรับปรุงข้อมูลก่อนเริ่มใช้งานต่อไป")
-                            .setPositiveButton(activity.getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-
-                                }
-                            });
-                    setupAlert.show();
-
                 } else {
-                    if (delegate != null) {
-                        delegate.postResult(result.ResultDescription);
-                    }
-
-                    /**
-                     *
-                     * Edit by Teerayut Klinsanga
-                     *
-                     * Created: 2019-08-02 09:00.00
-                     *
-                     * == Print with image ==
-                     *
-                     */
-                    getLastLocation();
-
-                    Intent i = context.getPackageManager().getLaunchIntentForPackage("com.gps_tracking");
-                    if (i != null) {
-                        Intent in = new Intent(Intent.ACTION_VIEW, Uri.parse("gis://empid/" + BHPreference.employeeID() + "/BH"));
-                      context.startActivity(in);
-                    }
-                    /**
-                     * End
-                     */
-                }
-            } else {
                 /*if (fileDB.exists()) {
                     fileDB.delete();
                 }*/
-                new BaseController().removeDatabase();
-                Builder setupAlert = new AlertDialog.Builder(activity)
-                        .setTitle("แจ้งเตือน ปรับปรุงฐานข้อมูล")
-                        .setCancelable(false)
-                        .setMessage("เกิดข้อผิดพลาดในการปรับปรุงฐานข้อมูล กรุณาลองใหม่อีกครั้ง")
-                        .setNegativeButton(activity.getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
+                    new BaseController().removeDatabase();
+                    Builder setupAlert = new AlertDialog.Builder(activity)
+                            .setTitle("แจ้งเตือน ปรับปรุงฐานข้อมูล")
+                            .setCancelable(false)
+                            .setMessage("เกิดข้อผิดพลาดในการปรับปรุงฐานข้อมูล กรุณาลองใหม่อีกครั้ง")
+                            .setNegativeButton(activity.getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
 
-                                final DownloadTask downloadTask = new DownloadTask(context);
-                                downloadTask.delegate = delegate;
-                                downloadTask.execute(result.url);
+                                    final DownloadTask downloadTask = new DownloadTask(context);
+                                    downloadTask.delegate = delegate;
+                                    downloadTask.execute(result.url);
 
-                                downloadTask.mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                                    @Override
-                                    public void onCancel(DialogInterface dialog) {
-                                        downloadTask.cancel(true);
-                                    }
-                                });
-                            }
-                        })
-                        .setPositiveButton(activity.getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                            }
-                        });
-                setupAlert.show();
+                                    downloadTask.mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                        @Override
+                                        public void onCancel(DialogInterface dialog) {
+                                            downloadTask.cancel(true);
+                                        }
+                                    });
+                                }
+                            })
+                            .setPositiveButton(activity.getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                }
+                            });
+                    setupAlert.show();
+                }
+            } catch (Exception e) {
+                Log.e("Post execute", e.getLocalizedMessage());
             }
             load_data_contact_online_preoder();
         }
@@ -4142,27 +3965,10 @@ Log.e("PositionName",BHPreference.PositionName());
                 if (result.progress == SynchronizeService.SYNCHRONIZE_ALL_COMPLETED || result.progress == SynchronizeService.SYNCHRONIZE_LOCAL_ERROR || result.progress == SynchronizeService.SYNCHRONIZE_ALL_ERROR) {
                     dialog.dismiss();
                     if (result.progress == SynchronizeService.SYNCHRONIZE_LOCAL_ERROR || result.progress == SynchronizeService.SYNCHRONIZE_ALL_ERROR) {
-
-
-
-
-
-
                             showWarningDialog(result.error);
                             showView(BHFragment.newInstance(SynchronizeMainFragment.class));
                             menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
                             menu.showContent();
-
-
-
-
-
-
-
-
-
-
-
                     } else {
                         if (result.progress == SynchronizeService.SYNCHRONIZE_ALL_COMPLETED && checkLogout) {
                             checkLogout = false;

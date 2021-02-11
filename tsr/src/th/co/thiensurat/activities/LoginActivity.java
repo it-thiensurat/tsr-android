@@ -199,9 +199,6 @@ public class LoginActivity extends BHActivity {
             }
         });
 
-
-
-
             try {
                 Bundle data = getIntent().getExtras();
                 if (data != null) {
@@ -215,18 +212,11 @@ public class LoginActivity extends BHActivity {
                     if((!po.isEmpty())|(!po.equals("null"))){
                         login2(u,p,po);
                     }
-
                 }
-
             }
             catch (Exception ex){
 
             }
-
-
-
-
-
     }
 
     public void login(final String userName, final String password) {
@@ -297,7 +287,6 @@ public class LoginActivity extends BHActivity {
                                 input.VersionName = BHPreference.appVersionName();
                                 input.AndroidApiLevel = BHPreference.androidApiLevel();
 
-
                                 Log.e("userName",userName);
                                 Log.e("password",password);
                                 Log.e("userDeviceId",BHPreference.userDeviceId());
@@ -308,17 +297,10 @@ public class LoginActivity extends BHActivity {
 
                                 BHApplication.getInstance().getPrefManager().setPreferrence("UserName", userName);
                                 BHApplication.getInstance().getPrefManager().setPreferrence("Password", password);
-
                             }
 
                             @Override
                             protected void calling() {
-
-
-
-
-
-
                                             Log.e("qqq","1");
                                             // TODO Auto-generated method stub]
                                             checkSoapOutput = TSRController.checkSoap();
@@ -352,60 +334,28 @@ public class LoginActivity extends BHActivity {
                                                     }
                                                 }
                                             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                             }
 
                             @Override
                             protected void after() {
-
-
-
-
-
-
-
-
                                             Log.e("qqq","2");
                                             // TODO Auto-generated method stub
                                             if (result != null) {
                                                 switch (result.ResultCode) {
                                                     case 0:
-
-
                                                         Log.e("Send user info", String.valueOf(result.Info));
 
                                                         if (menus != null) {
                                                             BHPreference.setUserMenus(menus.Info);
                                                         }
-
                                                         if (result.Info != null) {
 
                                                             BHPreference.setIsAdmin(false);
                                                             BHPreference.initPreference(result.Info,outputGetCurrentFortnight);
-
                                                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                                             startActivity(intent);
                                                             finish();
                                                             BHPreference.setLogLogin(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-
                                                         } else {
                                                             showWarningDialog("แจ้งเตือนการเข้าระบบ", "UserName Or Password ไม่ถูกต้อง");
                                                         }
@@ -475,50 +425,16 @@ public class LoginActivity extends BHActivity {
                                                 showWarningDialog("แจ้งเตือนการเข้าระบบ",
                                                         "ไม่สามารถเข้าสู่ระบบได้ กรุณาลองใหม่อีกครั้ง");
                                             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                             }
                         }).start();
-
-
                     }
                 }
-
-
-
-
-
-
-
-
-
-
-
             }).execute(BHPreference.TSR_SERVICE_URL);
         } else {
             showWarningDialog("Connecting To Internet", "ไม่พบการเชื่อมต่ออินเตอร์เน็ต");
             btnLogin.setEnabled(true);
         }
     }
-
-
-
-
 
     public void login2(final String userName, final String password, final String position) {
         if (isConnectingToInternet()) {
@@ -602,12 +518,6 @@ public class LoginActivity extends BHActivity {
 
                             @Override
                             protected void calling() {
-
-
-
-
-
-
                                 Log.e("qqq","1");
                                 // TODO Auto-generated method stub]
                                 checkSoapOutput = TSRController.checkSoap();
@@ -622,63 +532,22 @@ public class LoginActivity extends BHActivity {
                                             inputGetCurrentFortnight.OrganizationCode = result.Info.OrganizationCode;
                                             inputGetCurrentFortnight.ProcessType = ((result.Info.ProcessType == null) || (result.Info.ProcessType == "")) ? "Sale" : result.Info.ProcessType;         // [BHPROJ-0016-3225] :: [Android+Web-Admin] แก้ไข Code เรื่องการเพิ่ม Field เพื่อระบุ Department สำหรับ ตารางเก็บปักษ์การขาย
                                             outputGetCurrentFortnight = TSRController.getCurrentFortnight(inputGetCurrentFortnight);
-
-
-
-
-
-
                                             GetDeviceMenusInputInfo deviceMenuInput = new GetDeviceMenusInputInfo();
                                             //deviceMenuInput.EmployeeCode = result.Info.EmpID;
                                             deviceMenuInput.EmployeeCode = result.Info.EmpID+"_"+position;
                                             menus = TSRController.getDeviceMenus(deviceMenuInput);
-
-
-
-
-
-
                                         }
                                     }
                                 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                             }
 
                             @Override
                             protected void after() {
-
-
-
-
-
-
-
-
                                 Log.e("qqq","2");
                                 // TODO Auto-generated method stub
                                 if (result != null) {
                                     switch (result.ResultCode) {
                                         case 0:
-
-
                                             Log.e("Send user info", String.valueOf(result.Info));
 
                                             if (menus != null) {
@@ -764,51 +633,16 @@ public class LoginActivity extends BHActivity {
                                     showWarningDialog("แจ้งเตือนการเข้าระบบ",
                                             "ไม่สามารถเข้าสู่ระบบได้ กรุณาลองใหม่อีกครั้ง");
                                 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                             }
                         }).start();
-
-
                     }
                 }
-
-
-
-
-
-
-
-
-
-
-
             }).execute(BHPreference.TSR_SERVICE_URL);
         } else {
             showWarningDialog("Connecting To Internet", "ไม่พบการเชื่อมต่ออินเตอร์เน็ต");
             btnLogin.setEnabled(true);
         }
     }
-
-
-
-
-
 
     @Override
     protected void onResume() {

@@ -41,12 +41,12 @@ public class CustomerStatusAdapter extends RecyclerView.Adapter<CustomerStatusAd
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int i) {
         CustomerStatusInfo customerStatusInfo = customerStatusInfoList.get(i);
-        holder.txtNumber.setText("เลขที่สัญญา: " + customerStatusInfo.getCONTNO());
-        holder.txtDate.setText(customerStatusInfo.getAccountStatus() + " (" + customerStatusInfo.getAgingCumulativeDetail() + ")\n" + customerStatusInfo.getStDate());
-        holder.txtInstall.setText("วันที่ติดตั้ง: " + customerStatusInfo.getEffDate());
-        holder.txtName.setText(customerStatusInfo.getPrefixName() + customerStatusInfo.getCustomerName());
-        holder.txtProduct.setText(customerStatusInfo.getProductName());
-        holder.txtModel.setText(customerStatusInfo.getProductModel());
+        holder.txtNumber.setText("เลขที่สัญญา: " + customerStatusInfo.getCONTNO().trim());
+        holder.txtDate.setText(customerStatusInfo.getCustomerStatus().trim() + " (" + customerStatusInfo.getAgingCumulativeDetail().trim() + ")\n" + customerStatusInfo.getStDate().trim());
+        holder.txtInstall.setText("วันที่ติดตั้ง: " + customerStatusInfo.getEffDate().trim());
+        holder.txtName.setText(customerStatusInfo.getPrefixName().trim() + customerStatusInfo.getCustomerName().trim());
+        holder.txtProduct.setText(customerStatusInfo.getProductName().trim());
+        holder.txtModel.setText(customerStatusInfo.getProductModel().trim());
     }
 
     @Override

@@ -4414,11 +4414,12 @@ public class DocumentController {
         receiptBuilder.addBlankSpace(10);
 
         receiptBuilder.setAlign(Paint.Align.CENTER);
+        receiptBuilder.addText("QR Code สำหรับชำระเงิน", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addBlankSpace(10);
+        receiptBuilder.setAlign(Paint.Align.CENTER);
         Bitmap bmpPromtpay = createQRCodePromtpay(contract);
         receiptBuilder.addImage(bmpPromtpay);
-        receiptBuilder.addParagraph();
-        receiptBuilder.setAlign(Paint.Align.CENTER);
-        receiptBuilder.addText("QR Code พร้อมเพย์สำหรับชำระเงินค่างวด", true);
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
 
