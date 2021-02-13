@@ -529,14 +529,14 @@ public class SaleScanEmployeesFragment extends BHFragment implements EmployeeAda
 
         }
         BHSpinnerAdapter<String> arrayemp = new BHSpinnerAdapter<String>(activity, emp);
-//        spinnerEmp.setAdapter(arrayemp);
+        spinnerEmp.setAdapter(arrayemp);
 
-        recyclerview.setLayoutManager(new GridLayoutManager(activity, 2, GridLayout.VERTICAL, false));
-        recyclerview.setHasFixedSize(true);
-        employeeAdapter = new EmployeeAdapter(activity, employeeList);
-        recyclerview.setAdapter(employeeAdapter);
-        employeeAdapter.setClickListener(this);
-        employeeAdapter.notifyDataSetChanged();
+//        recyclerview.setLayoutManager(new GridLayoutManager(activity, 2, GridLayout.VERTICAL, false));
+//        recyclerview.setHasFixedSize(true);
+//        employeeAdapter = new EmployeeAdapter(activity, employeeList);
+//        recyclerview.setAdapter(employeeAdapter);
+//        employeeAdapter.setClickListener(this);
+//        employeeAdapter.notifyDataSetChanged();
     }
 
     // private void showSelectedEmployee() {
