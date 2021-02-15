@@ -572,15 +572,6 @@ public class SaleCheckPhotographyFragment extends BHFragment {
 
                 switch (Enum.valueOf(ContractImageController.ImageType.class, data.TypeCode)) {
                     case MAP:
-                    case MAPPAYMENT:
-                        /*** [START] :: Permission ***/
-                        //showNextView(new SalePhotographyMapFragment());
-                        /*SalePhotographyMapFragment.Data data1 = new SalePhotographyMapFragment.Data();
-                        data1.imageTypeCode = data.TypeCode;
-                        data1.title = titleID();
-                        SalePhotographyMapFragment fm = BHFragment.newInstance(SalePhotographyMapFragment.class, data1);
-                        showNextView(fm);*/
-
                         new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
 
                             @Override
@@ -603,6 +594,41 @@ public class SaleCheckPhotographyFragment extends BHFragment {
                             }
 
                         }, BHPermissions.PermissionType.LOCATION);
+                        break;
+                    case MAPPAYMENT:
+                        /*** [START] :: Permission ***/
+                        //showNextView(new SalePhotographyMapFragment());
+                        /*SalePhotographyMapFragment.Data data1 = new SalePhotographyMapFragment.Data();
+                        data1.imageTypeCode = data.TypeCode;
+                        data1.title = titleID();
+                        SalePhotographyMapFragment fm = BHFragment.newInstance(SalePhotographyMapFragment.class, data1);
+                        showNextView(fm);*/
+
+                        imageID = DatabaseHelper.getUUID();
+                        captureImage();
+
+//                        new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
+//
+//                            @Override
+//                            public void onSuccess(BHPermissions bhPermissions) {
+//                                SalePhotographyMapFragment.Data data1 = new SalePhotographyMapFragment.Data();
+//                                data1.imageTypeCode = data.TypeCode;
+//                                data1.title = titleID();
+//                                SalePhotographyMapFragment fm = BHFragment.newInstance(SalePhotographyMapFragment.class, data1);
+//                                showNextView(fm);
+//                            }
+//
+//                            @Override
+//                            public void onNotSuccess(BHPermissions bhPermissions) {
+//                                bhPermissions.openAppSettings(getActivity());
+//                            }
+//
+//                            @Override
+//                            public void onShouldShowRequest(BHPermissions bhPermissions, BHPermissions.PermissionType... permissionType) {
+//                                bhPermissions.showMessage(getActivity(), permissionType);
+//                            }
+//
+//                        }, BHPermissions.PermissionType.LOCATION);
                         /*** [END] :: Permission ***/
 
                         break;

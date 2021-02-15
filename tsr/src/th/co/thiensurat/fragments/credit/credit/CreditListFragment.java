@@ -284,16 +284,16 @@ public class CreditListFragment extends BHFragment {
                         BHPreference.teamCode(), BHPreference.employeeID(), data.selectedDate, search, AddressInfo.AddressType.AddressPayment.toString());
                 String cotno = "";
                 if (result != null && result.size() > 0) {
-                    for (int i = 0; i < result.size(); i++) {
-                        if (cotno.equals(result.get(i).CONTNO)) {
-                            cotno = result.get(i).CONTNO;
-                            result.remove(i);
-                        } else {
-                            cotno = result.get(i).CONTNO;
-                            creditList.add(result.get(i));
-                        }
-                    }
-//                    creditList.addAll(result);
+//                    for (int i = 0; i < result.size(); i++) {
+//                        if (cotno.equals(result.get(i).CONTNO)) {
+//                            cotno = result.get(i).CONTNO;
+//                            result.remove(i);
+//                        } else {
+//                            cotno = result.get(i).CONTNO;
+//                            creditList.add(result.get(i));
+//                        }
+//                    }
+                    creditList.addAll(result);
                 }
             }
 
@@ -412,8 +412,6 @@ public class CreditListFragment extends BHFragment {
         protected void onViewItem(final int position, View view, Object holder, AssignInfo info) {
             final ViewHolder viewHolder = (ViewHolder) holder;
 
-            if (cNo != info.CONTNO) {
-                cNo = info.CONTNO;
                 /*** [START] :: Fixed - [BHPROJ-0026-3278] :: [Android-ระบบเก็บเงินค่างวด] การแสดงลำดับในหน้าแสดงรายชื่อลูกค้าเก็บเงิน นำตัวเลข Order Expect มาแสดงได้เลย  ***/
                 viewHolder.txtNo.setText(String.valueOf(info.OrderExpect));
                 /*** [END] :: Fixed - [BHPROJ-0026-3278] :: [Android-ระบบเก็บเงินค่างวด] การแสดงลำดับในหน้าแสดงรายชื่อลูกค้าเก็บเงิน นำตัวเลข Order Expect มาแสดงได้เลย  ***/
@@ -475,7 +473,6 @@ public class CreditListFragment extends BHFragment {
                         callCreditPayment(creditList.get(position));
                     }
                 });
-            }
             //view.setBackgroundColor(getResources().getColor(getColor(info.HoldSalePaymentPeriod)));
         }
 
@@ -492,14 +489,6 @@ public class CreditListFragment extends BHFragment {
             }
         }
     }
-
-
-
-
-
-
-
-
 
     private void load_data_test() {
         try {

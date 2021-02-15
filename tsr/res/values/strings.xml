@@ -302,8 +302,8 @@
     <string name="label_sale_photo_addressno">ภาพบ้านเลขที่</string>
     <string name="label_sale_photo_address">ภาพที่อยู่อาศัย</string>
     <string name="label_sale_photo_near">ภาพสถานที่ใกล้เคียง</string>
-    <string name="label_sale_photo_map">ภาพถ่ายแผนที่ (ที่อยู่ติดตั้ง)</string>
-    <string name="label_sale_photo_map_payment">ภาพถ่ายแผนที่ (ที่อยู่เก็บเงิน)</string>
+    <string name="label_sale_photo_map">ภาพถ่ายแผนที่ GPS</string>
+    <string name="label_sale_photo_map_payment">ภาพถ่ายติดตั้งเครื่อง</string>
 
 
     <!--<string name="label_sale_photo_payment_card">ภาพถ่ายการ์ด</string>-->

@@ -1,5 +1,9 @@
 package th.co.thiensurat.data.info;
 
+import org.json.JSONArray;
+
+import java.util.List;
+
 public class CustomerStatusInfo {
     public String Refno;
     public String CONTNO;
@@ -22,6 +26,7 @@ public class CustomerStatusInfo {
     public String AgingCumulativeDetail;
     public String StDate;
     public String df;
+    public JSONArray customerAddress;
 
     public String getRefno() {
         return Refno;
@@ -189,5 +194,13 @@ public class CustomerStatusInfo {
 
     public void setDf(String df) {
         this.df = df;
+    }
+
+    public JSONArray getCustomerAddress() {
+        return customerAddress;
+    }
+
+    public void setCustomerAddress(JSONArray customerAddress) {
+        this.customerAddress = customerAddress;
     }
 }

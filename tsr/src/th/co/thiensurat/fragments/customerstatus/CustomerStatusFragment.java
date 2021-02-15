@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -76,6 +78,12 @@ public class CustomerStatusFragment extends BHFragment implements CustomerStatus
     private Button buttonSearch;
     @InjectView
     private RecyclerView recyclerview;
+    @InjectView
+    LinearLayout layout_list;
+    @InjectView
+    LinearLayout layout_msg;
+    @InjectView
+    TextView txtMsg;
 
     @Override
     protected int titleID() {
@@ -109,6 +117,8 @@ public class CustomerStatusFragment extends BHFragment implements CustomerStatus
 
     }
 
+    private String message = "";
+    private JSONArray address;
     public void onSearch(String search) {
         try {
             Retrofit retrofit = new Retrofit.Builder()
@@ -122,61 +132,81 @@ public class CustomerStatusFragment extends BHFragment implements CustomerStatus
                 public void onResponse(Call call, retrofit2.Response response) {
                     Gson gson=new Gson();
                     try {
+                        List<AddressInfo> addressInfoList;
                         List<CustomerStatusInfo> customerStatusInfoList;
                         JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
-                        JSONArray array = jsonObject.getJSONArray("data");
+                        String status = jsonObject.getString("status");
+                        message = jsonObject.getString("message");
                         customerStatusInfoList = new ArrayList<>();
                         CustomerStatusInfo customerStatusInfo;
-                        for (int i = 0; i < array.length(); i++) {
-                            JSONObject object = array.getJSONObject(i);
-                            customerStatusInfo = new CustomerStatusInfo();
-                            customerStatusInfo.setRefno(object.getString("Refno"));
-                            customerStatusInfo.setCONTNO(object.getString("CONTNO"));
-                            customerStatusInfo.setIDCard(object.getString("IDCard"));
-                            customerStatusInfo.setPrefixName(object.getString("PrefixName"));
-                            customerStatusInfo.setCustomerName(object.getString("CustomerName"));
-                            customerStatusInfo.setPayLastStatus(object.getString("PayLastStatus"));
-                            customerStatusInfo.setCustomerStatus(object.getString("CustomerStatus"));
-                            customerStatusInfo.setAccountStatus(object.getString("AccountStatus"));
-                            customerStatusInfo.setPayType(object.getString("PayType"));
-                            customerStatusInfo.setAllPeriods(object.getString("AllPeriods"));
-                            customerStatusInfo.setPayLastPeriod(object.getString("PayLastPeriod"));
-                            customerStatusInfo.setTotalPrice(object.getString("TotalPrice"));
-                            customerStatusInfo.setProductName(object.getString("ProductName"));
-                            customerStatusInfo.setProductModel(object.getString("ProductModel"));
-                            customerStatusInfo.setSaleCode(object.getString("SaleCode"));
-                            customerStatusInfo.setEffDate(object.getString("EffDate"));
-                            customerStatusInfo.setAgingCumulative(object.getString("AgingCumulative"));
-                            customerStatusInfo.setAgingContinuous(object.getString("AgingContinuous"));
-                            customerStatusInfo.setAgingCumulativeDetail(object.getString("AgingCumulativeDetail"));
-                            customerStatusInfo.setStDate(object.getString("StDate"));
-                            customerStatusInfo.setDf(object.getString("df"));
-                            customerStatusInfoList.add(customerStatusInfo);
+                        addressInfoList = new ArrayList<>();
+                        AddressInfo addressInfo;
+                        if (status.equals("SUCCESS")) {
+                            JSONArray array = jsonObject.getJSONArray("data");
+                            layout_msg.setVisibility(View.GONE);
+                            layout_list.setVisibility(View.VISIBLE);
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject object = array.getJSONObject(i);
+                                addressInfo = new AddressInfo();
+                                customerStatusInfo = new CustomerStatusInfo();
+                                customerStatusInfo.setRefno(object.getString("Refno"));
+                                customerStatusInfo.setCONTNO(object.getString("CONTNO"));
+                                customerStatusInfo.setIDCard(object.getString("IDCard"));
+                                customerStatusInfo.setPrefixName(object.getString("PrefixName"));
+                                customerStatusInfo.setCustomerName(object.getString("CustomerName"));
+                                customerStatusInfo.setPayLastStatus(object.getString("PayLastStatus"));
+                                customerStatusInfo.setCustomerStatus(object.getString("CustomerStatus"));
+                                customerStatusInfo.setAccountStatus(object.getString("AccountStatus"));
+                                customerStatusInfo.setPayType(object.getString("PayType"));
+                                customerStatusInfo.setAllPeriods(object.getString("AllPeriods"));
+                                customerStatusInfo.setPayLastPeriod(object.getString("PayLastPeriod"));
+                                customerStatusInfo.setTotalPrice(object.getString("TotalPrice"));
+                                customerStatusInfo.setProductName(object.getString("ProductName"));
+                                customerStatusInfo.setProductModel(object.getString("ProductModel"));
+                                customerStatusInfo.setSaleCode(object.getString("SaleCode"));
+                                customerStatusInfo.setEffDate(object.getString("EffDate"));
+                                customerStatusInfo.setAgingCumulative(object.getString("AgingCumulative"));
+                                customerStatusInfo.setAgingContinuous(object.getString("AgingContinuous"));
+                                customerStatusInfo.setAgingCumulativeDetail(object.getString("AgingCumulativeDetail"));
+                                customerStatusInfo.setStDate(object.getString("StDate"));
+                                customerStatusInfo.setCustomerAddress(object.getJSONArray("Address"));
+                                customerStatusInfoList.add(customerStatusInfo);
+                            }
+                            setItemToRecyclerView(customerStatusInfoList);
+                        } else {
+                            dialog.dismiss();
+                            layout_list.setVisibility(View.GONE);
+                            layout_msg.setVisibility(View.VISIBLE);
+                            txtMsg.setText(message.toString());
                         }
-                        Log.e("Response", String.valueOf(response.body()));
-
-                        setItemToRecyclerView(customerStatusInfoList);
+//                        Log.e("Response", String.valueOf(response.body()));
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Log.e("data","22");
+                        Log.e("data",e.getLocalizedMessage());
+                        dialog.dismiss();
+                        txtMsg.setText(message.toString());
                     }
                 }
 
                 @Override
                 public void onFailure(Call call, Throwable t) {
                     Log.e("data","2");
+                    dialog.dismiss();
+                    txtMsg.setText(message.toString());
                 }
             });
 
         } catch (Exception e) {
             Log.e("data",e.getLocalizedMessage());
+            dialog.dismiss();
+            txtMsg.setText(message.toString());
         }
     }
 
     private void setItemToRecyclerView(List<CustomerStatusInfo> customerStatusInfoList) {
         recyclerview.setLayoutManager(new LinearLayoutManager(activity));
         recyclerview.setHasFixedSize(true);
-        customerStatusAdapter = new CustomerStatusAdapter(customerStatusInfoList);
+        customerStatusAdapter = new CustomerStatusAdapter(customerStatusInfoList, address);
         recyclerview.setAdapter(customerStatusAdapter);
         customerStatusAdapter.setClickListener(this);
         customerStatusAdapter.notifyDataSetChanged();

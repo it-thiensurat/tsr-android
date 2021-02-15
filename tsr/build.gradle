@@ -7,8 +7,8 @@ android {
     buildToolsVersion '29.0.2'
 
     def versionCodes = { ->
-//        return 165   //<-- current version
-        return 166   //<-- New version
+//        return 166   //<-- current version
+        return 167   //<-- New version
     }
 
     def tsrAppVersion = { ->
@@ -28,8 +28,8 @@ android {
         targetSdkVersion 29
         multiDexEnabled true
         versionCode   versionCodes()
-//        versionName "1.0.0.75" //<-- current version
-        versionName "1.0.0.76" //<-- New version
+//        versionName "1.0.0.77" //<-- current version
+        versionName "1.0.0.77" //<-- New version
         resValue 'string', 'tsr_app_version', tsrAppVersion()
     }
 

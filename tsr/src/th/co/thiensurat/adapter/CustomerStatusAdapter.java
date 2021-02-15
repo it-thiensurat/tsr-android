@@ -1,7 +1,6 @@
 package th.co.thiensurat.adapter;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,25 +8,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import th.co.bighead.utilities.BHUtilities;
 import th.co.thiensurat.R;
 import th.co.thiensurat.data.info.CustomerStatusInfo;
-import th.co.thiensurat.data.info.EmployeeInfo;
 
 public class CustomerStatusAdapter extends RecyclerView.Adapter<CustomerStatusAdapter.Holder> {
 
+    private JSONArray CustomerAddress;
     private List<CustomerStatusInfo> customerStatusInfoList = new ArrayList<CustomerStatusInfo>();
     private ItemClickListener mClickListener;
 
-    public CustomerStatusAdapter(List<CustomerStatusInfo> list) {
+    public CustomerStatusAdapter(List<CustomerStatusInfo> list, JSONArray array) {
         this.customerStatusInfoList = list;
+        this.CustomerAddress = array;
     }
 
     @NonNull
@@ -47,6 +46,17 @@ public class CustomerStatusAdapter extends RecyclerView.Adapter<CustomerStatusAd
         holder.txtName.setText(customerStatusInfo.getPrefixName().trim() + customerStatusInfo.getCustomerName().trim());
         holder.txtProduct.setText(customerStatusInfo.getProductName().trim());
         holder.txtModel.setText(customerStatusInfo.getProductModel().trim());
+        try {
+            JSONObject jsonObject = customerStatusInfo.getCustomerAddress().getJSONObject(0);
+            String address = jsonObject.getString("AddressDetail")  + " " + jsonObject.getString("AddressDetail2") + " "
+                    + jsonObject.getString("AddressDetail3") + " " + jsonObject.getString("AddressDetail4") + "\n"
+                    + jsonObject.getString("District") + " " + jsonObject.getString("Amphur") + "\n"
+                    + jsonObject.getString("Province") + " " + jsonObject.getString("Zipcode");
+            holder.txtAddress.setText(address.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e("Exception address", e.getLocalizedMessage());
+        }
     }
 
     @Override
@@ -57,7 +67,7 @@ public class CustomerStatusAdapter extends RecyclerView.Adapter<CustomerStatusAd
     class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView txtProduct, txtModel;
-        TextView txtNumber, txtDate, txtName, txtInstall;
+        TextView txtNumber, txtDate, txtName, txtInstall, txtAddress;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
@@ -67,6 +77,7 @@ public class CustomerStatusAdapter extends RecyclerView.Adapter<CustomerStatusAd
             txtInstall = (TextView) itemView.findViewById(R.id.txtInstall);
             txtProduct = (TextView) itemView.findViewById(R.id.txtProduct);
             txtModel = (TextView) itemView.findViewById(R.id.txtModel);
+            txtAddress = (TextView) itemView.findViewById(R.id.txtAddress);
             itemView.setOnClickListener(this);
         }
 
