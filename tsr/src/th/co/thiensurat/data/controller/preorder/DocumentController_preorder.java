@@ -1328,6 +1328,14 @@ public class DocumentController_preorder {
         return file;
     }
 
+
+
+
+
+
+
+
+
     private static int RECEIPT_WIDTH = 576;
     public static  Bitmap getNewContactImage(ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
         ReceiptBuilder receiptBuilder = new ReceiptBuilder(RECEIPT_WIDTH);
@@ -2082,6 +2090,87 @@ public class DocumentController_preorder {
         receiptBuilder.addText("4. ให้ยึดที่อยู่ที่ติดตั้งเป็นหลัก (ในกรณีชื่อ ล/ค ไม่ตรง)", true);
         receiptBuilder.addParagraph();*/
 
+
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("ผู้รับเงินงวด 1 ที่เหลือ", false);
+        receiptBuilder.setAlign(Align.RIGHT);
+        receiptBuilder.addText("aaaaa");
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("จำนวน", false);
+        receiptBuilder.setAlign(Align.RIGHT);
+        receiptBuilder.addText("aaaaa");
+
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("ผู้ทำสัญญา", false);
+        receiptBuilder.setAlign(Align.RIGHT);
+        receiptBuilder.addText("aaaaa");
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("ข้อมูลน้ำดิบ", false);
+        receiptBuilder.setAlign(Align.RIGHT);
+        receiptBuilder.addText("aaaaa");
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("ปัญหาสภาพน้ำ", false);
+        receiptBuilder.setAlign(Align.RIGHT);
+        receiptBuilder.addText("aaaaa");
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("ผู้จัดส่งสินค้า", false);
+        receiptBuilder.setAlign(Align.RIGHT);
+        receiptBuilder.addText("aaaaa");
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("วันที่/จัดส่งที่", false);
+        receiptBuilder.setAlign(Align.RIGHT);
+        receiptBuilder.addText("aaaaa");
+
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("เบอร์สำรองลูกค้า", false);
+        receiptBuilder.setAlign(Align.RIGHT);
+        receiptBuilder.addText("aaaaa");
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("ข้อมูล อื่นๆ", false);
+        receiptBuilder.setAlign(Align.RIGHT);
+        receiptBuilder.addText("aaaaa");
+
+
+
+        receiptBuilder.addBlankSpace(10);
+
+        receiptBuilder.setTextSize(22);
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("ข้อกำหนดอุปกรณ์ติดตั้งมาตรฐาน : ", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("อุปกรณ์มาตรฐานการติดตั้ง บริษัทให้ในส่วนที่ใช้ตามจริงเท่านั้น ", true);
+
+
+
+        receiptBuilder.addBlankSpace(5);
+
+        receiptBuilder.setTextSize(22);
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("เงื่อนไขการให้บริการ", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("กรณีโปรโมชั่นติดตั้งฟรี  แต่ลูกค้าไม่ใช้บริการติดตั้ง ทางบริษัท ขอสงวนสิทธิ์ไม่ให้อุปกรณ์ตามมาตรฐาน\n" +
+                "กรณีโปรโมชั่นติดตั้งฟรี  แต่ลูกใช้อุปกรณ์เกินมาตรฐาน ลูกค้าจะต้องชำระค่าอุปกรณ์ตามเงื่อนไขบริการ (กรณีใช้อุปกรณ์เกินมาตรฐาน และไม่ได้ใช้อุปกรณ์ของบริษัท ลูกค้าต้องชำระค่าแรง 50% ของราคาอุปกรณ์) ติดตั้ง ทางบริษัท ขอสงวนสิทธิ์ไม่ให้อุปกรณ์ตามมาตรฐาน\n" +
+                "การติดตั้งเครื่องกรองน้ำทุกระบบ ถ้าแรงดันน้ำเกิน 3.5 Bar จะต้องติดตั้งวาล์วลดแรงดัน ก่อนเข้าเครื่อง\n" +
+                "บริษัทขอสงวนสิทธิ์ไม่ติดตั้งสินค้า หากหน้างานไม่มีการเตรียมพื้นที่ให้พร้อม เช่น ระบบน้ำ,ระบบไฟ,พื้นที่จัดวางสินค้าไม่ได้\n" +
+                "ข้อกำหนด\n", true);
 
 
         receiptBuilder.addBlankSpace(20);

@@ -179,8 +179,8 @@ public class SaleContractPrintFragment extends BHFragment {
     private Button btnSignature;
     @InjectView ImageView imgSignature;
 
-//    @InjectView
-//    private LinearLayout layoutSurvey;
+    @InjectView
+   private LinearLayout layoutSurvey;
 //    @InjectView
 //    private Button btnSurvery;
 

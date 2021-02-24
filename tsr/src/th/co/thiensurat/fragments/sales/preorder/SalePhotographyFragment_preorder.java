@@ -371,7 +371,7 @@ public class SalePhotographyFragment_preorder extends BHFragment {
     @Override
     protected int fragmentID() {
         // TODO Auto-generated method stub
-        return R.layout.fragment_sale_photography;
+        return R.layout.fragment_sale_photography_preorder;
 
     }
 
@@ -524,7 +524,13 @@ public class SalePhotographyFragment_preorder extends BHFragment {
                 SalePhotographyMapFragment fm = BHFragment.newInstance(SalePhotographyMapFragment.class, data1);
                 showNextView(fm);*/
 
-                new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
+
+
+
+
+
+
+/*                new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
 
                     @Override
                     public void onSuccess(BHPermissions bhPermissions) {
@@ -545,9 +551,21 @@ public class SalePhotographyFragment_preorder extends BHFragment {
                         bhPermissions.showMessage(getActivity(), permissionType);
                     }
 
-                }, BHPermissions.PermissionType.LOCATION);
-                /*** [END] :: Permission ***/
+                }, BHPermissions.PermissionType.LOCATION);*/
+
+
+
+                imageTypeCode = ImageType.INSTALL.toString();
+                imageID = DatabaseHelper.getUUID();
+                captureImage();
+
+
             }
+
+
+
+
+
         });
 
         /*** [END] Fixed - [BHPROJ-0024-686] + [BHPROJ-0024-678] ***/
@@ -747,7 +765,7 @@ String DD="",NAME_IMAGE="",IMAGE_TYPE="";
                 showNextView(new SaleMoreDetailAddress_preorder());
                 break;
             case R.string.button_cheak_photo:
-                showNextView(new SaleListPhotoFragment());
+                showNextView(new SaleListPhotoFragment_preorder());
                 break;
             case R.string.button_back:
                 showLastView();

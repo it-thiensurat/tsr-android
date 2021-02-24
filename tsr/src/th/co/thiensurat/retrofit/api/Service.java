@@ -97,6 +97,27 @@ public interface Service {
     @GET("/api/api-checkCompanyReceipt-UAT.php")
     Call<Object> checkCompanyReceipt(@Query("refno") String refno);
 
+
+    @GET("/api/api-checkBookingFirstPeriodAmount_UAT.php")
+    Call<Object> checkBookingFirstPeriodAmount_UAT(@Query("refno") String refno);
+
+    @GET("/api/api-checkBookingFirstPeriodAmount.php")
+    Call<Object> checkBookingFirstPeriodAmount(@Query("refno") String refno);
+
+
+
+
+
+    @GET("/assanee_UAT/assanee/bighead_api_new/api_1.php")
+    Call<Object> get_api_1();
+    @GET("/assanee_UAT/assanee/bighead_api_new/api_2.php")
+    Call<Object> get_api_2();
+    @GET("/assanee_UAT/assanee/bighead_api_new/api_3.php")
+    Call<Object> get_api_3();
+
+    @GET("/assanee/bighead_api_new/check_save_data.php")
+    Call<Object> check_save_data(@Query("RefNo") String refno);
+
     /***** uat by moo*/
 
     /***** production  */

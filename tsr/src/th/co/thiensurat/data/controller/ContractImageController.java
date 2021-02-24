@@ -7,7 +7,7 @@ import th.co.thiensurat.data.info.ContractImageInfo;
 public class ContractImageController extends BaseController {
 
     public enum ImageType {
-        IDCARD, PRODUCT, ADDRESS, MAP, MAPPAYMENT, LOSS, CUSTOMER, IMPOUNDPRODUCT, CHANGEPRODUCT, SALEAUDIT, PAYMENTCARD
+        IDCARD, PRODUCT, ADDRESS, MAP, MAPPAYMENT, LOSS, CUSTOMER, IMPOUNDPRODUCT, CHANGEPRODUCT, SALEAUDIT, PAYMENTCARD,INSTALL
     }
 
     public ContractImageInfo getContractImage(String RefNo, String ImageTypeCode) {
