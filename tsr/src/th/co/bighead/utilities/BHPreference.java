@@ -1036,6 +1036,8 @@ public class BHPreference {
 
 
                 Log.e("info.SourceSystem","555555");
+
+                Log.e("TeamCode_xxx",info.TeamCode+"");
             }
 
 
@@ -1047,6 +1049,10 @@ public class BHPreference {
                 get_teamcode_select_position2(BHPreference.employeeID(),BHPreference.sourceSystem());
 
             }
+        else if(!info.ProcessType.equals("Sale")){
+            get_teamcode_select_position2(BHPreference.employeeID(),BHPreference.sourceSystem());
+
+        }
 
 
 

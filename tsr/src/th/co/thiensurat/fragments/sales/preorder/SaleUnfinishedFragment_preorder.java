@@ -28,7 +28,6 @@ import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessTy
 import th.co.thiensurat.fragments.sales.SaleListPackagePaymentFragment;
 import th.co.thiensurat.fragments.sales.SaleMoreDetailAddress;
 import th.co.thiensurat.fragments.sales.SalePayFragment;
-import th.co.thiensurat.fragments.sales.SalePhotographyFragment;
 import th.co.thiensurat.fragments.sales.SaleProductCheckFragment;
 import th.co.thiensurat.fragments.sales.SaleReceiptPayment_old;
 import th.co.thiensurat.fragments.sales.SaleScanEmployeesFragment;
@@ -286,7 +285,7 @@ public class SaleUnfinishedFragment_preorder extends BHFragment {
 					case R.string.sale_unfinished_more:
 						if (intStatuscode <= 12) {
 							if (intStatuscode >= 12) {
-								showNextView(BHFragment.newInstance(SaleMoreDetailAddress.class));
+								showNextView(BHFragment.newInstance(SaleMoreDetailAddress_preorder.class));
 							} else {
 								showMessage("สถานะการทำงานของท่านยังมาไม่ถึง");
 							}

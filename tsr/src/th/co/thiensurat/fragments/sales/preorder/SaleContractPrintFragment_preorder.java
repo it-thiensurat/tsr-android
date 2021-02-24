@@ -10,6 +10,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,6 +44,8 @@ import th.co.bighead.utilities.BHUtilities;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
 import th.co.thiensurat.activities.SignatureActivity;
+import th.co.thiensurat.activities.SurveyActivity;
+import th.co.thiensurat.activities.SurveyActivity_preorder;
 import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.PrinterController;
 import th.co.thiensurat.business.controller.TSRController;
@@ -65,6 +69,7 @@ import th.co.thiensurat.fragments.sales.preorder.SaleFirstPaymentChoiceFragment_
 
 import th.co.thiensurat.fragments.sales.preorder.SaleReceiptPayment_new_preorder;
 import th.co.thiensurat.fragments.sales.preorder.SaleReceiptPayment_old_preorder;
+import th.co.thiensurat.fragments.sales.preorder.models.Get_data_api3;
 import th.co.thiensurat.retrofit.api.Service;
 import th.co.thiensurat.views.ViewTitle;
 
@@ -187,6 +192,13 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
     private TextView txt_contno,txt_date_contno,txt_name1,txt_name2,txt_d1;
 
 
+    @InjectView
+    private LinearLayout layoutSurvey;
+    @InjectView
+    private Button btnSurvery;
+
+
+
     public static int sizee=0;
     public static int size_ww=0;
 
@@ -257,6 +269,14 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
 
         loadData();
         linearLayoutPayment.setVisibility(View.GONE);
+
+
+        List<Integer> listId = new ArrayList<Integer>();
+        listId.add(R.string.button_pay);
+        listId.add(R.string.button_print);
+
+        activity.setViewProcessButtons(listId, View.GONE);
+        checkHasSurvey();
     }
 
     private void loadData() {
@@ -717,6 +737,16 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
                             startActivityForResult(intent, 999);
                         }
                     });
+
+
+                    btnSurvery.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            SurveyPage();
+                        }
+                    });
+
+
                     /**
                      *
                      * End
@@ -1201,5 +1231,114 @@ Log.e("bill","old");
                 imgSignature.setImageBitmap(getResizedBitmap(bitmap, 250, 80));
             }
         }
+        else if (requestCode == 333) {
+//            Toast.makeText(getContext(), "survey", Toast.LENGTH_LONG).show();
+            checkHasSurvey();
+        }
     }
+
+
+
+
+    private void SurveyPage() {
+        Intent intent = new Intent(getContext(), SurveyActivity_preorder.class);
+        intent.putExtra("REFERRENCE_NUMBER", contract.RefNo);
+        intent.putExtra("CONTRACT_NUMBER", contract.CONTNO);
+        intent.putExtra("EMPLOYEE_NUMBER", contract.SaleEmployeeCode);
+        startActivityForResult(intent, 333);
+    }
+
+
+    private void checkHasSurvey() {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.check_save_data(contract.RefNo);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Log.e("Survey contno", contract.RefNo);
+                    Gson gson=new Gson();
+                    try {
+                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+
+                        JSONArray array = jsonObject.getJSONArray("data");
+                        JSON_PARSE_DATA_AFTER_WEBCALL_load_data(jsonObject.getJSONArray("data"));
+
+
+                       // layoutSurvey.setVisibility(View.VISIBLE);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("data","22");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("onFailure question:",t.getLocalizedMessage());
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("Exception question",e.getLocalizedMessage());
+        }
+    }
+
+
+
+
+    public  void JSON_PARSE_DATA_AFTER_WEBCALL_load_data(JSONArray array) {
+
+
+        if(array.length()==0){
+         layoutSurvey.setVisibility(View.VISIBLE);
+
+            List<Integer> listId = new ArrayList<Integer>();
+            listId.add(R.string.button_pay);
+            listId.add(R.string.button_print);
+
+            activity.setViewProcessButtons(listId, View.GONE);
+
+        }
+        else {
+            layoutSurvey.setVisibility(View.GONE);
+
+            List<Integer> listId = new ArrayList<Integer>();
+            listId.add(R.string.button_pay);
+            listId.add(R.string.button_print);
+
+            activity.setViewProcessButtons(listId, View.VISIBLE);
+
+            for (int i = 0; i < array.length(); i++) {
+
+                final Get_data_api3 GetDataAdapter2 = new Get_data_api3();
+
+                JSONObject json = null;
+                try {
+                    json = array.getJSONObject(i);
+                    // GetDataAdapter2.setAddrees(json.getString("addrees"));
+
+
+
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                }
+                // value=GetDataAdapter2.getProblemName();
+            }
+        }
+
+
+
+
+
+
+
+    }
+
+
 }

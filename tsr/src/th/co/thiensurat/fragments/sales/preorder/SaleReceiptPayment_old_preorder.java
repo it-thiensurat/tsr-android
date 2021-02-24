@@ -49,7 +49,6 @@ import th.co.thiensurat.fragments.document.manual.preorder.ManualDocumentDetailF
 import th.co.thiensurat.fragments.payment.first.FirstPaymentMainMenuFragment;
 import th.co.thiensurat.fragments.payment.next.NextPaymentListFragment;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment;
-import th.co.thiensurat.fragments.sales.SalePhotographyFragment;
 import th.co.thiensurat.views.ViewTitle;
 
 public class SaleReceiptPayment_old_preorder extends BHFragment {
@@ -186,7 +185,7 @@ public class SaleReceiptPayment_old_preorder extends BHFragment {
         // TODO Auto-generated method stub
         switch (buttonID) {
             case R.string.button_camera:
-                showNextView(new SalePhotographyFragment());
+                showNextView(new SalePhotographyFragment_preorder());
                 break;
             case R.string.button_print:
                 if (viewPager.getChildCount() > 1) {

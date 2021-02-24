@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="th.co.thiensurat.activities.SurveyActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+        <include
+            android:id="@+id/tool_bar"
+            layout="@layout/toolbar" />
+
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="@dimen/padding_small" >
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+
+
+                <LinearLayout
+                    android:id="@+id/li_install2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="ผู้รับเงินงวด 1 ที่เหลือ  :"
+                        android:textColor="@color/app_green"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+
+                        <RadioGroup
+                            android:id="@+id/radio_G1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:text="ทีมขาย" />
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:text="ช่างติดตั้ง" />
+
+                        </RadioGroup>
+
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="จำนวน"
+                            >
+
+                        </TextView>
+
+                        <EditText
+                            android:id="@+id/et1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:hint="0"
+                            android:textSize="12sp"
+                            android:inputType="number"
+                            android:text="0"
+
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="บาท"
+                            >
+
+                        </TextView>
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+
+
+
+                <LinearLayout
+                    android:id="@+id/li_install2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="ผู้ทำสัญญา :"
+                        android:textColor="@color/app_green"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+
+                        <RadioGroup
+                            android:id="@+id/radio_G2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:text="ทีมขาย" />
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:text="ช่างติดตั้ง" />
+
+                        </RadioGroup>
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+
+
+
+                <LinearLayout
+                    android:id="@+id/li_install2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="ข้อมูลน้ำดิบ :"
+                        android:textColor="@color/app_green"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+                        <Spinner
+                            android:id="@+id/sp1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginRight="20dp" />
+
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+
+
+
+                <LinearLayout
+                    android:id="@+id/li_install2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="ปัญหาสภาพน้ำที่ต้องการเน้นเป็นพิเศษ :"
+                        android:textColor="@color/app_green"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+
+                        <Spinner
+                            android:id="@+id/sp2"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginRight="20dp" />
+
+
+
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+
+
+                        <EditText
+                            android:id="@+id/et5"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+
+
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:hint="ระบุ"
+                            android:textSize="12sp"
+
+                            />
+
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/li_install2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="ผู้จัดส่งสินค้า :"
+                        android:textColor="@color/app_green"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+
+                        <RadioGroup
+                            android:id="@+id/radio_G3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:text="ทีมขายจัดส่งสินค้าเอง" />
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="ระบุวันที่"
+                                    >
+
+                                </TextView>
+                                <EditText
+                                    android:id="@+id/et4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+
+
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginRight="20dp"
+                                    android:hint=""
+                                    android:textSize="12sp"
+                                    android:enabled="false"
+
+                                    />
+
+
+                                <ImageView
+                                    android:id="@+id/bb_datetime"
+                                    android:layout_width="30sp"
+                                    android:layout_height="30sp"
+                                    android:layout_marginLeft="5dp"
+                                    android:background="@drawable/calendar_icon"
+                                    android:backgroundTint="@color/app_green"
+                                    android:visibility="visible" />
+
+                            </LinearLayout>
+
+
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:text="คลังจัดส่งสินค้า" />
+
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="จัดส่งที่"
+                                    >
+
+                                </TextView>
+                                <Spinner
+                                    android:id="@+id/sp3"
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+
+                                    android:layout_marginRight="20dp" />
+                            </LinearLayout>
+
+
+
+                        </RadioGroup>
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+
+
+
+
+
+
+                <LinearLayout
+                    android:id="@+id/li_install2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp" />
+
+
+
+                    <LinearLayout
+                        android:id="@+id/li_install2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10sp"
+                        android:orientation="vertical">
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="เบอร์สำรองของลูกค้า :"
+                            android:textColor="@color/app_green"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp" />
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp">
+
+
+                            <EditText
+                                android:id="@+id/et2"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+
+
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp"
+                                android:hint="ติดต่อ"
+                                android:textSize="12sp"
+                                android:inputType="phone"
+                                android:ems="10"
+
+
+
+                                />
+
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/li_install2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="ข้อมูลควรทราบอื่นๆ เรื่องการติดตั้ง :"
+                        android:textColor="@color/app_green"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+
+
+                        <EditText
+                            android:id="@+id/et3"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:hint="ระบุ"
+                            android:textSize="12sp"
+
+                            />
+
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center"
+                    android:layout_gravity="center">
+
+
+
+                    <Button
+                        android:id="@+id/bnt_save"
+                        android:layout_width="200dp"
+                        android:layout_height="50dp"
+                        android:textColor="@android:color/white"
+                        android:text="บึนทึกข้อมูล"
+                        android:background="@color/app_green"/>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    >
+
+
+                    <Button
+                        android:visibility="gone"
+                        android:id="@+id/btnSurvery"
+                        android:layout_width="200dp"
+                        android:layout_height="50dp"
+                        android:textColor="@android:color/white"
+                        android:text="ข้อมูลเพิ่มเติม"
+                        android:background="@color/bg_sub_header"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+
+
+        </ScrollView>
+
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

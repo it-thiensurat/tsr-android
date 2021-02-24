@@ -266,7 +266,7 @@
 //	}
 //}
 
-package th.co.thiensurat.fragments.sales;
+package th.co.thiensurat.fragments.sales.preorder;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -284,9 +284,11 @@ import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
 import th.co.thiensurat.data.controller.ContractImageController.ImageType;
 import th.co.thiensurat.data.info.MenuInfo;
+import th.co.thiensurat.fragments.sales.EditContractsMainFragment;
+import th.co.thiensurat.fragments.sales.SaleCheckPhotographyFragment;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
 
-public class SaleListPhotoFragment extends BHFragment {
+public class SaleListPhotoFragment_preorder extends BHFragment {
 
     private String ImageTypeCode;
 
@@ -301,7 +303,7 @@ public class SaleListPhotoFragment extends BHFragment {
     @Override
     protected int titleID() {
         // TODO Auto-generated method stub
-        if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.EditContract.toString())) {
+        if (BHPreference.ProcessType().equals(ProcessType.EditContract.toString())) {
             return R.string.title_edit_customer_details;
         } else {
             return R.string.title_sales;
@@ -328,7 +330,7 @@ public class SaleListPhotoFragment extends BHFragment {
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
 
-        if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.EditContract.toString())) {
+        if (BHPreference.ProcessType().equals(ProcessType.EditContract.toString())) {
             linearLayoutHeadNumber.setVisibility(View.GONE);
         }
 
@@ -354,7 +356,7 @@ public class SaleListPhotoFragment extends BHFragment {
     }
 
     private void bindMenu() {
-        MenuInfo[] menus = MenuInfo.from(R.array.sale_photo);
+        MenuInfo[] menus = MenuInfo.from(R.array.sale_photo_preorder);
         BHArrayAdapter<MenuInfo> adapter = new BHArrayAdapter<MenuInfo>(activity, R.layout.list_sale_photo, menus) {
 
             class ViewHolder {
@@ -403,10 +405,10 @@ public class SaleListPhotoFragment extends BHFragment {
                 ImageTypeCode = ImageType.MAP.toString();
                 CheckPhoto(ImageTypeCode);
                 break;
-            case R.string.sale_photo_gps_payment:
-                ImageTypeCode = ImageType.MAPPAYMENT.toString();
-                CheckPhoto(ImageTypeCode);
+            case R.string.sale_photo_product_install:
 
+                ImageTypeCode = ImageType.INSTALL.toString();
+                CheckPhoto(ImageTypeCode);
                 break;
             /*** [END] Fixed - [BHPROJ-0024-678] ***/
             case R.string.sale_photo_product:

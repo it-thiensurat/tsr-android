@@ -203,9 +203,19 @@
         <item>@string/sale_photo_id</item>
         <item>@string/sale_photo_payment_card</item>
         <item>@string/sale_photo_gps</item>
-        <item>@string/sale_photo_product</item>
+        <item>@string/label_sale_photo_product</item>
         <item>@string/sale_photo_gps_payment</item>
         <item>@string/sale_photo_home</item>
+    </array>
+
+
+    <array name="sale_photo_preorder">
+        <item>@string/sale_photo_home</item>
+        <item>@string/sale_photo_id</item>
+        <item>@string/sale_photo_gps</item>
+        <item>@string/sale_photo_product_install</item>
+        <item>@string/sale_photo_product</item>
+        <item>@string/sale_photo_payment_card</item>
     </array>
 
     <array name="report_sale_menu">
