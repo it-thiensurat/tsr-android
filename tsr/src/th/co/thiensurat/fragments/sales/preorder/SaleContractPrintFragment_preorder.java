@@ -1256,11 +1256,13 @@ Log.e("bill","old");
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             Service request = retrofit.create(Service.class);
-            Call call = request.check_save_data(contract.RefNo);
+            Call call = request.check_save_data(BHPreference.RefNo());
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, retrofit2.Response response) {
-                    Log.e("Survey contno", contract.RefNo);
+                  //  Log.e("Survey contno", contract.RefNo);
+                  //  Log.e("Survey contno", BHPreference.RefNo());
+
                     Gson gson=new Gson();
                     try {
                         JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
@@ -1319,7 +1321,31 @@ Log.e("bill","old");
                 JSONObject json = null;
                 try {
                     json = array.getJSONObject(i);
-                    // GetDataAdapter2.setAddrees(json.getString("addrees"));
+
+                    String FirstPeriodPayBy=json.getString("FirstPeriodPayBy");
+                    String FirstPeriodPayAmount=json.getString("FirstPeriodPayAmount");
+                    String ContractBy=json.getString("ContractBy");
+                    String WaterInfo=json.getString("WaterInfo");
+                    String WaterProblem=json.getString("WaterProblem");
+                    String WaterProblemMore=json.getString("WaterProblemMore");
+                    String ShippingBy=json.getString("ShippingBy");
+                    String ShippingDate=json.getString("ShippingDate");
+                    String ShippingTo=json.getString("ShippingTo");
+                    String TelnoCus=json.getString("TelnoCus");
+                    String InstallDetails=json.getString("InstallDetails");
+
+
+                    BHApplication.getInstance().getPrefManager().setPreferrence("FirstPeriodPayBy", FirstPeriodPayBy);
+                    BHApplication.getInstance().getPrefManager().setPreferrence("FirstPeriodPayAmount", FirstPeriodPayAmount);
+                    BHApplication.getInstance().getPrefManager().setPreferrence("ContractBy", ContractBy);
+                    BHApplication.getInstance().getPrefManager().setPreferrence("WaterInfo", WaterInfo);
+                    BHApplication.getInstance().getPrefManager().setPreferrence("WaterProblem", WaterProblem);
+                    BHApplication.getInstance().getPrefManager().setPreferrence("WaterProblemMore", WaterProblemMore);
+                    BHApplication.getInstance().getPrefManager().setPreferrence("ShippingBy", ShippingBy);
+                    BHApplication.getInstance().getPrefManager().setPreferrence("ShippingDate", ShippingDate);
+                    BHApplication.getInstance().getPrefManager().setPreferrence("ShippingTo", ShippingTo);
+                    BHApplication.getInstance().getPrefManager().setPreferrence("TelnoCus", TelnoCus);
+                    BHApplication.getInstance().getPrefManager().setPreferrence("InstallDetails", InstallDetails);
 
 
 

@@ -83,7 +83,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
-                    android:text="กดเพื่อสแกนเครื่องกรอง" >
+                    android:text="กดเพื่อสแกนเครื่องกรองน้ำที่เปลี่ยนสาร" >
                 </TextView>
 
                 <EditText
