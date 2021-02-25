@@ -1184,9 +1184,6 @@ public class PrinterController {
         });
     }
 
-
-
-
     public static void printNewImageContract_preorder(final ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
         DocumentHistoryInfo checkExist = TSRController.getDocumentHistoryByDocumentNumber(contract.RefNo, DocumentHistoryController.DocumentType.Contract.toString());
         List<List<PrintTextInfo>> documents = new ArrayList<>();

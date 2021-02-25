@@ -547,12 +547,6 @@ public class SynchronizeMainFragment extends BHFragment {
     }
 
 
-
-
-
-
-
-
     public boolean isConnectingToInternet() {
         ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -841,12 +835,6 @@ public class SynchronizeMainFragment extends BHFragment {
                                     downloadTask.cancel(true);
                                 }
                             });*/
-
-
-
-
-
-
                             try {
 
                                 if((BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต"))|(BHPreference.PositionName().equals("พนักงานเครดิต,พนักงานขาย"))|
@@ -879,18 +867,12 @@ public class SynchronizeMainFragment extends BHFragment {
                                         (BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต")))
                                 {
 
-
-
                                     BHApplication.getInstance().getPrefManager().setPreferrence("select_p", BHPreference.sourceSystem());
 
                                     try {
                                         String DD= BHApplication.getInstance().getPrefManager().getPreferrence("select_p");
-
                                         if((DD.equals("Sale"))|(DD.equals("Credit"))) {
-
                                             Log.e("VVVV","1111");
-
-
                                             new SynchronizeMainFragment().updateUserInfo2(BHPreference.userID(),BHPreference.sourceSystem(), new updateUserInfoAsyncResponse() {
                                                 @Override
                                                 public void updateUserInfoProcessFinish() {
@@ -917,30 +899,13 @@ public class SynchronizeMainFragment extends BHFragment {
                                                     });
                                                 }
                                             });
-
-
                                             BHApplication.getInstance().getPrefManager().setPreferrence("select_p","null");
-
                                         }
 
-                                    }
-                                    catch (Exception ex){
-
-
+                                    } catch (Exception ex){
 
                                     }
-
-
-
-
-
-
-
-
-                                }
-                                else {
-
-
+                                } else {
                                     Log.e("VVVV","2222");
 
                                     new SynchronizeMainFragment().updateUserInfo(BHPreference.userID(), new updateUserInfoAsyncResponse() {
@@ -1000,44 +965,7 @@ public class SynchronizeMainFragment extends BHFragment {
                                         });
                                     }
                                 });
-
                             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         }
                     }
                     stop();

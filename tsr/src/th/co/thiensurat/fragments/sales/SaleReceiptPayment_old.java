@@ -799,6 +799,7 @@ public class SaleReceiptPayment_old extends BHFragment {
 
             switch (Enum.valueOf(PaymentInfo.PaymentType1.class, payments.get(position).PaymentType)) {
                 case Cash:
+                case Qrcode:
                     llCreditAmount.setVisibility(View.GONE);
                     llChequeAmount.setVisibility(View.GONE);
                     break;

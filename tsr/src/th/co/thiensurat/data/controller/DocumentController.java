@@ -27,6 +27,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -3684,6 +3685,20 @@ public class DocumentController {
         return getResizedBitmap(bmp, 120, 120);
     }
 
+    private static Bitmap getStringForMerge() {
+        Bitmap bmp = null;
+        File file = new File(getAlbumStorageDir("textmerge"), String.format("text_center.jpg"));
+        if (file.exists()) {
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), bmOptions);
+            bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(), true);
+        } else {
+            createStringForMerge();
+        }
+
+        return bmp;
+    }
+
     public static Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap bitmap = null;
         if (drawable instanceof BitmapDrawable) {
@@ -3726,11 +3741,30 @@ public class DocumentController {
     }
 
     public static Bitmap mergeBMP(Bitmap bmp1, Bitmap bmp2, File path) {
-        Bitmap result = Bitmap.createBitmap(RECEIPT_WIDTH, bmp1.getHeight(), Config.ARGB_8888);
+        Bitmap result = Bitmap.createBitmap(450, 150, Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         canvas.drawColor(Color.WHITE);
         canvas.drawBitmap(bmp1, 0, 0, null);
-        canvas.drawBitmap(bmp2, (bmp1.getWidth() + 300), 15, null);
+        canvas.drawBitmap(bmp2, bmp1.getWidth(), 0, null);
+        OutputStream stream = null;
+        try {
+            stream = new FileOutputStream(path);
+            result.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+            stream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static Bitmap mergeBMP2(Bitmap bmp1, Bitmap bmp2, File path) {
+        Bitmap result = Bitmap.createBitmap(576, 150, Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
+        canvas.drawColor(Color.WHITE);
+        canvas.drawBitmap(bmp1, 0, 0, null);
+        canvas.drawBitmap(bmp2, bmp1.getWidth(), 15, null);
         OutputStream stream = null;
         try {
             stream = new FileOutputStream(path);
@@ -3845,18 +3879,10 @@ public class DocumentController {
     public static Bitmap getNewContactImage(ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
         ReceiptBuilder receiptBuilder = new ReceiptBuilder(RECEIPT_WIDTH);
         receiptBuilder.setMargin(5, 0);
-        receiptBuilder.setTextSize(24);
-        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.setAlign(Align.CENTER);
         receiptBuilder.setColor(Color.BLACK);
-        receiptBuilder.addText("บริษัท เธียรสุรัตน์ จำกัด (มหาชน)", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addText("43/9 หมู่ 7 ซ.ชูชาติอนุสรณ์ 4 ต.บางตลาด", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addText("อ.ปากเกร็ด จ.นนทบุรี 11120", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addText("โทร. 0 2819 8888 แฟกซ์ 0 2962 6951-3", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addText("อีเมล thiensurat@thiensurat.co.th", true);
+        receiptBuilder.setTextSize(26);
+        receiptBuilder.addImage(shortHeaderPrint());
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
         receiptBuilder.setAlign(Align.CENTER);
@@ -3950,16 +3976,6 @@ public class DocumentController {
                     imgAddress.recycle();
                     receiptBuilder.addImage(result1);
                     receiptBuilder.addParagraph();
-//                    receiptBuilder.addText(AddressInfo.addr1(defaultAddress.Address()), true);
-//                    receiptBuilder.addParagraph();
-//                    receiptBuilder.setAlign(Paint.Align.RIGHT);
-//                    receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
-//                    receiptBuilder.addParagraph();
-//                    if (AddressInfo.addrCheckMultiLine(defaultAddress.Address()) == 3) {
-//                        receiptBuilder.setAlign(Paint.Align.RIGHT);
-//                        receiptBuilder.addText(AddressInfo.addr3(defaultAddress.Address()), true);
-//                        receiptBuilder.addParagraph();
-//                    }
                     yy = 19;
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("ที่ติดตั้ง", false);
@@ -3975,16 +3991,6 @@ public class DocumentController {
                     cvInstall.drawBitmap(imgInstall, RECEIPT_WIDTH / 2, 0, null);
                     imgInstall.recycle();
                     receiptBuilder.addImage(result2);
-//                    receiptBuilder.addText(AddressInfo.addr1(installAddress.Address()), true);
-//                    receiptBuilder.addParagraph();
-//                    receiptBuilder.setAlign(Paint.Align.RIGHT);
-//                    receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
-//                    receiptBuilder.addParagraph();
-//                    if (AddressInfo.addrCheckMultiLine(installAddress.Address()) == 3) {
-//                        receiptBuilder.setAlign(Paint.Align.RIGHT);
-//                        receiptBuilder.addText(AddressInfo.addr3(installAddress.Address()), true);
-//                        receiptBuilder.addParagraph();
-//                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -4006,16 +4012,6 @@ public class DocumentController {
                     imgAddress.recycle();
                     receiptBuilder.addImage(result1);
                     receiptBuilder.addParagraph();
-//                    receiptBuilder.addText(AddressInfo.addr1(defaultAddress.Address()), true);
-//                    receiptBuilder.addParagraph();
-//                    receiptBuilder.setAlign(Paint.Align.RIGHT);
-//                    receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
-//                    receiptBuilder.addParagraph();
-//                    if (AddressInfo.addrCheckMultiLine(defaultAddress.Address()) == 3) {
-//                        receiptBuilder.setAlign(Paint.Align.RIGHT);
-//                        receiptBuilder.addText(AddressInfo.addr3(defaultAddress.Address()), true);
-//                        receiptBuilder.addParagraph();
-//                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -4039,16 +4035,6 @@ public class DocumentController {
                     cvInstall.drawBitmap(imgInstall, RECEIPT_WIDTH / 2, 0, null);
                     imgInstall.recycle();
                     receiptBuilder.addImage(result2);
-//                    receiptBuilder.addText(AddressInfo.addr1(installAddress.Address()), true);
-//                    receiptBuilder.addParagraph();
-//                    receiptBuilder.setAlign(Paint.Align.RIGHT);
-//                    receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
-//                    receiptBuilder.addParagraph();
-//                    if (AddressInfo.addrCheckMultiLine(installAddress.Address()) == 3) {
-//                        receiptBuilder.setAlign(Paint.Align.RIGHT);
-//                        receiptBuilder.addText(AddressInfo.addr3(installAddress.Address()), true);
-//                        receiptBuilder.addParagraph();
-//                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -4073,16 +4059,6 @@ public class DocumentController {
                     imgAddress.recycle();
                     receiptBuilder.addImage(result1);
                     receiptBuilder.addParagraph();
-//                    receiptBuilder.addText(AddressInfo.addr1(defaultAddress.Address()), true);
-//                    receiptBuilder.addParagraph();
-//                    receiptBuilder.setAlign(Paint.Align.RIGHT);
-//                    receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
-//                    receiptBuilder.addParagraph();
-//                    if (AddressInfo.addrCheckMultiLine(defaultAddress.Address()) == 3) {
-//                        receiptBuilder.setAlign(Paint.Align.RIGHT);
-//                        receiptBuilder.addText(AddressInfo.addr3(defaultAddress.Address()), true);
-//                        receiptBuilder.addParagraph();
-//                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("ที่ติดตั้ง", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -4101,16 +4077,7 @@ public class DocumentController {
                     cvInstall.drawBitmap(imgInstall, RECEIPT_WIDTH / 2, 0, null);
                     imgInstall.recycle();
                     receiptBuilder.addImage(result2);
-//                    receiptBuilder.addText(AddressInfo.addr1(installAddress.Address()), true);
-//                    receiptBuilder.addParagraph();
-//                    receiptBuilder.setAlign(Paint.Align.RIGHT);
-//                    receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
-//                    receiptBuilder.addParagraph();
-//                    if (AddressInfo.addrCheckMultiLine(installAddress.Address()) == 3) {
-//                        receiptBuilder.setAlign(Paint.Align.RIGHT);
-//                        receiptBuilder.addText(AddressInfo.addr3(installAddress.Address()), true);
-//                        receiptBuilder.addParagraph();
-//                    }
+
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -4132,16 +4099,7 @@ public class DocumentController {
                     imgAddress.recycle();
                     receiptBuilder.addImage(result1);
                     receiptBuilder.addParagraph();
-//                    receiptBuilder.addText(AddressInfo.addr1(defaultAddress.Address()), true);
-//                    receiptBuilder.addParagraph();
-//                    receiptBuilder.setAlign(Paint.Align.RIGHT);
-//                    receiptBuilder.addText(AddressInfo.addr2(defaultAddress.Address()), true);
-//                    receiptBuilder.addParagraph();
-//                    if (AddressInfo.addrCheckMultiLine(defaultAddress.Address()) == 3) {
-//                        receiptBuilder.setAlign(Paint.Align.RIGHT);
-//                        receiptBuilder.addText(AddressInfo.addr3(defaultAddress.Address()), true);
-//                        receiptBuilder.addParagraph();
-//                    }
+
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -4161,16 +4119,6 @@ public class DocumentController {
                     cvInstall.drawBitmap(imgInstall, RECEIPT_WIDTH / 2, 0, null);
                     imgInstall.recycle();
                     receiptBuilder.addImage(result2);
-//                    receiptBuilder.addText(AddressInfo.addr1(installAddress.Address()), true);
-//                    receiptBuilder.addParagraph();
-//                    receiptBuilder.setAlign(Paint.Align.RIGHT);
-//                    receiptBuilder.addText(AddressInfo.addr2(installAddress.Address()), true);
-//                    receiptBuilder.addParagraph();
-//                    if (AddressInfo.addrCheckMultiLine(installAddress.Address()) == 3) {
-//                        receiptBuilder.setAlign(Paint.Align.RIGHT);
-//                        receiptBuilder.addText(AddressInfo.addr3(installAddress.Address()), true);
-//                        receiptBuilder.addParagraph();
-//                    }
                     receiptBuilder.setAlign(Paint.Align.LEFT);
                     receiptBuilder.addText("เบอร์โทรติดต่อ", false);
                     receiptBuilder.setAlign(Paint.Align.RIGHT);
@@ -4415,8 +4363,6 @@ public class DocumentController {
 
         receiptBuilder.setAlign(Paint.Align.CENTER);
         receiptBuilder.addText("QR Code สำหรับชำระเงิน", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addBlankSpace(10);
         receiptBuilder.setAlign(Paint.Align.CENTER);
         Bitmap bmpPromtpay = createQRCodePromtpay(contract);
         receiptBuilder.addImage(bmpPromtpay);
@@ -4444,7 +4390,8 @@ public class DocumentController {
     }
 
     public static Bitmap getNewReceiptImage(PaymentInfo paymentInfo, DebtorCustomerInfo debtorCustomerInfo, AddressInfo addressInfo) {
-        ReceiptBuilder receiptBuilder = new ReceiptBuilder(576);
+        Log.e("payment info", String.valueOf(paymentInfo));
+        ReceiptBuilder receiptBuilder = new ReceiptBuilder(RECEIPT_WIDTH);
         receiptBuilder.setMargin(5, 0);
         receiptBuilder.setAlign(Align.CENTER);
         receiptBuilder.setColor(Color.BLACK);
@@ -4649,49 +4596,44 @@ public class DocumentController {
 
         receiptBuilder.addImage(result);
         receiptBuilder.addParagraph();
-        receiptBuilder.addBlankSpace(10);
 
+        String qrcodeSurvey = "http://app.thiensurat.co.th/VerifySeller/index.php?EmpID=" + paymentInfo.EmpID;
+        Bitmap bmpSurvey = createQRCodeForSurvey(qrcodeSurvey);
 
-        receiptBuilder.setTextSize(20);
-        if (paymentInfo.PaymentPeriodNumber == 1) {
-            receiptBuilder.setAlign(Align.RIGHT);
-            receiptBuilder.addImage(logoTelesale());
+        Bitmap bottomReceipt = null;
+        File file = new File(getAlbumStorageDir(paymentInfo.CONTNO), String.format("bottomreceipt_%s.jpg", paymentInfo.CONTNO));
+        if (file.exists()) {
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bottomReceipt = BitmapFactory.decodeFile(file.getAbsolutePath(), bmOptions);
+            bottomReceipt = Bitmap.createScaledBitmap(bottomReceipt, bottomReceipt.getWidth(), bottomReceipt.getHeight(), true);
         } else {
+            bottomReceipt = mergeBMP(bmpSurvey, getStringForMerge(), file);
+        }
+
+        Bitmap bmpMerge =null;
+        File fileS = new File(getAlbumStorageDir(paymentInfo.CONTNO), String.format("telesale_with_survey_%s.jpg", paymentInfo.CONTNO));
+        if (fileS.exists()) {
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmpMerge = BitmapFactory.decodeFile(fileS.getAbsolutePath(), bmOptions);
+            bmpMerge = Bitmap.createScaledBitmap(bmpMerge, bmpMerge.getWidth(), bmpMerge.getHeight(), true);
+        } else {
+            bmpMerge = mergeBMP2(bottomReceipt, logoTelesale(), fileS);
+        }
+
+        receiptBuilder.setAlign(Paint.Align.CENTER);
+        receiptBuilder.addImage(bmpMerge);
+        receiptBuilder.addParagraph();
+
+        if (paymentInfo.PaymentPeriodNumber > 1) {
             receiptBuilder.setAlign(Paint.Align.CENTER);
             String qrcode = String.format("|010755600021301" + CR + "%s" + CR + "%s" + CR + "%s", debtorCustomerInfo.IDCard.replace("-", ""), paymentInfo.CONTNO, "0");
             Bitmap bmpQR = createQRCodeForReceipt(qrcode);
-            File file = new File(getAlbumStorageDir(paymentInfo.CONTNO), String.format("bottomreceipt_%s.jpg", paymentInfo.CONTNO));
-            Bitmap bottomReceipt = mergeBMP(bmpQR, logoTelesale(), file);
-
-            Bitmap resultReceipt = Bitmap.createBitmap(RECEIPT_WIDTH, 160, Config.ARGB_8888);
-            Canvas cc = new Canvas(resultReceipt);
-            cc.drawBitmap(bottomReceipt, 0, 0, null);
-            bottomReceipt.recycle();
-            receiptBuilder.addImage(resultReceipt);
-            receiptBuilder.setAlign(Paint.Align.LEFT);
-            receiptBuilder.addText("สำหรับชำระค่างวด", false);
+            receiptBuilder.addImage(bmpQR);
+            receiptBuilder.setAlign(Align.CENTER);
+            receiptBuilder.addImage(textBottomQRCode());
         }
 
         receiptBuilder.addParagraph();
-        receiptBuilder.addBlankSpace(40);
-
-        receiptBuilder.setTextSize(24);
-        receiptBuilder.setAlign(Paint.Align.CENTER);
-        receiptBuilder.addText("TSR E-Survey", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.setTextSize(18);
-        receiptBuilder.setAlign(Paint.Align.CENTER);
-        receiptBuilder.addText("ขอเชิญร่วมแสดงความคิดเห็น เพื่อนำมาพัฒนาและปรับปรุงบริการของเรา", true);
-        receiptBuilder.addParagraph();
-
-        receiptBuilder.setTextSize(26);
-        receiptBuilder.setAlign(Paint.Align.CENTER);
-        String qrcodeSurvey = "http://app.thiensurat.co.th/VerifySeller/index.php?EmpID=" + paymentInfo.EmpID;
-        Bitmap bmpSurvey = createQRCodeForSurvey(qrcodeSurvey);
-        receiptBuilder.addImage(bmpSurvey);
-
-        receiptBuilder.addParagraph();
-        receiptBuilder.addBlankSpace(10);
 
         return receiptBuilder.build();
     }
@@ -4784,12 +4726,9 @@ public class DocumentController {
             receiptBuilder.setAlign(Paint.Align.CENTER);
             String SendMoneyBarcode = String.format("|010755600021300" + CR + "%s" + CR + "%s" + CR + "%s", sendMoney.Reference1, "", BHUtilities.numericFormat(sendMoney.SendAmount).replace(",", "").replace(".", ""));
 
-//            Bitmap bmp = BHBarcode.generateCode128(SendMoneyBarcode, 725, 95);
-
             Bitmap bmpQR = createQRCode(SendMoneyBarcode);
             receiptBuilder.addImage(bmpQR);
             receiptBuilder.addBlankSpace(20);
-//            Bitmap bmp = createBarcode128(SendMoneyBarcode);
             Bitmap bmp = BHBarcode.generateCode128(SendMoneyBarcode, 725, 95);
             receiptBuilder.addImage(bmp);
             receiptBuilder.addParagraph();
@@ -4975,7 +4914,7 @@ public class DocumentController {
     public static Bitmap createQRCodeForReceipt(String contents) {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(contents, BarcodeFormat.QR_CODE, 150, 150);
+            BitMatrix bitMatrix = multiFormatWriter.encode(contents, BarcodeFormat.QR_CODE, 250, 250);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             return bitmap;
@@ -4988,7 +4927,7 @@ public class DocumentController {
     public static Bitmap createQRCodeForSurvey(String contents) {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(contents, BarcodeFormat.QR_CODE, 300, 300);
+            BitMatrix bitMatrix = multiFormatWriter.encode(contents, BarcodeFormat.QR_CODE, 155, 155);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             return bitmap;
@@ -5006,6 +4945,102 @@ public class DocumentController {
             }
         }
         return null;
+    }
+
+    public static void createStringForMerge() {
+        File file = new File(getAlbumStorageDir("textmerge"), String.format("text_center.jpg"));
+        Bitmap img = Bitmap.createBitmap(RECEIPT_WIDTH, 150, Config.ARGB_8888);
+        img.setHasAlpha(true);
+
+        float yy = 0;
+        Canvas cv = new Canvas(img);
+        cv.drawColor(Color.WHITE);
+
+        Paint p = new Paint();
+        p.setColor(Color.BLACK);
+        p.setStyle(Style.FILL_AND_STROKE);
+        p.setAntiAlias(true);
+
+        float fontSize = 20;
+        float lineSpace = fontSize / 2;
+        Paint pTitle2 = new Paint(p);
+        pTitle2.setTypeface(Typeface.DEFAULT);
+        pTitle2.setTextSize(fontSize);
+        pTitle2.setTextAlign(Align.LEFT);
+
+        Paint pValue = new Paint(pTitle2);
+        pValue.setTextAlign(Align.LEFT);
+        Paint pSignature = new Paint(pValue);
+        pTitle2.setTypeface(Typeface.DEFAULT);
+        pTitle2.setTextSize(fontSize);
+        pSignature.setTextAlign(Align.CENTER);
+
+        yy += 22;
+        int Value = RECEIPT_WIDTH / 4;
+        yy += fontSize + lineSpace;
+        cv.drawText("ขอเชิญร่วมแสดงความคิดเห็น", Value, yy, pSignature);
+        yy += fontSize + lineSpace;
+        cv.drawText("เพื่อนำมาพัฒนาและปรับปรุง",Value, yy, pSignature);
+        yy += fontSize + lineSpace;
+        cv.drawText("บริการของเรา", Value, yy, pSignature);
+
+        Bitmap result = Bitmap.createBitmap(RECEIPT_WIDTH, 150, Config.ARGB_8888);
+        cv = new Canvas(result);
+        cv.drawBitmap(img, 0, 0, null);
+        img.recycle();
+
+        try {
+            OutputStream os = new BufferedOutputStream(new FileOutputStream(file));
+            result.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static Bitmap textBottomQRCode() {
+        Bitmap img = Bitmap.createBitmap(RECEIPT_WIDTH, 180, Config.ARGB_8888);
+        img.setHasAlpha(true);
+
+        float yy = 0;
+        Canvas cv = new Canvas(img);
+        cv.drawColor(Color.WHITE);
+
+        Paint p = new Paint();
+        p.setColor(Color.BLACK);
+        p.setStyle(Style.FILL_AND_STROKE);
+        p.setAntiAlias(true);
+
+        float fontSize = 20;
+        float lineSpace = fontSize / 2;
+        Paint pTitle2 = new Paint(p);
+        pTitle2.setTypeface(Typeface.DEFAULT);
+        pTitle2.setTextSize(fontSize);
+        pTitle2.setTextAlign(Align.LEFT);
+
+        Paint pValue = new Paint(pTitle2);
+        pValue.setTextAlign(Align.LEFT);
+        Paint pSignature = new Paint(pValue);
+        pTitle2.setTypeface(Typeface.DEFAULT);
+        pTitle2.setTextSize(fontSize);
+        pSignature.setTextAlign(Align.CENTER);
+
+        int Value = RECEIPT_WIDTH / 2;
+        yy += fontSize + lineSpace;
+        cv.drawText("สามารถชำระเงินได้ที่", Value, yy, pSignature);
+        yy += fontSize + lineSpace;
+        cv.drawText("เคาน์เตอร์เซอร์วิส, เทสโก้โลตัส, หรือผ่าน",Value, yy, pSignature);
+        yy += fontSize + lineSpace;
+        cv.drawText("Mobile banking SCB, BBL, Kbank, KTB, Tbank", Value, yy, pSignature);
+
+        Bitmap result = Bitmap.createBitmap(RECEIPT_WIDTH, 180, Config.ARGB_8888);
+        cv = new Canvas(result);
+        cv.drawBitmap(img, 0, 0, null);
+        img.recycle();
+
+        return result;
     }
 
     public static Bitmap createBarcodeByLibrary(String content) {

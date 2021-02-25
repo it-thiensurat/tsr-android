@@ -1892,13 +1892,15 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
                         showNoticeDialogBox(title, message);
                         return false;
                     }
+                } else if (checkBoxQrcode.isChecked()) {
+
                 } else {
                     message = "กรุณาเลือกช่องทางการชำระเงิน/เงินสด/บัตรเครดิต/เช็ค";
                     showNoticeDialogBox(title, message);
                     return false;
                 }
             } else if (checkBoxPartlyPaid.isChecked()) {
-                if (!checkBoxCash.isChecked()) {
+                if (!checkBoxCash.isChecked() && !checkBoxQrcode.isChecked()) {
                     message = "กรุณาเลือกช่องทางการชำระเงิน/เงินสด";
                     showNoticeDialogBox(title, message);
                     return false;

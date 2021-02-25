@@ -133,6 +133,7 @@ import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.controller.BaseController;
 import th.co.thiensurat.data.controller.DatabaseManager;
+import th.co.thiensurat.data.controller.DocumentController;
 import th.co.thiensurat.data.controller.EmployeeDetailController;
 import th.co.thiensurat.data.controller.ThemalPrintController;
 import th.co.thiensurat.data.controller.TransactionLogController;
@@ -1099,6 +1100,8 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         activity = MainActivity.this;
         BHFragment.setActivity(MainActivity.this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        DocumentController.createStringForMerge();
 
         if (savedInstanceState != null) {
             Intent intent = new Intent(this, SplashActivity.class);
@@ -3181,9 +3184,9 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 /*finally {
                     zin.close();
                 }*/
-            }
-            catch (IOException  e) {
+            }  catch (IOException  e) {
                 //e.printStackTrace();
+                Log.e("Unzip", e.getLocalizedMessage());
                 throw e;
             }
 
@@ -3620,6 +3623,9 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 resultInfo.url = sUrl[0];
 
                 final URL url = new URL(sUrl[0]);
+
+                Log.e("url", String.valueOf(url));
+
                 final String pathFileDBZip = DatabaseManager.getInstance().getDatabasePath() + ".zip";
 
                 File fileDBZip = new File(pathFileDBZip);
@@ -3648,20 +3654,14 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     //BHUtilities.saveDatabase();
                     try {
                         String strFileUnZip = unzip(pathFileDBZip, BHStorage.getFolder(BHStorage.FolderType.Database), progressUpdateInfo);
-
                         ReCheckSqliteData(strFileUnZip);
-
                     } catch (IOException ex) {
                         Log.e("Downloading exception", ex.getLocalizedMessage());
                     }
 
-
-
                     //**Delete Folder Picture*//*
                     File delFolder = new File(BHStorage.getFolder(BHStorage.FolderType.Picture));
                     TSRController.deleteDir(delFolder);
-
-
 
                     // YIM Download Signature Image By DepartmentCode
                     File fileDB = new File(DatabaseManager.getInstance().getDatabasePath());
@@ -4209,21 +4209,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
      * End
      */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public static void get_teamcode_select_position() {
         try {
             Retrofit retrofit = new Retrofit.Builder()
@@ -4295,10 +4280,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
             }
         }
     }
-
-
-
-
 
     public static void load_data_contact_online_preoder() {
         try {
@@ -4408,32 +4389,12 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 String IsReadyForSaleAudit=json.getString("IsReadyForSaleAudit");
                 String ContractReferenceNo=json.getString("ContractReferenceNo");
                 String IsMigrate= json.getString("IsMigrate");
-
-
-
                 String EFFDATE=json.getJSONObject("EFFDATE").getString("date")+"";
                 String LastUpdateDate=json.getJSONObject("LastUpdateDate").getString("date")+"";
                 String CreateDate=json.getJSONObject("CreateDate").getString("date")+"";
                 String SyncedDate=json.getJSONObject("SyncedDate").getString("date")+"";
                 String InstallDate=json.getJSONObject("InstallDate").getString("date")+"";
                 String todate=json.getJSONObject("todate").getString("date")+"";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 String D_PrefixCode= json.getString("D_PrefixCode");
                 String D_PrefixName= json.getString("D_PrefixName");
                 String D_CustomerName= json.getString("D_CustomerName");
@@ -4466,10 +4427,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 String D_ReferencePersonName= json.getString("D_ReferencePersonName");
                 String D_ReferencePersonTelephone= json.getString("D_ReferencePersonTelephone");
 
-
-
-
-
                 String A_AddressIDCard= json.getString("A_AddressIDCard");
                 String A_AddressInstall= json.getString("A_AddressInstall");
                 String A_AddressPayment= json.getString("A_AddressPayment");
@@ -4496,9 +4453,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
              //   String A_AddressInstall= json.getString("A_AddressInstall");
              //   String A_AddressPayment= json.getString("A_AddressPayment");
 
-
-
-
                 String date = D_Brithday.substring(0, 19);
 
 
@@ -4516,13 +4470,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
                 }
 
-
-
-
-
-
-
-
                 try {
                     addDebtorCustomer(CustomerID, OrganizationCode, D_PrefixCode, D_PrefixName, D_CustomerName, D_CustomerType, D_IDCardType, D_IDCard,
                             D_CompanyName, D_AuthorizedName, D_AuthorizedIDCard, date, D_Sex, D_DebtStatus, D_HabitatTypeCode, D_HabitatDetail, D_OccupyType, D_CareerCode,
@@ -4532,29 +4479,12 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 catch (Exception ex){
 
                 }
-
-
-
-
-
-
-
-
-
-
-
-
             } catch (JSONException e) {
 
                 e.printStackTrace();
             }
-
         }
-
-
     }
-
-
 
     public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A1(JSONArray array) {
 
@@ -4852,10 +4782,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
             DatabaseManager.getInstance().closeDatabase();
     }
 
-
-
-
-
     public static void load_data_get_ProductSerialNumber_by_preorder() {
         try {
             Retrofit retrofit = new Retrofit.Builder()
@@ -5007,8 +4933,4 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
             }
         }
     }
-
-
-
-
 }
