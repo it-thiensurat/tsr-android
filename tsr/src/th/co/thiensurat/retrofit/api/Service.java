@@ -166,6 +166,9 @@ public interface Service {
     @FormUrlEncoded
     Call<Object> getCustomerStatus(@Field("search") String search);
 
+    @GET("/api/customerreceiptapi.php")
+    Call<Object> getQrReceipt(@Query("contno") String contno);
+
 //    @Multipart
 //    @POST("UAT/BH/AddContractImage")
 //    Call<Object> uploadImageToServer(@PartMap Map<String, RequestBody> files, @Part("refnoBody") RequestBody refnoBody);

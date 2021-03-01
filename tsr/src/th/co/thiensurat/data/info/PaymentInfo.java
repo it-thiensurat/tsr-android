@@ -101,7 +101,7 @@ public class PaymentInfo extends BHParcelable {
 	public String SaleEmployeeName;
 
 	public enum PaymentType1 {
-		Cash, Credit, Cheque
+		Cash, Credit, Cheque, Qrcode
 	}
 
 	public enum PaymentStatus { // Y = ต้องนำส่งเงิน, N = ไม่ต้องนำส่งเงิน

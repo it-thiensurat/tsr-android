@@ -91,17 +91,8 @@ public class SynchronizeService extends Service {
 
 						+ (syncSpareDrawdownRelated ? 1 : 0) + (syncFullRelated ? 1 : 0);
 				return (int) Math.ceil(100.0 / count);
-
-
-
-
-
-
 		}
 	}
-
-
-
 
 	public static class SynchronizeMaster2 extends BHParcelable {
 
@@ -114,11 +105,6 @@ public class SynchronizeService extends Service {
 		public boolean syncRequestNextPaymentRelated;
 
 	}
-
-
-
-
-
 
 	public static class SynchronizeTransaction extends BHParcelable {
 
@@ -247,19 +233,6 @@ public class SynchronizeService extends Service {
 //                                    result.progress += percent;
 //                                }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 								if(select_page==1){
 									Log.e("test_pate","1");
 
@@ -269,8 +242,6 @@ public class SynchronizeService extends Service {
 										sendBroadcast(result);
 										TSRController.SynchDataFromServer2Local(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.employeeID());
 										//result.progress += percent;
-
-
 										SynchStatusInputInfo synchStatusInputInfo = new SynchStatusInputInfo();
 										synchStatusInputInfo.OrganizationCode = BHPreference.organizationCode();
 										synchStatusInputInfo.TeamCode = BHPreference.teamCode();
@@ -281,42 +252,32 @@ public class SynchronizeService extends Service {
 										boolean statusSQLite = false;
 										while (statusSQLite == false) {
 
-											//try {
-											//RUNNING, COMPLETED, ERROR
-											SynchStatusOutputInfo output = TSRService.synchDataFromServer2Local(synchStatusInputInfo, false);
+											try {
+												//RUNNING, COMPLETED, ERROR
+												SynchStatusOutputInfo output = TSRService.synchDataFromServer2Local(synchStatusInputInfo, false);
 
+												if (output.ResultCode == 0) {
+													if (output.Info.Status.equals("RUNNING")) { //Running
+														//result.progress = output.Info.Progress;
+														sendBroadcast(result);
+													} else if (output.Info.Status.equals("COMPLETED")) { //Completed
 
-
-											if (output.ResultCode == 0) {
-												if (output.Info.Status.equals("RUNNING")) { //Running
-													//result.progress = output.Info.Progress;
-													sendBroadcast(result);
-												} else if (output.Info.Status.equals("COMPLETED")) //Completed
-												{
-													statusSQLite = true;
-												} else { //Error
-													//throw new RuntimeException(info.ResultDescription);
-													throw new RuntimeException(getResources().getString(R.string.error_synch));
+														statusSQLite = true;
+													} else { //Error
+														//throw new RuntimeException(info.ResultDescription);
+														throw new RuntimeException(getResources().getString(R.string.error_synch));
+													}
+													//Thread.sleep(5000);
+												} else {
+													throw new RuntimeException(output.ResultDescription);
 												}
-												//Thread.sleep(5000);
-											} else {
-												throw new RuntimeException(output.ResultDescription);
+											} catch (Exception e) {
+												Log.e("Sync", e.getLocalizedMessage());
 											}
-
 										}
-
-
-
 										select_page=0;
 									}
-
-
-
-
-
-
-								}
-								else {
+								} else {
 
 									Log.e("test_pate","2");
 									if (master.syncProductRelated) {
@@ -453,51 +414,31 @@ public class SynchronizeService extends Service {
 										boolean statusSQLite = false;
 										while (statusSQLite == false) {
 
-											//try {
-											//RUNNING, COMPLETED, ERROR
-											SynchStatusOutputInfo output = TSRService.synchDataFromServer2Local(synchStatusInputInfo, false);
-											if (output.ResultCode == 0) {
-												if (output.Info.Status.equals("RUNNING")) { //Running
-													result.progress = output.Info.Progress;
-													sendBroadcast(result);
-												} else if (output.Info.Status.equals("COMPLETED")) //Completed
-												{
-													statusSQLite = true;
-												} else { //Error
-													//throw new RuntimeException(info.ResultDescription);
-													throw new RuntimeException(getResources().getString(R.string.error_synch));
+											try {
+												//RUNNING, COMPLETED, ERROR
+												SynchStatusOutputInfo output = TSRService.synchDataFromServer2Local(synchStatusInputInfo, false);
+												if (output.ResultCode == 0) {
+													if (output.Info.Status.equals("RUNNING")) { //Running
+														result.progress = output.Info.Progress;
+														sendBroadcast(result);
+													} else if (output.Info.Status.equals("COMPLETED")) { //Completed
+														statusSQLite = true;
+													} else { //Error
+														//throw new RuntimeException(info.ResultDescription);
+														throw new RuntimeException(getResources().getString(R.string.error_synch));
+													}
+													Thread.sleep(5000);
+												} else {
+													throw new RuntimeException(output.ResultDescription);
 												}
-												Thread.sleep(5000);
-											} else {
-												throw new RuntimeException(output.ResultDescription);
+											} catch (Exception e) {
+												// TODO Auto-generated catch block
+												Log.e("Sync2", e.getLocalizedMessage());
 											}
-//										} catch (Exception e) {
-//											// TODO Auto-generated catch block
-//											throw new RuntimeException(e);
-//										}
 										}
 										//result.progress += percent;
 									}
-
-
 								}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                 result.title = "Update Master Table";
                                 result.message = "ปรับปรุงข้อมูลเรียบร้อย";
                                 result.progress = SYNCHRONIZE_ALL_COMPLETED;
@@ -514,7 +455,6 @@ public class SynchronizeService extends Service {
                         }
 					}
 				}
-
 				stopSelf();
 			}
 		};

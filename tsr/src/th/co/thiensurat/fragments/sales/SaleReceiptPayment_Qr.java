@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
@@ -22,6 +23,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,41 +36,50 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHParcelable;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHUtilities;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
-import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.PrinterController;
 import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.controller.DocumentHistoryController;
-import th.co.thiensurat.data.controller.PaymentController;
 import th.co.thiensurat.data.info.AddressInfo;
+import th.co.thiensurat.data.info.ContractInfo;
 import th.co.thiensurat.data.info.DebtorCustomerInfo;
 import th.co.thiensurat.data.info.PaymentInfo;
 import th.co.thiensurat.fragments.credit.credit.CreditListFragment;
 import th.co.thiensurat.fragments.document.manual.ManualDocumentDetailFragment;
 import th.co.thiensurat.fragments.payment.first.FirstPaymentMainMenuFragment;
 import th.co.thiensurat.fragments.payment.next.NextPaymentListFragment;
+import th.co.thiensurat.retrofit.api.Service;
 import th.co.thiensurat.views.ViewTitle;
 
-public class SaleReceiptPayment_old extends BHFragment {
+import static th.co.thiensurat.retrofit.api.client.BASE_URL;
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link SaleReceiptPayment_Qr#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class SaleReceiptPayment_Qr extends BHFragment {
 
     public boolean forcePrint;
-    public SaleReceiptPayment_old(){
+    public SaleReceiptPayment_Qr(){
         forcePrint = false;
     }
 
     private final String STATUS_CODE = "09";
 
     public static class Data extends BHParcelable {
-        public String SalePaymentPeriodID;
-        public String PaymentID;
-        public String ReceiptID;
-        public int resTitle;
+        protected ContractInfo contract;
         public Date selectedDate;
+        public String paymentType;
     }
 
     private Data data;
@@ -88,9 +104,9 @@ public class SaleReceiptPayment_old extends BHFragment {
         data = getData();
         int titleID1 = 0;
         switch (Enum.valueOf(SaleFirstPaymentChoiceFragment.ProcessType.class, BHPreference.ProcessType())) {
-            case ViewCompletedContract:
-                titleID1 = (data != null && data.resTitle != 0) ? data.resTitle : R.string.title_sales;
-                break;
+//            case ViewCompletedContract:
+//                titleID1 = (data != null && data.resTitle != 0) ? data.resTitle : R.string.title_sales;
+//                break;
             case Sale:
                 titleID1 = R.string.title_sales;
                 break;
@@ -113,15 +129,12 @@ public class SaleReceiptPayment_old extends BHFragment {
 
     @Override
     protected int fragmentID() {
-        // TODO Auto-generated method stub
-        return R.layout.fragment_sale_receipt_payment;
+        return R.layout.fragment_sale_receipt_payment__qr;
     }
 
     @Override
     protected int[] processButtons() {
-        // TODO Auto-generated method stub
         int[] ret = null;
-
         switch (Enum.valueOf(SaleFirstPaymentChoiceFragment.ProcessType.class, BHPreference.ProcessType())) {
             case Sale:
                 ret = new int[]{R.string.button_print, R.string.button_save_manual_receipt, R.string.button_camera};
@@ -136,16 +149,14 @@ public class SaleReceiptPayment_old extends BHFragment {
                 ret = new int[]{R.string.button_print, R.string.button_save_manual_receipt, R.string.button_end};
                 break;
         }
-
         return ret;
     }
 
-
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
-
-        Log.e("papa","1234");
         data = getData();
+        getQrcodeReceipt();
+//        Log.e("Contract for qr", String.valueOf(data.contract));
 
         switch (Enum.valueOf(SaleFirstPaymentChoiceFragment.ProcessType.class, BHPreference.ProcessType())) {
             case FirstPayment:
@@ -153,7 +164,7 @@ public class SaleReceiptPayment_old extends BHFragment {
                 break;
             case Sale:
                 lblTitle.setText(R.string.caption_payment_first);
-                saveStatusCode();
+//                saveStatusCode();
                 break;
             case ViewCompletedContract:
             case SendDocument:
@@ -166,10 +177,6 @@ public class SaleReceiptPayment_old extends BHFragment {
                 lblTitle.setText(R.string.title_next_payment_credit);
                 break;
         }
-
-        initViews();
-
-
     }
 
     private void saveStatusCode() {
@@ -210,28 +217,21 @@ public class SaleReceiptPayment_old extends BHFragment {
                                 processType.equals(SaleFirstPaymentChoiceFragment.ProcessType.NextPayment) || processType.equals(SaleFirstPaymentChoiceFragment.ProcessType.Sale)) {
                             setupAlert = setupAlert.setPositiveButton("พิมพ์ทั้งหมด", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    printDocument(newPayments);
+//                                    printDocument(newPayments);
                                     dialog.cancel();
                                 }
                             });
-//                            .setNeutralButton("พิมพ์ทีละหน้า", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    printDocumentWithInterrupt(newPayments);
-//                                    dialog.cancel();
-//                                }
-//                            });
                         }else{
                             setupAlert = setupAlert.setPositiveButton("พิมพ์ทั้งหมด", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    printDocument(newPayments);
+//                                    printDocument(newPayments);
                                     dialog.cancel();
                                 }
                             }).setNeutralButton(String.format("พิมพ์เฉพาะหน้านี้", viewPager.getCurrentItem() + 1), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     List<PaymentInfo> listInfo = new ArrayList<>();
                                     listInfo.add(payments.get(viewPager.getCurrentItem()));
-                                    printDocument(listInfo);
+//                                    printDocument(listInfo);
                                     dialog.cancel();
                                 }
                             });
@@ -250,10 +250,10 @@ public class SaleReceiptPayment_old extends BHFragment {
 
 
                     } else if (newPayments.size() == 1 || forcePrint == true) {
-                        printDocument(newPayments);
+//                        printDocument(newPayments);
                     }
                 } else {
-                    printDocument(payments);
+//                    printDocument(payments);
                 }
                 break;
             case R.string.button_save_manual_receipt:
@@ -261,11 +261,9 @@ public class SaleReceiptPayment_old extends BHFragment {
                 data1.DocumentNumber = payments.get(viewPager.getCurrentItem()).ReceiptID;
                 data1.DocumentNo = payments.get(viewPager.getCurrentItem()).ReceiptCode;
                 data1.DocumentType = DocumentHistoryController.DocumentType.Receipt.toString();
-
                 ManualDocumentDetailFragment fmManualDocDetail = BHFragment.newInstance(ManualDocumentDetailFragment.class, data1);
                 showNextView(fmManualDocDetail);
                 break;
-
             case R.string.button_back:
                 showLastView();
                 break;
@@ -273,22 +271,10 @@ public class SaleReceiptPayment_old extends BHFragment {
                 if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.FirstPayment.toString())) {
                     activity.showView(new FirstPaymentMainMenuFragment());
                 } else if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.Credit.toString())) {
-                    //activity.showView(new CreditMainFragment());
-
-
-
-
-
-                   CreditListFragment.Data input = new CreditListFragment.Data();
+                    CreditListFragment.Data input = new CreditListFragment.Data();
                     input.selectedDate = data.selectedDate;
                     CreditListFragment fragment = BHFragment.newInstance(CreditListFragment.class, input);
                     activity.showView(fragment);
-
-
-                    //activity.showNextView(BHFragment.newInstance(CreditMainFragment_intro.class));
-
-
-
                 } else if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.NextPayment.toString())) {
                     activity.showView(new NextPaymentListFragment());
                 }
@@ -299,92 +285,78 @@ public class SaleReceiptPayment_old extends BHFragment {
         }
     }
 
-    private void printDocument(List<PaymentInfo> info) {
-        if (info == null) return;
-        new PrinterController(activity).newPrintReceipt(info);
-        forcePrint = false;
-    }
+    private void getQrcodeReceipt() {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.getQrReceipt("20109537");
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson=new Gson();
+                    try {
+//                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+                        JSONArray jsonArray = new JSONArray(gson.toJson(response.body()));
+//                        Log.e("JSONObjec", String.valueOf(jsonArray));
+//                        JSONArray array = jsonObject.getJSONArray("data");
+                        String obj = "";
+//                        Log.e("for qr receipt", String.valueOf(array));
+                        List<PaymentInfo> paymentInfoList = new ArrayList<>();
+                        PaymentInfo paymentInfo;
+                        for (int i = 0; i < jsonArray.length(); i++) {
+//                            obj = jsonArray.getJSONObject(i).getString("ReceiptCode");
+//                            paymentInfoList.set(i, )
+                            paymentInfo = new PaymentInfo();
+                            paymentInfo.ReceiptCode = jsonArray.getJSONObject(i).getString("ReceiptCode");
+                            paymentInfo.CONTNO = jsonArray.getJSONObject(i).getString("CONTNO");
+                            paymentInfo.CustomerName = jsonArray.getJSONObject(i).getString("CustomerName");
+                            paymentInfo.ProductName = jsonArray.getJSONObject(i).getString("ProductName");
+                            paymentInfo.MODEL = data.contract.MODEL;
+                            paymentInfo.ProductSerialNumber = data.contract.ProductSerialNumber;
+//                            paymentInfo.PayDate = jsonArray.getJSONObject(i).getString("DatePayment");
+                            paymentInfo.Amount = Float.parseFloat(jsonArray.getJSONObject(i).getString("Amount").replace(",", ""));
+                            paymentInfo.PaymentPeriodNumber = jsonArray.getJSONObject(i).getInt("PaymentPeriodNumber");
+                            paymentInfo.MODE = jsonArray.getJSONObject(i).getInt("maxPeriod");
+                            paymentInfo.EmpID = data.contract.EmpID;
+                            paymentInfo.EFFDATE = data.contract.EFFDATE;
+                            paymentInfo.IDCard = data.contract.IDCard;
+                            paymentInfo.MODE = data.contract.MODE;
+                            paymentInfo.RefNo = data.contract.RefNo;
+                            paymentInfo.SaleEmployeeName = data.contract.SaleEmployeeName;
+                            paymentInfo.TeamCode = data.contract.SaleTeamCode;
+                            paymentInfo.VoidStatus = false;
+                            paymentInfo.PaymentType = data.paymentType;
+                            paymentInfo.Balances = Float.parseFloat(jsonArray.getJSONObject(i).getString("balance").replace(",", ""));
 
-    private void printDocumentWithInterrupt(List<PaymentInfo> info) {
-        if (info == null) return;
-        new PrinterController(activity).newPrintReceipt(info, true);
-    }
+                            paymentInfoList.add(paymentInfo);
+                        }
 
-    private void setUiPageViewController() {
-        viewPagerCountDots.removeAllViews();
-        dotsCount = myViewPagerAdapter.getCount();
-        dots = new TextView[dotsCount];
+                        payments = paymentInfoList;
+                        Log.e("Payment list", String.valueOf(paymentInfoList));
+                        myViewPagerAdapter = new MyViewPagerAdapter(paymentInfoList);
+                        viewPager.setAdapter(myViewPagerAdapter);
+                        viewPager.setCurrentItem(currentViewPosition);
+                        viewPager.setOnPageChangeListener(viewPagerPageChangeListener);
+                        setUiPageViewController();
+                        Log.e("ReceiptCode", String.valueOf(obj));
+                    } catch (JSONException e) {
+                        Log.e("JSONException", e.getLocalizedMessage());
+                    }
+                }
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("onFailure", t.getLocalizedMessage());
+                }
+            });
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.gravity = Gravity.CENTER_VERTICAL;
-        //params.setMargins(2, 0, 1, 0);
-
-        for (int i = 0; i < dotsCount; i++) {
-            dots[i] = new TextView(activity);
-            dots[i].setText(Html.fromHtml("&#149;"));
-            dots[i].setTextSize(50);
-            dots[i].setTextColor(getResources().getColor(R.color.dot_gray_dark));
-            dots[i].setLayoutParams(params);
-            viewPagerCountDots.addView(dots[i]);
+        } catch (Exception e) {
+            Log.e("Exception", e.getLocalizedMessage());
         }
-
-        dots[currentViewPosition].setTextColor(getResources().getColor(R.color.dot_red));
     }
 
-    private void setViewPagerItemsWithAdapter() {
-
-        /*** [START] :: Fixed - [BHPROJ-0025-815] :: [Android-Reprint ใบสัญญา+ใบเสร็จ] กรณีเป็นฝ่ายเก็บเงินจะ Re-Print ได้เฉพาะใบเสร็จรับเงินที่เค้าเป็นคนเก็บเท่านั้น จะไม่สามารถกลับไป Re-Print ใบสัญญา หรือ ใบเสร็จรับเงินของคนอื่นได้  ***/
-        List<Integer> listId = new ArrayList<Integer>();
-        listId.add(R.string.button_print);
-        listId.add(R.string.button_save_manual_receipt);
-
-        if (!payments.get(0).EmpID.equals(BHPreference.employeeID()) || payments.get(0).VoidStatus == true) {
-            activity.setViewProcessButtons(listId, View.GONE);
-        } else {
-            activity.setViewProcessButtons(listId, View.VISIBLE);
-        }
-        /*** [END] :: Fixed - [BHPROJ-0025-815] :: [Android-Reprint ใบสัญญา+ใบเสร็จ] กรณีเป็นฝ่ายเก็บเงินจะ Re-Print ได้เฉพาะใบเสร็จรับเงินที่เค้าเป็นคนเก็บเท่านั้น จะไม่สามารถกลับไป Re-Print ใบสัญญา หรือ ใบเสร็จรับเงินของคนอื่นได้  ***/
-
-
-
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        String currentDate = df.format(c.getTime());
-
-        String ReceiptDate = df.format(payments.get(0).PayDate);
-
-        if (!ReceiptDate.equals(currentDate)) {
-            activity.setViewProcessButtons(listId, View.GONE);
-        }
-
-
-        myViewPagerAdapter = new MyViewPagerAdapter(payments);
-        viewPager.setAdapter(myViewPagerAdapter);
-        viewPager.setCurrentItem(currentViewPosition);
-        viewPager.setOnPageChangeListener(viewPagerPageChangeListener);
-
-
-    }
-
-    private void doVoidReceipt(String RefNo, String ReceiptID) {
-
-        /*TSRController.voidReceipt(RefNo, ReceiptID, BHPreference.employeeID(), true);
-        viewPager.removeAllViews();
-        initViews();*/
-
-        new BackgroundProcess(activity) {
-            @Override
-            protected void calling() {
-                TSRController.voidReceipt(RefNo, ReceiptID, BHPreference.employeeID(), true);
-            }
-
-            @Override
-            protected void after() {
-                viewPager.removeAllViews();
-                initViews();
-            }
-        }.start();
-    }
     //  page change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
@@ -396,26 +368,25 @@ public class SaleReceiptPayment_old extends BHFragment {
             dots[position].setTextColor(getResources().getColor(R.color.dot_red));
 
             /*** [START] :: Fixed - [BHPROJ-0025-815] :: [Android-Reprint ใบสัญญา+ใบเสร็จ] กรณีเป็นฝ่ายเก็บเงินจะ Re-Print ได้เฉพาะใบเสร็จรับเงินที่เค้าเป็นคนเก็บเท่านั้น จะไม่สามารถกลับไป Re-Print ใบสัญญา หรือ ใบเสร็จรับเงินของคนอื่นได้  ***/
-            List<Integer> listId = new ArrayList<Integer>();
-            listId.add(R.string.button_print);
-            listId.add(R.string.button_save_manual_receipt);
-
-            if (!payments.get(position).EmpID.equals(BHPreference.employeeID()) || payments.get(position).VoidStatus == true) {
-                activity.setViewProcessButtons(listId, View.GONE);
-            } else {
-                activity.setViewProcessButtons(listId, View.VISIBLE);
-            }
+//            List<Integer> listId = new ArrayList<Integer>();
+//            listId.add(R.string.button_print);
+//            listId.add(R.string.button_save_manual_receipt);
+//
+//            if (!payments.get(position).EmpID.equals(BHPreference.employeeID()) || payments.get(position).VoidStatus == true) {
+//                activity.setViewProcessButtons(listId, View.GONE);
+//            } else {
+//                activity.setViewProcessButtons(listId, View.VISIBLE);
+//            }
             /*** [END] :: Fixed - [BHPROJ-0025-815] :: [Android-Reprint ใบสัญญา+ใบเสร็จ] กรณีเป็นฝ่ายเก็บเงินจะ Re-Print ได้เฉพาะใบเสร็จรับเงินที่เค้าเป็นคนเก็บเท่านั้น จะไม่สามารถกลับไป Re-Print ใบสัญญา หรือ ใบเสร็จรับเงินของคนอื่นได้  ***/
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-            String currentDate = df.format(c.getTime());
+//            Calendar c = Calendar.getInstance();
+//            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+//            String currentDate = df.format(c.getTime());
+//
+//            String ReceiptDate = df.format(payments.get(position).PayDate);
 
-            String ReceiptDate = df.format(payments.get(position).PayDate);
-
-            if (!ReceiptDate.equals(currentDate)) {
-                activity.setViewProcessButtons(listId, View.GONE);
-            }
-
+//            if (!ReceiptDate.equals(currentDate)) {
+//                activity.setViewProcessButtons(listId, View.GONE);
+//            }
         }
 
         @Override
@@ -428,154 +399,6 @@ public class SaleReceiptPayment_old extends BHFragment {
 
         }
     };
-
-    private void prepareReceiptForVoid(){
-        try {
-
-            /*** [START] :: ตรวจสอการยกเลิกใบเสร็จของการตัดสด เนื่องจากการยกเลิกใบเสร็จจะทำการลข้อมูลของการตัดสดทำให้ไมสามารถตรวจได้ว่าใบเสร็จนั้นมาจากตัดสด ทำให้ใบเสร็จแสดงหลายรายการ ***/
-            String tempReceiptCode = null;
-            List<PaymentInfo> newListPayment = new ArrayList<>();
-            for (int i = 0; i < payments.size(); i++) {
-                PaymentInfo p = payments.get(i);
-
-                if (!p.ReceiptCode.equals(tempReceiptCode)) {
-                    tempReceiptCode = p.ReceiptCode;
-                    newListPayment.add(p);
-                }
-            }
-            payments = newListPayment;
-            /*** [END] :: ตรวจสอการยกเลิกใบเสร็จของการตัดสด เนื่องจากการยกเลิกใบเสร็จจะทำการลข้อมูลของการตัดสดทำให้ไมสามารถตรวจได้ว่าใบเสร็จนั้นมาจากตัดสด ทำให้ใบเสร็จแสดงหลายรายการ ***/
-
-
-            Boolean voidStamp = false;
-
-            for (int i = payments.size(); i > 0; i--) {
-                payments.get(i - 1).CanVoid = false;
-                payments.get(i - 1).VoidStatus = false;
-
-                if (!voidStamp
-                        && (payments.get(i - 1).Amount > 0 || payments.get(i - 1).PaymentID.equals(payments.get(i - 1).CloseAccountPaymentID))
-                        && payments.get(i - 1).PaymentID.length() > 20 && payments.get(i - 1).CreateBy.equals(BHPreference.employeeID())) {
-                    payments.get(i - 1).CanVoid = true;
-                    voidStamp = true;
-                }
-
-                if (payments.get(i - 1).Amount == 0 && !payments.get(i - 1).PaymentID.equals(payments.get(i - 1).CloseAccountPaymentID)) {
-                    payments.get(i - 1).VoidStatus = true;
-                }
-
-                Calendar c = Calendar.getInstance();
-                SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                String currentDate = df.format(c.getTime());
-
-                String ReceiptDate = df.format(payments.get(i - 1).PayDate);
-
-                if (!ReceiptDate.equals(currentDate)) {
-                    payments.get(i - 1).CanVoid = false;
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    private void initViews() {
-
-        Log.e("page_test","moomoo");
-        /**
-         RefNo                      ของสัญญานั้น
-         SalePaymentPeriodID        ID ของงวดการชำระเงิน
-         PaymentID                  ID ของการจ่ายเงิน
-         ReceiptID                  ID ของการออกใบเสร็จ
-
-         PayDate                    วันที่จ่ายเงิน
-         ReceiptCode                เลขที่ใบเสร็จ
-         CONTNO                     เลขที่สัญญา
-
-         ProductName                ชื่อสินค้า
-         MODEL                      รุ่ย
-         ProductSerialNumber        รหัสสินค้า
-
-         CloseAccountDiscountAmount ส่วนลดการตัดสด
-
-         PaymentPeriodNumber        งวดที่
-         MODE                       จำนวนงวดทั้งหมด
-         BalancesOfPeriod           ยอดเงินคงเหลือของงวด
-         Amount                     ยอดเงินที่ชำระตามใบเสร็จ
-         Balances                   ยอดเงินคงเหลือของสัญญา
-
-         PAYAMT                     จำนวนเงินที่จ่าย
-         NetAmount                  ยอดเงินที่ต้องชำระ
-
-         PaymentType                แบบการชำระเงิน (Cash, Credit, Cheque)
-
-         BankName                   ชื่อธนาคาร
-
-         ChequeNumber               เลขที่เช็ด
-         ChequeBankBranch           สาขา
-         ChequeDate                 ลงวันที่ของเช็ด
-
-         CreditCardNumber           เลขที่บัตรเคดิต
-
-         **/
-
-        (new BackgroundProcess(activity) {
-            @Override
-            protected void calling() {
-                payments = new PaymentController().getPaymentForReceiptByRefNo(BHPreference.RefNo(), BHPreference.organizationCode());
-                prepareReceiptForVoid();
-            }
-
-            @Override
-            protected void after() {
-
-                switch (Enum.valueOf(SaleFirstPaymentChoiceFragment.ProcessType.class, BHPreference.ProcessType())) {
-                    case Sale:
-                    case FirstPayment:
-                    case NextPayment:
-                    case Credit:
-                        List<PaymentInfo> newPaymentInfoListForNextPayment = new ArrayList<PaymentInfo>(payments);
-                        int numNextPayment = 0;
-                        for (PaymentInfo info : newPaymentInfoListForNextPayment) {
-                            if (!info.PaymentID.equals(data.PaymentID)) {
-                                payments.remove(numNextPayment);
-                            } else {
-                                numNextPayment++;
-                            }
-                        }
-                        break;
-                    case SendDocument:
-                        List<PaymentInfo> newPaymentInfoListForSendDocument = new ArrayList<PaymentInfo>(payments);
-                        int numSendDocument = 0;
-                        for (PaymentInfo info : newPaymentInfoListForSendDocument) {
-                            if (!info.ReceiptID.equals(data.ReceiptID)) {
-                                payments.remove(numSendDocument);
-                            } else {
-                                numSendDocument++;
-                            }
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
-
-                if (payments != null && payments.size() > 0) {
-                    setViewPagerItemsWithAdapter();
-                    setUiPageViewController();
-                    if(forcePrint == true) {
-                        activity.forceButtonClick(R.string.button_print);
-                    }
-
-                } else {
-                    showLastView();
-                    showDialog("แจ้งเตือน", "ไม่พบข้อมูลใบเสร็จ");
-                }
-            }
-        }).start();
-
-
-    }
 
     //  adapter
     public class MyViewPagerAdapter extends PagerAdapter {
@@ -595,17 +418,9 @@ public class SaleReceiptPayment_old extends BHFragment {
 
             DebtorCustomerInfo debtorCustomerInfo = TSRController.getDebCustometByID(payments.get(position).CustomerID);
             AddressInfo addressInfo = TSRController.getAddress(payments.get(position).RefNo, AddressInfo.AddressType.AddressInstall);
-            //EmployeeInfo employeeInfo = TSRController.getEmployeeByEmployeeIDAndPositionCodeSaleAndCerdit(BHPreference.organizationCode(), payments.get(position).CreateBy);
-            //EmployeeInfo employeeInfo = TSRController.getEmployeeByTreeHistoryIDAndEmployeeID(BHPreference.organizationCode(), payments.get(position).CreditEmployeeLevelPath, payments.get(position).CreateBy);
             String bahtLabel = " บาท";
-
             TextView txtReceiptHeadTitle = (TextView) view.findViewById(R.id.txtReceiptHeadTitle);
-
-            //txtReceiptHeadTitle.setText(txtReceiptHeadTitle.getText() + (payments.get(position).VoidStatus == true ? "  (ใบเสร็จถูกยกเลิก)" : ""));
-            txtReceiptHeadTitle.setText("ใบรับเงิน" + (payments.get(position).VoidStatus == true ? "  (ใบเสร็จถูกยกเลิก)" : ""));
-
-
-
+            txtReceiptHeadTitle.setText("ใบรับเงิน");
             TextView tvReceiptDate = (TextView) view.findViewById(R.id.tvReceiptDate); //วันที่รับเงิน
             tvReceiptDate.setText(BHUtilities.dateFormat(payments.get(position).PayDate));
 
@@ -628,10 +443,10 @@ public class SaleReceiptPayment_old extends BHFragment {
             tvContractDate.setText(BHUtilities.dateFormat(payments.get(position).EFFDATE));
 
             TextView tvCustomerName = (TextView) view.findViewById(R.id.tvCustomerName); //ชื่อลูกค้า
-            tvCustomerName.setText(debtorCustomerInfo.CustomerFullName());
+            tvCustomerName.setText(payments.get(position).CustomerName);
 
             TextView tvCitizenNo = (TextView) view.findViewById(R.id.tvCitizenNo); //เลขที่บัตรประชาชน
-            tvCitizenNo.setText(debtorCustomerInfo.IDCard);
+            tvCitizenNo.setText(payments.get(position).IDCard);
 
             TextView tvCustomerAddress = (TextView) view.findViewById(R.id.tvCustomerAddress); //ที่อยู่ติดตั้ง
             tvCustomerAddress.setText(addressInfo.Address());
@@ -718,15 +533,17 @@ public class SaleReceiptPayment_old extends BHFragment {
                 txtThaiBaht.setText(BHUtilities.ThaiBaht(BHUtilities.numericFormat(payments.get(position).Amount)));
 
             }
-            txtThaiBaht.setVisibility(payments.get(position).VoidStatus ? View.GONE : View.VISIBLE);
-            tvPeriodAmount.setText(payments.get(position).VoidStatus ? "ยกเลิกการชำระเงิน" : tvPeriodAmount.getText());
+
+            txtThaiBaht.setVisibility(View.GONE);
+//            txtThaiBaht.setVisibility(payments.get(position).VoidStatus ? View.GONE : View.VISIBLE);
+//            tvPeriodAmount.setText(payments.get(position).VoidStatus ? "ยกเลิกการชำระเงิน" : tvPeriodAmount.getText());
 
             //tvPeriodAmount.setText(BHUtilities.numericFormat(payments.get(position).Amount) + bahtLabel);
             /*** [END] :: Fixed - [BHPROJ-0026-751] :: แก้ไขการแสดงผลในส่วนของ ยอดชำระเงิน ให้เป็นตัวสีแดง + ตัวหนา + เพิ่มขนาดตัวหนังสือมา 1 ระดับ***/
 
 
             //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
-            if ((payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0) || payments.get(position).VoidStatus) {
+            if ((payments.get(position).CloseAccountPaymentPeriodNumber == payments.get(position).PaymentPeriodNumber && payments.get(position).BalancesOfPeriod == 0)) {
                 LinearLayout llBalancesOfPeriod = (LinearLayout) view.findViewById(R.id.llBalancesOfPeriod); //ยอดเงินคงเหลือของงวด ถ้าไม่มีให้ซ่อน (แสดง/ซ่อน LinearLayout)
                 llBalancesOfPeriod.setVisibility(View.GONE);
 
@@ -758,26 +575,14 @@ public class SaleReceiptPayment_old extends BHFragment {
                 TextView tvBalanceAmount = (TextView) view.findViewById(R.id.tvBalanceAmount); //จำนวนเงินคงเหลือ
 
                 //เพิ่มการตรวจ VoidStatus = true ให้ปิดการแสดงผล เพราะมีการปรับข้อมูลทำให้ไม่สามารถคำนวณค่าได้ถูกต้อง
-                if (payments.get(position).Balances - payments.get(position).BalancesOfPeriod == 0 || payments.get(position).VoidStatus) {
+//                if (payments.get(position).Balances - payments.get(position).BalancesOfPeriod == 0 || payments.get(position).VoidStatus) {
+                if (payments.get(position).Balances - payments.get(position).BalancesOfPeriod == 0) {
                     llBalanceAmount.setVisibility(View.GONE);
                 } else {
                     llBalanceAmount.setVisibility(View.VISIBLE);
                     if (payments.get(position).MODE == 1) {
                         tvBalanceAmountLabel.setText("คงเหลือเงินสด");
                     } else {
-                    /*if (payments.get(position).BalancesOfPeriod == 0) {
-                        if ((payments.get(position).PaymentPeriodNumber + 1) == payments.get(position).MODE) {
-                            tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d", payments.get(position).MODE));
-                        } else {
-                            tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d - %d", payments.get(position).PaymentPeriodNumber + 1, payments.get(position).MODE));
-                        }
-                    } else {
-                        if (payments.get(position).PaymentPeriodNumber == payments.get(position).MODE) {
-                            tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d", payments.get(position).MODE));
-                        } else {
-                            tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d - %d", payments.get(position).PaymentPeriodNumber, payments.get(position).MODE));
-                        }
-                    }*/
                         tvBalanceAmountLabel.setText(String.format("คงเหลืองวดที่ %d - %d", payments.get(position).PaymentPeriodNumber + 1, payments.get(position).MODE));
                     }
                     tvBalanceAmount.setText(BHUtilities.numericFormat(payments.get(position).Balances - payments.get(position).BalancesOfPeriod) + bahtLabel);
@@ -835,56 +640,45 @@ public class SaleReceiptPayment_old extends BHFragment {
 
             txtSaleEmpName.setText(String.format("(%s)", payments.get(position).SaleEmployeeName != null ? payments.get(position).SaleEmployeeName : ""));
             txtSaleTeamName.setText(String.format("(ทีม %s)", payments.get(position).TeamCode != null ? payments.get(position).TeamCode : ""));
-            //txtSaleTeamName.setText(String.format("(ทีม %s)", payments.get(position).TeamCode != null ? payments.get(position).CashCode : ""));
 
-            /*if(employeeInfo != null) {
-                txtSaleEmpName.setText(String.format("(%s)", employeeInfo.SaleEmployeeName != null ? employeeInfo.SaleEmployeeName : ""));
-                txtSaleTeamName.setText(String.format("(ทีม %s)", employeeInfo.TeamCode != null ? employeeInfo.TeamCode : ""));
-            } else {
-                txtSaleEmpName.setText("");
-                txtSaleTeamName.setText("");
-            }*/
-
-            /*Void Button*/
             Button voidBtn = (Button) view.findViewById(R.id.btnVoidReceipt);
-            voidBtn.setVisibility(payments.get(position).CanVoid ? view.VISIBLE : view.GONE);
-            voidBtn.setText("ยกเลิกใบรับเงิน");
-            voidBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    currentViewPosition = position;
-                    AlertDialog.Builder setupAlert;
-                    setupAlert = new AlertDialog.Builder(activity)
-                            .setTitle("ยกเลิกใบเสร็จ")
-                            .setMessage("ต้องการยกเลิกใบเสร็จหมายเลข " + payments.get(position).ReceiptCode + " ใช่หรือไม่")
-                            .setCancelable(false);
-
-                    setupAlert = setupAlert.setPositiveButton("ใช่ ฉันต้องการยกเลิกใบเสร็จนี้", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            dialog.cancel();
-                            doVoidReceipt(payments.get(position).RefNo, payments.get(position).ReceiptID);
-                        }
-                    }).setNeutralButton("ไม่ใช่", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-
-                    setupAlert.show();
-
-                }
-            });
+            voidBtn.setVisibility(view.GONE);
+//            voidBtn.setVisibility(payments.get(position).CanVoid ? view.VISIBLE : view.GONE);
+//            voidBtn.setText("ยกเลิกใบรับเงิน");
+//            voidBtn.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    currentViewPosition = position;
+//                    AlertDialog.Builder setupAlert;
+//                    setupAlert = new AlertDialog.Builder(activity)
+//                            .setTitle("ยกเลิกใบเสร็จ")
+//                            .setMessage("ต้องการยกเลิกใบเสร็จหมายเลข " + payments.get(position).ReceiptCode + " ใช่หรือไม่")
+//                            .setCancelable(false);
+//
+//                    setupAlert = setupAlert.setPositiveButton("ใช่ ฉันต้องการยกเลิกใบเสร็จนี้", new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int whichButton) {
+//                            dialog.cancel();
+//                            doVoidReceipt(payments.get(position).RefNo, payments.get(position).ReceiptID);
+//                        }
+//                    }).setNeutralButton("ไม่ใช่", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.cancel();
+//                        }
+//                    });
+//
+//                    setupAlert.show();
+//
+//                }
+//            });
 
             Button btnPrintImage = (Button) view.findViewById(R.id.btnPrintImage);
             btnPrintImage.setVisibility(View.GONE);
-//
-//            if (!payments.get(position).EmpID.equals(BHPreference.employeeID()) || payments.get(position).VoidStatus == true) {
-//                btnPrintImage.setVisibility(View.GONE);
-//            } else {
-//                btnPrintImage.setVisibility(View.VISIBLE);
-//
-//                btnPrintImage.setOnClickListener(new View.OnClickListener() {
+
+            TextView txtHeader = (TextView) view.findViewById(R.id.txtReceiptHeadTitle);
+//            if (!(!payments.get(position).EmpID.equals(BHPreference.employeeID())))
+//            {
+//                txtHeader.setOnClickListener(new View.OnClickListener() {
 //                    @Override
 //                    public void onClick(View v) {
 //                        new PrinterController(activity).newImagePrintReceipt(payments.get(position));
@@ -892,21 +686,7 @@ public class SaleReceiptPayment_old extends BHFragment {
 //                });
 //            }
 
-
-            TextView txtHeader = (TextView) view.findViewById(R.id.txtReceiptHeadTitle);
-            if (!(!payments.get(position).EmpID.equals(BHPreference.employeeID()) || payments.get(position).VoidStatus == true))
-            {
-                txtHeader.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new PrinterController(activity).newImagePrintReceipt(payments.get(position));
-                    }
-                });
-            }
-
-
             ((ViewPager) container).addView(view);
-
             return view;
         }
 
@@ -927,4 +707,24 @@ public class SaleReceiptPayment_old extends BHFragment {
         }
     }
 
+    private void setUiPageViewController() {
+        viewPagerCountDots.removeAllViews();
+        dotsCount = myViewPagerAdapter.getCount();
+        dots = new TextView[dotsCount];
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.CENTER_VERTICAL;
+        //params.setMargins(2, 0, 1, 0);
+
+        for (int i = 0; i < dotsCount; i++) {
+            dots[i] = new TextView(activity);
+            dots[i].setText(Html.fromHtml("&#149;"));
+            dots[i].setTextSize(50);
+            dots[i].setTextColor(getResources().getColor(R.color.dot_gray_dark));
+            dots[i].setLayoutParams(params);
+            viewPagerCountDots.addView(dots[i]);
+        }
+
+        dots[currentViewPosition].setTextColor(getResources().getColor(R.color.dot_red));
+    }
 }

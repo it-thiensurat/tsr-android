@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -182,6 +183,10 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
     private Spinner spinnerBank; // ธนาคาร
     @InjectView
     private LinearLayout layoutQrcode; // คิวอาร์โค้ด
+    @InjectView
+    private CheckBox checkBoxQRPayment;
+    @InjectView
+    private Button button_print_receipt;
     @InjectView
     private ImageView imageViewQr;
 
@@ -1035,6 +1040,8 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
         checkBoxCheque.setEnabled(isPayment && isFullPaid);
         checkBoxQrcode.setEnabled(isPayment && (isFullPaid || isPartialPaid));
         editTextPrice.setEnabled(isPartialPaid && !isCloseAccount);
+
+        showButton();
     }
 
     private void bindCheckBox() {
@@ -1043,6 +1050,7 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
             public void onClick(View v) {
                 if (checkBoxPayment.isChecked()) {
                     checkBoxAppointments.setChecked(false);
+                    checkBoxQRPayment.setChecked(false);
                     ClearAppointments();
                 }
                 bindDefault();
@@ -1061,6 +1069,7 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
                     checkBoxCheque.setChecked(false);
                     checkBoxQrcode.setChecked(false);
                     checkBoxContractCloseAccount.setChecked(false);
+                    checkBoxQRPayment.setChecked(false);
 
                     for (CheckBox cb : listCBPaymentPeriodNumber){
                         cb.setEnabled(false);
@@ -1075,6 +1084,7 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
             @Override
             public void onClick(View v) {
                 if (checkBoxFullPaid.isChecked()) {
+                    checkBoxQRPayment.setChecked(false);
                     payPartial = false;
                     checkBoxPartlyPaid.setChecked(false);
                     editTextPrice.setText(BHUtilities.numericFormat(data.contract.PAYAMT));
@@ -1104,6 +1114,7 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
                     checkBoxFullPaid.setChecked(false);
                     checkBoxCheque.setChecked(false);
                     checkBoxCredit.setChecked(false);
+                    checkBoxQRPayment.setChecked(false);
                 }
 
                 if (data.processType == ProcessType.Credit || data.processType == ProcessType.NextPayment) {
@@ -1152,6 +1163,7 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
                     checkBoxCredit.setChecked(false);
                     checkBoxCheque.setChecked(false);
                     checkBoxQrcode.setChecked(false);
+                    checkBoxQRPayment.setChecked(false);
                 }
                 bindDefault();
             }
@@ -1165,6 +1177,7 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
                     checkBoxCash.setChecked(false);
                     checkBoxCheque.setChecked(false);
                     checkBoxQrcode.setChecked(false);
+                    checkBoxQRPayment.setChecked(false);
                 }
                 bindDefault();
             }
@@ -1178,6 +1191,7 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
                     checkBoxCash.setChecked(false);
                     checkBoxCredit.setChecked(false);
                     checkBoxQrcode.setChecked(false);
+                    checkBoxQRPayment.setChecked(false);
                 }
                 bindDefault();
             }
@@ -1191,8 +1205,26 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
                     checkBoxCash.setChecked(false);
                     checkBoxCredit.setChecked(false);
                     checkBoxCheque.setChecked(false);
+                    checkBoxQRPayment.setChecked(false);
                 }
                 bindDefault();
+            }
+        });
+
+        checkBoxQRPayment.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkBoxQRPayment.isChecked()) {
+                    paymentType = "Qrcode";
+                    checkBoxCash.setChecked(false);
+                    checkBoxCredit.setChecked(false);
+                    checkBoxCheque.setChecked(false);
+                    checkBoxPayment.setChecked(false);
+                    checkBoxAppointments.setChecked(false);
+                    linearLayoutShowDetail.setVisibility(View.GONE);
+
+                    hideButton();
+                }
             }
         });
 
@@ -1256,6 +1288,35 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
                 bindDefault();
             }
         });
+    }
+
+    private void hideButton() {
+        button_print_receipt.setVisibility(View.VISIBLE);
+        List<Integer> listId = new ArrayList<Integer>();
+        listId.add(R.string.button_next);
+        listId.add(R.string.button_back);
+        activity.setViewProcessButtons(listId, View.GONE);
+
+        button_print_receipt.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SaleReceiptPayment_Qr.Data dataReceiptID = new SaleReceiptPayment_Qr.Data();
+                dataReceiptID.contract = data.contract;
+                dataReceiptID.selectedDate = data.selectedDate;
+                dataReceiptID.paymentType = "Qrcode";
+                SaleReceiptPayment_Qr fmReceipt = BHFragment.newInstance(SaleReceiptPayment_Qr.class, dataReceiptID);
+                fmReceipt.forcePrint = true;
+                showNextView(fmReceipt);
+            }
+        });
+    }
+
+    private void showButton() {
+        button_print_receipt.setVisibility(View.GONE);
+        List<Integer> listId = new ArrayList<Integer>();
+        listId.add(R.string.button_next);
+        listId.add(R.string.button_back);
+        activity.setViewProcessButtons(listId, View.VISIBLE);
     }
 
     private void getRelatedData() {
@@ -1892,13 +1953,15 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
                         showNoticeDialogBox(title, message);
                         return false;
                     }
+                } else if (checkBoxQrcode.isChecked()) {
+
                 } else {
                     message = "กรุณาเลือกช่องทางการชำระเงิน/เงินสด/บัตรเครดิต/เช็ค";
                     showNoticeDialogBox(title, message);
                     return false;
                 }
             } else if (checkBoxPartlyPaid.isChecked()) {
-                if (!checkBoxCash.isChecked()) {
+                if (!checkBoxCash.isChecked() && !checkBoxQrcode.isChecked()) {
                     message = "กรุณาเลือกช่องทางการชำระเงิน/เงินสด";
                     showNoticeDialogBox(title, message);
                     return false;
