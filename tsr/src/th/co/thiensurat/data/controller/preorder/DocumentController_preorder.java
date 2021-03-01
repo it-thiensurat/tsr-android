@@ -2107,7 +2107,7 @@ public class DocumentController_preorder {
         receiptBuilder.setAlign(Align.LEFT);
         receiptBuilder.addText("จำนวน", false);
         receiptBuilder.setAlign(Align.RIGHT);
-        receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("FirstPeriodPayAmount"));
+        receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("FirstPeriodPayAmount")+" บาท");
 
 
         receiptBuilder.addParagraph();
@@ -2138,7 +2138,7 @@ public class DocumentController_preorder {
 
         receiptBuilder.addParagraph();
         receiptBuilder.setAlign(Align.LEFT);
-        receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("ShippingBy").equals("ทีมขายจัดส่งสินค้าเอง") ? "วันที่":"จัดส่งที่" );
+        receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("ShippingBy").equals("ทีมขายจัดส่งสินค้าเอง") ? "วันที่":"จัดส่งที่",false );
         receiptBuilder.setAlign(Align.RIGHT);
         receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("ShippingBy").equals("ทีมขายจัดส่งสินค้าเอง") ? BHApplication.getInstance().getPrefManager().getPreferrence("ShippingDate") : BHApplication.getInstance().getPrefManager().getPreferrence("ShippingTo"));
 
@@ -2152,8 +2152,31 @@ public class DocumentController_preorder {
         receiptBuilder.addParagraph();
         receiptBuilder.setAlign(Align.LEFT);
         receiptBuilder.addText("ข้อมูล อื่นๆ", false);
+
+
+
         receiptBuilder.setAlign(Align.RIGHT);
-        receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("InstallDetails"));
+        String SS=BHApplication.getInstance().getPrefManager().getPreferrence("InstallDetails");
+        receiptBuilder.addText(SS);
+
+        try {
+            int   i = SS.length();
+            if(i>45){
+                String S2 = BHApplication.getInstance().getPrefManager().getPreferrence("InstallDetails").substring(46, 91);
+                receiptBuilder.addParagraph();
+                receiptBuilder.addText(S2);
+            }
+            else if(i>92){
+                String S3 = BHApplication.getInstance().getPrefManager().getPreferrence("InstallDetails").substring(92, 137);
+                receiptBuilder.addParagraph();
+                receiptBuilder.addText(S3);
+            }
+        }
+        catch (Exception ex){
+
+        }
+
+
 
 
 
@@ -2179,27 +2202,31 @@ public class DocumentController_preorder {
 
         receiptBuilder.setTextSize(22);
         receiptBuilder.addParagraph();
-        receiptBuilder.addText("กรณีโปรโมชั่นติดตั้งฟรี  แต่ลูกค้าไม่ใช้บริการติดตั้ง", true);
+        receiptBuilder.addText("1. กรณีโปรโมชั่นติดตั้งฟรี  แต่ลูกค้าไม่ใช้บริการติดตั้ง ", true);
        receiptBuilder.addParagraph();
         receiptBuilder.addText("ทางบริษัท ขอสงวนสิทธิ์ไม่ให้อุปกรณ์ตามมาตรฐาน", true);
         receiptBuilder.addParagraph();
-        receiptBuilder.addText("กรณีโปรโมชั่นติดตั้งฟรี แต่ลูกค้าใช้อุปกรณ์เกินมาตรฐาน", true);
+        receiptBuilder.addText("2. กรณีโปรโมชั่นติดตั้งฟรี  แต่ลูกใช้อุปกรณ์เกินมาตรฐาน ", true);
         receiptBuilder.addParagraph();
-        receiptBuilder.addText("ลูกค้าจะต้องชำระค่าอุปกรณ์ตามเงื่อนไขบริการ ", true);
+        receiptBuilder.addText("ลูกค้าจะต้องชำระค่าอุปกรณ์ตามเงื่อนไขบริการ ติดตั้ง", true);
         receiptBuilder.addParagraph();
-        receiptBuilder.addText("(กรณีใช้อุปกรณ์เกินมาตรฐาน และไม่ได้ใช้อุปกรณ์ของบริษัท ", true);
+        receiptBuilder.addText("ทางบริษัท ขอสงวนสิทธิ์ไม่ให้อุปกรณ์ตามมาตรฐาน", true);
         receiptBuilder.addParagraph();
-        receiptBuilder.addText("ลูกค้าต้องชำระค่าแรง 50% ของราคาอุปกรณ์)", true);
+        receiptBuilder.addText("3.กรณีใช้อุปกรณ์เกินมาตรฐาน และไม่ได้ใช้อุปกรณ์ของบริษัท ", true);
         receiptBuilder.addParagraph();
-        receiptBuilder.addText("ติดตั้ง ทางบริษัท ขอสงวนสิทธิ์ไม่ให้อุปกรณ์ตามมาตรฐาน", true);
+        receiptBuilder.addText("ลูกค้าต้องชำระค่าแรง 50% ของราคาอุปกรณ์ติดตั้ง", true);
         receiptBuilder.addParagraph();
-        receiptBuilder.addText("การติดตั้งเครื่องกรองน้ำทุกระบบ ถ้าแรงดันน้ำเกิน 3.5 Bar ", true);
+        receiptBuilder.addText("ทางบริษัท ขอสงวนสิทธิ์ไม่ให้อุปกรณ์ตามมาตรฐาน", true);
         receiptBuilder.addParagraph();
-        receiptBuilder.addText("จะต้องติดตั้งวาล์วลดแรงดัน ก่อนเข้าเครื่อง บริษัทขอสงวนสิทธิ์", true);
+        receiptBuilder.addText("4.การติดตั้งเครื่องกรองน้ำทุกระบบ ถ้าแรงดันน้ำเกิน 3.5 บาร์", true);
         receiptBuilder.addParagraph();
-        receiptBuilder.addText("ไม่ติดตั้งสินค้า หากหน้างานไม่มีการเตรียมพื้นที่ให้พร้อม ", true);
+        receiptBuilder.addText("จะต้องติดตั้งวาล์วลดแรงดัน ก่อนเข้าเครื่อง", true);
         receiptBuilder.addParagraph();
-        receiptBuilder.addText("เช่น ระบบน้ำ,ระบบไฟ,พื้นที่จัดวางสินค้าไม่ได้ ข้อกำหนด ", true);
+        receiptBuilder.addText("5. บริษัทขอสงวนสิทธิ์ไม่ติดตั้งสินค้า หากหน้างาน", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("ไม่มีการเตรียมพื้นที่ให้พร้อม เช่น ระบบน้ำ, ระบบไฟ,", true);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addText("พื้นที่จัดวางสินค้าไม่ได้ข้อกำหนด", true);
 
 
 

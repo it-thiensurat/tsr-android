@@ -2,6 +2,7 @@ package th.co.thiensurat.fragments.sales.preorder_setting;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -32,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.google.gson.Gson;
 
@@ -164,7 +166,7 @@ public class New2SaleCustomerAddressCardFragment_preorder_setting extends BHFrag
     @InjectView
     private LinearLayout linearLayoutHeadNumber;
     @InjectView
-    private TextView txtNumber1;
+    private TextView txtNumber1,txt_s_time;
     @InjectView
     private TextView txtNumber2;
     @InjectView
@@ -267,6 +269,8 @@ public class New2SaleCustomerAddressCardFragment_preorder_setting extends BHFrag
     CheckBox checkBoxvip;
     @InjectView
     LinearLayout li_checkbox;
+    @InjectView
+    ImageView image_time;
 
     private static ContractInfo mainContractInfo;
     private static ContractImageInfo mainContractImageInfo;
@@ -282,6 +286,7 @@ public class New2SaleCustomerAddressCardFragment_preorder_setting extends BHFrag
 
     private static AddressInfo.AddressType addressType = AddressInfo.AddressType.AddressIDCard;
 
+    String install_datetime="";
 
     int  vv=0;
 
@@ -392,7 +397,7 @@ Log.e("EMPIDEMPID",bhPreference.employeeID());
            // li_checkbox.setVisibility(View.VISIBLE);
 
             load_data_check_vip(bhPreference.employeeID());
-
+            load_data_install_datetime(bhPreference.RefNo(),bhPreference.employeeID());
         }
         else {
             li_checkbox.setVisibility(View.GONE);
@@ -419,7 +424,51 @@ Log.e("EMPIDEMPID",bhPreference.employeeID());
                 }
             }
         });
+        image_time.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+
+                        String S_selectedHour="";
+                        String S_selectedMinute="";
+
+                        if(selectedHour<9){
+                            S_selectedHour="0"+String.valueOf(selectedHour);
+                        }
+                        else {
+                            S_selectedHour=String.valueOf(selectedHour);
+                        }
+
+
+
+                        if(selectedMinute<9){
+                            S_selectedMinute="0"+String.valueOf(selectedMinute);
+                        }
+                        else {
+                            S_selectedMinute=String.valueOf(selectedMinute);
+                        }
+
+
+
+
+                        Log.e("timetime", S_selectedHour+":"+S_selectedMinute+":00:000");
+                        txt_s_time.setText(S_selectedHour+":"+S_selectedMinute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+
+            }
+        });
+        install_datetime=txt_s_time.getText().toString();
 
 
         /*** [START] :: Permission ***/
@@ -2658,7 +2707,9 @@ catch (Exception ex){
 
                             cust.Sex = spinnerSex.getSelectedItem().toString();// เพศ
 
+                        install_datetime=txt_s_time.getText().toString();
 
+                        update_install_datetime(BHPreference.RefNo(),install_datetime,BHPreference.employeeID());
 
 
                         break;
@@ -3880,5 +3931,122 @@ catch (Exception ex){
 
         }
     }
+
+
+
+
+
+    private void load_data_install_datetime(String refno,String EMPID) {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.check_datetime(refno,EMPID);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson = new Gson();
+                    try {
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+
+                        JSON_PARSE_DATA_AFTER_WEBCALL_load_data_install_datetime(jsonObject.getJSONArray("data"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("dataqqq", "22");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("data", "2");
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("data", "3");
+        }
+    }
+
+    String data_install_datetime="";
+    public void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_install_datetime(JSONArray array) {
+        Log.e("array.length()", String.valueOf(array.length()));
+
+
+        if (array.length() == 0) {
+            //li_checkbox.setVisibility(View.GONE);
+
+        } else {
+
+
+            JSONObject json = null;
+
+            for (int i = 0; i < array.length(); i++) {
+                try {
+
+                    json = array.getJSONObject(i);
+                    data_install_datetime = json.getJSONObject("InstallDate").getString("date") + "";
+
+
+                } catch (Exception ex) {
+
+                    //    Log.e("catch", ex.getLocalizedMessage());
+
+                }
+            }
+
+
+            Log.e("dda",data_install_datetime);
+
+            String asubstring = data_install_datetime.substring(11, 16);
+
+            Log.e("asubstring",asubstring);
+
+            txt_s_time.setText(asubstring);
+
+
+
+
+            //   Log.e("statusstatus",status);
+
+         /*   if (status.equals("OK")) {
+                li_checkbox.setVisibility(View.VISIBLE);
+
+            }*/
+        }
+
+    }
+
+
+    private void update_install_datetime(String RefNo,String Installdate,String EMPID) {
+
+
+        Log.e("gggf",RefNo+","+Installdate+","+EMPID);
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.InsertInstallDate(RefNo,Installdate,EMPID);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("data", "2");
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("data", "3");
+        }
+    }
+
 
 }

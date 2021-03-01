@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -243,14 +244,23 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
     protected int[] processButtons() {
         // TODO Auto-generated method stub
         int[] ret;
-        if (Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.Sale)
+        if (Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.Sale) {
             ret = new int[]{R.string.button_pay, R.string.button_print}; // ,
             // R.string.button_save_manual_contract
-        else if (Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract)
+            Log.e("sss","1");
+        }
+        else if (Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract) {
             ret = new int[]{R.string.button_back, R.string.button_print, R.string.button_receipt};// ,
-            // R.string.button_save_manual_contract
-        else
+            // R.string.button_save_manual_contract}
+            Log.e("sss","2");
+//            layoutSurvey.setVisibility(View.GONE);
+
+        }
+        else{
             ret = new int[]{R.string.button_back};
+            Log.e("sss","3");
+
+        }
         return ret;
     }
 
@@ -1261,13 +1271,13 @@ Log.e("bill","old");
                 @Override
                 public void onResponse(Call call, retrofit2.Response response) {
                   //  Log.e("Survey contno", contract.RefNo);
-                  //  Log.e("Survey contno", BHPreference.RefNo());
+                    Log.e("Survey contno", BHPreference.RefNo());
 
                     Gson gson=new Gson();
                     try {
                         JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
 
-                        JSONArray array = jsonObject.getJSONArray("data");
+                        //JSONArray array = jsonObject.getJSONArray("data");
                         JSON_PARSE_DATA_AFTER_WEBCALL_load_data(jsonObject.getJSONArray("data"));
 
 
@@ -1294,9 +1304,31 @@ Log.e("bill","old");
 
     public  void JSON_PARSE_DATA_AFTER_WEBCALL_load_data(JSONArray array) {
 
-
+Log.e("fffa", String.valueOf(array.length()));
         if(array.length()==0){
-         layoutSurvey.setVisibility(View.VISIBLE);
+
+            if (Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.Sale) {
+                // R.string.button_save_manual_contract
+                Log.e("sss","1");
+
+                layoutSurvey.setVisibility(View.VISIBLE);
+
+            }
+            else if (Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract) {
+                // R.string.button_save_manual_contract}
+                Log.e("sss","2");
+//            layoutSurvey.setVisibility(View.GONE);
+
+                layoutSurvey.setVisibility(View.GONE);
+
+            }
+            else{
+                Log.e("sss","3");
+
+            }
+
+
+
 
             List<Integer> listId = new ArrayList<Integer>();
             listId.add(R.string.button_pay);

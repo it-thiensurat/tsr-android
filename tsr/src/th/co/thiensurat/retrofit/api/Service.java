@@ -45,6 +45,9 @@ public interface Service {
     @GET("/api/api-vipsaleteam-uat.php")
     Call<Object> check_vid(@Query("empid") String data);
 
+    @GET("/assanee/bighead_api_new/get_date_time.php")
+    Call<Object> check_datetime(@Query("RefNo") String RefNo,@Query("EmpID") String EmpID);
+
     @GET("Production/GIS/TrackingLocation")
     Call<Object> updateGIS(@Query("latitude") String data1, @Query("longitude") String data2, @Query("deviceId") String data3, @Query("empId") String data4, @Query("speed") String data5, @Query("source") String data6);
 
@@ -53,6 +56,10 @@ public interface Service {
 
     @GET("/api/api-setInsertInstallDate.php")
     Call<Object> InsertInstallDate(@Query("RefNo") String RefNo,@Query("InstallDate") String InstallDate,@Query("Empid") String Empid);
+
+    @GET("/api/api-setInsertInstallDate.php")
+    Call<Object> InsertInstalltime(@Query("RefNo") String RefNo,@Query("InstallDate") String InstallDate,@Query("Empid") String Empid);
+
 
     @GET("UAT/SurveryAppSale/GetSurvey")
     Call<Object> getSurvey();

@@ -337,8 +337,7 @@ public class SurveyActivity_preorder extends Activity  {
                     BHApplication.getInstance().getPrefManager().setPreferrence("chaeck_save", "1");
 
 
-                    setResult(RESULT_OK);
-                    finish();
+
 
                 }
 
@@ -989,7 +988,7 @@ public class SurveyActivity_preorder extends Activity  {
                         @Override
                         public void onResponse(JSONArray response) {
 
-                            try {
+                /*            try {
                                 new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.SUCCESS_TYPE)
                                         .setTitleText("บันทึกข้อมูล!")
                                         .setContentText("เรียบร้อย!")
@@ -997,8 +996,10 @@ public class SurveyActivity_preorder extends Activity  {
                             }
                             catch (Exception EX){
 
-                            }
+                            }*/
 
+                            setResult(RESULT_OK);
+                            finish();
 
                             // showDialog("บันทึกข้อมูล","เรียบร้อย");
                         }
@@ -1008,7 +1009,10 @@ public class SurveyActivity_preorder extends Activity  {
                         public void onErrorResponse(VolleyError error) {
                             //showDialog("บันทึกข้อมูล","เรียบร้อย");
 
-                            try {
+                            setResult(RESULT_OK);
+                            finish();
+
+        /*                    try {
                                 new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.SUCCESS_TYPE)
                                         .setTitleText("บันทึกข้อมูล!")
                                         .setContentText("เรียบร้อย!")
@@ -1016,7 +1020,7 @@ public class SurveyActivity_preorder extends Activity  {
                             }
                             catch (Exception EX){
 
-                            }
+                            }*/
                         }
                     });
         } catch (UnsupportedEncodingException e) {
