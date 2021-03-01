@@ -134,7 +134,31 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/sale_choice_height"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/bg_table_main_header">
+
+                    <TextView
+                        style="@style/TextView.Value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:layout_weight="0.9"
+                        android:text="ลูกค้าสแกนคิวอาร์โค้ดท้ายสัญญา" />
+
+                    <CheckBox
+                        android:id="@+id/checkBoxQRPayment"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_weight="0.1"
+                        android:paddingRight="@dimen/padding_normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/sale_choice_height"
+                    android:layout_marginTop="3dp"
                     android:background="@color/bg_table_main_header">
 
                     <TextView
@@ -696,5 +720,21 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_gravity="bottom">
 
+        <Button
+            android:id="@+id/button_print_receipt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="4dp"
+            android:text="@string/button_print_receipt"
+            android:textSize="14dp"
+            android:textColor="@color/font_color_white"
+            android:background="@drawable/button_style_seagull"/>
+    </RelativeLayout>
 </LinearLayout>

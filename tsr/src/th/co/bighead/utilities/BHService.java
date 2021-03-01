@@ -557,7 +557,7 @@ public abstract class BHService {
 //		ArrayList<HeaderProperty> headers = new ArrayList<HeaderProperty>();
 //		headers.add(new HeaderProperty("Connection", "close"));
 //		httpTransport.call(soapAction, soapEnvelope, headers);
-        Log.e("service url", serviceUrl());
+//        Log.e("service url", serviceUrl());
         try {
             httpTransport.debug = true;
 //            try {
@@ -570,14 +570,14 @@ public abstract class BHService {
 //                Thread.sleep(1000);
 //                httpTransport.call(soapAction, soapEnvelope);*/
 //            }
-            Log.e("service", "call round 1 error at method name : " + methodName);
+//            Log.e("service", "call round 1 error at method name : " + methodName);
             httpTransport.call(soapAction, soapEnvelope);
 
-            Log.e("dump request: ", httpTransport.requestDump);
+//            Log.e("dump request: ", httpTransport.requestDump);
 //            Log.e("dump response: ", httpTransport.responseDump);
 
             Object retObj = soapEnvelope.bodyIn;
-            Log.e("Log object", String.valueOf(retObj));
+//            Log.e("Log object", String.valueOf(retObj));
             if (retObj instanceof SoapFault) {
                 SoapFault fault = (SoapFault) retObj;
             } else {

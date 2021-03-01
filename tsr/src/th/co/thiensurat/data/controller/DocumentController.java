@@ -4860,7 +4860,7 @@ public class DocumentController {
             String currencyTag      = "54";
             String currencyCode     = "5802TH";
 
-            String amount           = String.format("%.2f", (contract.PaymentAmount - contract.TradeInDiscount));
+            String amount           = "0.00";//String.format("%.2f", (contract.PaymentAmount - contract.TradeInDiscount));
 
             String tag30Length      = String.valueOf(AIDField.length()
                     + AIDLength.length()
