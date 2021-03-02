@@ -925,7 +925,7 @@
                 <TextView
                     style="@style/TextView.Label"
                     android:layout_width="@dimen/impound_detail_width"
-                    android:layout_height="@dimen/impound_detail_height2"
+                    android:layout_height="40dp"
                     android:paddingRight="@dimen/padding_normal"
                     android:text="เวลาสะดวกให้ติดต่อ" />
 

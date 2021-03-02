@@ -16,15 +16,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.util.Log;
-import android.view.Display;
 
 import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,42 +25,26 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.EnumMap;
 import java.util.List;
+import java.util.Locale;
 
 import th.co.bighead.utilities.BHApplication;
-import th.co.bighead.utilities.BHBarcode;
 import th.co.bighead.utilities.BHGeneral;
 import th.co.bighead.utilities.BHPreference;
-import th.co.bighead.utilities.BHStorage;
 import th.co.bighead.utilities.BHUtilities;
 import th.co.thiensurat.R;
-import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.controller.EmployeeDetailController;
-import th.co.thiensurat.data.controller.ReturnProductController.ReturnProductStatus;
 import th.co.thiensurat.data.controller.ThemalPrintController;
 import th.co.thiensurat.data.info.AddressInfo;
-import th.co.thiensurat.data.info.ChangeContractInfo;
-import th.co.thiensurat.data.info.ChangeProductInfo;
 import th.co.thiensurat.data.info.ContractInfo;
 import th.co.thiensurat.data.info.DebtorCustomerInfo;
-import th.co.thiensurat.data.info.DocumentHistoryInfo;
 import th.co.thiensurat.data.info.EmployeeDetailInfo;
-import th.co.thiensurat.data.info.EmployeeInfo;
-import th.co.thiensurat.data.info.ImpoundProductInfo;
 import th.co.thiensurat.data.info.ManualDocumentInfo;
 import th.co.thiensurat.data.info.PaymentInfo;
 import th.co.thiensurat.data.info.PrintTextInfo;
-import th.co.thiensurat.data.info.ReturnProductDetailInfo;
-import th.co.thiensurat.data.info.SalePaymentPeriodInfo;
-import th.co.thiensurat.data.info.SendDocumentInfo;
-import th.co.thiensurat.data.info.SendMoneyInfo;
-import th.co.thiensurat.data.info.ShortReceiptInfo;
 
 //import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
 //import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
@@ -2107,7 +2084,9 @@ public class DocumentController_preorder {
         receiptBuilder.setAlign(Align.LEFT);
         receiptBuilder.addText("จำนวน", false);
         receiptBuilder.setAlign(Align.RIGHT);
-        receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("FirstPeriodPayAmount")+" บาท");
+        int number = Integer.parseInt(BHApplication.getInstance().getPrefManager().getPreferrence("FirstPeriodPayAmount"));
+        String str = NumberFormat.getNumberInstance(Locale.US).format(number);
+        receiptBuilder.addText(str+" บาท");
 
 
         receiptBuilder.addParagraph();
@@ -2155,28 +2134,29 @@ public class DocumentController_preorder {
 
 
 
-        receiptBuilder.setAlign(Align.RIGHT);
+     //   receiptBuilder.setAlign(Align.RIGHT);
         String SS=BHApplication.getInstance().getPrefManager().getPreferrence("InstallDetails");
-        receiptBuilder.addText(SS);
+        //String SS="จากการตรวจในที่เกิดเหตุพบเก้าอี้ล้มกระจัดกระจาย และพบรอยเลือดหลายจุดทั่วศาลา ส่วนผู้ได้มี รายแรกคือ นายยิ่งพันธิ์ กันเกตุ กำนันตำบลดอนทราย อาการสาหัส รายที่ 2 นายนคร วันเพ็ญ ผู้สมัครเทศบาลตำบลดอนทราย รายที่ 3 นางสมถวิล ศรีรัตน์ รายที่ 4 นางมณเฑียร ใจธรรม ถูกส่งตัวไปรักษาที่โรงพยาบาลเจ็ดเสมียน และ โรงพยาบาลราชบุรี ส่วนรายที่ 5 คือ นางวราพร เนียมรักษา ผู้สมัครนายกเทศบาลตำบลดอนทราย อาการสาหัส ถูกส่งตัวไปรักษาที่โรงพยาบาลกรุงเทพเมืองราชบุรี แต่นางวราพร เนียมรักษา ทนพิษบาดแผลไม่ไหว";
+     //   receiptBuilder.addText(SS);
 
-        try {
-            int   i = SS.length();
-            if(i>45){
-                String S2 = BHApplication.getInstance().getPrefManager().getPreferrence("InstallDetails").substring(46, 91);
-                receiptBuilder.addParagraph();
-                receiptBuilder.addText(S2);
-            }
-            else if(i>92){
-                String S3 = BHApplication.getInstance().getPrefManager().getPreferrence("InstallDetails").substring(92, 137);
-                receiptBuilder.addParagraph();
-                receiptBuilder.addText(S3);
-            }
+
+
+
+
+
+
+
+        receiptBuilder.addBlankSpace(10);
+        //receiptBuilder.setAlign(Align.RIGHT);
+        String[] texts = getText(SS, pValue, RECEIPT_WIDTH / 1);
+        for (int ii = 0; ii < texts.length; ii++) {
+           // cvAddr.drawText(texts[ii], RECEIPT_WIDTH / 2, yy, pValue);
+           // yy += fontSize + lineSpace;
+            receiptBuilder.setTextSize(22);
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Align.LEFT);
+            receiptBuilder.addText(texts[ii], false);
         }
-        catch (Exception ex){
-
-        }
-
-
 
 
 
@@ -2243,8 +2223,6 @@ public class DocumentController_preorder {
 
         return scaleBitmap(bmp, bmp.getWidth(), bmp.getHeight());
     }
-
-
 
 
 

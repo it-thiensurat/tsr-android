@@ -371,7 +371,7 @@ public class SalePhotographyFragment_preorder extends BHFragment {
     @Override
     protected int fragmentID() {
         // TODO Auto-generated method stub
-        return R.layout.fragment_sale_photography_preorder;
+        return R.layout.fragment_sale_photography;
 
     }
 
@@ -748,10 +748,14 @@ String DD="",NAME_IMAGE="",IMAGE_TYPE="";
                     }
                 }
 
-                File file21 = new File(DD);
+                /*File file21 = new File(DD);
                 String filePath = file21.getPath();
                 Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+                save_image_to_gallery.getResizedBiBitmaptmap(bitmap,NAME_IMAGE,IMAGE_TYPE);*/
+
+                Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath());
                 save_image_to_gallery.getResizedBiBitmaptmap(bitmap,NAME_IMAGE,IMAGE_TYPE);
+
              //  getResizedBiBitmaptmap(bitmap,NAME_IMAGE,IMAGE_TYPE);
                 break;
         }

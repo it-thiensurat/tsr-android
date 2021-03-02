@@ -82,6 +82,7 @@ public class SurveyActivity_preorder extends Activity  {
     EditText et1,et2,et3,et4,et5;
     ImageView bb_datetime;
     ImageButton button_back;
+    LinearLayout li11,li22;
 
 
     String radio_G1_S="",radio_G2_S="",radio_G3_S="";
@@ -132,6 +133,8 @@ public class SurveyActivity_preorder extends Activity  {
         et5  = (EditText) findViewById(R.id.et5);
         bb_datetime= (ImageView) findViewById(R.id.bb_datetime);
         button_back= (ImageButton) findViewById(R.id.button_back);
+        li11= (LinearLayout) findViewById(R.id.li11);
+        li22= (LinearLayout) findViewById(R.id.li22);
 
 
         MODE=  BHGeneral.SERVICE_MODE.toString();
@@ -547,6 +550,17 @@ public class SurveyActivity_preorder extends Activity  {
                                                   {
                                                       RadioButton checkedRadio = ( RadioButton ) findViewById ( checkedId );
                                                       radio_G3_S  = checkedRadio.getText ().toString ();
+
+                                                      if(radio_G3_S.equals("ทีมขายจัดส่งสินค้าเอง")){
+                                                          li11.setVisibility(View.VISIBLE);
+                                                          li22.setVisibility(View.GONE);
+                                                      }
+                                                      else {
+                                                          li11.setVisibility(View.GONE);
+                                                          li22.setVisibility(View.VISIBLE);
+                                                      }
+
+
                                                   }
                                               }
         );
