@@ -8,6 +8,7 @@ import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.IntentService;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -39,6 +40,7 @@ import android.os.PowerManager;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
@@ -344,6 +346,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
     }
 
     private void bindControls() {
+        getLastLocation();
         ActionBar actionBar = getActionBar();
         actionBar.setCustomView(R.layout.actionbar_title);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -836,7 +839,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 /*** [END] :: Fixed - [BHPROJ-0016-1064] :: [Android-Auto-Full-Synch] เปิดให้ Auto Full-Synch แค่กรณีหลังจาก Login เสร็จแล้วเท่านั้น (ส่วน Full-Synch ตอนที่เปิด App. ให้ตัดทิ้งไปเลย) ***/
             }
         }
-        getLastLocation();
+
         lvMainMenu.setEnabled(true);
     }
 
@@ -1101,6 +1104,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         BHFragment.setActivity(MainActivity.this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
+        getLastLocation();
         DocumentController.createStringForMerge();
 
         if (savedInstanceState != null) {
@@ -4004,7 +4008,9 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
      *
      * == Print with image ==
      *
+     *
      */
+
 
     public synchronized void printImageNew(final Bitmap[] bmp, final List<List<PrintTextInfo>> detailPrint, final PrintHandler handler) {
         if (bhBluetoothPrinter != null) {

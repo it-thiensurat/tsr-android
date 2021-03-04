@@ -3,6 +3,7 @@ package th.co.thiensurat.business.controller;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +34,7 @@ import th.co.thiensurat.data.info.SalePaymentPeriodInfo;
 import th.co.thiensurat.data.info.SendDocumentInfo;
 import th.co.thiensurat.data.info.SendMoneyInfo;
 
+import static th.co.thiensurat.activities.MainActivity.activity;
 import static th.co.thiensurat.activities.MainActivity.select_page_bs;
 import static th.co.thiensurat.business.controller.TSRController.getAddress;
 import static th.co.thiensurat.business.controller.TSRController.getChangeProductByID;
@@ -254,9 +256,6 @@ public class PrinterController {
                             bitmapList.add(DocumentController.getNewReceiptImage(info, debtorCustomerInfo, addressInfo));
                         }
                     }
-
-
-
                     break;
                 default:
                     break;
@@ -264,6 +263,9 @@ public class PrinterController {
             //endregion
         }
 //        Log.e("PAYMENT FOR PRINT", String.valueOf(paymentsForPrint));
+
+        Log.e("For print", String.valueOf(paymentsForPrint));
+//        Toast.makeText(activity, "Print size: " + bitmapList.size(), Toast.LENGTH_LONG).show();
 
         MainActivity.PrintHandler handler = new MainActivity.PrintHandler() {
             @Override
@@ -324,10 +326,6 @@ public class PrinterController {
 
     }
     /*** [END] :: Fixed - [Android-พิมพ์ใบเสร็จ] การพิมพ์ใบเสร็จกรณีเก็บเงินพร้อมกันหลายงวด  ***/
-
-
-
-
 
 
     public void newPrintReceipt_preorder(List<PaymentInfo> payments,Boolean withInterrupt) {
@@ -446,11 +444,6 @@ public class PrinterController {
          */
 
     }
-
-
-
-
-
 
     public void newImagePrintReceipt(PaymentInfo info) {
         List<Bitmap> bitmap = new ArrayList<>();

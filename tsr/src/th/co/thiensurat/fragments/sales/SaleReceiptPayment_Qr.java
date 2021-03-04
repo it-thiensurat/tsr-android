@@ -1,6 +1,7 @@
 package th.co.thiensurat.fragments.sales;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -33,6 +34,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -195,16 +197,17 @@ public class SaleReceiptPayment_Qr extends BHFragment {
                 showNextView(new SalePhotographyFragment());
                 break;
             case R.string.button_print:
+//                showMessage(String.valueOf(viewPager.getChildCount()));
                 if (viewPager.getChildCount() > 1) {
-                    final List<PaymentInfo> newPayments = new ArrayList<PaymentInfo>();
+//                    final List<PaymentInfo> newPayments = new ArrayList<PaymentInfo>();
 
-                    for (PaymentInfo info : payments) {
-                        if (info.EmpID.equals(BHPreference.employeeID())) {
-                            newPayments.add(info);
-                        }
-                    }
+//                    for (PaymentInfo info : payments) {
+////                        if (info.EmpID.equals(BHPreference.employeeID())) {
+//                            newPayments.add(info);
+////                        }
+//                    }
 
-                    if (newPayments.size() > 1 && forcePrint == false) {
+                    if (payments.size() > 1) {
                         AlertDialog.Builder setupAlert;
                         /*** [START] :: Fixed - [BHPROJ-0026-3275] :: [Android-พิมพ์ใบเสร็จ] การพิมพ์ใบเสร็จกรณีเก็บเงินพร้อมกันหลายงวด  ***/
                         setupAlert = new AlertDialog.Builder(activity)
@@ -212,30 +215,30 @@ public class SaleReceiptPayment_Qr extends BHFragment {
                                 .setMessage("ยืนยันการพิมพ์ใบเสร็จ")
                                 .setCancelable(false);
 
-                        final SaleFirstPaymentChoiceFragment.ProcessType processType = Enum.valueOf(SaleFirstPaymentChoiceFragment.ProcessType.class, BHPreference.ProcessType());
-                        if (processType.equals(SaleFirstPaymentChoiceFragment.ProcessType.Credit) || processType.equals(SaleFirstPaymentChoiceFragment.ProcessType.FirstPayment) ||
-                                processType.equals(SaleFirstPaymentChoiceFragment.ProcessType.NextPayment) || processType.equals(SaleFirstPaymentChoiceFragment.ProcessType.Sale)) {
+//                        final SaleFirstPaymentChoiceFragment.ProcessType processType = Enum.valueOf(SaleFirstPaymentChoiceFragment.ProcessType.class, BHPreference.ProcessType());
+//                        if (processType.equals(SaleFirstPaymentChoiceFragment.ProcessType.Credit) || processType.equals(SaleFirstPaymentChoiceFragment.ProcessType.FirstPayment) ||
+//                                processType.equals(SaleFirstPaymentChoiceFragment.ProcessType.NextPayment) || processType.equals(SaleFirstPaymentChoiceFragment.ProcessType.Sale)) {
+//                            setupAlert = setupAlert.setPositiveButton("พิมพ์ทั้งหมด", new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int whichButton) {
+//                                    printDocument(newPayments);
+//                                    dialog.cancel();
+//                                }
+//                            });
+//                        }else{
                             setupAlert = setupAlert.setPositiveButton("พิมพ์ทั้งหมด", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
-//                                    printDocument(newPayments);
-                                    dialog.cancel();
-                                }
-                            });
-                        }else{
-                            setupAlert = setupAlert.setPositiveButton("พิมพ์ทั้งหมด", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-//                                    printDocument(newPayments);
+                                    printDocument(payments);
                                     dialog.cancel();
                                 }
                             }).setNeutralButton(String.format("พิมพ์เฉพาะหน้านี้", viewPager.getCurrentItem() + 1), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     List<PaymentInfo> listInfo = new ArrayList<>();
                                     listInfo.add(payments.get(viewPager.getCurrentItem()));
-//                                    printDocument(listInfo);
+                                    printDocument(listInfo);
                                     dialog.cancel();
                                 }
                             });
-                        }
+//                        }
 
 
                         setupAlert = setupAlert.setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
@@ -249,11 +252,11 @@ public class SaleReceiptPayment_Qr extends BHFragment {
                         /*** [END] :: Fixed - [Android-พิมพ์ใบเสร็จ] การพิมพ์ใบเสร็จกรณีเก็บเงินพร้อมกันหลายงวด  ***/
 
 
-                    } else if (newPayments.size() == 1 || forcePrint == true) {
-//                        printDocument(newPayments);
+                    } else if (payments.size() == 1) {
+                        printDocument(payments);
                     }
                 } else {
-//                    printDocument(payments);
+                    printDocument(payments);
                 }
                 break;
             case R.string.button_save_manual_receipt:
@@ -285,63 +288,74 @@ public class SaleReceiptPayment_Qr extends BHFragment {
         }
     }
 
+    private void printDocument(List<PaymentInfo> info) {
+        if (info == null) return;
+        new PrinterController(activity).newPrintReceipt(info);
+        forcePrint = false;
+    }
+
     private void getQrcodeReceipt() {
+        final ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setTitle("Plait wait");
+        dialog.setMessage("Connecting");
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
         try {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             Service request = retrofit.create(Service.class);
-            Call call = request.getQrReceipt("20109537");
+            Call call = request.getQrReceipt(data.contract.CONTNO);
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, retrofit2.Response response) {
                     Gson gson=new Gson();
                     try {
-//                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
                         JSONArray jsonArray = new JSONArray(gson.toJson(response.body()));
-//                        Log.e("JSONObjec", String.valueOf(jsonArray));
-//                        JSONArray array = jsonObject.getJSONArray("data");
                         String obj = "";
-//                        Log.e("for qr receipt", String.valueOf(array));
                         List<PaymentInfo> paymentInfoList = new ArrayList<>();
+                        payments = new ArrayList<>();
                         PaymentInfo paymentInfo;
                         for (int i = 0; i < jsonArray.length(); i++) {
-//                            obj = jsonArray.getJSONObject(i).getString("ReceiptCode");
-//                            paymentInfoList.set(i, )
-                            paymentInfo = new PaymentInfo();
-                            paymentInfo.ReceiptCode = jsonArray.getJSONObject(i).getString("ReceiptCode");
-                            paymentInfo.CONTNO = jsonArray.getJSONObject(i).getString("CONTNO");
-                            paymentInfo.CustomerName = jsonArray.getJSONObject(i).getString("CustomerName");
-                            paymentInfo.ProductName = jsonArray.getJSONObject(i).getString("ProductName");
-                            paymentInfo.MODEL = data.contract.MODEL;
-                            paymentInfo.ProductSerialNumber = data.contract.ProductSerialNumber;
-//                            paymentInfo.PayDate = jsonArray.getJSONObject(i).getString("DatePayment");
-                            paymentInfo.Amount = Float.parseFloat(jsonArray.getJSONObject(i).getString("Amount").replace(",", ""));
-                            paymentInfo.PaymentPeriodNumber = jsonArray.getJSONObject(i).getInt("PaymentPeriodNumber");
-                            paymentInfo.MODE = jsonArray.getJSONObject(i).getInt("maxPeriod");
-                            paymentInfo.EmpID = data.contract.EmpID;
-                            paymentInfo.EFFDATE = data.contract.EFFDATE;
-                            paymentInfo.IDCard = data.contract.IDCard;
-                            paymentInfo.MODE = data.contract.MODE;
-                            paymentInfo.RefNo = data.contract.RefNo;
-                            paymentInfo.SaleEmployeeName = data.contract.SaleEmployeeName;
-                            paymentInfo.TeamCode = data.contract.SaleTeamCode;
-                            paymentInfo.VoidStatus = false;
-                            paymentInfo.PaymentType = data.paymentType;
-                            paymentInfo.Balances = Float.parseFloat(jsonArray.getJSONObject(i).getString("balance").replace(",", ""));
-
-                            paymentInfoList.add(paymentInfo);
+                            if (!jsonArray.getJSONObject(i).getString("Amount").equals("0")) {
+                                paymentInfo = new PaymentInfo();
+                                paymentInfo.ReceiptCode = jsonArray.getJSONObject(i).getString("ReceiptCode");
+                                paymentInfo.CONTNO = jsonArray.getJSONObject(i).getString("CONTNO");
+                                paymentInfo.CustomerName = jsonArray.getJSONObject(i).getString("CustomerName");
+                                paymentInfo.ProductName = jsonArray.getJSONObject(i).getString("ProductName");
+                                paymentInfo.MODEL = data.contract.MODEL;
+                                paymentInfo.ProductSerialNumber = data.contract.ProductSerialNumber;
+                                paymentInfo.PayDate = BHUtilities.StringToDate(jsonArray.getJSONObject(i).getString("DayPay"), "dd/mm/yyyy", BHUtilities.LOCALE_THAI);
+                                paymentInfo.Amount = Float.parseFloat(jsonArray.getJSONObject(i).getString("Amount").replace(",", ""));
+                                paymentInfo.PaymentPeriodNumber = jsonArray.getJSONObject(i).getInt("PaymentPeriodNumber");
+                                paymentInfo.MODE = jsonArray.getJSONObject(i).getInt("maxPeriod");
+                                paymentInfo.EmpID = data.contract.EmpID;
+                                paymentInfo.EFFDATE = data.contract.EFFDATE;
+                                paymentInfo.IDCard = data.contract.IDCard;
+                                paymentInfo.MODE = data.contract.MODE;
+                                paymentInfo.RefNo = data.contract.RefNo;
+                                paymentInfo.SaleEmployeeName = data.contract.SaleEmployeeName;
+                                paymentInfo.TeamCode = data.contract.SaleTeamCode;
+                                paymentInfo.VoidStatus = false;
+                                paymentInfo.PaymentType = data.paymentType;
+                                paymentInfo.SaleEmployeeName = data.contract.SaleEmployeeName;
+                                paymentInfo.BalancesOfPeriod = Float.parseFloat(jsonArray.getJSONObject(i).getString("BalancesOfPeriod").replace(",", ""));
+                                paymentInfo.Balances = Float.parseFloat(jsonArray.getJSONObject(i).getString("balance").replace(",", ""));
+                                payments.add(paymentInfo);
+                            }
                         }
 
-                        payments = paymentInfoList;
-                        Log.e("Payment list", String.valueOf(paymentInfoList));
-                        myViewPagerAdapter = new MyViewPagerAdapter(paymentInfoList);
+//                        payments = paymentInfoList;
+
+                        Collections.reverse(payments);
+                        myViewPagerAdapter = new MyViewPagerAdapter(payments);
                         viewPager.setAdapter(myViewPagerAdapter);
                         viewPager.setCurrentItem(currentViewPosition);
                         viewPager.setOnPageChangeListener(viewPagerPageChangeListener);
                         setUiPageViewController();
-                        Log.e("ReceiptCode", String.valueOf(obj));
+                        dialog.dismiss();
                     } catch (JSONException e) {
                         Log.e("JSONException", e.getLocalizedMessage());
                     }

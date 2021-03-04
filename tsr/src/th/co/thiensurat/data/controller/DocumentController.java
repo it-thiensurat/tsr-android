@@ -1773,7 +1773,12 @@ public class DocumentController {
         listText.addAll(getTextAlignLeftByOffSetLeft(" วันที่รับเงิน", BHUtilities.dateFormat(paymentInfo.PayDate) + " เวลา " + BHUtilities.dateFormat(paymentInfo.PayDate, "HH:mm") + " น."));
         listText.addAll(getTextAlignLeftByOffSetLeft(" เลขที่", paymentInfo.ReceiptCode));
         listText.addAll(getTextAlignLeftByOffSetLeft(" เลขที่สัญญา", paymentInfo.CONTNO));
-        listText.addAll(getTextAlignLeft(" ชื่อลูกค้า " + debtorCustomerInfo.CustomerFullName()));
+        try {
+            listText.addAll(getTextAlignLeft(" ชื่อลูกค้า " + debtorCustomerInfo.CustomerFullName()));
+        } catch (Exception e){
+            listText.addAll(getTextAlignLeft(" ชื่อลูกค้า " + paymentInfo.CustomerName));
+        }
+
 
 
         if (paymentInfo.ManualVolumeNo != null && paymentInfo.ManualRunningNo > 0) {
@@ -3693,7 +3698,7 @@ public class DocumentController {
             bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), bmOptions);
             bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(), true);
         } else {
-            createStringForMerge();
+            bmp = createStringForMerge();
         }
 
         return bmp;
@@ -4361,13 +4366,13 @@ public class DocumentController {
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
 
-        receiptBuilder.setAlign(Paint.Align.CENTER);
-        receiptBuilder.addText("QR Code สำหรับชำระเงิน", true);
-        receiptBuilder.setAlign(Paint.Align.CENTER);
-        Bitmap bmpPromtpay = createQRCodePromtpay(contract);
-        receiptBuilder.addImage(bmpPromtpay);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addBlankSpace(10);
+//        receiptBuilder.setAlign(Paint.Align.CENTER);
+//        receiptBuilder.addText("QR Code สำหรับชำระเงิน", true);
+//        receiptBuilder.setAlign(Paint.Align.CENTER);
+//        Bitmap bmpPromtpay = createQRCodePromtpay(contract);
+//        receiptBuilder.addImage(bmpPromtpay);
+//        receiptBuilder.addParagraph();
+//        receiptBuilder.addBlankSpace(10);
 
         receiptBuilder.setTextSize(22);
         receiptBuilder.setAlign(Align.LEFT);
@@ -4426,7 +4431,11 @@ public class DocumentController {
         receiptBuilder.setAlign(Paint.Align.LEFT);
         receiptBuilder.addText("ชื่อลูกค้า", false);
         receiptBuilder.setAlign(Paint.Align.RIGHT);
-        receiptBuilder.addText(debtorCustomerInfo.CustomerFullName(), true);
+        try {
+            receiptBuilder.addText(debtorCustomerInfo.CustomerFullName(), true);
+        } catch (Exception e) {
+            receiptBuilder.addText(paymentInfo.CustomerName, true);
+        }
 
         if (paymentInfo.ManualVolumeNo != null && paymentInfo.ManualRunningNo > 0) {
             String ManualDocumentBookRunningNo = String.format("%s/%d", BHUtilities.trim(paymentInfo.ManualVolumeNo), paymentInfo.ManualRunningNo).replace(' ', '0');
@@ -4522,11 +4531,13 @@ public class DocumentController {
                 receiptBuilder.setAlign(Paint.Align.RIGHT);
                 receiptBuilder.addText("ราคา " + BHUtilities.numericFormat(paymentInfo.BalancesOfPeriod) + " บาท", true);
 
-                receiptBuilder.addParagraph();
-                receiptBuilder.setAlign(Paint.Align.LEFT);
-                receiptBuilder.addText("วันนัดชำระ", false);
-                receiptBuilder.setAlign(Paint.Align.RIGHT);
-                receiptBuilder.addText(BHUtilities.dateFormat(paymentInfo.PaymentAppointmentDate), true);
+                if (paymentInfo.PaymentAppointmentDate != null) {
+                    receiptBuilder.addParagraph();
+                    receiptBuilder.setAlign(Paint.Align.LEFT);
+                    receiptBuilder.addText("วันนัดชำระ", false);
+                    receiptBuilder.setAlign(Paint.Align.RIGHT);
+                    receiptBuilder.addText(BHUtilities.dateFormat(paymentInfo.PaymentAppointmentDate), true);
+                }
             }
             /**ยอดคงเหลือของงวดถัดไป**/
             if (paymentInfo.Balances - paymentInfo.BalancesOfPeriod != 0) {
@@ -4947,7 +4958,7 @@ public class DocumentController {
         return null;
     }
 
-    public static void createStringForMerge() {
+    public static Bitmap createStringForMerge() {
         File file = new File(getAlbumStorageDir("textmerge"), String.format("text_center.jpg"));
         Bitmap img = Bitmap.createBitmap(RECEIPT_WIDTH, 150, Config.ARGB_8888);
         img.setHasAlpha(true);
@@ -4998,6 +5009,8 @@ public class DocumentController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return result;
     }
 
     private static Bitmap textBottomQRCode() {

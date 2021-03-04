@@ -378,16 +378,12 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
         data = getData();
-
-
-
-
        // List<EmployeeDetailInfo> empinfo = new EmployeeDetailController().getEmployeeDetail();
         BHPreference bhPreference =new BHPreference();
         bhPreference.employeeID();
 
 
-Log.e("EMPIDEMPID",bhPreference.employeeID());
+        Log.e("EMPIDEMPID",bhPreference.employeeID());
         if (isConnectingToInternet()) {
            // li_checkbox.setVisibility(View.VISIBLE);
 
@@ -761,14 +757,6 @@ Log.e("EMPIDEMPID",bhPreference.employeeID());
 
                 //  String EMPID= BHApplication.getInstance().getPrefManager().getPreferrence("EMPID");
 
-
-
-
-
-
-
-
-
           /*          try {
                         Log.e("UsedProductModelID",mainDebtorCustomerInfo.UsedProductModelID);
 
@@ -790,21 +778,6 @@ Log.e("EMPIDEMPID",bhPreference.employeeID());
                     catch (Exception ex){
 
                     }*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                     if (mainDebtorCustomerInfo.Brithday != null) {
                         final Calendar c = Calendar.getInstance();
@@ -854,26 +827,6 @@ Log.e("EMPIDEMPID",bhPreference.employeeID());
                     // เพศ
                     ArrayAdapter sexAdapter = (ArrayAdapter) spinnerSex.getAdapter();
                     spinnerSex.setSelection(sexAdapter.getPosition(mainDebtorCustomerInfo.Sex));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                     break;
 
@@ -1142,13 +1095,6 @@ catch (Exception ex){
             break;
     }
 }
-
-
-
-
-
-
-
 
     }
 
@@ -3379,11 +3325,6 @@ catch (Exception ex){
         }).start();
     }
 
-
-
-
-
-
     private boolean isImportThaiIDCard = false;
     static public Personal mPersonal;
 
@@ -3654,10 +3595,6 @@ catch (Exception ex){
     }
 
 
-
-
-
-
     public boolean isConnectingToInternet() {
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -3703,9 +3640,6 @@ catch (Exception ex){
         }
     }
 
-
-
-
     public void JSON_PARSE_DATA_AFTER_WEBCALL22(JSONArray array) {
         if (array.length() == 0) {
             li_checkbox.setVisibility(View.GONE);
@@ -3735,14 +3669,6 @@ catch (Exception ex){
             if(status.equals("OK")){
                 li_checkbox.setVisibility(View.VISIBLE);
 
-
-
-
-
-
-
-
-
          try {
              if (mainDebtorCustomerInfo.UsedProductModelID.equals("VIP")) {
 
@@ -3760,10 +3686,6 @@ catch (Exception ex){
                     check_box_status=0;
 
                 }
-
-
-
-
             }
             else {
                 li_checkbox.setVisibility(View.GONE);

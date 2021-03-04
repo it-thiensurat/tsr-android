@@ -642,11 +642,8 @@ public class ZJMiniThemalPrint {
                         public void run() {
                             try {
 
-                                for (int i = 0; i < bmp.length; i++) {//bmp.length
+                                for (int i = 0; i < bmp.length; i++) {
                                     if (i > 0) {
-
-                                        Log.e("pring","2");
-
                                         int j = i;
                                         timer.schedule(new TimerTask() {
                                             @Override
@@ -656,16 +653,8 @@ public class ZJMiniThemalPrint {
                                             }
                                         }, 5000);
                                     } else {
-
-                                        Log.e("pring","1");
-
-
-
                                          printCustomBitmap(bmp[i], i);
-                                        handler.onBackgroundPrinting(i);
-
-
-
+                                         handler.onBackgroundPrinting(i);
                                     }
                                 }
                             } catch (Exception e) {
