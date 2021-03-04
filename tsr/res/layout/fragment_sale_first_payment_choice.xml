@@ -135,7 +135,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/sale_choice_height"
                     android:layout_marginTop="10dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:background="@color/bg_table_main_header">
 
                     <TextView

@@ -42,6 +42,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHGeneral;
+import th.co.bighead.utilities.BHLoading;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHUtilities;
 import th.co.bighead.utilities.annotation.InjectView;
@@ -106,7 +107,8 @@ public class CustomerStatusFragment extends BHFragment implements CustomerStatus
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog = ProgressDialog.show(getActivity(), "Please wait...", "กำลังโหลดข้อมูลลูกค้า", true, false);
+//                dialog = ProgressDialog.show(getActivity(), "Please wait...", "กำลังโหลดข้อมูลลูกค้า", true, false);
+                BHLoading.show(activity);
                 onSearch(editSearch.getText().toString());
             }
         });
@@ -174,7 +176,8 @@ public class CustomerStatusFragment extends BHFragment implements CustomerStatus
                             }
                             setItemToRecyclerView(customerStatusInfoList);
                         } else {
-                            dialog.dismiss();
+//                            dialog.dismiss();
+                            BHLoading.close();
                             layout_list.setVisibility(View.GONE);
                             layout_msg.setVisibility(View.VISIBLE);
                             txtMsg.setText(message.toString());
@@ -211,6 +214,6 @@ public class CustomerStatusFragment extends BHFragment implements CustomerStatus
         customerStatusAdapter.setClickListener(this);
         customerStatusAdapter.notifyDataSetChanged();
         editSearch.setText("");
-        dialog.dismiss();
+        BHLoading.close();
     }
 }

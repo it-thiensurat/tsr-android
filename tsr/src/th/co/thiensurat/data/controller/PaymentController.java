@@ -1,5 +1,6 @@
 package th.co.thiensurat.data.controller;
 
+import java.sql.ResultSet;
 import java.util.Date;
 import java.util.List;
 
@@ -257,7 +258,6 @@ public class PaymentController extends BaseController {
 //	return executeQueryObject(sql, new String[] { organizationCode, refNo },
 //			PaymentInfo.class);
 //	}
-
 
     public List<PaymentInfo> getPayment() {
         return executeQueryList("select *from Payment", null, PaymentInfo.class);

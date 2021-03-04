@@ -4364,15 +4364,15 @@ public class DocumentController {
         receiptBuilder.setAlign(Paint.Align.LEFT);
         receiptBuilder.addText(String.format(" %s %s", BHUtilities.trim(contract.SaleTeamName), BHUtilities.trim(contract.upperEmployeeName)), true);
         receiptBuilder.addParagraph();
-        receiptBuilder.addBlankSpace(10);
+        receiptBuilder.addBlankSpace(5);
 
-//        receiptBuilder.setAlign(Paint.Align.CENTER);
-//        receiptBuilder.addText("QR Code สำหรับชำระเงิน", true);
-//        receiptBuilder.setAlign(Paint.Align.CENTER);
-//        Bitmap bmpPromtpay = createQRCodePromtpay(contract);
-//        receiptBuilder.addImage(bmpPromtpay);
-//        receiptBuilder.addParagraph();
-//        receiptBuilder.addBlankSpace(10);
+        receiptBuilder.setAlign(Paint.Align.CENTER);
+        receiptBuilder.addText("QR Code สำหรับชำระเงิน", true);
+        receiptBuilder.setAlign(Paint.Align.CENTER);
+        Bitmap bmpPromtpay = createQRCodePromtpay(contract);
+        receiptBuilder.addImage(bmpPromtpay);
+        receiptBuilder.addParagraph();
+        receiptBuilder.addBlankSpace(5);
 
         receiptBuilder.setTextSize(22);
         receiptBuilder.setAlign(Align.LEFT);
@@ -4561,52 +4561,56 @@ public class DocumentController {
         }
 
         receiptBuilder.addBlankSpace(60);
+            Bitmap img = Bitmap.createBitmap(RECEIPT_WIDTH, 80, Config.ARGB_8888);
+            img.setHasAlpha(true);
 
-        Bitmap img = Bitmap.createBitmap(RECEIPT_WIDTH, 80, Config.ARGB_8888);
-        img.setHasAlpha(true);
+            float yy = 0;
+            Canvas cv = new Canvas(img);
+            cv.drawColor(Color.WHITE);
 
-        float yy = 0;
-        Canvas cv = new Canvas(img);
-        cv.drawColor(Color.WHITE);
+            Paint p = new Paint();
+            p.setColor(Color.BLACK);
+            p.setStyle(Style.FILL_AND_STROKE);
+            p.setAntiAlias(true);
 
-        Paint p = new Paint();
-        p.setColor(Color.BLACK);
-        p.setStyle(Style.FILL_AND_STROKE);
-        p.setAntiAlias(true);
+            float fontSize = 22;
+            float lineSpace = fontSize / 2;
+            Paint pTitle2 = new Paint(p);
+            pTitle2.setTypeface(Typeface.DEFAULT);
+            pTitle2.setTextSize(fontSize);
+            pTitle2.setTextAlign(Align.LEFT);
 
-        float fontSize = 22;
-        float lineSpace = fontSize / 2;
-        Paint pTitle2 = new Paint(p);
-        pTitle2.setTypeface(Typeface.DEFAULT);
-        pTitle2.setTextSize(fontSize);
-        pTitle2.setTextAlign(Align.LEFT);
-
-        Paint pValue = new Paint(pTitle2);
-        pValue.setTypeface(null);
-        pValue.setTextAlign(Align.LEFT);
-        Paint pSignature = new Paint(pValue);
-        pSignature.setTextAlign(Align.CENTER);
-
-        String sale = String.format("(%s) %s", paymentInfo.SaleEmployeeName != null ? paymentInfo.SaleEmployeeName : "", paymentInfo.CashCode);
-
-        yy += 25;
-        int Value = RECEIPT_WIDTH / 2;
-        String[] texts = getText(sale, pSignature, RECEIPT_WIDTH);
-        for (int ii = 0; ii < texts.length; ii++) {
-            if (ii == 0) {
-                cv.drawText(String.format("%sผู้รับเงิน", getSignatureUnderline(pSignature, (RECEIPT_WIDTH) - (getWidth("ผู้รับเงิน", pSignature) + (RECEIPT_WIDTH / 2)))), RECEIPT_WIDTH / 2, yy, pSignature);
+            Paint pValue = new Paint(pTitle2);
+            pValue.setTypeface(null);
+            pValue.setTextAlign(Align.LEFT);
+            Paint pSignature = new Paint(pValue);
+            pSignature.setTextAlign(Align.CENTER);
+            String sale = "";
+            if (paymentInfo.PaymentType.equals("Qrcode")) {
+                sale = String.format("%s", "(TMB QR CODE)");
+            } else {
+                sale = String.format("(%s) %s", paymentInfo.SaleEmployeeName != null ? paymentInfo.SaleEmployeeName : "", paymentInfo.CashCode);
             }
-            yy += fontSize + lineSpace;
-            cv.drawText(texts[ii], Value, yy, pSignature);
-        }
+            yy += 25;
+            int Value = RECEIPT_WIDTH / 2;
+            String[] texts = getText(sale, pSignature, RECEIPT_WIDTH);
+            for (int ii = 0; ii < texts.length; ii++) {
+                if (!paymentInfo.PaymentType.equals("Qrcode")) {
+                    if (ii == 0) {
+                        cv.drawText(String.format("%sผู้รับเงิน", getSignatureUnderline(pSignature, (RECEIPT_WIDTH) - (getWidth("ผู้รับเงิน", pSignature) + (RECEIPT_WIDTH / 2)))), RECEIPT_WIDTH / 2, yy, pSignature);
+                    }
+                }
+                yy += fontSize + lineSpace;
+                cv.drawText(texts[ii], Value, yy, pSignature);
+            }
 
-        Bitmap result = Bitmap.createBitmap(RECEIPT_WIDTH, 80, Config.ARGB_8888);
-        cv = new Canvas(result);
-        cv.drawBitmap(img, 0, 0, null);
-        img.recycle();
+            Bitmap result = Bitmap.createBitmap(RECEIPT_WIDTH, 80, Config.ARGB_8888);
+            cv = new Canvas(result);
+            cv.drawBitmap(img, 0, 0, null);
+            img.recycle();
 
-        receiptBuilder.addImage(result);
-        receiptBuilder.addParagraph();
+            receiptBuilder.addImage(result);
+            receiptBuilder.addParagraph();
 
         String qrcodeSurvey = "http://app.thiensurat.co.th/VerifySeller/index.php?EmpID=" + paymentInfo.EmpID;
         Bitmap bmpSurvey = createQRCodeForSurvey(qrcodeSurvey);
@@ -4642,9 +4646,8 @@ public class DocumentController {
             receiptBuilder.addImage(bmpQR);
             receiptBuilder.setAlign(Align.CENTER);
             receiptBuilder.addImage(textBottomQRCode());
+            receiptBuilder.addParagraph();
         }
-
-        receiptBuilder.addParagraph();
 
         return receiptBuilder.build();
     }

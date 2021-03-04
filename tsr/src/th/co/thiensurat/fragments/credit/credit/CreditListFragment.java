@@ -164,7 +164,7 @@ public class CreditListFragment extends BHFragment {
                     load_data();
                 }
             });
-            load_data();
+            load_data_test();
         } else {
             data = getData();
 

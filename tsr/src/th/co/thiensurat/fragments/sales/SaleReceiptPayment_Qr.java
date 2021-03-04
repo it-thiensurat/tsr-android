@@ -43,11 +43,13 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHFragment;
+import th.co.bighead.utilities.BHLoading;
 import th.co.bighead.utilities.BHParcelable;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHUtilities;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
+import th.co.thiensurat.activities.LoginActivity;
 import th.co.thiensurat.business.controller.PrinterController;
 import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.controller.DocumentHistoryController;
@@ -100,6 +102,8 @@ public class SaleReceiptPayment_Qr extends BHFragment {
 
     @InjectView
     public ViewTitle lblTitle;
+
+    final ProgressDialog dialog = new ProgressDialog(activity);
 
     @Override
     protected int titleID() {
@@ -156,9 +160,10 @@ public class SaleReceiptPayment_Qr extends BHFragment {
 
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
+        BHLoading.show(activity);
         data = getData();
+        Log.e("contract info", String.valueOf(data.contract));
         getQrcodeReceipt();
-//        Log.e("Contract for qr", String.valueOf(data.contract));
 
         switch (Enum.valueOf(SaleFirstPaymentChoiceFragment.ProcessType.class, BHPreference.ProcessType())) {
             case FirstPayment:
@@ -197,7 +202,7 @@ public class SaleReceiptPayment_Qr extends BHFragment {
                 showNextView(new SalePhotographyFragment());
                 break;
             case R.string.button_print:
-//                showMessage(String.valueOf(viewPager.getChildCount()));
+                saveStatusCode();
                 if (viewPager.getChildCount() > 1) {
 //                    final List<PaymentInfo> newPayments = new ArrayList<PaymentInfo>();
 
@@ -295,12 +300,6 @@ public class SaleReceiptPayment_Qr extends BHFragment {
     }
 
     private void getQrcodeReceipt() {
-        final ProgressDialog dialog = new ProgressDialog(activity);
-        dialog.setTitle("Plait wait");
-        dialog.setMessage("Connecting");
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
         try {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
@@ -336,9 +335,9 @@ public class SaleReceiptPayment_Qr extends BHFragment {
                                 paymentInfo.IDCard = data.contract.IDCard;
                                 paymentInfo.MODE = data.contract.MODE;
                                 paymentInfo.RefNo = data.contract.RefNo;
-                                paymentInfo.SaleEmployeeName = data.contract.SaleEmployeeName;
-                                paymentInfo.TeamCode = data.contract.SaleTeamCode;
-                                paymentInfo.VoidStatus = false;
+                                paymentInfo.SaleEmployeeName = jsonArray.getJSONObject(i).getString("Chanel");
+                                paymentInfo.TeamCode = data.contract.SaleCode;
+                                paymentInfo.VoidStatus = true;
                                 paymentInfo.PaymentType = data.paymentType;
                                 paymentInfo.SaleEmployeeName = data.contract.SaleEmployeeName;
                                 paymentInfo.BalancesOfPeriod = Float.parseFloat(jsonArray.getJSONObject(i).getString("BalancesOfPeriod").replace(",", ""));
@@ -347,15 +346,14 @@ public class SaleReceiptPayment_Qr extends BHFragment {
                             }
                         }
 
-//                        payments = paymentInfoList;
-
                         Collections.reverse(payments);
                         myViewPagerAdapter = new MyViewPagerAdapter(payments);
                         viewPager.setAdapter(myViewPagerAdapter);
                         viewPager.setCurrentItem(currentViewPosition);
                         viewPager.setOnPageChangeListener(viewPagerPageChangeListener);
                         setUiPageViewController();
-                        dialog.dismiss();
+//                        dialog.dismiss();
+                        BHLoading.close();
                     } catch (JSONException e) {
                         Log.e("JSONException", e.getLocalizedMessage());
                     }
@@ -371,7 +369,6 @@ public class SaleReceiptPayment_Qr extends BHFragment {
         }
     }
 
-    //  page change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
@@ -380,27 +377,6 @@ public class SaleReceiptPayment_Qr extends BHFragment {
                 dots[i].setTextColor(getResources().getColor(R.color.dot_gray_dark));
             }
             dots[position].setTextColor(getResources().getColor(R.color.dot_red));
-
-            /*** [START] :: Fixed - [BHPROJ-0025-815] :: [Android-Reprint ใบสัญญา+ใบเสร็จ] กรณีเป็นฝ่ายเก็บเงินจะ Re-Print ได้เฉพาะใบเสร็จรับเงินที่เค้าเป็นคนเก็บเท่านั้น จะไม่สามารถกลับไป Re-Print ใบสัญญา หรือ ใบเสร็จรับเงินของคนอื่นได้  ***/
-//            List<Integer> listId = new ArrayList<Integer>();
-//            listId.add(R.string.button_print);
-//            listId.add(R.string.button_save_manual_receipt);
-//
-//            if (!payments.get(position).EmpID.equals(BHPreference.employeeID()) || payments.get(position).VoidStatus == true) {
-//                activity.setViewProcessButtons(listId, View.GONE);
-//            } else {
-//                activity.setViewProcessButtons(listId, View.VISIBLE);
-//            }
-            /*** [END] :: Fixed - [BHPROJ-0025-815] :: [Android-Reprint ใบสัญญา+ใบเสร็จ] กรณีเป็นฝ่ายเก็บเงินจะ Re-Print ได้เฉพาะใบเสร็จรับเงินที่เค้าเป็นคนเก็บเท่านั้น จะไม่สามารถกลับไป Re-Print ใบสัญญา หรือ ใบเสร็จรับเงินของคนอื่นได้  ***/
-//            Calendar c = Calendar.getInstance();
-//            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-//            String currentDate = df.format(c.getTime());
-//
-//            String ReceiptDate = df.format(payments.get(position).PayDate);
-
-//            if (!ReceiptDate.equals(currentDate)) {
-//                activity.setViewProcessButtons(listId, View.GONE);
-//            }
         }
 
         @Override
@@ -414,7 +390,6 @@ public class SaleReceiptPayment_Qr extends BHFragment {
         }
     };
 
-    //  adapter
     public class MyViewPagerAdapter extends PagerAdapter {
 
         private LayoutInflater layoutInflater;
@@ -430,7 +405,6 @@ public class SaleReceiptPayment_Qr extends BHFragment {
             layoutInflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = layoutInflater.inflate(R.layout.view_sale_receipt_payment_item, container, false);
 
-            DebtorCustomerInfo debtorCustomerInfo = TSRController.getDebCustometByID(payments.get(position).CustomerID);
             AddressInfo addressInfo = TSRController.getAddress(payments.get(position).RefNo, AddressInfo.AddressType.AddressInstall);
             String bahtLabel = " บาท";
             TextView txtReceiptHeadTitle = (TextView) view.findViewById(R.id.txtReceiptHeadTitle);
@@ -443,12 +417,13 @@ public class SaleReceiptPayment_Qr extends BHFragment {
 
             LinearLayout llReferenceNo = (LinearLayout) view.findViewById(R.id.llReferenceNo);//เลขที่อ้างอิง
             TextView tvReferenceNo = (TextView) view.findViewById(R.id.tvReferenceNo);
-            if (payments.get(position).ManualVolumeNo != null && payments.get(position).ManualRunningNo > 0) {
-                String ManualDocumentBookRunningNo = String.format("%s/%d", BHUtilities.trim(payments.get(position).ManualVolumeNo), payments.get(position).ManualRunningNo).replace(' ', '0');
-                tvReferenceNo.setText(ManualDocumentBookRunningNo);
-            } else {
-                llReferenceNo.setVisibility(View.GONE);
-            }
+            llReferenceNo.setVisibility(View.GONE);
+//            if (payments.get(position).ManualVolumeNo != null && payments.get(position).ManualRunningNo > 0) {
+//                String ManualDocumentBookRunningNo = String.format("%s/%d", BHUtilities.trim(payments.get(position).ManualVolumeNo), payments.get(position).ManualRunningNo).replace(' ', '0');
+//                tvReferenceNo.setText(ManualDocumentBookRunningNo);
+//            } else {
+//                llReferenceNo.setVisibility(View.GONE);
+//            }
 
             TextView tvContractNo = (TextView) view.findViewById(R.id.tvContractNo); //เลขที่สัญญา
             tvContractNo.setText(payments.get(position).CONTNO);
@@ -615,12 +590,14 @@ public class SaleReceiptPayment_Qr extends BHFragment {
             TextView tvChequeBrach = (TextView) view.findViewById(R.id.tvChequeBrach); //สาขาเช็ด
             TextView tvChequeNo = (TextView) view.findViewById(R.id.tvChequeNo); //เลขที่เช็ด
             TextView tvChequeDate = (TextView) view.findViewById(R.id.tvChequeDate); //วันที่ลงเช็ด
+            TextView lblReceiptTitle = (TextView) view.findViewById(R.id.lblReceiptTitle);
 
             switch (Enum.valueOf(PaymentInfo.PaymentType1.class, payments.get(position).PaymentType)) {
                 case Cash:
                 case Qrcode:
                     llCreditAmount.setVisibility(View.GONE);
                     llChequeAmount.setVisibility(View.GONE);
+                    lblReceiptTitle.setVisibility(View.GONE);
                     break;
                 case Credit:
                     llCreditAmount.setVisibility(View.VISIBLE);
@@ -651,9 +628,10 @@ public class SaleReceiptPayment_Qr extends BHFragment {
             /**พนักงานที่ออกใบเสร็จ**/
             TextView txtSaleEmpName = (TextView) view.findViewById(R.id.txtSaleEmpName); //ชื่อเต็มของพนักงานที่ออกใบเสร็จ
             TextView txtSaleTeamName = (TextView) view.findViewById(R.id.txtSaleTeamName); //ทีมของพนักงานที่ออกใบเสร็จ
+            txtSaleTeamName.setVisibility(View.GONE);
 
-            txtSaleEmpName.setText(String.format("(%s)", payments.get(position).SaleEmployeeName != null ? payments.get(position).SaleEmployeeName : ""));
-            txtSaleTeamName.setText(String.format("(ทีม %s)", payments.get(position).TeamCode != null ? payments.get(position).TeamCode : ""));
+            txtSaleEmpName.setText(String.format("%s", "(TMB QR CODE)"));
+//            txtSaleTeamName.setText(String.format("(ทีม %s)", payments.get(position).TeamCode != null ? payments.get(position).TeamCode : ""));
 
             Button voidBtn = (Button) view.findViewById(R.id.btnVoidReceipt);
             voidBtn.setVisibility(view.GONE);
