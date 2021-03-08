@@ -39,7 +39,7 @@
                 android:layout_centerHorizontal="true"
                 android:text="ค้นหา"
                 android:textColor="@android:color/white"
-                android:background="@color/bg_sub_header"
+                android:background="@color/new_primary_color"
                 android:elevation="4dp"/>
 
         </LinearLayout>

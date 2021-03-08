@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_sub_header">
+    android:background="@color/new_secondary_color">
 
     <!--<ImageView
         android:layout_width="match_parent"
@@ -41,7 +41,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="USERNAME"
+            android:textColorHint="@color/new_primary_color"
             android:text=""
+            android:textColor="@color/new_primary_color"
             android:imeOptions="actionNext"
             android:inputType="text|textNoSuggestions|textCapCharacters"
             android:singleLine="true" />
@@ -55,7 +57,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="PASSWORD"
+            android:textColorHint="@color/new_primary_color"
             android:text=""
+            android:textColor="@color/new_primary_color"
             android:imeOptions="actionDone"
             android:inputType="textPassword" />
 
@@ -67,11 +71,11 @@
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_style_blue"
+            android:background="@color/new_primary_color"
             android:paddingBottom="12dp"
             android:paddingTop="12dp"
             android:text="@string/button_login"
-            android:textColor="@color/font_color_style1" />
+            android:textColor="@color/new_secondary_color" />
     </LinearLayout>
 
     <TextView
@@ -81,7 +85,8 @@
         android:layout_below="@+id/imgLogo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
-        android:text="@string/tsr_app_version" />
+        android:text="@string/tsr_app_version"
+        android:textColor="@color/new_primary_color"/>
 
     <TextView
         android:id="@+id/textCounter"
@@ -90,6 +95,7 @@
         android:layout_below="@+id/linearLayout1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
-        android:text="" />
+        android:text=""
+        android:textColor="@color/new_primary_color"/>
 
 </RelativeLayout>

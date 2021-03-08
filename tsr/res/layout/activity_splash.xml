@@ -3,11 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_splash">
+    android:gravity="center"
+    android:background="@color/new_secondary_color">
     
-    <!--<ImageView
+    <ImageView
+        android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/bg_splash" />-->
+        android:alpha="0"
+        android:src="@drawable/tsr" />
 
 </RelativeLayout>

@@ -206,10 +206,15 @@ public class SaleScanEmployeesFragment extends BHFragment implements EmployeeAda
                     String empID = employeeListTemp.get(position - 1).EmpID;
                     bindSelectedEmployee(empID, BHPreference.teamCode());
                     Log.e("sale_select",empID+","+BHPreference.teamCode());
+                    Log.e("Emp id", employeeListTemp.get(position - 1).EmpID);
+                    Log.e("Emp position", employeeListTemp.get(position - 1).PositionID);
+                    Toast.makeText(activity, employeeListTemp.get(position - 1).SaleCode, Toast.LENGTH_LONG).show();
                 } else {
                     Log.e("sale_select2",BHPreference.teamCode());
                     bindSelectedEmployee(BHPreference.employeeID(), BHPreference.teamCode());
                 }
+
+
             }
 
             @Override
@@ -476,24 +481,15 @@ public class SaleScanEmployeesFragment extends BHFragment implements EmployeeAda
                                 employeeList.remove(i);
                             }
                         }
-
-
-
         			}
-
-
                     bindEmployeeList();
                 }
-
-
 
                 if (contract != null) {
                     if (contract.InstallerEmployeeCode != null) {
                         // ScanEmploy(contract.InstallerEmployeeCode);
                         bindSelectedEmployee(contract.InstallerEmployeeCode, contract.SaleTeamCode);
                     }
-
-
                     if(contract.PreSaleEmployeeCode != null){
                         //PreSaleEmployeeCode.setText(contract.PreSaleEmployeeCode);
                         autoCompletePreSaleEmployeeCode.setText(contract.PreSaleEmployeeCode);
@@ -522,11 +518,8 @@ public class SaleScanEmployeesFragment extends BHFragment implements EmployeeAda
 
             if (BHPreference.SubTeamCode() == null || BHPreference.SubTeamCode().equals("") || BHPreference.SubTeamCode().equals(item.SubTeamCode)) {
                 emp.add(String.format(("%s    %s %s"), item.SaleCode, item.FirstName, BHUtilities.trim(item.LastName)));
-
                 employeeListTemp.add(item);
             }
-
-
         }
         BHSpinnerAdapter<String> arrayemp = new BHSpinnerAdapter<String>(activity, emp);
         spinnerEmp.setAdapter(arrayemp);

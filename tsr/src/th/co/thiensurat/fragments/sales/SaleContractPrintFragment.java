@@ -1049,23 +1049,87 @@ public class SaleContractPrintFragment extends BHFragment {
                 }
                 break;
             case R.string.button_receipt:
-                if (data != null && data.resTitle != 0 && Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract) {
+                PaymentInfo output;
+                (new BackgroundProcess(activity) {
+                    PaymentInfo output;
+                        @Override
+                        protected void calling() {
+                            // TODO Auto-generated method stub
+                            output = getPaymentRefNo(contract.RefNo);
+                        }
 
-                    Log.e("aaaa","1111");
-                    SaleReceiptPayment_old.Data input = new SaleReceiptPayment_old.Data();
-                    input.resTitle = data.resTitle;
-                    showNextView(BHFragment.newInstance(SaleReceiptPayment_old.class, input));
+                        @Override
+                        protected void after() {
+                            // TODO Auto-generated method stub
+                            super.after();
+//                            Log.e("payment info", String.valueOf(output));
+                            if (output.PaymentType.equals("Qrcode")) {
+                                SaleReceiptPayment_Qr.Data dataReceiptID = new SaleReceiptPayment_Qr.Data();
+                                dataReceiptID.refno = contract.RefNo;
+                                dataReceiptID.selectedDate = output.CreateDate;
+                                dataReceiptID.paymentType = output.PaymentType;
+                                SaleReceiptPayment_Qr fmReceipt = BHFragment.newInstance(SaleReceiptPayment_Qr.class, dataReceiptID);
+                                fmReceipt.forcePrint = true;
+                                showNextView(fmReceipt);
+                            } else {
+                                if (data != null && data.resTitle != 0 && Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract) {
+                                    Log.e("aaaa", "1111");
+                                    SaleReceiptPayment_old.Data input = new SaleReceiptPayment_old.Data();
+                                    input.resTitle = data.resTitle;
+                                    showNextView(BHFragment.newInstance(SaleReceiptPayment_old.class, input));
+                                } else {
+                                    SaleReceiptPayment_new.Data input = new SaleReceiptPayment_new.Data();
+                                    input.contno = BHUtilities.trim(contract.CONTNO);
+                                    showNextView(BHFragment.newInstance(SaleReceiptPayment_new.class, input));
+                                }
+                            }
+                        }
+                    }).start();
+
+//                    Log.e("payment info", String.valueOf(payments));
+//                    (new BackgroundProcess(activity) {
+//                        PaymentInfo output;
+//
+//                        @Override
+//                        protected void calling() {
+//                            // TODO Auto-generated method stub
+//                            output = getPaymentRefNo(contract.RefNo);
+//                        }
+//
+//                        @Override
+//                        protected void after() {
+//                            // TODO Auto-generated method stub
+//                            super.after();
+//                            Log.e("payment info", String.valueOf(output));
+//                            if (output != null) {
+//                                Toast.makeText(activity, output.PaymentType, Toast.LENGTH_LONG).show();
+//                                if (output.SaleEmployeeName.equals("Qrcode")) {
+//                                    SaleReceiptPayment_Qr.Data dataReceiptID = new SaleReceiptPayment_Qr.Data();
+//                                    dataReceiptID.refno = contract.RefNo;
+//                                    dataReceiptID.selectedDate = output.CreateDate;
+//                                    dataReceiptID.paymentType = output.PaymentType;
+//                                    SaleReceiptPayment_Qr fmReceipt = BHFragment.newInstance(SaleReceiptPayment_Qr.class, dataReceiptID);
+//                                    fmReceipt.forcePrint = true;
+//                                    showNextView(fmReceipt);
+//                                } else {
+//                                    SaleReceiptPayment_old.Data input = new SaleReceiptPayment_old.Data();
+//                                    input.resTitle = data.resTitle;
+//                                    showNextView(BHFragment.newInstance(SaleReceiptPayment_old.class, input));
+//                                }
+//                            }
+//                        }
+//                    }).start();
 
 
-                } else {
-                    Log.e("aaaa","2222");
-
-                            SaleReceiptPayment_new.Data input = new SaleReceiptPayment_new.Data();
-                            input.contno = BHUtilities.trim(contract.CONTNO);
-                            showNextView(BHFragment.newInstance(SaleReceiptPayment_new.class, input));
-
-
-                }
+//                } else {
+//                    Log.e("aaaa","2222");
+//
+//                            SaleReceiptPayment_new.Data input = new SaleReceiptPayment_new.Data();
+//                            input.contno = BHUtilities.trim(contract.CONTNO);
+//                            showNextView(BHFragment.newInstance(SaleReceiptPayment_new.class, input));
+//
+//
+//                }
                 break;
             case R.string.button_back:
                 showLastView();

@@ -196,7 +196,7 @@
                     style="@style/TextView.Label.bold"
                     android:layout_width="@dimen/change_product_print_width"
                     android:layout_height="wrap_content"
-                    android:text="@string/label_install_address"
+                    android:text="@string/label_payment_address"
                     android:textColor="#2C2C2C"/>
 
                 <TextView

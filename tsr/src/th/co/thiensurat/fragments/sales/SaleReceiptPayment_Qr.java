@@ -84,6 +84,7 @@ public class SaleReceiptPayment_Qr extends BHFragment {
         protected ContractInfo contract;
         public Date selectedDate;
         public String paymentType;
+        public String refno;
     }
 
     private Data data;
@@ -143,16 +144,15 @@ public class SaleReceiptPayment_Qr extends BHFragment {
         int[] ret = null;
         switch (Enum.valueOf(SaleFirstPaymentChoiceFragment.ProcessType.class, BHPreference.ProcessType())) {
             case Sale:
-                ret = new int[]{R.string.button_print, R.string.button_save_manual_receipt, R.string.button_camera};
+                ret = new int[]{R.string.button_back, R.string.button_print, R.string.button_camera};
                 break;
             case ViewCompletedContract:
-            case SendDocument:
-                ret = new int[]{R.string.button_back, R.string.button_save_manual_receipt, R.string.button_print};
+                ret = new int[]{R.string.button_back, R.string.button_print};
                 break;
             case FirstPayment:
             case NextPayment:
             case Credit:
-                ret = new int[]{R.string.button_print, R.string.button_save_manual_receipt, R.string.button_end};
+                ret = new int[]{R.string.button_print,  R.string.button_end};
                 break;
         }
         return ret;
@@ -162,6 +162,9 @@ public class SaleReceiptPayment_Qr extends BHFragment {
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
         BHLoading.show(activity);
         data = getData();
+        if (data.contract == null) {
+            data.contract = TSRController.getContract(data.refno);
+        }
         Log.e("contract info", String.valueOf(data.contract));
         getQrcodeReceipt();
 
@@ -326,7 +329,7 @@ public class SaleReceiptPayment_Qr extends BHFragment {
                                 paymentInfo.ProductName = jsonArray.getJSONObject(i).getString("ProductName");
                                 paymentInfo.MODEL = data.contract.MODEL;
                                 paymentInfo.ProductSerialNumber = data.contract.ProductSerialNumber;
-                                paymentInfo.PayDate = BHUtilities.StringToDate(jsonArray.getJSONObject(i).getString("DayPay"), "dd/mm/yyyy", BHUtilities.LOCALE_THAI);
+                                paymentInfo.PayDate = BHUtilities.StringToDate(jsonArray.getJSONObject(i).getString("DayPay"), "dd/mm/yyyy HH:mm", BHUtilities.LOCALE_THAI);
                                 paymentInfo.Amount = Float.parseFloat(jsonArray.getJSONObject(i).getString("Amount").replace(",", ""));
                                 paymentInfo.PaymentPeriodNumber = jsonArray.getJSONObject(i).getInt("PaymentPeriodNumber");
                                 paymentInfo.MODE = jsonArray.getJSONObject(i).getInt("maxPeriod");
@@ -356,16 +359,19 @@ public class SaleReceiptPayment_Qr extends BHFragment {
                         BHLoading.close();
                     } catch (JSONException e) {
                         Log.e("JSONException", e.getLocalizedMessage());
+                        BHLoading.close();
                     }
                 }
                 @Override
                 public void onFailure(Call call, Throwable t) {
                     Log.e("onFailure", t.getLocalizedMessage());
+                    BHLoading.close();
                 }
             });
 
         } catch (Exception e) {
             Log.e("Exception", e.getLocalizedMessage());
+            BHLoading.close();
         }
     }
 
@@ -628,10 +634,15 @@ public class SaleReceiptPayment_Qr extends BHFragment {
             /**พนักงานที่ออกใบเสร็จ**/
             TextView txtSaleEmpName = (TextView) view.findViewById(R.id.txtSaleEmpName); //ชื่อเต็มของพนักงานที่ออกใบเสร็จ
             TextView txtSaleTeamName = (TextView) view.findViewById(R.id.txtSaleTeamName); //ทีมของพนักงานที่ออกใบเสร็จ
-            txtSaleTeamName.setVisibility(View.GONE);
 
-            txtSaleEmpName.setText(String.format("%s", "(TMB QR CODE)"));
-//            txtSaleTeamName.setText(String.format("(ทีม %s)", payments.get(position).TeamCode != null ? payments.get(position).TeamCode : ""));
+            if (payments.get(position).PaymentType.equals("Qrcode")) {
+                txtSaleEmpName.setText(String.format("%s", "(TMB QR CODE)"));
+                txtSaleTeamName.setVisibility(View.GONE);
+            } else {
+                txtSaleTeamName.setVisibility(View.VISIBLE);
+                txtSaleEmpName.setText(String.format("(%s)", payments.get(position).SaleEmployeeName != null ? payments.get(position).SaleEmployeeName : ""));
+                txtSaleTeamName.setText(String.format("(ทีม %s)", payments.get(position).TeamCode != null ? payments.get(position).TeamCode : ""));
+            }
 
             Button voidBtn = (Button) view.findViewById(R.id.btnVoidReceipt);
             voidBtn.setVisibility(view.GONE);

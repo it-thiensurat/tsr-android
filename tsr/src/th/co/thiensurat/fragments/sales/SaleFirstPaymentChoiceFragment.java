@@ -464,8 +464,8 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
                             return;
                         }
                     }
-                    SaleConfirmBeforeReceiptFragment.Data cbr = new SaleConfirmBeforeReceiptFragment.Data();
 
+                    SaleConfirmBeforeReceiptFragment.Data cbr = new SaleConfirmBeforeReceiptFragment.Data();
                     cbr.contract = data.contract;
                     cbr.refNo = data.refNo;
                     cbr.processType = data.processType;
@@ -475,7 +475,6 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
                     cbr.paymentType = paymentType;
                     cbr.payPartial = payPartial;
                     cbr.isPostPone = isPostPone;
-
                     float PartlyPaidPrice = Float.valueOf(editTextPrice.getText().toString().replace(",", ""));
                     cbr.PartlyPaidPrice = PartlyPaidPrice;
 
@@ -1954,6 +1953,8 @@ public class SaleFirstPaymentChoiceFragment extends BHFragment {
                         return false;
                     }
                 } else if (checkBoxQrcode.isChecked()) {
+
+                } else if (checkBoxQRPayment.isChecked()) {
 
                 } else {
                     message = "กรุณาเลือกช่องทางการชำระเงิน/เงินสด/บัตรเครดิต/เช็ค";

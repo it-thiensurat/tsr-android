@@ -4367,7 +4367,7 @@ public class DocumentController {
         receiptBuilder.addBlankSpace(5);
 
         receiptBuilder.setAlign(Paint.Align.CENTER);
-        receiptBuilder.addText("QR Code สำหรับชำระเงิน", true);
+        receiptBuilder.addText("QR Code สำหรับชำระเงิน (Mobile banking)", true);
         receiptBuilder.setAlign(Paint.Align.CENTER);
         Bitmap bmpPromtpay = createQRCodePromtpay(contract);
         receiptBuilder.addImage(bmpPromtpay);

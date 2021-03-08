@@ -183,7 +183,4 @@ public class ContractDetails extends BHFragment {
             }.start();
         }
     }
-
-
-
 }

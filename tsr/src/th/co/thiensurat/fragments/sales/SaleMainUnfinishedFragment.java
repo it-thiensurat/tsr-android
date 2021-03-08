@@ -170,9 +170,6 @@ public class SaleMainUnfinishedFragment extends BHPagerFragment {
 					vh.aaa.setVisibility(View.GONE);
 				}*/
 
-
-
-
 				if (info.CONTNO.equals(info.RefNo)) {
 						vh.textViewContractnumber.setText("หมายเลขเครื่อง  :  " + info.ProductSerialNumber);
 					} else {
@@ -245,13 +242,7 @@ public class SaleMainUnfinishedFragment extends BHPagerFragment {
 
 						}
 					});
-
-
 				//}
-
-
-
-
 			}
 		};
 		
@@ -261,6 +252,7 @@ public class SaleMainUnfinishedFragment extends BHPagerFragment {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// TODO Auto-generated method stub
 				SaleUnfinishedFragment.Data data = new SaleUnfinishedFragment.Data();
+				data.contno = contractList.get(position).CONTNO;
 				data.Statuscode = contractList.get(position).StatusCode;
 				data.refno = contractList.get(position).RefNo;
 				data.ProcessType = ProcessType.Sale;

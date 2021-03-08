@@ -7,8 +7,8 @@ android {
     buildToolsVersion '29.0.2'
 
     def versionCodes = { ->
-//        return 170   //<-- current version
-        return 171   //<-- New version
+//        return 171   //<-- current version
+        return 172 //<-- New version
     }
 
     def tsrAppVersion = { ->
@@ -28,8 +28,8 @@ android {
         targetSdkVersion 29
         multiDexEnabled true
         versionCode   versionCodes()
-//        versionName "1.0.0.80" //<-- current version
-        versionName "1.0.0.81" //<-- New version
+//        versionName "1.0.0.81" //<-- current version
+        versionName "1.0.0.82" //<-- New version
         resValue 'string', 'tsr_app_version', tsrAppVersion()
     }
 
@@ -63,7 +63,7 @@ android {
     productFlavors {
         uat {
             applicationIdSuffix '.uat'
-            resValue "string", "tsr_app_name", 'TSR Mobile App UAT'
+            resValue "string", "tsr_app_name", 'TSR Sale System UAT'
             buildConfigField 'String', 'SERVICE_MODE', '"UAT"'
             buildConfigField "boolean", "ID_CARD_MODE", "true"
             manifestPlaceholders = [
@@ -72,7 +72,7 @@ android {
         }
         production {
             applicationIdSuffix ''
-            resValue "string", "tsr_app_name", 'TSR Mobile App Production'
+            resValue "string", "tsr_app_name", 'TSR Sale System'
             buildConfigField 'String', 'SERVICE_MODE', '"PRODUCTION"'
             buildConfigField "boolean", "ID_CARD_MODE", "true"
             manifestPlaceholders = [

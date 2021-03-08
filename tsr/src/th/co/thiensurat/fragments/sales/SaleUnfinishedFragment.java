@@ -1,12 +1,14 @@
 package th.co.thiensurat.fragments.sales;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Date;
 
@@ -17,6 +19,7 @@ import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
 import th.co.thiensurat.business.controller.BackgroundProcess;
+import th.co.thiensurat.data.info.ContractInfo;
 import th.co.thiensurat.data.info.MenuInfo;
 import th.co.thiensurat.data.info.PaymentInfo;
 import th.co.thiensurat.data.info.ProductStockInfo;
@@ -31,6 +34,7 @@ public class SaleUnfinishedFragment extends BHFragment {
 		public String refno;
 		public ProcessType ProcessType;
 		public String ProductSerialNumber;
+		public String contno;
 	}
 
 	private Data data;
@@ -221,29 +225,28 @@ public class SaleUnfinishedFragment extends BHFragment {
 
 
 
-
-
-
-
 									/*		SaleReceiptPayment.Data dataReceiptID = new SaleReceiptPayment.Data();
 											dataReceiptID.PaymentID = output.PaymentID;
 											SaleReceiptPayment fmReceipt = BHFragment.newInstance(SaleReceiptPayment.class, dataReceiptID);
 											showNextView(fmReceipt);*/
 
 
+											Toast.makeText(activity, output.PaymentType, Toast.LENGTH_LONG).show();
 
-
-
-
-											SaleReceiptPayment_old.Data dataReceiptID = new SaleReceiptPayment_old.Data();
-											dataReceiptID.PaymentID = output.PaymentID;
-											SaleReceiptPayment_old fmReceipt = BHFragment.newInstance(SaleReceiptPayment_old.class, dataReceiptID);
-											showNextView(fmReceipt);
-
-
-
-
-
+											if (output.SaleEmployeeName.equals("Qrcode")) {
+												SaleReceiptPayment_Qr.Data dataReceiptID = new SaleReceiptPayment_Qr.Data();
+												dataReceiptID.refno = data.refno;
+												dataReceiptID.selectedDate = output.CreateDate;
+												dataReceiptID.paymentType = output.PaymentType;
+												SaleReceiptPayment_Qr fmReceipt = BHFragment.newInstance(SaleReceiptPayment_Qr.class, dataReceiptID);
+												fmReceipt.forcePrint = true;
+												showNextView(fmReceipt);
+											} else {
+												SaleReceiptPayment_old.Data dataReceiptID = new SaleReceiptPayment_old.Data();
+												dataReceiptID.PaymentID = output.PaymentID;
+												SaleReceiptPayment_old fmReceipt = BHFragment.newInstance(SaleReceiptPayment_old.class, dataReceiptID);
+												showNextView(fmReceipt);
+											}
 										}
 									}
 								}).start();

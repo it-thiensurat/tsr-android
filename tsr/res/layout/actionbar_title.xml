@@ -76,7 +76,7 @@
         android:id="@+id/vwTitle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/header_background" >
+        android:background="@color/new_primary_color" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -110,9 +110,8 @@
                 android:id="@+id/imgLogo"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:padding="2dp"
                 android:gravity="center"
-                android:src="@drawable/tsr" />
+                android:src="@drawable/tsr_secondary" />
         </LinearLayout>
     </RelativeLayout>
 

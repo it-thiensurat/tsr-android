@@ -209,6 +209,13 @@ public class BHPreference {
 
     private static final String CURRENT_SERVER_DATE_KEY = "CURRENT_SERVER_DATE";
 
+    private static final String EMPID4_KEY = "EMPID4_KEY";
+    private static final String POSID4_KEY = "POSID4_KEY";
+    private static final String EMPID5_KEY = "EMPID5_KEY";
+    private static final String POSID5_KEY = "POSID5_KEY";
+    private static final String EMPID6_KEY = "EMPID6_KEY";
+    private static final String POSID6_KEY = "POSID6_KEY";
+
     private static SharedPreferences pref = BHApplication.getContext().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
     private static Editor editor = pref.edit();
     static String MODE="";
@@ -863,6 +870,49 @@ public class BHPreference {
     }
     /*** [END] :: Fixed - [BHPROJ-0016-7457] แก้เรื่องการดึงค่า Max Running No ของ [SendMoney].Reference1 ใหม่ เพื่อหลีกเลี่ยงปัญหาการ Gen. เลขที่ Reference1 ซ้ำ   ***/
 
+    /**
+     *
+     * Edit by Teerayut Klinsanga
+     *
+     * create date: 08/03/2021
+     *
+     */
+    public static void setEmpid4(int empid) {
+        synchronized (editor) {
+            editor.putInt(EMPID4_KEY, empid);
+            editor.commit();
+        }
+    }
+
+    public static int getEmpid4() {
+        return pref.getInt(EMPID4_KEY, 0);
+    }
+
+    public static void setEmpid5(int empid) {
+        synchronized (editor) {
+            editor.putInt(EMPID5_KEY, empid);
+            editor.commit();
+        }
+    }
+
+    public static int getEmpid5() {
+        return pref.getInt(EMPID5_KEY, 0);
+    }
+
+    public static void setEmpid6(int empid) {
+        synchronized (editor) {
+            editor.putInt(EMPID6_KEY, empid);
+            editor.commit();
+        }
+    }
+
+    public static int getEmpid6() {
+        return pref.getInt(EMPID6_KEY, 0);
+    }
+    /**
+     * End
+     */
+
     /*** [START] :: Fixed - [BHPROJ-1036-9259] - พบการเปลี่ยนวันที่บนmobileทำให้สามารถ​แก้ไขสัญญาได้ ***/
     public static void setCurrentServerDate(Date currentServerDate) {
         synchronized (editor) {
@@ -1023,10 +1073,6 @@ public class BHPreference {
                         BHPreference.setSourceSystemName("ระบบเก็บเงิน/ตรวจสอบ");
                         BHPreference.setProcessTypeOfEmployee("Credit");
                     }
-
-
-
-
                 }
             }
             catch (Exception ex){
@@ -1040,9 +1086,6 @@ public class BHPreference {
                 Log.e("TeamCode_xxx",info.TeamCode+"");
             }
 
-
-
-
         MODE=  BHGeneral.SERVICE_MODE.toString();
 
         if(info.ProcessType.equals("Credit")){
@@ -1053,16 +1096,7 @@ public class BHPreference {
             get_teamcode_select_position2(BHPreference.employeeID(),BHPreference.sourceSystem());
 
         }
-
-
-
-
-
-
-
-
         // [BHPROJ-0016-3225] :: [Android+Web-Admin] แก้ไข Code เรื่องการเพิ่ม Field เพื่อระบุ Department สำหรับ ตารางเก็บปักษ์การขาย
-
 
         List<UserInfo> userPositionList = info.UserPosition;
         if (userPositionList != null) {
@@ -1095,19 +1129,12 @@ public class BHPreference {
 
 
                 BHApplication.getInstance().getPrefManager().setPreferrence("pp3", String.valueOf(pp3));
-
-
-
-
             }
             strPositionCode = strPositionCode.substring(0, strPositionCode.length() - 1);
             BHPreference.setPositionCode(strPositionCode);
 
             strPositionName = strPositionName.substring(0, strPositionName.length() - 1);
             BHPreference.setPositionName(strPositionName);
-
-
-
             BHPreference.setCashCode(strCashCode);
             try {
                 String TeamCode= BHApplication.getInstance().getPrefManager().getPreferrence("TeamCode");
@@ -1125,13 +1152,7 @@ public class BHPreference {
             catch (Exception exx){
                 BHPreference.setSaleCode(strSaleCode);
             }
-
-
-
            // BHPreference.setSaleCode(strSaleCode);
-
-
-
         }
 
         /*** [START] :: Fixed - [BHPROJ-0026-6574] ลูกค้าพบปัญหาเลขที่ใบเสร็จรับเงินซ้ำ ***/
@@ -1139,13 +1160,6 @@ public class BHPreference {
 
 
       //  Log.e("RunningNumberReceipt", String.valueOf(info.RunningNumberReceipt));
-
-
-
-
-
-
-
         BHPreference.setRunningNumberReceipt(info.RunningNumberReceipt);
 
         BHPreference.setRunningNumberChangeContract(info.RunningNumberChangeContract);
@@ -1204,27 +1218,6 @@ public class BHPreference {
         }
         return false;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public static void get_teamcode_select_position2(String employeeID,String  sourceSystem) {
         try {

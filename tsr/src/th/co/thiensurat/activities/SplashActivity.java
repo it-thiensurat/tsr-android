@@ -1,9 +1,14 @@
 package th.co.thiensurat.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.ImageView;
 
 import th.co.bighead.utilities.BHActivity;
 import th.co.bighead.utilities.BHGeneral;
@@ -19,6 +24,8 @@ import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 
 public class SplashActivity extends BHActivity {
+
+	private ImageView imageView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -52,6 +59,58 @@ public class SplashActivity extends BHActivity {
 		}
 		// [END handle_data_extras]
 
+		imageView = (ImageView) findViewById(R.id.img);
+
+//		ObjectAnimator fadeOut = ObjectAnimator.ofFloat(imageView, "alpha",  1f, .0f);
+//		fadeOut.setDuration(500);
+		ObjectAnimator fadeIn = ObjectAnimator.ofFloat(imageView, "alpha", .0f, 1f);
+		fadeIn.setDuration(1500);
+
+		final AnimatorSet mAnimationSet = new AnimatorSet();
+		mAnimationSet.play(fadeIn);
+
+		mAnimationSet.addListener(new AnimatorListenerAdapter() {
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				super.onAnimationEnd(animation);
+				final Handler handler = new Handler();
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+						handler.post(new Runnable() {
+
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								Intent intent;
+
+								/*** [START] :: Fixed - [BHPROJ-1036-8542] :: ปรับโครงสร้าง โฟรเดอร์รูปภาพของ App Bighead ***/
+								if ((BHPreference.userID() == null) || !BHPreference.serviceMode().equals(BHGeneral.SERVICE_MODE.toString()) || (BHPreference.serviceMode() == null)) {
+									//intent = new Intent(getApplicationContext(), LoginActivity.class);
+									CheckAppVersion();
+								} else {
+									intent = new Intent(getApplicationContext(), MainActivity.class);
+									startActivity(intent);
+									finish();
+								}
+								/*** [END] :: Fixed - [BHPROJ-1036-8542] :: ปรับโครงสร้าง โฟรเดอร์รูปภาพของ App Bighead ***/
+							}
+						});
+
+					}
+				}).start();
+			}
+		});
+		mAnimationSet.start();
 	}
 
 	@Override
@@ -59,65 +118,41 @@ public class SplashActivity extends BHActivity {
 		// TODO Auto-generated method stub
 		super.onResume();
 
-		final Handler handler = new Handler();
-		// ProgressDialog dialog = ProgressDialog.show(getApplicationContext(),
-		// "TEST", "Loading...");
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				handler.post(new Runnable() {
-
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						Intent intent;
-
-						//ปิดก่อนงานรีบ
-						/*if ((BHPreference.userID() == null) || !BHPreference.serviceMode().equals(BHGeneral.SERVICE_MODE.toString()) || (BHPreference.serviceMode() == null)) {
-							//intent = new Intent(getApplicationContext(), LoginActivity.class);
-							new CheckAppVersion().execute();
-						} else {
-							intent = new Intent(getApplicationContext(), MainActivity.class);
-							startActivity(intent);
-							finish();
-						}*/
-						/*if ((BHPreference.userID() == null) || !BHPreference.serviceMode().equals(BHGeneral.SERVICE_MODE.toString()) || (BHPreference.serviceMode() == null)) {
-							intent = new Intent(getApplicationContext(), LoginActivity.class);
-							//new CheckAppVersion().execute();
-						} else {
-							intent = new Intent(getApplicationContext(), MainActivity.class);
-						}
-						startActivity(intent);
-						finish();*/
-
-						/*** [START] :: Fixed - [BHPROJ-1036-8542] :: ปรับโครงสร้าง โฟรเดอร์รูปภาพของ App Bighead ***/
-						if ((BHPreference.userID() == null) || !BHPreference.serviceMode().equals(BHGeneral.SERVICE_MODE.toString()) || (BHPreference.serviceMode() == null)) {
-							//intent = new Intent(getApplicationContext(), LoginActivity.class);
-							CheckAppVersion();
-						} else {
-							intent = new Intent(getApplicationContext(), MainActivity.class);
-							startActivity(intent);
-							finish();
-						}
-						/*** [END] :: Fixed - [BHPROJ-1036-8542] :: ปรับโครงสร้าง โฟรเดอร์รูปภาพของ App Bighead ***/
-
-
-						//startActivity(intent);
-						//finish();
-					}
-				});
-
-			}
-		}).start();
+//		final Handler handler = new Handler();
+//		new Thread(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				try {
+//					Thread.sleep(1000);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//
+//				handler.post(new Runnable() {
+//
+//					@Override
+//					public void run() {
+//						// TODO Auto-generated method stub
+//						Intent intent;
+//
+//						/*** [START] :: Fixed - [BHPROJ-1036-8542] :: ปรับโครงสร้าง โฟรเดอร์รูปภาพของ App Bighead ***/
+//						if ((BHPreference.userID() == null) || !BHPreference.serviceMode().equals(BHGeneral.SERVICE_MODE.toString()) || (BHPreference.serviceMode() == null)) {
+//							//intent = new Intent(getApplicationContext(), LoginActivity.class);
+//							CheckAppVersion();
+//						} else {
+//							intent = new Intent(getApplicationContext(), MainActivity.class);
+//							startActivity(intent);
+//							finish();
+//						}
+//						/*** [END] :: Fixed - [BHPROJ-1036-8542] :: ปรับโครงสร้าง โฟรเดอร์รูปภาพของ App Bighead ***/
+//					}
+//				});
+//
+//			}
+//		}).start();
 	}
 
 	/*private class CheckAppVersion extends AsyncTask<String, Integer, Boolean> {
