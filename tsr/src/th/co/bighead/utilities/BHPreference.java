@@ -888,15 +888,30 @@ public class BHPreference {
         return pref.getInt(EMPID4_KEY, 0);
     }
 
-    public static void setEmpid5(int empid) {
+    public static void setPosid4(int empid) {
         synchronized (editor) {
-            editor.putInt(EMPID5_KEY, empid);
+            editor.putInt(POSID4_KEY, empid);
             editor.commit();
         }
     }
 
+    public static int getPosid4() {
+        return pref.getInt(POSID4_KEY, 0);
+    }
+
     public static int getEmpid5() {
         return pref.getInt(EMPID5_KEY, 0);
+    }
+
+    public static void setPosid5(int empid) {
+        synchronized (editor) {
+            editor.putInt(POSID5_KEY, empid);
+            editor.commit();
+        }
+    }
+
+    public static int getPosid5() {
+        return pref.getInt(POSID5_KEY, 0);
     }
 
     public static void setEmpid6(int empid) {
@@ -908,6 +923,17 @@ public class BHPreference {
 
     public static int getEmpid6() {
         return pref.getInt(EMPID6_KEY, 0);
+    }
+
+    public static void setPosid6(int empid) {
+        synchronized (editor) {
+            editor.putInt(POSID6_KEY, empid);
+            editor.commit();
+        }
+    }
+
+    public static int getPosid6() {
+        return pref.getInt(POSID6_KEY, 0);
     }
     /**
      * End

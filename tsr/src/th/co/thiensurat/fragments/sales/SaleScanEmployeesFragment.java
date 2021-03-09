@@ -205,10 +205,10 @@ public class SaleScanEmployeesFragment extends BHFragment implements EmployeeAda
                 if (!parent.getItemAtPosition(position).toString().trim().equals("")) {
                     String empID = employeeListTemp.get(position - 1).EmpID;
                     bindSelectedEmployee(empID, BHPreference.teamCode());
-                    Log.e("sale_select",empID+","+BHPreference.teamCode());
-                    Log.e("Emp id", employeeListTemp.get(position - 1).EmpID);
-                    Log.e("Emp position", employeeListTemp.get(position - 1).PositionID);
-                    Toast.makeText(activity, employeeListTemp.get(position - 1).SaleCode, Toast.LENGTH_LONG).show();
+//                    Log.e("sale_select",empID+","+BHPreference.teamCode());
+//                    Log.e("Emp id", employeeListTemp.get(position - 1).EmpID);
+//                    Log.e("Emp position", employeeListTemp.get(position - 1).PositionID);
+//                    Toast.makeText(activity, employeeListTemp.get(position - 1).SaleCode, Toast.LENGTH_LONG).show();
                 } else {
                     Log.e("sale_select2",BHPreference.teamCode());
                     bindSelectedEmployee(BHPreference.employeeID(), BHPreference.teamCode());
@@ -601,6 +601,7 @@ public class SaleScanEmployeesFragment extends BHFragment implements EmployeeAda
     }
 
     private void updateContract() {
+//        Log.e("Emp info", String.valueOf(employee));
         (new BackgroundProcess(activity) {
             @Override
             protected void before() {
@@ -615,6 +616,8 @@ public class SaleScanEmployeesFragment extends BHFragment implements EmployeeAda
                     contract.PreSaleEmployeeCode =  autoCompletePreSaleEmployeeCode.getText().toString(); // รหัสพนักงานผู้แนะนำ
                     contract.PreSaleEmployeeName =  PreSaleEmployeeName.getText().toString(); // ชื่อ-นามสกุลผู้แนะนำ
                     contract.SaleEmployeeLevelPath = BHPreference.currentTreeHistoryID();
+
+
 
                 } catch (Exception ex){
                     contract.SaleCode = "BBAI0020000";
