@@ -877,38 +877,39 @@ public class BHPreference {
      * create date: 08/03/2021
      *
      */
-    public static void setEmpid4(int empid) {
+    public static void setEmpid4(String empid) {
         synchronized (editor) {
-            editor.putInt(EMPID4_KEY, empid);
+            editor.putString(EMPID4_KEY, empid);
             editor.commit();
         }
     }
 
-    public static int getEmpid4() {
-        return pref.getInt(EMPID4_KEY, 0);
+    public static String getEmpid4() {
+        return pref.getString(EMPID4_KEY, null);
     }
 
-    public static void setEmpid5(int empid) {
+    public static void setEmpid5(String empid) {
         synchronized (editor) {
-            editor.putInt(EMPID5_KEY, empid);
+            editor.putString(EMPID5_KEY, empid);
             editor.commit();
         }
     }
 
-    public static int getEmpid5() {
-        return pref.getInt(EMPID5_KEY, 0);
+    public static String getEmpid5() {
+        return pref.getString(EMPID5_KEY, null);
     }
 
-    public static void setEmpid6(int empid) {
+    public static void setEmpid6(String empid) {
         synchronized (editor) {
-            editor.putInt(EMPID6_KEY, empid);
+            editor.putString(EMPID6_KEY, empid);
             editor.commit();
         }
     }
 
-    public static int getEmpid6() {
-        return pref.getInt(EMPID6_KEY, 0);
+    public static String getEmpid6() {
+        return pref.getString(EMPID6_KEY, null);
     }
+
     /**
      * End
      */

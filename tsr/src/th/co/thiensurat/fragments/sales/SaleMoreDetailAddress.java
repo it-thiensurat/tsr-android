@@ -47,6 +47,7 @@ import th.co.thiensurat.retrofit.api.Service;
 import static th.co.thiensurat.fragments.sales.New2SaleCustomerAddressCardFragment.check_box_status;
 import static th.co.thiensurat.fragments.sales.New2SaleCustomerAddressCardFragment.status;
 import static th.co.thiensurat.retrofit.api.client.BASE_URL;
+import static th.co.thiensurat.retrofit.api.client.GIS_BASE_URL;
 
 public class SaleMoreDetailAddress extends BHFragment {
 
@@ -578,6 +579,7 @@ public class SaleMoreDetailAddress extends BHFragment {
                 if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.EditContract.toString())) {
                     activity.showView(new EditContractsMainFragment());
                 } else {
+                    ApproveContno();
                     saveStatusCode();
                 }
             }
@@ -653,6 +655,51 @@ public class SaleMoreDetailAddress extends BHFragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                         Log.e("data","22");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("onFailure question:",t.getLocalizedMessage());
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("Exception question",e.getLocalizedMessage());
+        }
+    }
+
+    private void ApproveContno() {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(GIS_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.ApproveContno(contract.RefNo, contract.SaleEmployeeCode, BHPreference.getEmpid4(), null, BHPreference.getEmpid5(), null, BHPreference.getEmpid6(), null, contract.SaleTeamCode);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson=new Gson();
+                    try {
+                        Log.e("JSON body", String.valueOf(response.body()));
+                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+                        Log.e("jsonObject: ",jsonObject.toString());
+//                        JSONArray array = jsonObject.getJSONArray("data");
+//                        JSONObject obj = null;
+//                        for (int i = 0; i < array.length(); i++) {
+//                            obj = array.getJSONObject(i);
+//                            String status = obj.getString("Status");
+//                            Log.e("Question status", status);
+//                            if ("Error".equals(status)) {
+//                                btnSurvery.setVisibility(View.VISIBLE);
+//                            } else {
+//                                btnSurvery.setVisibility(View.GONE);
+//                            }
+//                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("JSONException",e.getLocalizedMessage());
                     }
                 }
 

@@ -231,17 +231,24 @@ public class SaleUnfinishedFragment extends BHFragment {
 											showNextView(fmReceipt);*/
 
 
-											Toast.makeText(activity, output.PaymentType, Toast.LENGTH_LONG).show();
+//											Toast.makeText(activity, output.PaymentType, Toast.LENGTH_LONG).show();
 
-											if (output.SaleEmployeeName.equals("Qrcode")) {
-												SaleReceiptPayment_Qr.Data dataReceiptID = new SaleReceiptPayment_Qr.Data();
-												dataReceiptID.refno = data.refno;
-												dataReceiptID.selectedDate = output.CreateDate;
-												dataReceiptID.paymentType = output.PaymentType;
-												SaleReceiptPayment_Qr fmReceipt = BHFragment.newInstance(SaleReceiptPayment_Qr.class, dataReceiptID);
-												fmReceipt.forcePrint = true;
-												showNextView(fmReceipt);
-											} else {
+											try {
+												if (output.SaleEmployeeName.equals("Qrcode")) {
+													SaleReceiptPayment_Qr.Data dataReceiptID = new SaleReceiptPayment_Qr.Data();
+													dataReceiptID.refno = data.refno;
+													dataReceiptID.selectedDate = output.CreateDate;
+													dataReceiptID.paymentType = output.PaymentType;
+													SaleReceiptPayment_Qr fmReceipt = BHFragment.newInstance(SaleReceiptPayment_Qr.class, dataReceiptID);
+													fmReceipt.forcePrint = true;
+													showNextView(fmReceipt);
+												} else {
+													SaleReceiptPayment_old.Data dataReceiptID = new SaleReceiptPayment_old.Data();
+													dataReceiptID.PaymentID = output.PaymentID;
+													SaleReceiptPayment_old fmReceipt = BHFragment.newInstance(SaleReceiptPayment_old.class, dataReceiptID);
+													showNextView(fmReceipt);
+												}
+											} catch (Exception e){
 												SaleReceiptPayment_old.Data dataReceiptID = new SaleReceiptPayment_old.Data();
 												dataReceiptID.PaymentID = output.PaymentID;
 												SaleReceiptPayment_old fmReceipt = BHFragment.newInstance(SaleReceiptPayment_old.class, dataReceiptID);

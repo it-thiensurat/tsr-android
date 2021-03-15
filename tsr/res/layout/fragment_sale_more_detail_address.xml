@@ -125,7 +125,9 @@
             android:layout_height="50dp"
             android:textColor="@android:color/white"
             android:text="ข้อมูลเพิ่มเติม"
-            android:background="@color/bg_sub_header"/>
+            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
+            android:background="@color/new_primary_color"/>
 
     </RelativeLayout>
 

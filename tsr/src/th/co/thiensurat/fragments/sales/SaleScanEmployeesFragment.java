@@ -33,6 +33,7 @@ import com.google.zxing.client.android.Intents;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import th.co.bighead.utilities.BHFragment;
@@ -205,10 +206,10 @@ public class SaleScanEmployeesFragment extends BHFragment implements EmployeeAda
                 if (!parent.getItemAtPosition(position).toString().trim().equals("")) {
                     String empID = employeeListTemp.get(position - 1).EmpID;
                     bindSelectedEmployee(empID, BHPreference.teamCode());
-                    Log.e("sale_select",empID+","+BHPreference.teamCode());
-                    Log.e("Emp id", employeeListTemp.get(position - 1).EmpID);
-                    Log.e("Emp position", employeeListTemp.get(position - 1).PositionID);
-                    Toast.makeText(activity, employeeListTemp.get(position - 1).SaleCode, Toast.LENGTH_LONG).show();
+//                    Log.e("sale_select",empID+","+BHPreference.teamCode());
+//                    Log.e("Emp id", employeeListTemp.get(position - 1).EmpID);
+//                    Log.e("Emp position", employeeListTemp.get(position - 1).PositionID);
+//                    Toast.makeText(activity, employeeListTemp.get(position - 1).SaleCode, Toast.LENGTH_LONG).show();
                 } else {
                     Log.e("sale_select2",BHPreference.teamCode());
                     bindSelectedEmployee(BHPreference.employeeID(), BHPreference.teamCode());
@@ -589,6 +590,7 @@ public class SaleScanEmployeesFragment extends BHFragment implements EmployeeAda
 //                            });
 //                    setupAlert.show();
                 } else {
+                    loadEmpDetail();
                     updateContract();
                 }
                 break;
@@ -601,6 +603,8 @@ public class SaleScanEmployeesFragment extends BHFragment implements EmployeeAda
     }
 
     private void updateContract() {
+//        Log.e("Emp info", String.valueOf(employee));
+//        Log.e("Emp id", String.valueOf(BHPreference.employeeID()));
         (new BackgroundProcess(activity) {
             @Override
             protected void before() {
@@ -615,6 +619,8 @@ public class SaleScanEmployeesFragment extends BHFragment implements EmployeeAda
                     contract.PreSaleEmployeeCode =  autoCompletePreSaleEmployeeCode.getText().toString(); // รหัสพนักงานผู้แนะนำ
                     contract.PreSaleEmployeeName =  PreSaleEmployeeName.getText().toString(); // ชื่อ-นามสกุลผู้แนะนำ
                     contract.SaleEmployeeLevelPath = BHPreference.currentTreeHistoryID();
+
+
 
                 } catch (Exception ex){
                     contract.SaleCode = "BBAI0020000";
@@ -661,5 +667,29 @@ public class SaleScanEmployeesFragment extends BHFragment implements EmployeeAda
         employeeAdapter.notifyDataSetChanged();
 
         bindSelectedEmployee(selectedEmpID, BHPreference.teamCode());
+    }
+
+    private void loadEmpDetail() {
+        (new BackgroundProcess(activity) {
+
+            EmployeeInfo employeeDetail;
+
+            @Override
+            protected void calling() {
+                // TODO Auto-generated method stub
+                employeeDetail = getSaleTeamByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.employeeID());
+            }
+
+            @Override
+            protected void after() {
+                // TODO Auto-generated method stub
+                if (employeeDetail != null) {
+                    Log.e("Emp team", String.valueOf(employeeDetail));
+                    BHPreference.setEmpid4(employeeDetail.SupervisorEmpID);
+                    BHPreference.setEmpid5(employeeDetail.LineManagerEmpID);
+                    BHPreference.setEmpid6(employeeDetail.ManagerEmpID);
+                }
+            }
+        }).start();
     }
 }

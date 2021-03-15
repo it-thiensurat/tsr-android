@@ -154,10 +154,6 @@ public interface Service {
     /**
      * Edit Teerayut Klinsanga 26/01/2021
      */
-//    @Multipart
-//    @POST("/UAT/BH/AddContractImage")
-//    Call<Object> uploadImageToServer(@Part MultipartBody.Part[] contract_image, @Part("refnoBody") RequestBody refnoBody);
-
     @Multipart
     @POST("UAT/BH/AddContractImage")
     Call<Object> uploadImageToServer(@Part List<MultipartBody.Part> contract_image, @Part("refnoBody") RequestBody refnoBody);
@@ -168,6 +164,12 @@ public interface Service {
 
     @GET("/api/customerreceiptapi.php")
     Call<Object> getQrReceipt(@Query("contno") String contno);
+
+    @POST("UAT/BH/ApproveContno")
+    @FormUrlEncoded
+    Call<Object> ApproveContno(@Field("refno") String refno, @Field("empid") String empid, @Field("empid4") String empid4,
+                               @Field("posid4") String posid4, @Field("empid5") String empid5, @Field("posid5") String posid5, 
+                               @Field("empid6") String empid6, @Field("posid6") String posid6, @Field("teamcode") String teamcode);
 
 //    @Multipart
 //    @POST("UAT/BH/AddContractImage")

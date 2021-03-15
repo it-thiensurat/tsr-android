@@ -726,6 +726,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -866,6 +867,7 @@ public class EmployeeTeamFragment extends BHFragment {
             protected void after() {
                 // TODO Auto-generated method stub
                 if (employee != null) {
+                    Log.e("Emp team", String.valueOf(employee));
                     mEmployee = employee;
                     try {
                         txtSaleLeaderTeamCode.setText(String.format("หัวหน้าทีมขาย %s", mEmployee.SaleLeaderTeamCode));
@@ -918,7 +920,6 @@ public class EmployeeTeamFragment extends BHFragment {
                 }).start();
             }
         }).start();
-
     }
 
     private void setViewPagerItemsWithAdapter() {
