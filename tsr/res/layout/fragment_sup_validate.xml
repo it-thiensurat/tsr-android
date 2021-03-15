@@ -1,0 +1,52 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="th.co.thiensurat.fragments.customerstatus.CustomerStatusFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical" >
+
+        <th.co.thiensurat.views.ViewTitle
+            style="@style/ViewTitle"
+            app:text="@string/caption_sup_validate"/>
+
+        <LinearLayout
+            android:id="@+id/layout_list"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_msg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/txtMsg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:text="ไม่มีรายการตรวจสอบ"
+                android:textSize="18dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

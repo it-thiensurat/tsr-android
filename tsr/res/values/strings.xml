@@ -169,6 +169,7 @@
     <string name="main_menu_proorder_credit">C07FCC694E284F469B9AC4C99C96DDCG</string>
 
     <string name="main_menu_customer_status">0BF75CB7521F47B585FDDED33726575A</string>
+    <string name="main_menu_sup_validate">0BF75CB7521F47B585FDDED33726575C</string>
 
     <!-- Fixed - [BHPROJ-0026-3265] [Backend+Frontend] เพิ่มเมนูสำหรับทำการ ย้ายเข้า/ย้ายออก ข้อมูล Assign การเก็บเงิน -->
     <string name="main_menu_credit_assign_push_pull">42340AAEECA6495082198378374B8706</string>
@@ -259,6 +260,7 @@
     <string name="caption_complain_action_detail">รายละเอียดลูกค้าที่จะแก้ไขปัญหา</string>
     <string name="caption_first_payment_summary">รายละเอียดการเก็บเงิน</string>
     <string name="caption_customer_status">ตรวจสอบสถานะลูกค้า</string>
+    <string name="caption_sup_validate">ผลการตรวจสอบรูปภาพ</string>
     <!-- Label -->
     <string name="label_contract_date">วันที่ทำสัญญา</string>
     <string name="label_contract_no">เลขที่สัญญา</string>

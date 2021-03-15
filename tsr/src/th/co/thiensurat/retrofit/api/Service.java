@@ -18,6 +18,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import th.co.thiensurat.activities.MainActivity;
 
@@ -167,13 +168,16 @@ public interface Service {
 
     @POST("UAT/BH/ApproveContno")
     @FormUrlEncoded
-    Call<Object> ApproveContno(@Field("refno") String refno, @Field("empid") String empid, @Field("empid4") String empid4,
+    Call<Object> ApproveContno(@Field("refno") String refno, @Field("empid") String empid, @Field("salecode") String salecode, @Field("empid4") String empid4,
                                @Field("posid4") String posid4, @Field("empid5") String empid5, @Field("posid5") String posid5, 
                                @Field("empid6") String empid6, @Field("posid6") String posid6, @Field("teamcode") String teamcode);
 
-//    @Multipart
-//    @POST("UAT/BH/AddContractImage")
-//    Call<Object> uploadImageToServer(@PartMap Map<String, RequestBody> files, @Part("refnoBody") RequestBody refnoBody);
+    @GET("API/DrinkCoApi/api/DistrictItemsNew/{lat},{lon}/6256a94701b4b14b8400d5e7559d9ee7")
+    Call<Object> getProductRecomend(@Path(value = "lat", encoded = false) String lat, @Path(value = "lon", encoded = false) String lon);
+
+    @POST("UAT/BH/GetImageCheck")
+    @FormUrlEncoded
+    Call<Object> getImageValidate(@Field("empid") String empid);
     /**
      *
      */

@@ -7,8 +7,8 @@ android {
     buildToolsVersion '29.0.2'
 
     def versionCodes = { ->
-//        return 173   //<-- current version
-        return 174 //<-- New version
+//        return 174   //<-- current version
+        return 175 //<-- New version
     }
 
     def tsrAppVersion = { ->
@@ -28,8 +28,8 @@ android {
         targetSdkVersion 29
         multiDexEnabled true
         versionCode   versionCodes()
-//        versionName "1.0.0.83" //<-- current version
-        versionName "1.0.0.84" //<-- New version
+//        versionName "1.0.0.84" //<-- current version
+        versionName "1.0.0.85" //<-- New version
         resValue 'string', 'tsr_app_version', tsrAppVersion()
     }
 
@@ -203,6 +203,13 @@ dependencies {
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:support-v4:28.0.0'
+
+    implementation 'com.github.cachapa:ExpandableLayout:2.9.2'
+
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation 'com.github.bumptech.glide:glide:3.5.2'
+//    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
 }
 

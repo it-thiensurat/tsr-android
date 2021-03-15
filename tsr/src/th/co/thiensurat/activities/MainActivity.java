@@ -200,6 +200,7 @@ import th.co.thiensurat.fragments.sales.preorder.SaleMainFragment_peoorder;
 import th.co.thiensurat.fragments.sales.preorder_setting.SaleMainFragment_preorder_setting;
 import th.co.thiensurat.fragments.sales.preorder_setting.SaleMainFragment_preorder_setting2;
 import th.co.thiensurat.fragments.sendmoney.SendMoneySummaryMainFragment;
+import th.co.thiensurat.fragments.supvalidate.SupValidateFragment;
 import th.co.thiensurat.fragments.synchronize.SynchronizeMainFragment;
 import th.co.thiensurat.retrofit.api.Service;
 import th.co.thiensurat.service.GetCurrentLocation;
@@ -1301,6 +1302,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 R.string.main_menu_next_period,
                 R.string.main_menu_money,
                 R.string.main_menu_customer_status,
+                R.string.main_menu_sup_validate,
                 R.string.main_menu_remove,
                 R.string.main_menu_change,
                 R.string.main_menu_document,
@@ -1565,6 +1567,10 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
                 case R.string.main_menu_customer_status:
                     success = showView(BHFragment.newInstance(CustomerStatusFragment.class));
+                    break;
+                case R.string.main_menu_sup_validate:
+                    success = showView(BHFragment.newInstance(SupValidateFragment.class));
+//                    Toast.makeText(activity, "ซุปฯ ตรวจสอบ", Toast.LENGTH_LONG).show();
                     break;
                 case R.string.main_menu_preorder_setting: // preorder stting
 
@@ -2754,6 +2760,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     put(r.getString(R.string.main_menu_money), R.drawable.ic_menu_money);
                     put(r.getString(R.string.main_menu_first), R.drawable.ic_menu_first);
                     put(r.getString(R.string.main_menu_customer_status), R.drawable.customer_search);
+                    put(r.getString(R.string.main_menu_sup_validate), R.drawable.ic_menu_edit_contracts);
                     put(r.getString(R.string.main_menu_other), R.drawable.ic_menu_fix_request);     //-- Fixed - [BHPROJ-0026-3184] :: Change ic_tsr_logo to be new menu icon
                     put(r.getString(R.string.main_menu_logout), R.drawable.ic_menu_logout);
 

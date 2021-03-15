@@ -29,6 +29,7 @@
         <item>@string/main_menu_preorder</item>
         <item>@string/main_menu_money</item>
         <item>@string/main_menu_customer_status</item>
+        <item>@string/main_menu_sup_validate</item>
         <item>@string/main_menu_remove</item>
         <item>@string/main_menu_change</item>
         <item>@string/main_menu_document</item>

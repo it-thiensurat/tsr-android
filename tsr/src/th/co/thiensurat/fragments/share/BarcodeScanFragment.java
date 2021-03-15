@@ -1,8 +1,19 @@
 package th.co.thiensurat.fragments.share;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,22 +23,49 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 //import com.google.zxing.client.android.CaptureActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.google.zxing.client.android.Intents;
 import com.google.zxing.integration.android.IntentIntegrator;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHGeneral;
+import th.co.bighead.utilities.BHLoading;
 import th.co.bighead.utilities.BHParcelable;
 import th.co.bighead.utilities.BHPermissions;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
+import th.co.thiensurat.adapter.CustomerStatusAdapter;
+import th.co.thiensurat.adapter.ProductRecomdAdapter;
 import th.co.thiensurat.business.controller.TSRController;
+import th.co.thiensurat.data.info.ProductRecomendInfo;
 import th.co.thiensurat.data.info.ProductStockInfo;
 import th.co.thiensurat.fragments.sales.SaleMainFragment;
+import th.co.thiensurat.retrofit.api.Service;
 import th.co.thiensurat.views.ViewTitle;
 
-public class BarcodeScanFragment extends BHFragment {
+import static th.co.thiensurat.retrofit.api.client.BASE_URL;
+
+public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdapter.ItemClickListener {
+
 	public static abstract class ScanCallBack extends BHFragmentCallback {
 		public String onNextClick() {
 			return null;
@@ -83,10 +121,10 @@ public class BarcodeScanFragment extends BHFragment {
     @InjectView
     private LinearLayout li_scan2,li_scan3;
 
-
-
-
-
+    @InjectView
+	private static RecyclerView recyclerview;
+    @InjectView
+	private static LinearLayout layout_recomend;
 
 	private Data data = new Data();
 
@@ -131,22 +169,13 @@ public class BarcodeScanFragment extends BHFragment {
 			String barcode = edtBarcode.getText().toString();
             String barcode2 = edtBarcode2.getText().toString();
 			String barcode3 = edtBarcode3.getText().toString();
-
-
 			Result result = new Result(barcode,barcode2,barcode3);
 			setResult(result);
-
-
-
 		/*	if(saleMainFragment.status.equals("CHECKED")){
 			//	saleMainFragment=new SaleMainFragment();
 			//	saleMainFragment.UpdateProductStockStatus(barcode);
 			}*/
-
-
-
 			break;
-
 		default:
 			break;
 		}
@@ -158,6 +187,9 @@ public class BarcodeScanFragment extends BHFragment {
 		if (savedInstanceState != null) {
 			data = savedInstanceState.getParcelable(BarcodeScanFragment.FRAGMENT_DATA);
 		}
+		BHLoading.show(activity);
+		mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
+		getLastLocation();
 
 		ibScanBarcode.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -263,9 +295,6 @@ public class BarcodeScanFragment extends BHFragment {
 			}
 		});
 
-
-
-
 		if (data != null) {
 			if (data.viewTitle != null) {
 				vwTitle.setText(data.viewTitle);
@@ -365,8 +394,6 @@ public class BarcodeScanFragment extends BHFragment {
                 check_scan2=1;
 
                 String substring_barcode2 = barcode2.substring(0, 1);
-
-
                       if((substring_barcode2.equals("R"))|(substring_barcode2.equals("S"))|
                         (substring_barcode2.equals("A"))|(substring_barcode2.equals("U"))|
                               (substring_barcode2.equals("I"))|(substring_barcode2.equals("E"))|
@@ -390,12 +417,6 @@ public class BarcodeScanFragment extends BHFragment {
 						  showWarningDialog("", "Serial Number เครื่องไม่ถูกต้อง!");
 
                         }
-
-
-
-
-
-
             }
         }
 		else if (requestCode == REQUEST_QR_SCAN3) {
@@ -417,28 +438,16 @@ public class BarcodeScanFragment extends BHFragment {
 					edtBarcode3.setText(barcode3);
 					// Result result = new Result(barcode,barcode2,"");
 					//  setResult(result);
-				}
-				else {
+				} else {
 
 					barcode3="";
 					edtBarcode3.setText("Serial Number เครื่องไม่ถูกต้อง!");
 					//  Result result = new Result(barcode,barcode2);
 					//  setResult(result);
 					showWarningDialog("", "Serial Number เครื่องไม่ถูกต้อง!");
-
 				}
-
-
-
-
-
-
-
 			}
 		}
-
-
-
 	}
 
 	public void setTitle(int titleResID) {
@@ -461,9 +470,170 @@ public class BarcodeScanFragment extends BHFragment {
 		data.description = description;
 	}
 
+	/**
+	 * Edit by Teerayut Klinsanga
+	 *
+	 * Created date 13/03/2021
+	 *
+	 */
 
+	static String latitude;
+	static String longitude;
+	static int PERMISSION_ID = 44;
+	static ProductRecomendInfo productRecomendInfo;
+	static List<ProductRecomendInfo> productRecomendInfoList;
+	static FusedLocationProviderClient mFusedLocationClient;
+	static ProductRecomdAdapter productRecomdAdapter;
+	private boolean checkPermissions() {
+		if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+				ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+			return true;
+		}
+		return false;
+	}
 
+	private void requestPermissions() {
+		ActivityCompat.requestPermissions(
+				activity,
+				new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+				PERMISSION_ID
+		);
+	}
 
+	private boolean isLocationEnabled() {
+		LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+		return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+				LocationManager.NETWORK_PROVIDER
+		);
+	}
 
+	@SuppressLint("MissingPermission")
+	public void getLastLocation(){
+		if (checkPermissions()) {
+			if (isLocationEnabled()) {
+				mFusedLocationClient.getLastLocation().addOnCompleteListener(
+						new OnCompleteListener<Location>() {
+							@Override
+							public void onComplete(@NonNull Task<Location> task) {
+								Location location = task.getResult();
+								if (location == null) {
+									requestNewLocationData();
+								} else {
+//									latitude = location.getLatitude() + "";
+//									longitude = location.getLongitude() + "";
+									Log.e("Current Latitude1", location.getLatitude()+"");
+									Log.e("Current Longitude1", location.getLongitude()+"");
+									getProductRecoment(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+								}
+							}
+						}
+				);
+			}
+		} else {
+			requestPermissions();
+		}
+	}
 
+	@SuppressLint("MissingPermission")
+	private void requestNewLocationData(){
+		LocationRequest mLocationRequest = new LocationRequest();
+		mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+		mLocationRequest.setInterval(0);
+		mLocationRequest.setFastestInterval(0);
+		mLocationRequest.setNumUpdates(1);
+
+		mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
+		mFusedLocationClient.requestLocationUpdates(
+				mLocationRequest, mLocationCallback,
+				Looper.myLooper()
+		);
+	}
+
+	private LocationCallback mLocationCallback = new LocationCallback() {
+		@Override
+		public void onLocationResult(LocationResult locationResult) {
+			Location mLastLocation = locationResult.getLastLocation();
+			Log.e("Current Latitude2", mLastLocation.getLatitude()+"");
+			Log.e("Current Longitude2", mLastLocation.getLongitude()+"");
+//			latitude = mLastLocation.getLatitude() + "";
+//			longitude = mLastLocation.getLongitude() + "";
+			getProductRecoment(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
+		}
+	};
+
+	private void getProductRecoment(String latitude, String longitude) {
+//		latitude = "9.1047298";
+//		longitude = "99.3126167";
+		try {
+			Retrofit retrofit = new Retrofit.Builder()
+					.baseUrl("https://app.thiensurat.co.th/")
+					.addConverterFactory(GsonConverterFactory.create())
+					.build();
+			Service request = retrofit.create(Service.class);
+			Call call = request.getProductRecomend(latitude, longitude);
+			call.enqueue(new Callback() {
+				@Override
+				public void onResponse(Call call, retrofit2.Response response) {
+					Gson gson = new Gson();
+					Log.e("Json body", String.valueOf(response.body()));
+					try {
+						JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+						JSONArray jsonArray = jsonObject.getJSONArray("data");
+						productRecomendInfoList = new ArrayList<>();
+						for (int i = 0; i < jsonArray.length(); i++) {
+							JSONObject object = jsonArray.getJSONObject(i);
+							productRecomendInfo = new ProductRecomendInfo();
+							productRecomendInfo.setBrandName(object.getString("brandName"));
+							productRecomendInfo.setProductCode(object.getString("productCode"));
+							productRecomendInfo.setProductName(object.getString("productName"));
+							productRecomendInfo.setImgPath(object.getString("imgPath"));
+							try {
+								productRecomendInfo.setStickerPrice(object.getString("stickerPrice"));
+								productRecomendInfo.setRetailPrice(object.getString("retailPrice"));
+								productRecomendInfo.setWarranty(object.getString("warranty"));
+							} catch (Exception e) {
+								productRecomendInfo.setStickerPrice("");
+								productRecomendInfo.setRetailPrice("");
+								productRecomendInfo.setWarranty("");
+							}
+
+							productRecomendInfoList.add(productRecomendInfo);
+						}
+						setProductRecomed(productRecomendInfoList);
+					} catch (JSONException e) {
+						e.printStackTrace();
+						Log.e("JSONException", e.getLocalizedMessage());
+						layout_recomend.setVisibility(View.GONE);
+						BHLoading.close();
+					}
+				}
+
+				@Override
+				public void onFailure(Call call, Throwable t) {
+					Log.e("onFailure", t.getLocalizedMessage());
+					BHLoading.close();
+				}
+			});
+
+		} catch (Exception e) {
+			Log.e("Exception", e.getLocalizedMessage());
+			BHLoading.close();
+		}
+	}
+
+	private void setProductRecomed(List<ProductRecomendInfo> productRecomendList) {
+		layout_recomend.setVisibility(View.VISIBLE);
+		recyclerview.setLayoutManager(new LinearLayoutManager(activity));
+		recyclerview.setHasFixedSize(true);
+		productRecomdAdapter = new ProductRecomdAdapter(productRecomendList, activity);
+		recyclerview.setAdapter(productRecomdAdapter);
+		productRecomdAdapter.setClickListener(this);
+		productRecomdAdapter.notifyDataSetChanged();
+		BHLoading.close();
+	}
+
+	@Override
+	public void onItemClick(View view, int position) {
+
+	}
 }

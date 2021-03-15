@@ -676,7 +676,7 @@ public class SaleMoreDetailAddress extends BHFragment {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             Service request = retrofit.create(Service.class);
-            Call call = request.ApproveContno(contract.RefNo, contract.SaleEmployeeCode, BHPreference.getEmpid4(), null, BHPreference.getEmpid5(), null, BHPreference.getEmpid6(), null, contract.SaleTeamCode);
+            Call call = request.ApproveContno(contract.RefNo, contract.SaleEmployeeCode, String.valueOf(contract.InstallerSaleCode), BHPreference.getEmpid4(), null, BHPreference.getEmpid5(), null, BHPreference.getEmpid6(), null, contract.SaleTeamCode);
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, retrofit2.Response response) {
@@ -685,18 +685,6 @@ public class SaleMoreDetailAddress extends BHFragment {
                         Log.e("JSON body", String.valueOf(response.body()));
                         JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
                         Log.e("jsonObject: ",jsonObject.toString());
-//                        JSONArray array = jsonObject.getJSONArray("data");
-//                        JSONObject obj = null;
-//                        for (int i = 0; i < array.length(); i++) {
-//                            obj = array.getJSONObject(i);
-//                            String status = obj.getString("Status");
-//                            Log.e("Question status", status);
-//                            if ("Error".equals(status)) {
-//                                btnSurvery.setVisibility(View.VISIBLE);
-//                            } else {
-//                                btnSurvery.setVisibility(View.GONE);
-//                            }
-//                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                         Log.e("JSONException",e.getLocalizedMessage());

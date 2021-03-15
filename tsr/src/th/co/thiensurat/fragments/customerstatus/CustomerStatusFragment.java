@@ -70,7 +70,7 @@ import static th.co.thiensurat.retrofit.api.client.GIS_BASE_URL;
 public class CustomerStatusFragment extends BHFragment implements CustomerStatusAdapter.ItemClickListener {
 
     private ProgressDialog dialog;
-    protected static MainActivity activity;
+//    protected static MainActivity activity;
     private CustomerStatusAdapter customerStatusAdapter;
 
     @InjectView

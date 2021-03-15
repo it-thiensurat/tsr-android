@@ -248,7 +248,7 @@ public class SaleUnfinishedFragment extends BHFragment {
 													SaleReceiptPayment_old fmReceipt = BHFragment.newInstance(SaleReceiptPayment_old.class, dataReceiptID);
 													showNextView(fmReceipt);
 												}
-											} catch (Exception e){
+											} catch (NullPointerException e){
 												SaleReceiptPayment_old.Data dataReceiptID = new SaleReceiptPayment_old.Data();
 												dataReceiptID.PaymentID = output.PaymentID;
 												SaleReceiptPayment_old fmReceipt = BHFragment.newInstance(SaleReceiptPayment_old.class, dataReceiptID);

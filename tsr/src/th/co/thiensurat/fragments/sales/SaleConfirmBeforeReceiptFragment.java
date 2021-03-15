@@ -771,6 +771,10 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
                             List<Integer> listId = new ArrayList<Integer>();
                             listId.add(R.string.button_confirm_print);
                             activity.setViewProcessButtons(listId, View.GONE);
+                        } else {
+                            List<Integer> listId = new ArrayList<Integer>();
+                            listId.add(R.string.button_confirm_print);
+                            activity.setViewProcessButtons(listId, View.VISIBLE);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
