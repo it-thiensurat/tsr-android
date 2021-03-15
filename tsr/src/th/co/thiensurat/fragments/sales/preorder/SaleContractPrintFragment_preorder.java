@@ -275,7 +275,7 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
         txt_date_contno.setText("วันที่ทำใบจอง");
         txt_name1.setText("..............ผจก.ฝ่ายขาย");
         txt_name2.setText("..............ผู้จอง");
-
+        btnVoidContract.setText("ยกเลิกใบจอง");
 
         loadData();
         linearLayoutPayment.setVisibility(View.GONE);
@@ -657,11 +657,11 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
 
                             Builder setupAlert;
                             setupAlert = new Builder(activity)
-                                    .setTitle("ยกเลิกสัญญา")
-                                    .setMessage("ต้องการยกเลิกสัญญาหมายเลข " + contract.CONTNO  + " ใช่หรือไม่")
+                                    .setTitle("ยกเลิกใบจอง")
+                                    .setMessage("ต้องการยกเลิกใบจองหมายเลข " + contract.CONTNO  + " ใช่หรือไม่")
                                     .setCancelable(false);
 
-                            setupAlert = setupAlert.setPositiveButton("ใช่ ฉันต้องการยกเลิกสัญญานี้", new DialogInterface.OnClickListener() {
+                            setupAlert = setupAlert.setPositiveButton("ใช่ ฉันต้องการยกเลิกใบจองนี้", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     dialog.cancel();
                                     doVoidContract(contract.RefNo, contract.CONTNO, contract.ProductSerialNumber);
@@ -798,8 +798,8 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
                 Builder VoidNoti;
 
                 VoidNoti = new Builder(activity)
-                        .setTitle("ยกเลิกสัญญา")
-                        .setMessage("ระบบดำเนินการยกเลิกสัญญาหมายเลข " + contract.CONTNO  + " เรียบร้อยแล้ว")
+                        .setTitle("ยกเลิกใบจอง")
+                        .setMessage("ระบบดำเนินการยกเลิกใบจองหมายเลข " + contract.CONTNO  + " เรียบร้อยแล้ว")
                         .setCancelable(false);
                 VoidNoti = VoidNoti.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
                     @Override

@@ -1083,17 +1083,29 @@ public class BHPreference {
 
                 Log.e("info.SourceSystem","555555");
 
-                Log.e("TeamCode_xxx",info.TeamCode+"");
+
+
+                Log.e("TeamCode_xxx",info.TeamCode+","+BHPreference.teamCode()+"");
+
+
+
+
+
             }
 
         MODE=  BHGeneral.SERVICE_MODE.toString();
 
+
         if(info.ProcessType.equals("Credit")){
+            get_teamcode_select_position2(BHPreference.employeeID(),BHPreference.sourceSystem());
+
+        }
+        else {
+            String FF=info.TeamCode+"";
+            if(FF.equals("null")){
                 get_teamcode_select_position2(BHPreference.employeeID(),BHPreference.sourceSystem());
 
             }
-        else if(!info.ProcessType.equals("Sale")){
-            get_teamcode_select_position2(BHPreference.employeeID(),BHPreference.sourceSystem());
 
         }
         // [BHPROJ-0016-3225] :: [Android+Web-Admin] แก้ไข Code เรื่องการเพิ่ม Field เพื่อระบุ Department สำหรับ ตารางเก็บปักษ์การขาย
@@ -1372,6 +1384,9 @@ public class BHPreference {
                 Log.e("info.saleCode",BHPreference.saleCode());
                 Log.e("info.SubTeamCode",BHPreference.SubTeamCode());
                 Log.e("MaxRunningNo",MaxRunningNo);
+
+
+
 
             } catch (JSONException e) {
 

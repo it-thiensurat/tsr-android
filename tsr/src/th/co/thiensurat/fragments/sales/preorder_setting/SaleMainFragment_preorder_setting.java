@@ -105,6 +105,8 @@ public class SaleMainFragment_preorder_setting extends BHFragment {
                 switch (position) {
                     case 0:
                         return BHFragment.newInstance(SaleMainUnfinishedFragment_preorder_setting.class);
+                    //return BHFragment.newInstance(SaleMainFragment_preorder_setting2.class);
+
 
                     case 1:
                         return BHFragment.newInstance(SaleMainFinishedFragment_SETTING.class);
@@ -137,10 +139,19 @@ public class SaleMainFragment_preorder_setting extends BHFragment {
                     }.start();
                 }
 
+
                 select_page_s=1;
+
+/*
                 BHPreference.setRefNo("");
                 // ใช้งานจริงเปิด Method BarcodeScan แล้วปิด บรรทัดที่ 113-119
-                BarcodeScan();
+                BarcodeScan();*/
+
+
+                SaleMainFragment_preorder_setting2 fm =
+                 BHFragment.newInstance(SaleMainFragment_preorder_setting2.class);
+                 showNextView(fm);
+
 
                 // ใช้เทส เปิดคอมเม้นด้านล่าง บรรทัดที่ 113-118 ปิด Method
                 // BarcodeScan
@@ -159,7 +170,7 @@ public class SaleMainFragment_preorder_setting extends BHFragment {
         }
     }
 
-    public void BarcodeScan() {
+    public  void BarcodeScan() {
         // TODO Auto-generated method stub
         BarcodeScanFragment_preorder_setting fm = BHFragment.newInstance(BarcodeScanFragment_preorder_setting.class, new ScanCallBack() {
 

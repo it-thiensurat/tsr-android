@@ -64,6 +64,20 @@
                 android:visibility="gone"
                 android:text="สถานะปัจจุบัน : เลือกแบบชำระ" />
 
+            <TextView
+                android:id="@+id/textcancle"
+
+                style="@style/TextView.Value"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:textColor="@color/bg_body_white"
+                android:background="@color/dot_red"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="ยกเลิกใบจอง" />
+
+
         </LinearLayout>
 
         <ImageView

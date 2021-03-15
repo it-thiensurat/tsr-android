@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.hb.views.PinnedSectionListView;
 
 import org.apache.http.HttpResponse;
@@ -25,11 +26,18 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHGeneral;
@@ -45,6 +53,7 @@ import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.controller.EmployeeController;
 import th.co.thiensurat.data.info.DeviceMenuInfo;
 import th.co.thiensurat.data.info.EmployeeInfo;
+import th.co.thiensurat.retrofit.api.Service;
 import th.co.thiensurat.service.SynchronizeService;
 import th.co.thiensurat.service.SynchronizeService.SynchronizeData;
 import th.co.thiensurat.service.SynchronizeService.SynchronizeMaster;
@@ -57,6 +66,7 @@ import th.co.thiensurat.service.data.GetDeviceMenusOutputInfo;
 import th.co.thiensurat.service.data.GetUserByUserNameInputInfo;
 import th.co.thiensurat.service.data.GetUserByUserNameOutputInfo;
 
+import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 
 
 public class SynchronizeMainFragment extends BHFragment {
@@ -81,6 +91,7 @@ public class SynchronizeMainFragment extends BHFragment {
     private static Data data;
     private BHListViewAdapter masterAdapter;
     private BHListViewAdapter transactionAdapter;
+    static String MODE="";
 
     @Override
     protected int fragmentID() {
@@ -104,6 +115,7 @@ public class SynchronizeMainFragment extends BHFragment {
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         //showWarningDialog("แจ้งเตือนการเข้าระบบ", "System for " + BHPreference.sourceSystem().toString() + " With CashCode " + BHPreference.cashCode() + " " + BHPreference.departmentCode() + " " + BHPreference.subDepartmentCode() + " " + BHPreference.supervisorCode());
+        MODE=  BHGeneral.SERVICE_MODE.toString();
 
         if (savedInstanceState != null) {
             data = savedInstanceState.getParcelable(BH_FRAGMENT_DEFAULT_DATA);
@@ -864,7 +876,8 @@ public class SynchronizeMainFragment extends BHFragment {
                                         (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต,พนักงานเครดิต"))|
                                         (BHPreference.PositionName().equals("พนักงานขาย,หัวหน้าหน่วยเครดิต,พนักงานเครดิต,หัวหน้าทีมเครดิต"))|
                                         (BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต,หัวหน้าทีมเครดิต,หัวหน้าหน่วยเครดิต"))|
-                                        (BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต")))
+                                        (BHPreference.PositionName().equals("พนักงานขาย,พนักงานเครดิต,หัวหน้าหน่วยเครดิต,หัวหน้าทีมเครดิต"))|
+                                        (BHPreference.PositionName().equals("ซุปเปอร์ไวเซอร์,หัวหน้าหน่วย,หัวหน้าทีม,พนักงานขาย")))
                                 {
 
                                     BHApplication.getInstance().getPrefManager().setPreferrence("select_p", BHPreference.sourceSystem());
@@ -908,10 +921,18 @@ public class SynchronizeMainFragment extends BHFragment {
                                 } else {
                                     Log.e("VVVV","2222");
 
+
+
+
+
                                     new SynchronizeMainFragment().updateUserInfo(BHPreference.userID(), new updateUserInfoAsyncResponse() {
                                         @Override
                                         public void updateUserInfoProcessFinish() {
                                             MainActivity.checkLogin = true;
+
+                                            Log.e("length2","22222");
+
+
                                             //
                                             final MainActivity.DownloadTask downloadTask = new MainActivity.DownloadTask(activity);
 
@@ -934,6 +955,26 @@ public class SynchronizeMainFragment extends BHFragment {
                                             });
                                         }
                                     });
+
+
+/*
+                                   if(BHPreference.ProcessType().equals("Credit")){
+                                       get_teamcode_select_position2(BHPreference.employeeID(),BHPreference.sourceSystem());
+
+                                    }
+                                    else if(!BHPreference.ProcessType().equals("Sale")){
+                                       get_teamcode_select_position2(BHPreference.employeeID(),BHPreference.sourceSystem());
+
+                                    }
+                                    else if(BHPreference.PositionName().equals("ซุปเปอร์ไวเซอร์,หัวหน้าหน่วย,หัวหน้าทีม,พนักงานขาย")){
+                                  get_teamcode_select_position2(BHPreference.employeeID(),BHPreference.sourceSystem());
+
+                                    }*/
+
+
+
+
+
 
                                 }
                             }
@@ -974,4 +1015,111 @@ public class SynchronizeMainFragment extends BHFragment {
             }
         }
     }
+
+
+
+    public static void get_teamcode_select_position2(String employeeID,String  sourceSystem) {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call=null;
+            if(MODE.equals("UAT")){
+                call = request.get_teamcode_select_position_uat(employeeID,sourceSystem);
+
+            }
+            else {
+                call = request.get_teamcode_select_position(employeeID,sourceSystem);
+
+            }
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson = new Gson();
+                    try {
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+                        Log.e("data", "331");
+                        JSON_PARSE_DATA_AFTER_WEBCALL_get_teamcode_select_position2(jsonObject.getJSONArray("data"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("data", "22");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("data", "2");
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("data", "3");
+        }
+    }
+
+
+
+    public static void JSON_PARSE_DATA_AFTER_WEBCALL_get_teamcode_select_position2(JSONArray array) {
+
+
+
+        Log.e("length1", String.valueOf(array.length()));
+        for (int i = 0; i < array.length(); i++) {
+
+            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
+
+            JSONObject json = null;
+            try {
+                json = array.getJSONObject(i);
+
+                String TeamCode=json.getString("TeamCode");
+                String SubTeamCode=json.getString("SubTeamCode");
+                String saleCode=json.getString("saleCode");
+                String DepartmentCode=json.getString("DepartmentCode");
+                // BHApplication.getInstance().getPrefManager().setPreferrence("TeamCode", TeamCode);
+                // BHApplication.getInstance().getPrefManager().setPreferrence("SubTeamCode",SubTeamCode);
+
+                BHPreference.setTeamCode(TeamCode);
+                BHPreference.setSubTeamCode(SubTeamCode);
+                BHPreference.setSaleCode(saleCode);
+                BHPreference.setCashCode(saleCode);
+                // BHPreference.setDepartmentCode(DepartmentCode);
+
+                Log.e("TeamCode",TeamCode);
+
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
 }

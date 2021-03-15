@@ -62,7 +62,7 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
     @InjectView
     private LinearLayout li_s;
     @InjectView
-    private TextView textViewFinish;
+    private TextView textViewFinish,textcancle;
     @InjectView
     public static ListView listViewFinish;
     public static List<ContractInfo> contractList = null;
@@ -73,7 +73,7 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
     private final boolean isCredit = BHPreference.sourceSystem().equals(EmployeeController.SourceSystem.Credit.toString());
     public  boolean isContractDetails =  false;
 
-
+    SaleMainFragment_preorder_setting saleMainFragment_preorder_setting;
 
 
 
@@ -344,7 +344,7 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
         public class ViewHolder {
             public TextView textViewContractnumber;
             public TextView textViewName;
-            public TextView textViewStatus,textViewStatus2;
+            public TextView textViewStatus,textViewStatus2,textcancle;
             public ImageView imageDelete;
             public ImageView imageNext;
         }
@@ -360,6 +360,8 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                 Log.e("info.CONTNO",info.CONTNO);
                 Log.e("info.svcontno",info.svcontno+"");
             }
+            vh.textcancle.setVisibility(View.VISIBLE);
+
 
             //vh.textViewContractnumber.setText("เลขที่สัญญา  :  "+ info.CONTNO);
             vh.textViewContractnumber.setText("เลขที่ใบจอง  :  "+ info.CONTNO);
@@ -384,6 +386,14 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                 @Override
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
+                }
+            });
+
+            vh.textcancle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                 showDialog("ยกเลิกใบจอง","ทำการยกเลิกใบจองไช่หรือไม่");
+
                 }
             });
         }
@@ -438,7 +448,15 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                                 BHApplication.getInstance().getPrefManager().setPreferrence("name_recommend",cont.SaleEmployeeCode);
                                 BHApplication.getInstance().getPrefManager().setPreferrence("name_CustomerID",cont.RefNo);
 
-                                showNextView(new SaleScanEmployeesFragment_preorder_setting());
+                               // showNextView(new SaleScanEmployeesFragment_preorder_setting());
+
+
+                               // select_page_s=1;
+                                BHPreference.setRefNo("");
+                                // ใช้งานจริงเปิด Method BarcodeScan แล้วปิด บรรทัดที่ 113-119
+                                saleMainFragment_preorder_setting = new SaleMainFragment_preorder_setting();
+                                saleMainFragment_preorder_setting.BarcodeScan();
+
 
 
                             }

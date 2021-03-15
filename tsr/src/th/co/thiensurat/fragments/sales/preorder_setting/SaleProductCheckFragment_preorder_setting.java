@@ -296,13 +296,14 @@ public class SaleProductCheckFragment_preorder_setting extends BHFragment {
             protected void after() {
                 // TODO Auto-generated method stub
 
-                //showNextView(new SaleScanEmployeesFragment());
-                //showNextView(new SaleMainFinishedFragment_preorder_setting());
-                showNextView(new SaleMainFragment_preorder_setting2());
+
+                //showNextView(new SaleMainFragment_preorder_setting2());
+                //showNextView(new SaleMainFragment_preorder_setting2());
+                showNextView(new SaleScanEmployeesFragment_preorder_setting());
 
 
 
-              //  showNextView(new SaleScanEmployeesFragment_preorder_setting());
+
 
 
             }

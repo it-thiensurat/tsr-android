@@ -356,7 +356,7 @@ public class SaleListPhotoFragment_preorder extends BHFragment {
     }
 
     private void bindMenu() {
-        MenuInfo[] menus = MenuInfo.from(R.array.sale_photo_preorder);
+        MenuInfo[] menus = MenuInfo.from(R.array.sale_photo);
         BHArrayAdapter<MenuInfo> adapter = new BHArrayAdapter<MenuInfo>(activity, R.layout.list_sale_photo, menus) {
 
             class ViewHolder {
@@ -405,7 +405,7 @@ public class SaleListPhotoFragment_preorder extends BHFragment {
                 ImageTypeCode = ImageType.MAP.toString();
                 CheckPhoto(ImageTypeCode);
                 break;
-            case R.string.sale_photo_product_install:
+            case R.string.sale_photo_gps_payment:
 
                 ImageTypeCode = ImageType.INSTALL.toString();
                 CheckPhoto(ImageTypeCode);

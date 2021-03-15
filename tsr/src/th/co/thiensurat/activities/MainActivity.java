@@ -379,7 +379,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         userProfileString = String.format("%s\nRun on : %s", userProfileString, BHGeneral.SERVICE_MODE.toString());
         tvUserDetail.setText(userProfileString);
 
-        Log.e("PositionName",BHPreference.PositionName());
+//        Log.e("PositionName",BHPreference.PositionName());
         try {
             String DD= BHApplication.getInstance().getPrefManager().getPreferrence("pp3");
 
@@ -3552,6 +3552,17 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
             final int stepMax = BHGeneral.isOpenDepartmentSignature ? 3 : 2;
             DownloadResultInfo resultInfo = new DownloadResultInfo();
             try {
+
+
+
+
+
+
+
+
+
+
+
                 /*URL url = new URL(sUrl[0]);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
@@ -3980,6 +3991,17 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                             logout(BHPreference.userID(), BHPreference.userDeviceId(), AddUserDeviceLogInputInfo.UserDeviceLogProcessType.ANDROID_LOGOUT.toString());
                         } else if (result.progress == SynchronizeService.SYNCHRONIZE_ALL_COMPLETED) {
                             checkLogin = true;
+
+
+
+
+
+
+
+
+
+
+
 
                             final DownloadTask downloadTask = new DownloadTask(activity);
                             String URL = String.format("%s/%s/%s/%s", BHPreference.TSR_DB_URL, BHPreference.teamCode(), BHPreference.employeeID() + (BHPreference.IsAdmin() ? BHGeneral.FOLDER_ADMIN : ""), "tsr.db.zip");
