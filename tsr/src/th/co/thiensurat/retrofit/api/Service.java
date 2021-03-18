@@ -178,6 +178,10 @@ public interface Service {
     @POST("UAT/BH/GetImageCheck")
     @FormUrlEncoded
     Call<Object> getImageValidate(@Field("empid") String empid);
+
+    @POST("UAT/BH/VoidContract")
+    @FormUrlEncoded
+    Call<Object> voidToApproveContno(@Field("refno") String refno, @Field("empid") String empid);
     /**
      *
      */

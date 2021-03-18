@@ -74,6 +74,7 @@ import static java.lang.String.valueOf;
 import static th.co.thiensurat.data.controller.DocumentController.getAlbumStorageDir;
 import static th.co.thiensurat.data.controller.DocumentController.getResizedBitmap;
 import static th.co.thiensurat.retrofit.api.client.BASE_URL;
+import static th.co.thiensurat.retrofit.api.client.GIS_BASE_URL;
 
 public class SaleContractPrintFragment extends BHFragment {
 
@@ -707,6 +708,7 @@ public class SaleContractPrintFragment extends BHFragment {
                 VoidNoti = VoidNoti.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        voidToSupValidate(contract.RefNo);
                         dialog.cancel();
                         showLastView();
                     }
@@ -1270,6 +1272,38 @@ public class SaleContractPrintFragment extends BHFragment {
 
         } catch (Exception e) {
             Log.e("Exception question",e.getLocalizedMessage());
+        }
+    }
+
+    private void voidToSupValidate(String refno) {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(GIS_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.voidToApproveContno(refno, BHPreference.employeeID());
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson=new Gson();
+                    try {
+                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+                        Log.e("json question: ",jsonObject.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("JSONException",e.getLocalizedMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("onFailure question:", t.getLocalizedMessage());
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("Exception question", e.getLocalizedMessage());
         }
     }
 

@@ -426,7 +426,7 @@ public class SalePhotographyFragment extends BHFragment {
     protected int[] processButtons() {
         // TODO Auto-generated method stub
         if (BHPreference.ProcessType().equals(SaleFirstPaymentChoiceFragment.ProcessType.EditContract.toString())) {
-            return new int[]{R.string.button_back, R.string.button_cheak_photo};
+            return new int[]{R.string.button_end, R.string.button_cheak_photo};
         } else {
             return new int[]{R.string.button_more, R.string.button_cheak_photo};
 
@@ -847,6 +847,9 @@ String DD="",NAME_IMAGE="",IMAGE_TYPE="";
 //                getImageContract();
                 break;
             case R.string.button_back:
+                showLastView();
+                break;
+            case R.string.button_end:
                 showLastView();
                 break;
 //            case R.string.button_send_image:
