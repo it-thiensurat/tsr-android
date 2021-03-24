@@ -1,7 +1,9 @@
 package th.co.thiensurat.fragments.sales;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,20 +13,35 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
+import th.co.thiensurat.activities.SurveyActivity;
 import th.co.thiensurat.adapter.ContractAdapter;
 import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.business.controller.TSRController;
 import th.co.thiensurat.data.controller.ContractController;
 import th.co.thiensurat.data.controller.EmployeeController;
 import th.co.thiensurat.data.info.ContractInfo;
+import th.co.thiensurat.retrofit.api.Service;
+
+import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 
 public class EditContractsCustomerDetailsFragment extends BHFragment {
 
@@ -80,7 +97,7 @@ public class EditContractsCustomerDetailsFragment extends BHFragment {
                 if (txtSearch.length() != 0) {
                     search = true;
                     lvCustomerList.setAdapter(null);
-                    hideKeyboard();
+//                    hideKeyboard();
                     GetContractStatusFinish();
                 } else {
                     showDialog("คำเตือน", "กรุณากรอกข้อมูลที่ต้องการค้นหา");
@@ -134,7 +151,7 @@ public class EditContractsCustomerDetailsFragment extends BHFragment {
                 if(info.equals("1") || info.equals("2")){ //แก้ไขรายละเอียดลูกค้า||แก้ไขภาพถ่าย
                     inDay = true;
                 }else if(info.equals("3")){//แก้ไขรายละเอียดลูกค้าเพิ่มเติม
-                    inDay = false;
+                    inDay = true;
                 }
                 /*** [END] :: Fixed - [BHPROJ-1036-8796] - ไม่ให้แก้ไขชื่อ ที่อยู่ และภาพถ่าย ข้ามวัน ให้แก้ไขได้ภายในวันที่ทำสัญญาเท่านั้น รวมทั้งการพิมพ์สัญญาต้องพิมพ์ข้ามวันไม่ได้ด้วย  ***/
 
@@ -215,6 +232,9 @@ public class EditContractsCustomerDetailsFragment extends BHFragment {
         lvCustomerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                ContractInfo contractInfo = (ContractInfo) lvCustomerList.getItemAtPosition(position);
+                Log.e("Contract info", String.valueOf(contractInfo));
+
                 final String RefNo = ((ContractInfo) lvCustomerList.getItemAtPosition(position)).RefNo;
                 final String CustomerID = ((ContractInfo) lvCustomerList.getItemAtPosition(position)).CustomerID;
                 //showMessage(RefNo);
@@ -231,7 +251,15 @@ public class EditContractsCustomerDetailsFragment extends BHFragment {
                         showNextView(new SalePhotographyFragment());
                     }
                 }else if(info.equals("3")){//แก้ไขรายละเอียดลูกค้าเพิ่มเติม
-                    showNextView(new SaleMoreDetailAddress());
+//                    showNextView(new SaleMoreDetailAddress());
+                    checkHasSurvey(contractInfo.CONTNO);
+                    if (!hasSurvey) {
+                        Intent intent = new Intent(getContext(), SurveyActivity.class);
+                        intent.putExtra("REFERRENCE_NUMBER", RefNo);
+                        intent.putExtra("CONTRACT_NUMBER", contractInfo.CONTNO);
+                        intent.putExtra("EMPLOYEE_NUMBER", contractInfo.SaleEmployeeCode);
+                        startActivityForResult(intent, 333);
+                    }
 
                 }
 
@@ -247,4 +275,63 @@ public class EditContractsCustomerDetailsFragment extends BHFragment {
                 activity.getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
+
+    /**
+     *
+     * Edit by Teerayut Klinsanga
+     *
+     * Create date 24/03/2021
+     *
+     */
+    private boolean hasSurvey = false;
+    private void checkHasSurvey(String contno) {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.checkQuestion(contno);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+//                    Log.e("Survey contno", contract.CONTNO);
+                    Gson gson=new Gson();
+                    try {
+                        JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+                        Log.e("json question: ",jsonObject.toString());
+                        JSONArray array = jsonObject.getJSONArray("data");
+                        JSONObject obj = null;
+                        for (int i = 0; i < array.length(); i++) {
+                            obj = array.getJSONObject(i);
+                            String status = obj.getString("Status");
+                            Log.e("Question status", status);
+                            if ("Error".equals(status)) {
+//                                btnSurvery.setVisibility(View.VISIBLE);
+                                hasSurvey = false;
+                            } else {
+//                                btnSurvery.setVisibility(View.GONE);
+                                hasSurvey = true;
+                            }
+                        }
+//                        layoutSurvey.setVisibility(View.VISIBLE);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("data","22");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("onFailure question:",t.getLocalizedMessage());
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("Exception question",e.getLocalizedMessage());
+        }
+    }
+    /**
+     * End
+     */
 }

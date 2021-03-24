@@ -97,7 +97,7 @@ public class SupValidateFragment extends BHFragment implements SupValidateAdapte
                     Gson gson=new Gson();
                     try {
                         supvalidateInfos = new ArrayList<>();
-                        supvalidateItemInfoList = new ArrayList<>();
+//                        supvalidateItemInfoList = new ArrayList<>();
                         JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
 //                        Log.e("jsonObject", String.valueOf(jsonObject));
                         if (jsonObject.getString("status").equals("SUCCESS")) {
@@ -115,6 +115,7 @@ public class SupValidateFragment extends BHFragment implements SupValidateAdapte
                                 supvalidateInfo.setStatusComment(object.getString("comment"));
                                 supvalidateInfo.setStatusId(object.getInt("ApproveStatus"));
 
+                                supvalidateItemInfoList = new ArrayList<>();
                                 JSONArray array = object.getJSONArray("image");
                                 for (int j = 0; j < array.length(); j++) {
                                     JSONObject obj = array.getJSONObject(j);

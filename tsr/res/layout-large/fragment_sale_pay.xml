@@ -281,7 +281,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/normal_bottom" >
+                    android:layout_marginBottom="@dimen/normal_bottom"
+                    android:weightSum="1">
 
                     <TextView
                         android:id="@+id/textNumber"
@@ -294,12 +295,19 @@
                     <EditText
                         android:id="@+id/editTextBrandNumber"
                         style="@style/TextView.Value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:layout_weight="0.9"
+                        android:ems="10"
+                        android:inputType="text" />
+
+                    <ImageButton
+                        android:id="@+id/ibScanBarcode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/padding_normal"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:inputType="text" />
+                        android:background="@drawable/scan"/>
                 </LinearLayout>
             </LinearLayout>
 
