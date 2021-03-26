@@ -1102,6 +1102,11 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         Log.e("MODE",MODE);
        // load_data_contact_online_preoder();
 
+//        Date d = new Date("11/12/2020 17:44");
+//        Date t = new Date("11/12/2020 17:44");
+//
+//        Log.e("test date format", BHUtilities.dateFormat(d, BHUtilities.DEFAULT_DATE_FORMAT) + " เวลา " + BHUtilities.dateFormat(t, "HH:mm") + " น.");
+
         activity = MainActivity.this;
         BHFragment.setActivity(MainActivity.this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);

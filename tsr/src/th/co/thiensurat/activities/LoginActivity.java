@@ -349,7 +349,7 @@ public class LoginActivity extends BHActivity {
                                                             BHPreference.setUserMenus(menus.Info);
                                                         }
                                                         if (result.Info != null) {
-
+                                                            BHPreference.setEmployeeID(result.Info.EmpID);
                                                             BHPreference.setIsAdmin(false);
                                                             BHPreference.initPreference(result.Info,outputGetCurrentFortnight);
                                                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
