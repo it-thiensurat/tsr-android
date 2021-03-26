@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/th.co.thiensurat"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ViewTitle"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_normal"
+        android:weightSum="1">
+
+
+
+        <TextView
+            android:id="@+id/txtFortnightDate"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.45"
+            android:gravity="right"
+            android:text="ลูกค้า LEAD ONLINE"
+            android:textColor="@color/font_color_white" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:layout_marginTop="@dimen/normal_margin_top"
+            android:orientation="vertical"
+            android:background="@color/bg_body_white">
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ViewTitle"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_normal"
+                android:weightSum="1">
+
+
+
+                <TextView
+                    android:id="@+id/txtFortnightDate"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.45"
+                    android:gravity="left"
+                    android:text="เลขที่ xxxxxx"
+                    android:textColor="@color/font_color_white" />
+
+                <TextView
+                    android:id="@+id/txtFortnightDate"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.45"
+                    android:gravity="right"
+                    android:text="15/03/2564"
+                    android:textColor="@color/font_color_white" />
+
+
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/normal_bottom"
+                android:layout_marginTop="@dimen/normal_bottom" >
+
+                <TextView
+                    android:id="@+id/txtSupervisorTitle"
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/employee_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="ชื่อลูกค้า :"
+                    android:textColor="#2c2c2c" />
+
+                <TextView
+                    android:id="@+id/txtSupervisorName"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:text="TextView" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/normal_bottom" >
+
+                <TextView
+                    android:id="@+id/txtLineManagerTitle"
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/employee_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="เบอร์โทร :"
+                    android:textColor="#2c2c2c" />
+
+                <TextView
+                    android:id="@+id/txtLineManagerName"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:text="TextView" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/txtManagerTitle"
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/employee_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="จังหวัด :"
+                    android:textColor="#2c2c2c" />
+
+                <TextView
+                    android:id="@+id/txtManagerName"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:text="TextView" />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/txtManagerTitle"
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/employee_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="สินค้าที่สนใจ :"
+                    android:textColor="#2c2c2c" />
+
+                <TextView
+                    android:id="@+id/txtManagerName"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:text="TextView" />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/txtManagerTitle"
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/employee_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="รายละเอียดเพิ่มเติม :"
+                    android:textColor="#2c2c2c" />
+
+                <TextView
+                    android:id="@+id/txtManagerName"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:text="TextView" />
+            </LinearLayout>
+
+
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp">
+
+                <TextView
+                    android:id="@+id/txtManagerTitle"
+                    style="@style/TextView.Label.bold"
+                    android:layout_width="@dimen/employee_detail_width"
+                    android:layout_height="@dimen/impound_detail_height2"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:text="สถานะ :"
+                    android:textColor="#2c2c2c" />
+
+                <TextView
+                    android:id="@+id/txtManagerName"
+                    style="@style/TextView.Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:text="TextView" />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+
+                <Button
+                    android:id="@+id/btnSearch"
+                    style="@style/ButtonTop_a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="80sp"
+                    android:layout_marginRight="30dp"
+                    android:text="Cancal" />
+
+                <Button
+                    android:id="@+id/btnSearch"
+                    style="@style/ButtonTop_b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="30sp"
+                    android:layout_marginRight="80dp"
+                    android:text="Accept" />
+
+
+            </LinearLayout>
+
+
+
+
+
+
+
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="120sp"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/ccame">
+
+                </ImageView>
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

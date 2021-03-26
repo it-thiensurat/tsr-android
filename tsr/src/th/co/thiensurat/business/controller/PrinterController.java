@@ -20,6 +20,7 @@ import th.co.thiensurat.data.controller.DocumentHistoryController;
 import th.co.thiensurat.data.controller.EmployeeController;
 import th.co.thiensurat.data.controller.SalePaymentPeriodController;
 import th.co.thiensurat.data.controller.preorder.DocumentController_preorder;
+import th.co.thiensurat.data.controller.preorder.DocumentController_preorder2;
 import th.co.thiensurat.data.info.AddressInfo;
 import th.co.thiensurat.data.info.ChangeContractInfo;
 import th.co.thiensurat.data.info.ChangeProductInfo;
@@ -1229,6 +1230,59 @@ public class PrinterController {
         });
     }
 
+
+
+    public static void printNewImageContract_preorder2(final ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
+        DocumentHistoryInfo checkExist = TSRController.getDocumentHistoryByDocumentNumber(contract.RefNo, DocumentHistoryController.DocumentType.Contract.toString());
+        List<List<PrintTextInfo>> documents = new ArrayList<>();
+        List<Bitmap> bitmapList = new ArrayList<>();
+        int limit = checkExist != null ? 1 : 2;
+        for (int x = 0; x < limit; x++) {
+            List<PrintTextInfo> document = DocumentController_preorder2.getTextContract(contract, defaultAddress, installAddress);
+            documents.add(document);
+            bitmapList.add(DocumentController_preorder2.getNewContactImage(contract, defaultAddress, installAddress));
+        }
+
+        mainActivity.printImageNew(bitmapList.toArray(new Bitmap[bitmapList.size()]), documents, new MainActivity.PrintHandler(){
+            @Override
+            public void onBackgroundPrinting(int index) {
+                DocumentHistoryInfo docHist = new DocumentHistoryInfo();
+                DocumentHistoryInfo Hist;
+
+                Hist = TSRController.getDocumentHistoryByDocumentNumber(contract.RefNo,
+                        DocumentHistoryController.DocumentType.Contract.toString());
+
+                int num = 1;
+                if (Hist != null) {
+                    num = Hist.PrintOrder + 1;
+                }
+
+                docHist.PrintHistoryID = DatabaseHelper.getUUID();
+                docHist.OrganizationCode = BHPreference.organizationCode();
+                docHist.DatePrint = new Date();
+                docHist.DocumentType = DocumentHistoryController.DocumentType.Contract.toString();
+                docHist.DocumentNumber = contract.RefNo;
+                docHist.SyncedDate = new Date();
+                docHist.CreateBy = BHPreference.employeeID();
+                docHist.CreateDate = new Date();
+                docHist.LastUpdateDate = null;
+                docHist.LastUpdateBy = "";
+                docHist.Selected = false;
+                docHist.Deleted = false;
+                docHist.PrintOrder = num;
+                docHist.Status = "";
+                docHist.SentDate = null;
+                docHist.SentEmpID = "";
+                docHist.SentSaleCode = "";
+                docHist.SentSubTeamCode = "";
+                docHist.SentTeamCode = "";
+                docHist.ReceivedDate = null;
+                docHist.ReceivedEmpID = "";
+
+                TSRController.addDocumentHistory(docHist, true);
+            }
+        });
+    }
     /**
      *
      * End

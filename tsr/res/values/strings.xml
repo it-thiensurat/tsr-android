@@ -196,6 +196,10 @@
     <string name="title_scan_product_serial">สแกนบาร์โค้ตที่เครื่อง</string>
     <string name="title_payment_first">ระบบเก็บเงินงวดแรก</string>
 
+
+
+    <string name="lead_online">ลูกค้า LEAD ONLINE</string>
+
     <!-- [START] - Fixed - [BHPROJ-0026-3276][Android-เมนู] เปลี่ยนชื่อเมนู ระบบเก็บเงินค่างวดที่คาดว่าจะสูญ เป็น ระบบเก็บเงินค่างวดกรณีอื่นๆ-->
     <!--<string name="title_payment_next">ขอเก็บเงินค่างวดที่คาดว่าจะสูญ</string>-->
     <string name="title_payment_next">ระบบเก็บเงินค่างวดกรณีอื่น ๆ</string>

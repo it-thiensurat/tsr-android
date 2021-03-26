@@ -126,6 +126,13 @@ public interface Service {
     @GET("/assanee/bighead_api_new/check_save_data.php")
     Call<Object> check_save_data(@Query("RefNo") String refno);
 
+
+    @GET("/assanee_UAT/assanee/bighead_api_new/check_contract_for_cancal_preorder.php")
+    Call<Object> load_data_contact_online_preoder2_UAT(@Query("RefNo") String RefNo);
+
+    @GET("/assanee_UAT/assanee/bighead_api_new/check_contract_for_cancal_preorder.php")
+    Call<Object> load_data_contact_online_preoder2(@Query("RefNo") String RefNo);
+
     /***** uat by moo*/
 
     /***** production  */

@@ -52,7 +52,7 @@ import th.co.thiensurat.data.info.PrintTextInfo;
 //import static android.graphics.Color.BLACK;
 //import static android.graphics.Color.WHITE;
 
-public class DocumentController_preorder {
+public class DocumentController_preorder2 {
 
     private static Context mContext = BHApplication.getContext();
 
@@ -1378,7 +1378,7 @@ public class DocumentController_preorder {
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
         receiptBuilder.setAlign(Align.CENTER);
-        receiptBuilder.addText(contract.MODE > 1 ? "ใบจอง" : "ใบจอง");
+        receiptBuilder.addText(contract.MODE > 1 ? "ใบจอง (ยกเลิกใบจอง)" : "ใบจอง (ยกเลิกใบจอง)");
         receiptBuilder.addParagraph();
         receiptBuilder.setAlign(Align.LEFT);
         receiptBuilder.addText("วันที่ทำใบจอง", false);
@@ -2044,34 +2044,20 @@ public class DocumentController_preorder {
 
 
 
-/*        receiptBuilder.setTextSize(22);
-        receiptBuilder.setAlign(Align.LEFT);
-        receiptBuilder.addText("** หมายเหตุ: **", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addText("1. การนัดนี้ต้องไม่นานเกิน 7 วัน นับจากวันนัด", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.addText("2. ถ้าเลยคืนวันที่นัดไปแล้ว ถือว่าการนัดเป็นโมฆะ พนักงานคนอื่นสามารถตกลงติดตั้งกับลูกค้าได้", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.setTextSize(20);
-
-        receiptBuilder.addText("อื่นสามารถตกลงติดตั้งกับลูกค้าได้", true);
-        receiptBuilder.addParagraph();
-        receiptBuilder.setTextSize(20);
-
-        receiptBuilder.addText("3. ใบนัดติดตั้งต้องยื่นต่อหัวหน้าฝ่ายขายในวันถัดมาของการทำงาน เพื่อเป็นหลักฐานยืนยันว่าได้นัดติดตั้งจริง", true);
-        receiptBuilder.addParagraph();
-
-        receiptBuilder.addText("เพื่อเป็นหลักฐานยืนยันว่าได้นัดติดตั้งจริง", true);
-        receiptBuilder.addParagraph();
 
 
-        receiptBuilder.addText("4. ให้ยึดที่อยู่ที่ติดตั้งเป็นหลัก (ในกรณีชื่อ ล/ค ไม่ตรง)", true);
-        receiptBuilder.addParagraph();*/
+
+
 
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
         receiptBuilder.setAlign(Align.CENTER);
         receiptBuilder.addText("ข้อมูลเพิ่มเติม");
+
+
+
+
+
 
         receiptBuilder.addParagraph();
         receiptBuilder.setAlign(Align.LEFT);
@@ -2085,79 +2071,115 @@ public class DocumentController_preorder {
         receiptBuilder.setAlign(Align.LEFT);
         receiptBuilder.addText("จำนวน", false);
         receiptBuilder.setAlign(Align.RIGHT);
-        int number = Integer.parseInt(BHApplication.getInstance().getPrefManager().getPreferrence("FirstPeriodPayAmount"));
-        String str = NumberFormat.getNumberInstance(Locale.US).format(number);
-        receiptBuilder.addText(str+" บาท");
-
-
-        receiptBuilder.addParagraph();
-        receiptBuilder.setAlign(Align.LEFT);
-        receiptBuilder.addText("ผู้ทำสัญญา", false);
-        receiptBuilder.setAlign(Align.RIGHT);
-        receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("ContractBy"));
-
-        receiptBuilder.addParagraph();
-        receiptBuilder.setAlign(Align.LEFT);
-        receiptBuilder.addText("ข้อมูลน้ำดิบ", false);
-        receiptBuilder.setAlign(Align.RIGHT);
-        receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("WaterInfo"));
-
-        receiptBuilder.addParagraph();
-        receiptBuilder.setAlign(Align.LEFT);
-        receiptBuilder.addText("ปัญหาสภาพน้ำ", false);
-        receiptBuilder.setAlign(Align.RIGHT);
-        receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("WaterProblem").equals("อื่นๆ (ระบุ)") ? BHApplication.getInstance().getPrefManager().getPreferrence("WaterProblemMore"):BHApplication.getInstance().getPrefManager().getPreferrence("WaterProblem"));
-
-        receiptBuilder.addParagraph();
-        receiptBuilder.setAlign(Align.LEFT);
-        receiptBuilder.addText("ผู้จัดส่งสินค้า", false);
-        receiptBuilder.setAlign(Align.RIGHT);
-        receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("ShippingBy"));
-
-
-
-        receiptBuilder.addParagraph();
-        receiptBuilder.setAlign(Align.LEFT);
-        receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("ShippingBy").equals("ทีมขายจัดส่งสินค้าเอง") ? "วันที่":"จัดส่งที่",false );
-        receiptBuilder.setAlign(Align.RIGHT);
-        receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("ShippingBy").equals("ทีมขายจัดส่งสินค้าเอง") ? BHApplication.getInstance().getPrefManager().getPreferrence("ShippingDate") : BHApplication.getInstance().getPrefManager().getPreferrence("ShippingTo"));
-
-
-        receiptBuilder.addParagraph();
-        receiptBuilder.setAlign(Align.LEFT);
-        receiptBuilder.addText("เบอร์สำรองลูกค้า", false);
-        receiptBuilder.setAlign(Align.RIGHT);
-        receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("TelnoCus"));
-
-        receiptBuilder.addParagraph();
-        receiptBuilder.setAlign(Align.LEFT);
-        receiptBuilder.addText("ข้อมูล อื่นๆ", false);
-
-
-
-     //   receiptBuilder.setAlign(Align.RIGHT);
-        String SS=BHApplication.getInstance().getPrefManager().getPreferrence("InstallDetails");
-        //String SS="จากการตรวจในที่เกิดเหตุพบเก้าอี้ล้มกระจัดกระจาย และพบรอยเลือดหลายจุดทั่วศาลา ส่วนผู้ได้มี รายแรกคือ นายยิ่งพันธิ์ กันเกตุ กำนันตำบลดอนทราย อาการสาหัส รายที่ 2 นายนคร วันเพ็ญ ผู้สมัครเทศบาลตำบลดอนทราย รายที่ 3 นางสมถวิล ศรีรัตน์ รายที่ 4 นางมณเฑียร ใจธรรม ถูกส่งตัวไปรักษาที่โรงพยาบาลเจ็ดเสมียน และ โรงพยาบาลราชบุรี ส่วนรายที่ 5 คือ นางวราพร เนียมรักษา ผู้สมัครนายกเทศบาลตำบลดอนทราย อาการสาหัส ถูกส่งตัวไปรักษาที่โรงพยาบาลกรุงเทพเมืองราชบุรี แต่นางวราพร เนียมรักษา ทนพิษบาดแผลไม่ไหว";
-     //   receiptBuilder.addText(SS);
 
 
 
 
+        try {
+            int number = Integer.parseInt(BHApplication.getInstance().getPrefManager().getPreferrence("FirstPeriodPayAmount"));
+            String str = NumberFormat.getNumberInstance(Locale.US).format(number);
+            receiptBuilder.addText(str+" บาท");
 
 
 
 
-        receiptBuilder.addBlankSpace(10);
-        //receiptBuilder.setAlign(Align.RIGHT);
-        String[] texts = getText(SS, pValue, RECEIPT_WIDTH / 1);
-        for (int ii = 0; ii < texts.length; ii++) {
-           // cvAddr.drawText(texts[ii], RECEIPT_WIDTH / 2, yy, pValue);
-           // yy += fontSize + lineSpace;
-            receiptBuilder.setTextSize(22);
             receiptBuilder.addParagraph();
             receiptBuilder.setAlign(Align.LEFT);
-            receiptBuilder.addText(texts[ii], false);
+            receiptBuilder.addText("ผู้ทำสัญญา", false);
+            receiptBuilder.setAlign(Align.RIGHT);
+            receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("ContractBy"));
+
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Align.LEFT);
+            receiptBuilder.addText("ข้อมูลน้ำดิบ", false);
+            receiptBuilder.setAlign(Align.RIGHT);
+            receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("WaterInfo"));
+
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Align.LEFT);
+            receiptBuilder.addText("ปัญหาสภาพน้ำ", false);
+            receiptBuilder.setAlign(Align.RIGHT);
+            receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("WaterProblem").equals("อื่นๆ (ระบุ)") ? BHApplication.getInstance().getPrefManager().getPreferrence("WaterProblemMore"):BHApplication.getInstance().getPrefManager().getPreferrence("WaterProblem"));
+
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Align.LEFT);
+            receiptBuilder.addText("ผู้จัดส่งสินค้า", false);
+            receiptBuilder.setAlign(Align.RIGHT);
+            receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("ShippingBy"));
+
+
+
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Align.LEFT);
+            receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("ShippingBy").equals("ทีมขายจัดส่งสินค้าเอง") ? "วันที่":"จัดส่งที่",false );
+            receiptBuilder.setAlign(Align.RIGHT);
+            receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("ShippingBy").equals("ทีมขายจัดส่งสินค้าเอง") ? BHApplication.getInstance().getPrefManager().getPreferrence("ShippingDate") : BHApplication.getInstance().getPrefManager().getPreferrence("ShippingTo"));
+
+
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Align.LEFT);
+            receiptBuilder.addText("เบอร์สำรองลูกค้า", false);
+            receiptBuilder.setAlign(Align.RIGHT);
+            receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("TelnoCus"));
+
+            receiptBuilder.addParagraph();
+            receiptBuilder.setAlign(Align.LEFT);
+            receiptBuilder.addText("ข้อมูล อื่นๆ", false);
+
+
+
+            //   receiptBuilder.setAlign(Align.RIGHT);
+            String SS=BHApplication.getInstance().getPrefManager().getPreferrence("InstallDetails");
+            //String SS="จากการตรวจในที่เกิดเหตุพบเก้าอี้ล้มกระจัดกระจาย และพบรอยเลือดหลายจุดทั่วศาลา ส่วนผู้ได้มี รายแรกคือ นายยิ่งพันธิ์ กันเกตุ กำนันตำบลดอนทราย อาการสาหัส รายที่ 2 นายนคร วันเพ็ญ ผู้สมัครเทศบาลตำบลดอนทราย รายที่ 3 นางสมถวิล ศรีรัตน์ รายที่ 4 นางมณเฑียร ใจธรรม ถูกส่งตัวไปรักษาที่โรงพยาบาลเจ็ดเสมียน และ โรงพยาบาลราชบุรี ส่วนรายที่ 5 คือ นางวราพร เนียมรักษา ผู้สมัครนายกเทศบาลตำบลดอนทราย อาการสาหัส ถูกส่งตัวไปรักษาที่โรงพยาบาลกรุงเทพเมืองราชบุรี แต่นางวราพร เนียมรักษา ทนพิษบาดแผลไม่ไหว";
+            //   receiptBuilder.addText(SS);
+
+
+
+
+
+
+
+
+            receiptBuilder.addBlankSpace(10);
+            //receiptBuilder.setAlign(Align.RIGHT);
+            String[] texts = getText(SS, pValue, RECEIPT_WIDTH / 1);
+            for (int ii = 0; ii < texts.length; ii++) {
+                // cvAddr.drawText(texts[ii], RECEIPT_WIDTH / 2, yy, pValue);
+                // yy += fontSize + lineSpace;
+                receiptBuilder.setTextSize(22);
+                receiptBuilder.addParagraph();
+                receiptBuilder.setAlign(Align.LEFT);
+                receiptBuilder.addText(texts[ii], false);
+            }
         }
+        catch (Exception ex){
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

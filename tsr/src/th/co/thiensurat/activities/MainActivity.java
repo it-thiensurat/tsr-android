@@ -196,6 +196,7 @@ import th.co.thiensurat.fragments.report.ReportSummaryTradeProductMainFragment;
 import th.co.thiensurat.fragments.report.ReportSummaryWriteOffNPLMainFragment;
 import th.co.thiensurat.fragments.sales.EditContractsMainFragment;
 import th.co.thiensurat.fragments.sales.SaleMainFragment;
+import th.co.thiensurat.fragments.sales.lead_online.LEAD_ONLINE;
 import th.co.thiensurat.fragments.sales.preorder.SaleMainFragment_peoorder;
 import th.co.thiensurat.fragments.sales.preorder_setting.SaleMainFragment_preorder_setting;
 import th.co.thiensurat.fragments.sales.preorder_setting.SaleMainFragment_preorder_setting2;
@@ -1099,7 +1100,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         setContentView(R.layout.activity_main);
        MODE=  BHGeneral.SERVICE_MODE.toString();
         Log.e("MODE",MODE);
-        //load_data_contact_online_preoder();
+       // load_data_contact_online_preoder();
 
         activity = MainActivity.this;
         BHFragment.setActivity(MainActivity.this);
@@ -1625,7 +1626,11 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     break;
 
                 case R.string.main_menu_team: //พนักงานขาย // not require SaleCode
+
                     success = showView(BHFragment.newInstance(EmployeeTeamFragment.class));
+
+                   // success = showView(BHFragment.newInstance(LEAD_ONLINE.class));
+
                     break;
 
                 case R.string.main_menu_credit_employee_detail: //พนักงานเก็บเงิน credit // not require SaleCode
@@ -4360,6 +4365,8 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
     }
 
 
+
+
     String ID_MAIN="";
     public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_product(JSONArray array) {
 
@@ -4424,6 +4431,8 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 String IsReadyForSaleAudit=json.getString("IsReadyForSaleAudit");
                 String ContractReferenceNo=json.getString("ContractReferenceNo");
                 String IsMigrate= json.getString("IsMigrate");
+                String SPECCODE= json.getString("SPECCODE");
+
                 String EFFDATE=json.getJSONObject("EFFDATE").getString("date")+"";
                 String LastUpdateDate=json.getJSONObject("LastUpdateDate").getString("date")+"";
                 String CreateDate=json.getJSONObject("CreateDate").getString("date")+"";
@@ -4480,18 +4489,10 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A3(jsonArray3);
                 JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A4(jsonArray4);
 
-                //JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A1(jsonArray.getString(A_AddressIDCard));
-
-
-           //     String A_AddressIDCard_AddressID= jsonObject.getString("AddressID");
-
-             //   String A_AddressInstall= json.getString("A_AddressInstall");
-             //   String A_AddressPayment= json.getString("A_AddressPayment");
 
                 String date = D_Brithday.substring(0, 19);
 
 
-          //      Log.e("date_B",date);
 
 
                 try {
@@ -4514,6 +4515,21 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 catch (Exception ex){
 
                 }
+
+
+                Log.e("aaaadddd",RefNo+","+SPECCODE);
+
+                try {
+
+                    updateAssignForPostpone(RefNo, SPECCODE);
+                }
+                catch (Exception ex){
+
+                }
+
+
+
+
             } catch (JSONException e) {
 
                 e.printStackTrace();
@@ -4718,6 +4734,12 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         }
     }
 
+    public static void updateAssignForPostpone(String Refno, String SPECCODE) {
+
+        String sql = "update Contract set [SPECCODE] = ? WHERE Refno =?";
+        //  String sql = "UPDATE Assign SET [Order] = ? WHERE AssignID = ?";
+        executeNonQuery4(sql, new String[]{SPECCODE, Refno});
+    }
 
     public static void addContract22(String RefNo,String CONTNO, String CustomerID,String OrganizationCode,
                               String STATUS,String StatusCode,String SALES,String TotalPrice,String EFFDATE,

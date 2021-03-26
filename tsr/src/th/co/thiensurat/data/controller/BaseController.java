@@ -219,7 +219,11 @@ public class BaseController {
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            throw new RuntimeException(e);
+
+
+           // throw new RuntimeException(e);
+
+
         } finally {
             //database.endTransaction();
             if (cursor != null) {

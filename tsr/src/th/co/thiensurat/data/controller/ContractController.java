@@ -532,7 +532,7 @@ public class ContractController extends BaseController {
                         + "     ,Cont.[InstallerSaleCode],Cont.[InstallerEmployeeCode],Cont.[InstallerTeamCode],Cont.[InstallDate],ifnull(Cont.[ProductSerialNumber],'') AS ProductSerialNumber,Cont.[ProductID]"
                         + "     ,Cont.[SaleEmployeeLevelPath],Cont.[MODE],Cont.[FortnightID],Cont.[ProblemID],Cont.[svcontno],Cont.[isActive],Cont.[MODEL]"
                         + "     ,Cont.[fromrefno],Cont.[fromcontno],Cont.[todate],Cont.[tocontno],Cont.[torefno],Cont.[CreateDate],Cont.[CreateBy],Cont.[LastUpdateDate],Cont.[LastUpdateBy],Cont.[SyncedDate]"
-                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate]"
+                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate], Cont.[SPECCODE]"
                         /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
 
                         + " 			,Cust.PrefixName || IFNULL(Cust.CustomerName,'') AS CustomerFullName, Cust.CompanyName, Cust.IDCard,"
@@ -566,7 +566,7 @@ public class ContractController extends BaseController {
                         + "     ,Cont.[InstallerSaleCode],Cont.[InstallerEmployeeCode],Cont.[InstallerTeamCode],Cont.[InstallDate],ifnull(Cont.[ProductSerialNumber],'') AS ProductSerialNumber,Cont.[ProductID]"
                         + "     ,Cont.[SaleEmployeeLevelPath],Cont.[MODE],Cont.[FortnightID],Cont.[ProblemID],Cont.[svcontno],Cont.[isActive],Cont.[MODEL]"
                         + "     ,Cont.[fromrefno],Cont.[fromcontno],Cont.[todate],Cont.[tocontno],Cont.[torefno],Cont.[CreateDate],Cont.[CreateBy],Cont.[LastUpdateDate],Cont.[LastUpdateBy],Cont.[SyncedDate]"
-                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate]"
+                        + "     ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate], Cont.[SPECCODE]"
                         /*** [END] :: Fixed - [BHPROJ-0025-760] ***/
 
                         + " 			,Cust.PrefixName || IFNULL(Cust.CustomerName,'') AS CustomerFullName, Cust.CompanyName, Cust.IDCard,"

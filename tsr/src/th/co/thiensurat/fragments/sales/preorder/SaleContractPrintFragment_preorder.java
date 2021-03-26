@@ -664,7 +664,9 @@ public class SaleContractPrintFragment_preorder extends BHFragment {
                             setupAlert = setupAlert.setPositiveButton("ใช่ ฉันต้องการยกเลิกใบจองนี้", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     dialog.cancel();
+
                                     doVoidContract(contract.RefNo, contract.CONTNO, contract.ProductSerialNumber);
+
                                 }
                             }).setNeutralButton("ไม่ใช่", new DialogInterface.OnClickListener() {
                                 @Override

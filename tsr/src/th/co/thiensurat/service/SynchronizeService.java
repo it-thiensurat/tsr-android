@@ -250,6 +250,9 @@ public class SynchronizeService extends Service {
 										synchStatusInputInfo.IsAdmin = BHPreference.IsAdmin();
 
 										boolean statusSQLite = false;
+
+
+
 										while (statusSQLite == false) {
 
 											try {
@@ -266,6 +269,9 @@ public class SynchronizeService extends Service {
 													} else { //Error
 														//throw new RuntimeException(info.ResultDescription);
 														throw new RuntimeException(getResources().getString(R.string.error_synch));
+
+
+
 													}
 													//Thread.sleep(5000);
 												} else {
@@ -275,6 +281,12 @@ public class SynchronizeService extends Service {
 												Log.e("Sync", e.getLocalizedMessage());
 											}
 										}
+
+
+
+
+
+
 										select_page=0;
 									}
 								} else {
@@ -411,6 +423,15 @@ public class SynchronizeService extends Service {
 										synchStatusInputInfo.CallStatus = "CHECKE";
 										synchStatusInputInfo.IsAdmin = BHPreference.IsAdmin();
 
+
+
+
+										Log.e("c1",BHPreference.teamCode());
+										Log.e("c2",BHPreference.employeeID());
+										Log.e("c3", String.valueOf(BHPreference.IsAdmin()));
+										Log.e("c4",BHPreference.organizationCode());
+
+
 										boolean statusSQLite = false;
 										while (statusSQLite == false) {
 
@@ -428,8 +449,10 @@ public class SynchronizeService extends Service {
 														throw new RuntimeException(getResources().getString(R.string.error_synch));
 													}
 													Thread.sleep(5000);
+													//Thread.sleep(5000);
+
 												} else {
-													throw new RuntimeException(output.ResultDescription);
+													//throw new RuntimeException(output.ResultDescription);
 												}
 											} catch (Exception e) {
 												// TODO Auto-generated catch block
