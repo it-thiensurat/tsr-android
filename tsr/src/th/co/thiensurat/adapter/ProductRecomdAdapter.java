@@ -57,7 +57,7 @@ public class ProductRecomdAdapter extends RecyclerView.Adapter<ProductRecomdAdap
         holder.brandProduct.setText(productRecomendInfo.getBrandName());
         holder.codeProduct.setText(productRecomendInfo.getProductCode());
         holder.nameProduct.setText(productRecomendInfo.getProductName());
-        holder.priceProduct.setText(BHUtilities.numericFormat(Double.parseDouble(productRecomendInfo.getRetailPrice().isEmpty() ? "0.00" : productRecomendInfo.getRetailPrice())));
+        holder.priceProduct.setText(BHUtilities.numericFormat(productRecomendInfo.getRetailPrice()));
     }
 
     @Override

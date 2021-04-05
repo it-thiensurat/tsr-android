@@ -396,9 +396,9 @@ public class New2SaleCustomerAddressCardFragment extends BHFragment {
         }
 
 
-        Log.e("Emp id4", BHPreference.getEmpid4());
-        Log.e("Emp id5", BHPreference.getEmpid5());
-        Log.e("Emp id6", BHPreference.getEmpid6());
+//        Log.e("Emp id4", BHPreference.getEmpid4());
+//        Log.e("Emp id5", BHPreference.getEmpid5());
+//        Log.e("Emp id6", BHPreference.getEmpid6());
 
         //  CheckBox chk = (CheckBox) findViewById(R.id.chk1);
         checkBoxvip.setOnClickListener(new View.OnClickListener() {

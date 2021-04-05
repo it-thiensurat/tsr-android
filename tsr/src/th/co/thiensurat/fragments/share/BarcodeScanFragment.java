@@ -524,6 +524,7 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 									Log.e("Current Latitude1", location.getLatitude()+"");
 									Log.e("Current Longitude1", location.getLongitude()+"");
 									getProductRecoment(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+									getSaleArea(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
 								}
 							}
 						}
@@ -558,6 +559,7 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 //			latitude = mLastLocation.getLatitude() + "";
 //			longitude = mLastLocation.getLongitude() + "";
 			getProductRecoment(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
+			getSaleArea(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
 		}
 	};
 
@@ -588,14 +590,16 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 							productRecomendInfo.setProductName(object.getString("productName"));
 							productRecomendInfo.setImgPath(object.getString("imgPath"));
 							try {
-								productRecomendInfo.setStickerPrice(object.getString("stickerPrice"));
-								productRecomendInfo.setRetailPrice(object.getString("retailPrice"));
+								productRecomendInfo.setStickerPrice(object.getDouble("stickerPrice"));
+								productRecomendInfo.setRetailPrice(object.getDouble("retailPrice"));
 								productRecomendInfo.setWarranty(object.getString("warranty"));
 							} catch (Exception e) {
-								productRecomendInfo.setStickerPrice("");
-								productRecomendInfo.setRetailPrice("");
-								productRecomendInfo.setWarranty("");
+//								productRecomendInfo.setStickerPrice("0.00");
+//								productRecomendInfo.setRetailPrice("0.00");
+//								productRecomendInfo.setWarranty("");
 							}
+
+
 
 							productRecomendInfoList.add(productRecomendInfo);
 						}
@@ -636,4 +640,51 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 	public void onItemClick(View view, int position) {
 
 	}
+
+	private void getSaleArea(String latitude, String longitude) {
+		try {
+			Retrofit retrofit = new Retrofit.Builder()
+					.baseUrl(BASE_URL)
+					.addConverterFactory(GsonConverterFactory.create())
+					.build();
+			Service request = retrofit.create(Service.class);
+			Call call = request.getSaleArea(latitude, longitude);
+			call.enqueue(new Callback() {
+				@Override
+				public void onResponse(Call call, retrofit2.Response response) {
+					Gson gson = new Gson();
+					Log.e("Json body", String.valueOf(response.body()));
+					try {
+						JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+						JSONArray jsonArray = jsonObject.getJSONArray("data");
+						Log.e("Sale area", String.valueOf(jsonArray.length()));
+						if (jsonArray.length() > 0) {
+							if (jsonArray.getJSONObject(0).getString("area").equals("ปิด")) {
+								showWarningDialog("แจ้งเตือนพื้นที่ขาย",
+										"พื้นที่นี้ยังไม่ได้รับการอนุมัติให้ขายสินค้า");
+							}
+						} else {
+							showWarningDialog("แจ้งเตือนพื้นที่ขาย",
+									"พื้นที่นี้ยังไม่ได้รับการอนุมัติให้ขายสินค้า");
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+						Log.e("JSONException", e.getLocalizedMessage());
+					}
+				}
+
+				@Override
+				public void onFailure(Call call, Throwable t) {
+					Log.e("onFailure", t.getLocalizedMessage());
+				}
+			});
+
+		} catch (Exception e) {
+			Log.e("Exception", e.getLocalizedMessage());
+		}
+	}
+
+	/**
+	 * End
+	 */
 }

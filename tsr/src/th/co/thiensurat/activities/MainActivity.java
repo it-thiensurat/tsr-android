@@ -129,6 +129,7 @@ import th.co.bighead.utilities.BHPermissions;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHStorage;
 import th.co.bighead.utilities.BHUtilities;
+import th.co.bighead.utilities.annotation.InjectView;
 import th.co.bighead.utilities.printer.PrintPic;
 import th.co.thiensurat.R;
 import th.co.thiensurat.business.controller.BackgroundProcess;
@@ -226,6 +227,7 @@ import static th.co.bighead.utilities.BHApplication.getContext;
 import static th.co.bighead.utilities.BHPreference.pp3;
 import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 import static th.co.thiensurat.retrofit.api.client.GIS_BASE_URL;
+
 
 public class MainActivity extends BHActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -1093,11 +1095,15 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         fragmentResultData = data;
     }
 
+    private static TextView txtArea;
      static String MODE="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        txtArea = (TextView) findViewById(R.id.txtArea);
+
        MODE=  BHGeneral.SERVICE_MODE.toString();
         Log.e("MODE",MODE);
        // load_data_contact_online_preoder();
@@ -1106,6 +1112,11 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 //        Date t = new Date("11/12/2020 17:44");
 //
 //        Log.e("test date format", BHUtilities.dateFormat(d, BHUtilities.DEFAULT_DATE_FORMAT) + " เวลา " + BHUtilities.dateFormat(t, "HH:mm") + " น.");
+
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
 
         activity = MainActivity.this;
         BHFragment.setActivity(MainActivity.this);
@@ -1213,6 +1224,8 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
         }
         currentLoc.connectGoogleApi();
+
+//        Log.e("Current Location", String.valueOf(currentLoc.latitude)+","+String.valueOf(currentLoc.longitude));
     }
 
     @Override
@@ -4140,15 +4153,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
     private static void updateLocation(String lat, String lon) {
         try {
-//            gisBody body = new gisBody();
-//            body.setLat(lat);
-//            body.setLon(lon);
-//            body.setSpeed("0");
-//            body.setSource("BH");
-//            body.setEmpID(BHPreference.employeeID());
-//            body.setDeviceID(BHPreference.userDeviceId());
-
-//            String json = new Gson().toJson(body);
             String android_id = Settings.Secure.getString(getContext().getContentResolver(),
                     Settings.Secure.ANDROID_ID);
             Retrofit retrofit = new Retrofit.Builder()
@@ -4162,6 +4166,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 public void onResponse(Call call, retrofit2.Response response) {
                     Gson gson = new Gson();
                     try {
+                        getCurrentArea(lat, lon);
                         Log.e("Update curent gis", String.valueOf(response.body()));
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -4180,74 +4185,46 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         }
     }
 
-    public static class gisBody {
-        private static String lat;
-        private static String lon;
-        private static String deviceID;
-        private static String empID;
-        private static String source;
-        private static String speed;
+    private static void getCurrentArea(String lat, String lon) {
+        String latlng = lat + "," + lon;
+        String key = "AIzaSyAAgfLCmkJoMLfS8ElkVVEizDGfJ0IxXUk";
+        String lang = "th";
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("https://maps.googleapis.com")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = request.getAreaFromGoogle(latlng, key, lang);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson = new Gson();
+                    try {
+                        Log.e("getAreaFromGoogle", String.valueOf(response.body()));
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+                        Log.e("plus code", String.valueOf(jsonObject.getJSONObject("plus_code")));
+                        String compond = jsonObject.getJSONObject("plus_code").getString("compound_code");
+//                        String global = jsonObject.getJSONObject("plus_code").getString("global_code");
+                        int index = compond.indexOf(" ");
+                        txtArea.setText(compond.substring(index, compond.length()).toString().replace(" ประเทศไทย", ""));
+                        Log.e("compound_code", String.valueOf(compond));
+//                        txtArea.setText(String.valueOf(compond));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("getAreaFromGoogle", e.getLocalizedMessage());
+                    }
+                }
 
-        public gisBody(String lat, String lon, String deviceID, String empID, String source, String speed) {
-            this.lat = lat;
-            this.lon = lon;
-            this.deviceID = deviceID;
-            this.empID = empID;
-            this.source = source;
-            this.speed = speed;
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("getAreaFromGoogle(fail)", "onFailure");
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("Exception", e.getLocalizedMessage());
         }
-
-//        public gisBody() {
-//
-//        }
-//
-//        public String getLat() {
-//            return lat;
-//        }
-//
-//        public String getLon() {
-//            return lon;
-//        }
-//
-//        public String getDeviceID() {
-//            return deviceID;
-//        }
-//
-//        public String getEmpID() {
-//            return empID;
-//        }
-//
-//        public String getSource() {
-//            return source;
-//        }
-//
-//        public String getSpeed() {
-//            return speed;
-//        }
-//
-//        public static void setLat(String lat) {
-//            gisBody.lat = lat;
-//        }
-//
-//        public static void setLon(String lon) {
-//            gisBody.lon = lon;
-//        }
-//
-//        public static void setDeviceID(String deviceID) {
-//            gisBody.deviceID = deviceID;
-//        }
-//
-//        public static void setEmpID(String empID) {
-//            gisBody.empID = empID;
-//        }
-//
-//        public static void setSource(String source) {
-//            gisBody.source = source;
-//        }
-//
-//        public static void setSpeed(String speed) {
-//            gisBody.speed = speed;
-//        }
     }
 
     /**

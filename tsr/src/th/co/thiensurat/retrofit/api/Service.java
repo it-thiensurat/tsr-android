@@ -182,6 +182,9 @@ public interface Service {
     @GET("API/DrinkCoApi/api/DistrictItemsNew/{lat},{lon}/6256a94701b4b14b8400d5e7559d9ee7")
     Call<Object> getProductRecomend(@Path(value = "lat", encoded = false) String lat, @Path(value = "lon", encoded = false) String lon);
 
+    @GET("/api/api-chkAreaSaleing.php")
+    Call<Object> getSaleArea(@Query("lat") String lat, @Query("long") String lon);
+
     @POST("UAT/BH/GetImageCheck")
     @FormUrlEncoded
     Call<Object> getImageValidate(@Field("empid") String empid);
@@ -189,6 +192,10 @@ public interface Service {
     @POST("UAT/BH/VoidContract")
     @FormUrlEncoded
     Call<Object> voidToApproveContno(@Field("refno") String refno, @Field("empid") String empid);
+
+//    @GET("/maps/api/geocode/json?latlng={lat},{lon}&key=AIzaSyAAgfLCmkJoMLfS8ElkVVEizDGfJ0IxXUk&language=th")
+    @GET("/maps/api/geocode/json")
+    Call<Object> getAreaFromGoogle(@Query("latlng") String latlng, @Query("key") String key, @Query("language") String lang);
     /**
      *
      */
