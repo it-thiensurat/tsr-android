@@ -31,6 +31,7 @@
     <string name="button_add">จัดเก็บข้อมูล</string>
     <string name="button_back">ย้อนกลับ</string>
     <string name="button_credit_choose_date">เลือกวันเก็บเงิน</string>
+    <string name="button_product_recommend">สินค้าแนะนำ</string>
     <string name="button_ok">ตกลง</string>
     <string name="button_check">ตรวจสอบสินค้า</string>
     <string name="button_import">นำเข้าสินค้า</string>

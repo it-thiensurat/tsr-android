@@ -8,6 +8,7 @@ public class ProductRecomendInfo {
     public double retailPrice;
     public String imgPath;
     public String warranty;
+    public String type;
 
     public String getBrandName() {
         return brandName;
@@ -63,5 +64,13 @@ public class ProductRecomendInfo {
 
     public void setWarranty(String warranty) {
         this.warranty = warranty;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

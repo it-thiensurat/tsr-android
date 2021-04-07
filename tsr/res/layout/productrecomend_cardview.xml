@@ -14,6 +14,7 @@
         app:cardElevation="6dp">
 
         <LinearLayout
+            android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -123,6 +124,14 @@
                         android:text="brandName" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txtAccessory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="test"
+                    android:textColor="@color/font_color_style2"/>
 
             </LinearLayout>
 

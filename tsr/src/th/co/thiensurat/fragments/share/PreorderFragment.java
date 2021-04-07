@@ -462,11 +462,7 @@ public class PreorderFragment extends BHFragment {
 
 		}
 
-
-		adapter.setDropDownViewResource(R.layout.simple_1111);
-
-
-
+//		adapter.setDropDownViewResource(R.layout.simple_1111);
 
 		spDemo.setAdapter(adapter);
 

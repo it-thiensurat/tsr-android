@@ -102,7 +102,7 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 	public  static int select_baecode = 0,oncick=0,check_scan2=0;
 	SaleMainFragment saleMainFragment;
 
-
+	private boolean productRecommend = true;
 	private ProductStockInfo productInfo;
 	TSRController controller;
 	private String title;
@@ -137,7 +137,7 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 	@Override
 	protected int[] processButtons() {
 		// TODO Auto-generated method stub
-		return new int[] { R.string.button_back, R.string.button_next };
+		return new int[] { R.string.button_back, R.string.button_product_recommend, R.string.button_next };
 	}
 
 	@Override
@@ -176,6 +176,15 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 			//	saleMainFragment.UpdateProductStockStatus(barcode);
 			}*/
 			break;
+			case R.string.button_product_recommend:
+				if (productRecommend) {
+					productRecommend = false;
+					layout_recomend.setVisibility(View.GONE);
+				} else {
+					productRecommend = true;
+					layout_recomend.setVisibility(View.VISIBLE);
+				}
+				break;
 		default:
 			break;
 		}
@@ -346,40 +355,22 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 
 				select_baecode=0;
 
-
-
                 String substring_ProductSerialNumber = barcode.substring(0, 1);
-              //  String substring_ProductSerialNumber = barcode;
-
-
                 if(substring_ProductSerialNumber.equals("F")){  //F
                     li_scan2.setVisibility(View.VISIBLE);
 
 					barcode2="";
 					barcode3="";
 					oncick=0;
-                }
-                else {
-
+                } else {
 					oncick=1;
-
-                    // Result result = new Result(barcode,"","");
-                   // setResult(result);
-
                 }
-
-
 
 				String barcode1 = edtBarcode.getText().toString();
 				String barcode2 = edtBarcode2.getText().toString();
 				String barcode3 = edtBarcode3.getText().toString();
-
-
 				Result result = new Result(barcode1,barcode2,barcode3);
 				setResult(result);
-
-
-
 			}
 		}
        else if (requestCode == REQUEST_QR_SCAN2) {
@@ -407,19 +398,16 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 						 // li_scan3.setVisibility(View.VISIBLE);
                          // Result result = new Result(barcode,barcode2,"");
                         //  setResult(result);
-                        }
-                        else {
+                        } else {
 
 						  barcode2="";
                           edtBarcode2.setText("Serial Number เครื่องไม่ถูกต้อง!");
                         //  Result result = new Result(barcode,barcode2);
                         //  setResult(result);
 						  showWarningDialog("", "Serial Number เครื่องไม่ถูกต้อง!");
-
                         }
             }
-        }
-		else if (requestCode == REQUEST_QR_SCAN3) {
+        } else if (requestCode == REQUEST_QR_SCAN3) {
 			if (resultCode == Activity.RESULT_CANCELED) {
 				showMessage("ยังไม่ได้ทำการสแกน กรุณาทำการสแกนอีกครั้ง");
 			} else if (resultCode == Activity.RESULT_OK) {
@@ -433,13 +421,10 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 
 
 				if(substring_barcode3.equals("F")){
-
-
 					edtBarcode3.setText(barcode3);
 					// Result result = new Result(barcode,barcode2,"");
 					//  setResult(result);
 				} else {
-
 					barcode3="";
 					edtBarcode3.setText("Serial Number เครื่องไม่ถูกต้อง!");
 					//  Result result = new Result(barcode,barcode2);
@@ -521,8 +506,8 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 								} else {
 //									latitude = location.getLatitude() + "";
 //									longitude = location.getLongitude() + "";
-									Log.e("Current Latitude1", location.getLatitude()+"");
-									Log.e("Current Longitude1", location.getLongitude()+"");
+//									Log.e("Current Latitude1", location.getLatitude()+"");
+//									Log.e("Current Longitude1", location.getLongitude()+"");
 									getProductRecoment(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
 									getSaleArea(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
 								}
@@ -554,8 +539,8 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 		@Override
 		public void onLocationResult(LocationResult locationResult) {
 			Location mLastLocation = locationResult.getLastLocation();
-			Log.e("Current Latitude2", mLastLocation.getLatitude()+"");
-			Log.e("Current Longitude2", mLastLocation.getLongitude()+"");
+//			Log.e("Current Latitude2", mLastLocation.getLatitude()+"");
+//			Log.e("Current Longitude2", mLastLocation.getLongitude()+"");
 //			latitude = mLastLocation.getLatitude() + "";
 //			longitude = mLastLocation.getLongitude() + "";
 			getProductRecoment(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
@@ -581,7 +566,29 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 					try {
 						JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
 						JSONArray jsonArray = jsonObject.getJSONArray("data");
+						JSONArray jsonArrayEx = jsonObject.getJSONArray("dataEx");
 						productRecomendInfoList = new ArrayList<>();
+
+						if (jsonArrayEx.length() > 0) {
+							for (int i = 0; i < jsonArrayEx.length(); i++) {
+								JSONObject object = jsonArrayEx.getJSONObject(i);
+								productRecomendInfo = new ProductRecomendInfo();
+								productRecomendInfo.setBrandName(object.getString("brandName"));
+								productRecomendInfo.setProductCode(object.getString("productCode"));
+								productRecomendInfo.setProductName(object.getString("productName"));
+								productRecomendInfo.setImgPath(object.getString("imgPath"));
+								try {
+									productRecomendInfo.setStickerPrice(object.getDouble("stickerPrice"));
+									productRecomendInfo.setRetailPrice(object.getDouble("retailPrice"));
+									productRecomendInfo.setWarranty(object.getString("warranty"));
+								} catch (Exception e) {
+								}
+
+								productRecomendInfo.setType("accessory");
+								productRecomendInfoList.add(productRecomendInfo);
+							}
+						}
+
 						for (int i = 0; i < jsonArray.length(); i++) {
 							JSONObject object = jsonArray.getJSONObject(i);
 							productRecomendInfo = new ProductRecomendInfo();
@@ -594,15 +601,16 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 								productRecomendInfo.setRetailPrice(object.getDouble("retailPrice"));
 								productRecomendInfo.setWarranty(object.getString("warranty"));
 							} catch (Exception e) {
-//								productRecomendInfo.setStickerPrice("0.00");
-//								productRecomendInfo.setRetailPrice("0.00");
-//								productRecomendInfo.setWarranty("");
 							}
+							productRecomendInfo.setType("recommend");
 
-
-
-							productRecomendInfoList.add(productRecomendInfo);
+							if (jsonArrayEx.length() > 0) {
+								productRecomendInfoList.add((jsonArrayEx.length() + i), productRecomendInfo);
+							} else {
+								productRecomendInfoList.add(productRecomendInfo);
+							}
 						}
+
 						setProductRecomed(productRecomendInfoList);
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -683,7 +691,6 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 			Log.e("Exception", e.getLocalizedMessage());
 		}
 	}
-
 	/**
 	 * End
 	 */
