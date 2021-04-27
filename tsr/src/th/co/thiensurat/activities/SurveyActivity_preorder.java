@@ -253,128 +253,74 @@ public class SurveyActivity_preorder extends Activity  {
             @Override
             public void onClick(View v) {
                 get_et();
-
-
-
-
                 if((radio_G1_S.equals("null"))|radio_G1_S.isEmpty()){
                     new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("ข้อมูลยังไม่ครบ!")
                             .setContentText("ยังไม่ได้เลือก ผู้รับเงินงวด 1 \nที่เหลือ!")
                             .show();
-                }
-                else if((radio_G2_S.equals("null"))|radio_G2_S.isEmpty()){
+                } else if((radio_G2_S.equals("null"))|radio_G2_S.isEmpty()){
                     new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("ข้อมูลยังไม่ครบ!")
                             .setContentText("ยังไม่ได้เลือก ผู้ทำสัญญา!")
                             .show();
-                }
-                else if(DD1.equals("กรุณาเลือก")){
+                } else if(DD1.equals("กรุณาเลือก")){
                     new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("ข้อมูลยังไม่ครบ!")
                             .setContentText("ยังไม่ได้ เลือกข้อมูลน้ำ!")
                             .show();
-                }
-                else if(DD2.equals("กรุณาเลือก")){
+                } else if(DD2.equals("กรุณาเลือก")){
                     new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("ข้อมูลยังไม่ครบ!")
                             .setContentText("ยังไม่ได้ เลือกปัญหาน้ำ!")
                             .show();
-                }
-                else if((DD2.equals("อื่นๆ (ระบุ)"))&((ET5.equals("null"))|(ET5.isEmpty()))){
+                } else if((DD2.equals("อื่นๆ (ระบุ)"))&((ET5.equals("null"))|(ET5.isEmpty()))){
                     new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("ข้อมูลยังไม่ครบ!")
                             .setContentText("ยังไม่ได้ ระบุอื่นๆ!")
                             .show();
-                }
-
-
-                else if((radio_G3_S.equals("null"))|radio_G3_S.isEmpty()){
+                } else if((radio_G3_S.equals("null"))|radio_G3_S.isEmpty()){
                     new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("ข้อมูลยังไม่ครบ!")
                             .setContentText("ยังไม่ได้เลือก ผู้จัดส่งสินค้า!")
                             .show();
-                }
-                else if((radio_G3_S.equals("ทีมขายจัดส่งสินค้าเอง"))&((ET4.equals("null"))|(ET4.isEmpty()))){
+                } else if((radio_G3_S.equals("ทีมขายจัดส่งสินค้าเอง"))&((ET4.equals("null"))|(ET4.isEmpty()))){
                     new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("ข้อมูลยังไม่ครบ!")
                             .setContentText("ยังไม่ได้ ระบุวันที่!")
                             .show();
-                }
-                else if((DD3.equals("กรุณาเลือก"))&(radio_G3_S.equals("คลังจัดส่งสินค้า"))){
+                } else if((DD3.equals("กรุณาเลือก"))&(radio_G3_S.equals("คลังจัดส่งสินค้า"))){
                     new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("ข้อมูลยังไม่ครบ!")
                             .setContentText("ยังไม่ได้ เลือกที่จัดส่ง!")
                             .show();
-                }
-
-                else if((ET2.equals("null"))|ET2.isEmpty()){
+                } else if((et2.getText().toString().equals("null"))|et2.getText().toString().isEmpty()){
                     new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("ข้อมูลยังไม่ครบ!")
                             .setContentText("ยังไม่ได้ ใส่เบอร์ลูกค้า!")
                             .show();
-                }
-                else if(!cHECK_number_0.equals("0")){
+                } else if(!cHECK_number_0.equals("0")){
                     new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.WARNING_TYPE)
                             //    .setTitleText("เบอร์ลูกค้า!")
                             .setContentText("เบอร์โทรต้องขึ้นต้นด้วย 0!")
                             .show();
-                }
-                else if(length_phone!=12){
+                } else if(length_phone!=12){
                     new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.WARNING_TYPE)
                             //    .setTitleText("เบอร์ลูกค้า!")
                             .setContentText("เบอร์โทรไม่ครบ 10 หลัก!")
                             .show();
-                }
-                else  if((ET3.equals("null"))|ET3.isEmpty()){
+                } else  if((et3.getText().toString().equals("null"))|et3.getText().toString().isEmpty()){
                     new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("ข้อมูลยังไม่ครบ!")
                             .setContentText("ยังไม่ได้ กรอบข้อมูลที่ควรทราบอื่นๆ!")
                             .show();
-                }
-
-                else {
-
-                    //   get_et();
+                } else {
                     insert_api(BHPreference.RefNo(),BHPreference.employeeID(),radio_G1_S,ET1,radio_G2_S,DD1,DD2,radio_G3_S,ET4,DD3,ET2,ET3,ET5);
                     BHApplication.getInstance().getPrefManager().setPreferrence("chaeck_save", "1");
-
-
-
-
                 }
-
             }
         });
-
-
-
-
-
-
-
         et2.setFilters(new InputFilter[]{MobilePhone});
-
-
-
     }
-
-
-
-
-/*    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_back:
-                setResult(RESULT_CANCELED);
-                finish();
-                break;
-            case R.id.button_save:
-               // saveSurvey();
-                break;
-        }
-    }*/
-
 
     InputFilter MobilePhone = new InputFilter() {
         @Override
@@ -397,8 +343,6 @@ public class SurveyActivity_preorder extends Activity  {
             return null;
         }
     };
-
-
 
 
     float dayCount;
@@ -460,66 +404,28 @@ public class SurveyActivity_preorder extends Activity  {
         dayCount = 0-((float) diff / (24 * 60 * 60 * 1000));
         Log.e("dayCount", String.valueOf((int) dayCount));
 
-
-
-
-
-
-
         if((int) dayCount>0){
-
             new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("ขออภัย!")
                     .setContentText("ไม่สามารถเลือกย้อนหลังได้!")
                     .show();
-
-
-
-
-
-
-
-
-
-
-
-
-        }
-
-
-
-        else {
-
+        } else {
             et4.setText(date3_s2);
-
-
         }
-
-
-
         return ("" + (int) dayCount + " Days");
     }
 
+    void get_et(){
+        ET1 = et1.getText().toString().isEmpty() ? "0" : et1.getText().toString();
+        ET2 = et2.getText().toString();
+        ET3 = et3.getText().toString();
+        ET4 = et4.getText().toString();
+        ET5 = et5.getText().toString();
 
-
-
-
-
-
-
-    void  get_et(){
-        ET1=et1.getText().toString();
-        ET2=et2.getText().toString();
-        ET3=et3.getText().toString();
-        ET4=et4.getText().toString();
-        ET5=et5.getText().toString();
-
-        length_phone = et2.getText().length();
+        length_phone = ET2.length();
         try {
             cHECK_number_0 = ET2.substring(0, 1);
-
-        }
-        catch (Exception ex){
+        } catch (Exception ex){
 
         }
     }

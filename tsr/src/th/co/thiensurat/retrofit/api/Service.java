@@ -20,6 +20,8 @@ import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import th.co.bighead.utilities.BHGeneral;
+import th.co.bighead.utilities.BHUtilities;
 import th.co.thiensurat.activities.MainActivity;
 
 /**
@@ -67,12 +69,6 @@ public interface Service {
 
     @GET("/api/api-creditScoreCheck_UAT.php")
     Call<Object> getCheckScoreStatus();
-
-    @GET("/api/api-LastPeriodCheck_UAT.php")
-    Call<Object> getLastPeriod(@Query("Contno") String contno);
-
-    @GET("/api/api-LastPeriodUpdate_UAT.php")
-    Call<Object> updateCustomerPhone(@Query("telphone") String phoneNumber, @Query("refno") String refno, @Query("CreateBy") String createby);
 
     @GET("/api/api-creditScoreInsert_UAT.php")
     Call<Object> saveSurvey(@Query("RefNo") String refno, @Query("Contno") String conto, @Query("CusStatus") int cusstatus, @Query("ResStatus") int resstatus, @Query("ResTime") int restime, @Query("JobName") int jobname, @Query("JobTime") int jobtime, @Query("CusSalary") int cussalary, @Query("EmpID") String empid, @Query("ResStatusDis") String homeOther, @Query("JobNameDisc") String jobOther);
@@ -162,6 +158,34 @@ public interface Service {
     /**
      * Edit Teerayut Klinsanga 26/01/2021
      */
+        /**
+         *
+         * UAT
+         */
+        @GET("/api/api-LastPeriodCheck_UAT.php")
+        Call<Object> getLastPeriodUAT(@Query("Contno") String contno);
+
+        @GET("/api/api-LastPeriodUpdate_UAT.php")
+        Call<Object> updateCustomerPhoneUAT(@Query("telphone") String phoneNumber, @Query("refno") String refno, @Query("CreateBy") String createby);
+
+        /**
+         * END
+         */
+
+        /**
+         *
+         * PROD
+         */
+        @GET("/api/api-LastPeriodCheck.php")
+        Call<Object> getLastPeriod(@Query("Contno") String contno);
+
+        @GET("/api/api-LastPeriodUpdate.php")
+        Call<Object> updateCustomerPhone(@Query("telphone") String phoneNumber, @Query("refno") String refno, @Query("CreateBy") String createby);
+
+        /**
+         * END
+         */
+
     @Multipart
     @POST("UAT/BH/AddContractImage")
     Call<Object> uploadImageToServer(@Part List<MultipartBody.Part> contract_image, @Part("refnoBody") RequestBody refnoBody);

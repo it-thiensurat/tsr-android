@@ -22,7 +22,7 @@
         <ImageView
             android:id="@+id/imageDelete"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="top"
             android:layout_marginRight="@dimen/padding_normal"
             android:layout_weight="0.2"
@@ -66,14 +66,13 @@
 
             <TextView
                 android:id="@+id/textcancle"
-
                 style="@style/TextView.Value"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="8dp"
                 android:visibility="gone"
                 android:textColor="@color/bg_body_white"
                 android:background="@color/dot_red"
-                android:layout_gravity="center"
                 android:gravity="center"
                 android:text="ยกเลิกใบจอง" />
 

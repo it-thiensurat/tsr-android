@@ -9,11 +9,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -355,7 +357,6 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
         }.start();
     }
 
-
     public boolean isConnectingToInternet() {
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -364,11 +365,6 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
 
         return isConnected;
     }
-
-
-
-
-
 
     public class ContractAdapter extends BHArrayAdapter<ContractInfo> {
         public ContractAdapter(Context context, int resource, List<ContractInfo> objects) {
@@ -394,9 +390,8 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                 Log.e("info.CONTNO",info.CONTNO);
                 Log.e("info.svcontno",info.svcontno+"");
             }
+
             vh.textcancle.setVisibility(View.VISIBLE);
-
-
             //vh.textViewContractnumber.setText("เลขที่สัญญา  :  "+ info.CONTNO);
             vh.textViewContractnumber.setText("เลขที่ใบจอง  :  "+ info.CONTNO);
             vh.textViewName.setText	         ("ชื่อลูกค้า        :  "+ BHUtilities.trim(info.CustomerFullName) +" "+ BHUtilities.trim(info.CompanyName));
@@ -415,7 +410,6 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
             }
 
             vh.imageDelete.setVisibility(View.GONE);
-
             vh.imageNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -424,70 +418,49 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
             });
 
              // Log.e("ffg",contractList.get(position).SPECCODE+"");
-
-
             try {
                 if(info.SPECCODE.equals("1")){
                     vh.textcancle.setText("พิมพ์ใบยกเลิกจอง");
                     vh.textcancle.setBackgroundColor(0xff0089d3);
 
-                }
-                else {
-                    vh.textcancle.setText("ยอกเลิกใบจอง");
+                } else {
+                    vh.textcancle.setText("ยกเลิกใบจอง");
                     vh.textcancle.setBackgroundColor(0xffFF0000);
-
                 }
 
-            }
-            catch (Exception ex){
-                vh.textcancle.setText("ยอกเลิกใบจอง");
+            } catch (Exception ex){
+                vh.textcancle.setText("ยกเลิกใบจอง");
                 vh.textcancle.setBackgroundColor(0xffFF0000);
-
             }
+
             Log.e("info.SPECCODE",info.SPECCODE+"");
-
             String fs=info.SPECCODE+"";
-
-
-                    vh.textcancle.setOnClickListener(new View.OnClickListener() {
+            vh.textcancle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     if(fs.equals("1")){
-
-
-
-
                         AlertDialog.Builder setupAlert;
                         setupAlert = new AlertDialog.Builder(activity)
                                 .setTitle("พิมพ์ใบยกเลิกจอง")
                                 .setMessage("ต้องการ พิมพ์ใบยกเลิกจอง \nหมายเลข "  + info.CONTNO  +"\n"+info.CustomerFullName+ "     ใช่หรือไม่")
                                 .setCancelable(false);
-
                         setupAlert = setupAlert.setPositiveButton("ใช่ ฉันต้องการพิมพ์ใบยกเลิกจองนี้", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dialog.cancel();
-
-
-                                paymentPeriodOutput = new SalePaymentPeriodController().getSalePaymentPeriodByRefNoORDERBYPaymentPeriodNumber(info.RefNo);
-                                contract = getContractByRefNoForSendDocuments(BHPreference.organizationCode(), info.RefNo);
-                                addressIDCard = getAddress(info.RefNo, AddressInfo.AddressType.AddressIDCard);
-                                addressInstall = getAddress(info.RefNo, AddressInfo.AddressType.AddressInstall);
-
                                 try {
+//                                    paymentPeriodOutput = new SalePaymentPeriodController().getSalePaymentPeriodByRefNoORDERBYPaymentPeriodNumber(info.RefNo);
+                                    contract = getContractByRefNoForSendDocuments(BHPreference.organizationCode(), info.RefNo);
+                                    addressIDCard = getAddress(info.RefNo, AddressInfo.AddressType.AddressIDCard);
+                                    addressInstall = getAddress(info.RefNo, AddressInfo.AddressType.AddressInstall);
+
+                                    Log.e("Payment output", String.valueOf(paymentPeriodOutput));
                                     for (SalePaymentPeriodInfo item : paymentPeriodOutput) {
                                         contract.NextPaymentAmount = item.NetAmount;
                                     }
-
+                                } catch (Exception ex){
+                                    Log.e("Print preorder slip", ex.getLocalizedMessage());
                                 }
-                                catch (Exception ex){
-
-                                }
-
                                 printDocument();
-
-
-
                             }
                         }).setNeutralButton("ไม่ใช่", new DialogInterface.OnClickListener() {
                             @Override
@@ -497,32 +470,82 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                         });
 
                         setupAlert.show();
+                    } else {
+                        final EditText input = new EditText(activity);
+                        final EditText input2 = new EditText(activity);
+                        final TextView textView = new TextView(activity);
+                        final ImageButton imgButton1 = new ImageButton(activity);
+                        final ImageButton imgButton2 = new ImageButton(activity);
+                        LinearLayout layout = new LinearLayout(activity);
+                        layout.setOrientation(LinearLayout.VERTICAL);
+                        layout.setPadding(10, 5, 10, 5);
 
+                        LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.MATCH_PARENT);
+                        lp1.weight = Float.parseFloat("0.7");
 
-                    }
-                    else {
+                        LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                        lp2.weight = Float.parseFloat("0.3");
 
+                        LinearLayout subLayout = new LinearLayout(activity);
+                        subLayout.setOrientation(LinearLayout.HORIZONTAL);
+                        subLayout.setWeightSum(1);
 
+                        input.setLayoutParams(lp1);
+                        input.setHint("S/N สินค้ายกเลิกคืน 1");
+                        input.setInputType(InputType.TYPE_CLASS_TEXT);
+                        subLayout.addView(input);
+
+                        imgButton1.setLayoutParams(lp2);
+                        imgButton1.setImageDrawable(activity.getResources().getDrawable(R.drawable.scan));
+                        imgButton1.setBackgroundColor(activity.getResources().getColor(R.color.transparent));
+                        subLayout.addView(imgButton1);
+
+                        layout.addView(subLayout);
+
+                        LinearLayout subLayout2 = new LinearLayout(activity);
+                        subLayout.setOrientation(LinearLayout.HORIZONTAL);
+                        subLayout.setWeightSum(1);
+
+                        input2.setLayoutParams(lp1);
+                        input2.setHint("S/N สินค้ายกเลิกคืน 2");
+                        input2.setInputType(InputType.TYPE_CLASS_TEXT);
+                        subLayout2.addView(input2);
+
+                        imgButton2.setLayoutParams(lp2);
+                        imgButton2.setImageDrawable(activity.getResources().getDrawable(R.drawable.scan));
+                        imgButton2.setBackgroundColor(activity.getResources().getColor(R.color.transparent));
+                        subLayout2.addView(imgButton2);
+
+                        layout.addView(subLayout2);
+
+                        LinearLayout.LayoutParams lpText = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                        textView.setLayoutParams(lpText);
+                        textView.setTextSize(20);
+                        textView.setPadding(10, 10, 10, 10);
+                        textView.setMaxLines(3);
+                        textView.setText("ต้องการยกเลิกใบจอง \nหมายเลข "  + info.CONTNO  +"\n"+info.CustomerFullName+ " ใช่หรือไม่");
+                        layout.addView(textView);
 
                         AlertDialog.Builder setupAlert;
                         setupAlert = new AlertDialog.Builder(activity)
+                                .setView(layout)
                                 .setTitle("ยกเลิกใบจอง")
-                                .setMessage("ต้องการยกเลิกใบจอง \nหมายเลข "  + info.CONTNO  +"\n"+info.CustomerFullName+ "     ใช่หรือไม่")
+                                .setMessage(null)
                                 .setCancelable(false);
 
                         setupAlert = setupAlert.setPositiveButton("ใช่ ฉันต้องการยกเลิกใบจองนี้", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-
-
                                 dialog.cancel();
-
                                 doVoidContract(info.RefNo,info.CONTNO,info.ProductSerialNumber);
                                 update_contract_for_cancal_preorder(info.RefNo);
                                 updateAssignForPostpone(info.RefNo);
                                 checkHasSurvey(info.RefNo);
-
-
-
                             }
                         }).setNeutralButton("ไม่ใช่", new DialogInterface.OnClickListener() {
                             @Override
@@ -532,25 +555,9 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                         });
 
                         setupAlert.show();
-
-
-
-
-
-
-
                     }
-
-
-
-
-
-
                 }
             });
-
-
-
         }
     }
 
@@ -594,42 +601,27 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                         protected void after() {
                             // TODO Auto-generated method stub
                             if (cont != null) {
-
                                   Log.e("ffg",contractList.get(position).SPECCODE+"");
-
                                   String gf=contractList.get(position).SPECCODE+"";
-
                                   if(gf.equals("1")){
                                       new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                                               .setTitleText("ใบจองถูกยกเลิกแล้ว!")
                                               .setContentText("ไม่สามารถขายสินค้าได้")
                                               .show();
-                                  }
-                                  else {
-
+                                  } else {
                                       Log.e("aaa4",cont.CONTNO);
-
-
-
                                       BHApplication.getInstance().getPrefManager().setPreferrence("getContractReferenceNo", contractList.get(position).CONTNO);
                                       BHApplication.getInstance().getPrefManager().setPreferrence("code_name", cont.SaleTeamCode);
                                       BHApplication.getInstance().getPrefManager().setPreferrence("name_recommend",cont.SaleEmployeeCode);
                                       BHApplication.getInstance().getPrefManager().setPreferrence("name_CustomerID",cont.RefNo);
 
                                       // showNextView(new SaleScanEmployeesFragment_preorder_setting());
-
-
                                       // select_page_s=1;
                                       BHPreference.setRefNo("");
                                       // ใช้งานจริงเปิด Method BarcodeScan แล้วปิด บรรทัดที่ 113-119
                                       saleMainFragment_preorder_setting = new SaleMainFragment_preorder_setting();
                                       saleMainFragment_preorder_setting.BarcodeScan();
-
-
                                   }
-
-
-
                             }
                         }
                     }.start();
@@ -642,11 +634,6 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
             }
         });
     }
-
-
-
-
-
 
     private SQLiteDatabase database = null;
 
@@ -701,9 +688,6 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
         else
             DatabaseManager.getInstance().closeDatabase();
     }
-
-
-
 
 
     private void doVoidContract(final String RefNo, final String ContractNo, final String ProductSerialNumber){
@@ -812,28 +796,17 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-            }
-            catch (RuntimeException ex){
+            } catch (RuntimeException ex){
 
             }
-        }
-        catch (OutOfMemoryError EX){
+        } catch (OutOfMemoryError EX){
 
         }
-
-
-
     }
+
     private void printDocument() {
-
         new PrinterController(activity).printNewImageContract_preorder2(contract, addressIDCard, addressInstall);
-
     }
-
-
-
-
-
 
     private void checkHasSurvey(String refno) {
         try {

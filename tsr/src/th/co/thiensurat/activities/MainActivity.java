@@ -1322,6 +1322,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 R.string.main_menu_money,
                 R.string.main_menu_customer_status,
                 R.string.main_menu_sup_validate,
+                R.string.menu_credit_check_status,
                 R.string.main_menu_remove,
                 R.string.main_menu_change,
                 R.string.main_menu_document,
@@ -1591,6 +1592,12 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     success = showView(BHFragment.newInstance(SupValidateFragment.class));
 //                    Toast.makeText(activity, "ซุปฯ ตรวจสอบ", Toast.LENGTH_LONG).show();
                     break;
+                case R.string.menu_credit_check_status:
+                    String url_link = "https://uat.thiensurat.co.th/ContractChecker/Account/Login";
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url_link));
+                    startActivity(i);
+                    break;
                 case R.string.main_menu_preorder_setting: // preorder stting
 
                     success = showView(BHFragment.newInstance(SaleMainFragment_preorder_setting.class));
@@ -1754,9 +1761,9 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     String url = "http://tssm.thiensurat.co.th/login2.php?empid=" + BHPreference.employeeID();
                     /*** [END] :: Fixed - [BHPROJ-1036-8613] - แก้ไข Link เก่าให้เป็น Link ใหม่ ของระบบ TSSM จากใน App  ***/
 
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    startActivity(i);
+                    Intent in = new Intent(Intent.ACTION_VIEW);
+                    in.setData(Uri.parse(url));
+                    startActivity(in);
                     break;
                     /*** [END] :: Fixed - [BHPROJ-0026-3266][LINE@20/09/2016][Android-เพิ่มเมนูใหม่] คุณหนุ๋ยแจ้งขอเพิ่มเมนูระบบ TSSM เพื่อ Link ไปยัง URL ข้างนอกโดยส่งค่า EmpID ออกไปให้ ***/
                 case R.string.main_menu_logout: //ออกจากระบบ // not require SaleCode
@@ -2784,6 +2791,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     put(r.getString(R.string.main_menu_first), R.drawable.ic_menu_first);
                     put(r.getString(R.string.main_menu_customer_status), R.drawable.customer_search);
                     put(r.getString(R.string.main_menu_sup_validate), R.drawable.ic_menu_edit_contracts);
+                    put(r.getString(R.string.menu_credit_check_status), R.drawable.ic_menu_edit_contracts);
                     put(r.getString(R.string.main_menu_other), R.drawable.ic_menu_fix_request);     //-- Fixed - [BHPROJ-0026-3184] :: Change ic_tsr_logo to be new menu icon
                     put(r.getString(R.string.main_menu_logout), R.drawable.ic_menu_logout);
 

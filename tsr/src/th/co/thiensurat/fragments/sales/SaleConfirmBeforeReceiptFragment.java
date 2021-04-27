@@ -43,6 +43,8 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHFragment;
+import th.co.bighead.utilities.BHGeneral;
+import th.co.bighead.utilities.BHLoading;
 import th.co.bighead.utilities.BHParcelable;
 import th.co.bighead.utilities.BHPermissions;
 import th.co.bighead.utilities.BHPreference;
@@ -752,7 +754,13 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             Service request = retrofit.create(Service.class);
-            Call call = request.getLastPeriod(data.contract.CONTNO);
+            Call call = null;
+            if (BHGeneral.SERVICE_MODE.toString() == "UAT") {
+                call = request.getLastPeriodUAT(data.contract.CONTNO);
+            } else if (BHGeneral.SERVICE_MODE.toString() == "PRODUCTION") {
+                call = request.getLastPeriod(data.contract.CONTNO);
+            }
+
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, retrofit2.Response response) {
@@ -771,10 +779,18 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
                             List<Integer> listId = new ArrayList<Integer>();
                             listId.add(R.string.button_confirm_print);
                             activity.setViewProcessButtons(listId, View.GONE);
+
+                            List<Integer> list = new ArrayList<Integer>();
+                            list.add(R.string.button_update_customer_phone);
+                            activity.setViewProcessButtons(list, View.VISIBLE);
                         } else {
                             List<Integer> listId = new ArrayList<Integer>();
                             listId.add(R.string.button_confirm_print);
                             activity.setViewProcessButtons(listId, View.VISIBLE);
+
+                            List<Integer> list = new ArrayList<Integer>();
+                            list.add(R.string.button_update_customer_phone);
+                            activity.setViewProcessButtons(list, View.GONE);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -807,13 +823,20 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
             setupAlert.show();
         } else {
             if (isValidMobile(phone)) {
+                BHLoading.show(activity);
                 try {
                     Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl(BASE_URL)
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
                     Service request = retrofit.create(Service.class);
-                    Call call = request.updateCustomerPhone(phone, data.contract.RefNo, BHPreference.employeeID());
+                    Call call = null;
+                    if (BHGeneral.SERVICE_MODE.toString() == "UAT") {
+                        call = request.updateCustomerPhoneUAT(phone, data.contract.RefNo, BHPreference.employeeID());
+                    } else if (BHGeneral.SERVICE_MODE.toString() == "PRODUCTION") {
+                        call = request.updateCustomerPhone(phone, data.contract.RefNo, BHPreference.employeeID());
+                    }
+
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, retrofit2.Response response) {
@@ -823,12 +846,13 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
                                 JSONArray array = jsonObject.getJSONArray("data");
                                 Log.e("Update", String.valueOf(array));
                                 JSONObject obj = null;
-                                String status = null;
-                                for (int i = 0; i < array.length(); i++) {
-                                    obj = array.getJSONObject(i);
-                                    status = obj.getString("StatusUpdate");
-                                }
+                                String status = array.getJSONObject(0).getString("StatusUpdate");
+//                                for (int i = 0; i < array.length(); i++) {
+//                                    obj = array.getJSONObject(i);
+//                                    status = obj.getString("StatusUpdate");
+//                                }
 
+                                Log.e("Update status", status);
                                 if (status.equals("SUCCESS")) {
                                     lastPeriod = false;
                                     hideKeyboard(getActivity());
@@ -839,18 +863,36 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
                                     List<Integer> list = new ArrayList<Integer>();
                                     list.add(R.string.button_update_customer_phone);
                                     activity.setViewProcessButtons(list, View.GONE);
+                                } else {
+                                    AlertDialog.Builder setupAlert;
+                                    setupAlert = new AlertDialog.Builder(activity)
+                                            .setTitle("แจ้งเตือน")
+                                            .setMessage("เกิดข้อผิดพลาดในขั้นตอนการอัพเดท\nกรุณาติดต่อไอที")
+                                            .setCancelable(false)
+                                            .setNegativeButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int whichButton) {
+                                                    dialog.cancel();
+                                                }
+                                            });
+                                    setupAlert.show();
                                 }
+
+                                hideKeyboard(getActivity());
+                                BHLoading.close();
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                                BHLoading.close();
                             }
                         }
                         @Override
                         public void onFailure(Call call, Throwable t) {
+                            BHLoading.close();
                             Log.e("Update", String.valueOf(t.getLocalizedMessage()));
                         }
                     });
 
                 } catch (Exception e) {
+                    BHLoading.close();
                     Log.e("Update", e.getLocalizedMessage());
                 }
             } else {

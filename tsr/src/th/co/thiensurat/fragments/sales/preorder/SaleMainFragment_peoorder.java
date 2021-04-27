@@ -160,57 +160,41 @@ public class SaleMainFragment_peoorder extends BHFragment {
             public void onResult(BHParcelable data) {
                 // TODO Auto-generated method stub
                 final PreorderFragment.Result barcodeResult = (PreorderFragment.Result) data;
-
                 (new BackgroundProcess(activity) {
                     @Override
                     protected void calling() {
                         // TODO Auto-generated method stub
+                        getProductID=barcodeResult.getProductID;
+                        getProductName=barcodeResult.getProductName;
+                        getProductSerialNumber=barcodeResult.getProductSerialNumber;
+                        getCONTNO=barcodeResult.getCONTNO;
+                        getRefNo=barcodeResult.getRefNo;
 
-
-
-                                 getProductID=barcodeResult.getProductID;
-                                  getProductName=barcodeResult.getProductName;
-                                  getProductSerialNumber=barcodeResult.getProductSerialNumber;
-                                  getCONTNO=barcodeResult.getCONTNO;
-                                  getRefNo=barcodeResult.getRefNo;
-
-                                 getContractReferenceNo=barcodeResult.getContractReferenceNo;
-                                 getReceiptCode=barcodeResult.getReceiptCode;
-                                  getReceiptID=barcodeResult.getReceiptID;
-
-
+                        getContractReferenceNo=barcodeResult.getContractReferenceNo;
+                        getReceiptCode=barcodeResult.getReceiptCode;
+                        getReceiptID=barcodeResult.getReceiptID;
 
                         Log.e("select_baecode", String.valueOf(select_baecode));
                         if(BHPreference.IsSaleForCRD()) {
-                                productInfo = getProductStockSerialNumberForCRD(barcodeResult.getProductID, BHPreference.employeeID());
-                                BAR=barcodeResult.getProductID;
-
+                            productInfo = getProductStockSerialNumberForCRD(barcodeResult.getProductID, BHPreference.employeeID());
+                            BAR=barcodeResult.getProductID;
                         } else {
-
-                                productInfo = getProductStockSerialNumber(barcodeResult.getProductID);
-                                BAR=barcodeResult.getProductID;
-
+                            productInfo = getProductStockSerialNumber(barcodeResult.getProductID);
+                            BAR=barcodeResult.getProductID;
                         }
                     }
 
                     @Override
                     protected void after() {
                         // TODO Auto-generated method
-
-
                         UpdateProductStockStatus("-");
-
                     }
 
                 }).start();
             }
-            // @Override
-            // public String onNextClick() {
-            // return "SA10578236";
-            // }
         });
+
         fm.setTitle(R.string.title_sales);
-     //   fm.setViewTitle("บันทึกข้อมูลสินค้า");
         showNextView(fm);
     }
 

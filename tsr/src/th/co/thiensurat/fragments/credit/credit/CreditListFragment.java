@@ -284,15 +284,15 @@ public class CreditListFragment extends BHFragment {
                         BHPreference.teamCode(), BHPreference.employeeID(), data.selectedDate, search, AddressInfo.AddressType.AddressPayment.toString());
                 String cotno = "";
                 if (result != null && result.size() > 0) {
-//                    for (int i = 0; i < result.size(); i++) {
-//                        if (cotno.equals(result.get(i).CONTNO)) {
-//                            cotno = result.get(i).CONTNO;
-//                            result.remove(i);
-//                        } else {
-//                            cotno = result.get(i).CONTNO;
-//                            creditList.add(result.get(i));
-//                        }
-//                    }
+                    for (int i = 0; i < result.size(); i++) {
+                        if (cotno.equals(result.get(i).CONTNO)) {
+                            cotno = result.get(i).CONTNO;
+                            result.remove(i);
+                        } else {
+                            cotno = result.get(i).CONTNO;
+                            creditList.add(result.get(i));
+                        }
+                    }
                     creditList.addAll(result);
                 }
             }
