@@ -45,6 +45,7 @@
     <color name="dot_gray">#EEEEEE</color>
     <color name="dot_gray_dark">#848484</color>
     <color name="dot_red">#FF0000</color>
+    <color name="transparent">#00000000</color>
 
     <!--<color name="hold_payment_0">#82FA58</color>
     <color name="hold_payment_1">#F2F5A9</color>

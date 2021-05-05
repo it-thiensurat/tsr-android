@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -57,7 +58,15 @@ public class ProductRecomdAdapter extends RecyclerView.Adapter<ProductRecomdAdap
         holder.brandProduct.setText(productRecomendInfo.getBrandName());
         holder.codeProduct.setText(productRecomendInfo.getProductCode());
         holder.nameProduct.setText(productRecomendInfo.getProductName());
-        holder.priceProduct.setText(BHUtilities.numericFormat(Double.parseDouble(productRecomendInfo.getRetailPrice().isEmpty() ? "0.00" : productRecomendInfo.getRetailPrice())));
+        holder.priceProduct.setText(BHUtilities.numericFormat(productRecomendInfo.getRetailPrice()));
+        if (productRecomendInfo.getType().equals("accessory")) {
+            holder.txtAccessory.setText("อุปกรณ์เสริมที่แนะนำ");
+            holder.txtAccessory.setVisibility(View.VISIBLE);
+            holder.mainLayout.setBackgroundColor(context.getResources().getColor(R.color.bg_loss_payment_status_2));
+        } else {
+            holder.txtAccessory.setVisibility(View.GONE);
+            holder.mainLayout.setBackgroundColor(context.getResources().getColor(R.color.bg_body_white));
+        }
     }
 
     @Override
@@ -68,14 +77,17 @@ public class ProductRecomdAdapter extends RecyclerView.Adapter<ProductRecomdAdap
     class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView imageProduct;
-        TextView brandProduct, codeProduct, nameProduct, priceProduct;
+        LinearLayout mainLayout;
+        TextView brandProduct, codeProduct, nameProduct, priceProduct, txtAccessory;
         public Holder(@NonNull View itemView) {
             super(itemView);
+            mainLayout = (LinearLayout) itemView.findViewById(R.id.mainLayout);
             imageProduct = (ImageView) itemView.findViewById(R.id.imgProduct);
             brandProduct = (TextView) itemView.findViewById(R.id.brandProduct);
             codeProduct = (TextView) itemView.findViewById(R.id.codeProduct);
             nameProduct = (TextView) itemView.findViewById(R.id.nameProduct);
             priceProduct = (TextView) itemView.findViewById(R.id.priceProduct);
+            txtAccessory = (TextView) itemView.findViewById(R.id.txtAccessory);
             itemView.setOnClickListener(this);
         }
 

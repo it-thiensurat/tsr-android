@@ -166,6 +166,11 @@
         <item name="android:gravity">right|center_vertical</item>
     </style>
 
+    <style name="TextView.Label2" parent="TextView.Value">
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">#e2e2e2</item>
+    </style>
+
     <style name="TextView.Label.bold" parent="TextView.Value">
         <item name="android:textStyle">bold</item>
     </style>

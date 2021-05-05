@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_body_white"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/bg_body_white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,6 +37,36 @@
             android:paddingRight="@dimen/padding_small"
             android:text="26/02/558" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:background="@color/new_secondary_color"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:weightSum="1" >
+
+        <TextView
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/padding_small"
+            android:gravity="center_vertical"
+            android:textColor="@color/new_primary_color"
+            android:text="อยู่ในพื้นที่" />
+
+        <TextView
+            android:id="@+id/txtArea"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:gravity="right|center_vertical"
+            android:layout_gravity="right"
+            android:textColor="@color/new_primary_color"
+            android:text="-" />
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/vwContainer"
@@ -45,7 +75,7 @@
         android:layout_above="@+id/vwProcess"
         android:layout_below="@+id/show"
         android:paddingBottom="55dp"
-        android:background="#ffffff" />
+        android:background="#ffffff"/>
 
     </LinearLayout>
 

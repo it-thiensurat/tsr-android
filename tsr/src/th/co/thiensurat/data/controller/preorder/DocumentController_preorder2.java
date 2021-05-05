@@ -1305,76 +1305,32 @@ public class DocumentController_preorder2 {
         return file;
     }
 
-
-
-
-
-
-
-
-
     private static int RECEIPT_WIDTH = 576;
-
     public static  Bitmap getNewContactImage(ContractInfo contract, AddressInfo defaultAddress, AddressInfo installAddress) {
         ReceiptBuilder receiptBuilder = new ReceiptBuilder(RECEIPT_WIDTH);
         receiptBuilder.setMargin(5, 0);
         receiptBuilder.setTextSize(24);
         receiptBuilder.setAlign(Align.LEFT);
         receiptBuilder.setColor(Color.BLACK);
-//        receiptBuilder.addText("บริษัท เธียรสุรัตน์ จำกัด (มหาชน)", true);
-//        receiptBuilder.addParagraph();
-//        receiptBuilder.addText("43/9 หมู่ 7 ซ.ชูชาติอนุสรณ์ 4 ต.บางตลาด", true);
-//        receiptBuilder.addParagraph();
-//        receiptBuilder.addText("อ.ปากเกร็ด จ.นนทบุรี 11120", true);
-//        receiptBuilder.addParagraph();
-//        receiptBuilder.addText("โทร. 0 2819 8888 แฟกซ์ 0 2962 6951-3", true);
-//        receiptBuilder.addParagraph();
-//        receiptBuilder.addText("อีเมล thiensurat@thiensurat.co.th", true);
-//        receiptBuilder.addParagraph();
-//        receiptBuilder.addBlankSpace(10);
-
-
-
-
-
-
-
-
-
-
         //  แก้ต่อ
-
         try {
             String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
-
             if (getOrganizationCode.equals("1")) {
                 receiptBuilder.addImage(shortHeaderPrint());
             } else {
                 if (contract.MODE == 1) {
                     receiptBuilder.addImage(shortHeaderPrintAlpine());
-
                     // alpine
                 } else {
                     receiptBuilder.addImage(shortHeaderPrintTSRL());
-
                     // tsrl
                 }
             }
 
-        }
-        catch (Exception ec){
+        } catch (Exception ec){
             receiptBuilder.addImage(shortHeaderPrint());
-
         }
-
-
-
-
-
-
         //receiptBuilder.addImage(shortHeaderPrint());
-
-
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
         receiptBuilder.setAlign(Align.CENTER);
@@ -1744,11 +1700,8 @@ public class DocumentController_preorder2 {
         if (contract.MODE > 1) {
             float sum = contract.PaymentAmount - contract.TradeInDiscount;
 
-
-
             try {
                 String getOrganizationCode= BHApplication.getInstance().getPrefManager().getPreferrence("getOrganizationCode");
-
                 if (getOrganizationCode.equals("1")) {
                     receiptBuilder.addParagraph();
                     receiptBuilder.setAlign(Align.LEFT);
@@ -1766,9 +1719,6 @@ public class DocumentController_preorder2 {
 
                         // alpine
                     } else {
-
-
-
                         receiptBuilder.addParagraph();
                         receiptBuilder.setAlign(Align.LEFT);
                         receiptBuilder.addText("มัดจำที่ต้องชำระ", false);
@@ -1779,7 +1729,6 @@ public class DocumentController_preorder2 {
                         receiptBuilder.setAlign(Align.LEFT);
                         receiptBuilder.addText("งวดที่ 1 ถึงงวดที่" + BHUtilities.numericFormat(contract.MODE-1) + " ต้องชำระงวดละ", false);
                         receiptBuilder.setAlign(Align.RIGHT);
-
                         // tsrl
                     }
                 }
@@ -1789,16 +1738,6 @@ public class DocumentController_preorder2 {
 
 
             }
-
-
-
-
-
-
-
-
-
-
             receiptBuilder.addText(BHUtilities.numericFormat(contract.NextPaymentAmount) + " บาท", true);
         }
         receiptBuilder.addBlankSpace(40);
@@ -1836,27 +1775,12 @@ public class DocumentController_preorder2 {
            // contractSign = signature;
         }
 
-
-
-
-
-
-
         if (contract.MODE == 1) {
             Log.e("aaa","1");
-
-
-
-
-
-        if (customeSign != null) {
+            if (customeSign != null) {
                 receiptBuilder.setAlign(Align.RIGHT);
-
-            receiptBuilder.addImage(customeSign);
+                receiptBuilder.addImage(customeSign);
             }
-
-
-
 
             yy += 25;
 
@@ -1921,43 +1845,23 @@ public class DocumentController_preorder2 {
             img.recycle();
 
             receiptBuilder.addImage(result);
-
-
-
-
-
-
-
-
-
-
-
         } else {
 
             Log.e("aaa","2");
+            if (customeSign != null) {
+                receiptBuilder.setAlign(Align.RIGHT);
+                receiptBuilder.addImage(customeSign);
+            }
 
+            yy += 25;
 
-
-
-
-                if (customeSign != null) {
-                    receiptBuilder.setAlign(Align.RIGHT);
-
-                    receiptBuilder.addImage(customeSign);
+            String TSR = "";
+            if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
+                EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
+                if (saleLeader != null) {
+                    TSR = "("+saleLeader.DepartmentHeadName+")";
                 }
-
-
-
-
-                yy += 25;
-
-                String TSR = "";
-                if(BHGeneral.isOpenDepartmentSignature&&BHPreference.hasDepartmentSignatureImage()){
-                    EmployeeDetailInfo saleLeader = new EmployeeDetailController().getTeamHeadDetailByTeamCode(BHPreference.organizationCode(), BHPreference.teamCode());
-                    if (saleLeader != null) {
-                        TSR = "("+saleLeader.DepartmentHeadName+")";
-                    }
-                }
+            }
 
                 //   cv.drawText(String.format("%s", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - 60)), RECEIPT_WIDTH / 4, yy, pSignature);
                 //    cv.drawText(String.format("%s", getSignatureUnderline(pSignature, (RECEIPT_WIDTH / 2) - 60)), (RECEIPT_WIDTH / 4) * 3, yy, pSignature);
@@ -2014,21 +1918,6 @@ public class DocumentController_preorder2 {
                 img.recycle();
 
                 receiptBuilder.addImage(result);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
 
         receiptBuilder.setAlign(Align.LEFT);
@@ -2039,25 +1928,10 @@ public class DocumentController_preorder2 {
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
 
-
-
-
-
-
-
-
-
-
-
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(10);
         receiptBuilder.setAlign(Align.CENTER);
         receiptBuilder.addText("ข้อมูลเพิ่มเติม");
-
-
-
-
-
 
         receiptBuilder.addParagraph();
         receiptBuilder.setAlign(Align.LEFT);
@@ -2065,23 +1939,15 @@ public class DocumentController_preorder2 {
         receiptBuilder.setAlign(Align.RIGHT);
         receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("FirstPeriodPayBy"));
 
-
-
         receiptBuilder.addParagraph();
         receiptBuilder.setAlign(Align.LEFT);
         receiptBuilder.addText("จำนวน", false);
         receiptBuilder.setAlign(Align.RIGHT);
 
-
-
-
         try {
             int number = Integer.parseInt(BHApplication.getInstance().getPrefManager().getPreferrence("FirstPeriodPayAmount"));
             String str = NumberFormat.getNumberInstance(Locale.US).format(number);
             receiptBuilder.addText(str+" บาท");
-
-
-
 
             receiptBuilder.addParagraph();
             receiptBuilder.setAlign(Align.LEFT);
@@ -2107,14 +1973,11 @@ public class DocumentController_preorder2 {
             receiptBuilder.setAlign(Align.RIGHT);
             receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("ShippingBy"));
 
-
-
             receiptBuilder.addParagraph();
             receiptBuilder.setAlign(Align.LEFT);
             receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("ShippingBy").equals("ทีมขายจัดส่งสินค้าเอง") ? "วันที่":"จัดส่งที่",false );
             receiptBuilder.setAlign(Align.RIGHT);
             receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("ShippingBy").equals("ทีมขายจัดส่งสินค้าเอง") ? BHApplication.getInstance().getPrefManager().getPreferrence("ShippingDate") : BHApplication.getInstance().getPrefManager().getPreferrence("ShippingTo"));
-
 
             receiptBuilder.addParagraph();
             receiptBuilder.setAlign(Align.LEFT);
@@ -2126,19 +1989,10 @@ public class DocumentController_preorder2 {
             receiptBuilder.setAlign(Align.LEFT);
             receiptBuilder.addText("ข้อมูล อื่นๆ", false);
 
-
-
             //   receiptBuilder.setAlign(Align.RIGHT);
             String SS=BHApplication.getInstance().getPrefManager().getPreferrence("InstallDetails");
             //String SS="จากการตรวจในที่เกิดเหตุพบเก้าอี้ล้มกระจัดกระจาย และพบรอยเลือดหลายจุดทั่วศาลา ส่วนผู้ได้มี รายแรกคือ นายยิ่งพันธิ์ กันเกตุ กำนันตำบลดอนทราย อาการสาหัส รายที่ 2 นายนคร วันเพ็ญ ผู้สมัครเทศบาลตำบลดอนทราย รายที่ 3 นางสมถวิล ศรีรัตน์ รายที่ 4 นางมณเฑียร ใจธรรม ถูกส่งตัวไปรักษาที่โรงพยาบาลเจ็ดเสมียน และ โรงพยาบาลราชบุรี ส่วนรายที่ 5 คือ นางวราพร เนียมรักษา ผู้สมัครนายกเทศบาลตำบลดอนทราย อาการสาหัส ถูกส่งตัวไปรักษาที่โรงพยาบาลกรุงเทพเมืองราชบุรี แต่นางวราพร เนียมรักษา ทนพิษบาดแผลไม่ไหว";
             //   receiptBuilder.addText(SS);
-
-
-
-
-
-
-
 
             receiptBuilder.addBlankSpace(10);
             //receiptBuilder.setAlign(Align.RIGHT);
@@ -2155,34 +2009,6 @@ public class DocumentController_preorder2 {
         catch (Exception ex){
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         receiptBuilder.addParagraph();
         receiptBuilder.addBlankSpace(40);
@@ -2206,7 +2032,7 @@ public class DocumentController_preorder2 {
         receiptBuilder.setTextSize(22);
         receiptBuilder.addParagraph();
         receiptBuilder.addText("1. กรณีโปรโมชั่นติดตั้งฟรี  แต่ลูกค้าไม่ใช้บริการติดตั้ง ", true);
-       receiptBuilder.addParagraph();
+        receiptBuilder.addParagraph();
         receiptBuilder.addText("ทางบริษัท ขอสงวนสิทธิ์ไม่ให้อุปกรณ์ตามมาตรฐาน", true);
         receiptBuilder.addParagraph();
         receiptBuilder.addText("2. กรณีโปรโมชั่นติดตั้งฟรี  แต่ลูกใช้อุปกรณ์เกินมาตรฐาน ", true);
@@ -2231,17 +2057,7 @@ public class DocumentController_preorder2 {
         receiptBuilder.addParagraph();
         receiptBuilder.addText("พื้นที่จัดวางสินค้าไม่ได้ข้อกำหนด", true);
 
-
-
         receiptBuilder.addBlankSpace(60);
-
-
-
-
-
-
-
-
         Bitmap bmp = receiptBuilder.build();
 
         return scaleBitmap(bmp, bmp.getWidth(), bmp.getHeight());

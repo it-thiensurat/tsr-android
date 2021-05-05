@@ -31,6 +31,7 @@
     <string name="button_add">จัดเก็บข้อมูล</string>
     <string name="button_back">ย้อนกลับ</string>
     <string name="button_credit_choose_date">เลือกวันเก็บเงิน</string>
+    <string name="button_product_recommend">สินค้าแนะนำ</string>
     <string name="button_ok">ตกลง</string>
     <string name="button_check">ตรวจสอบสินค้า</string>
     <string name="button_import">นำเข้าสินค้า</string>
@@ -125,6 +126,7 @@
     <string name="main_menu_report_credit_next_payment">3117DEED82F14F5192BEDBCA65FD0E39</string>
     <string name="main_menu_report_credit_sendmoney">05B89C725A324DD4BC178E1CD7EDCEC7</string>
     <string name="main_menu_report_credit_contract_close_account">7DD266E717B74201A33B793345B94594</string>
+    <string name="menu_credit_check_status">9C8A3CEB21C14AA38CABB655F472B0C3</string>
 
 
     <string name="main_menu_preorder">6C18CAD5E7D345379E6E15720FFEE318</string>

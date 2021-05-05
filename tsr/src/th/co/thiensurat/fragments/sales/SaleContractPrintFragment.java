@@ -1065,15 +1065,28 @@ public class SaleContractPrintFragment extends BHFragment {
                             // TODO Auto-generated method stub
                             super.after();
 //                            Log.e("payment info", String.valueOf(output));
-                            if (output.PaymentType.equals("Qrcode")) {
-                                SaleReceiptPayment_Qr.Data dataReceiptID = new SaleReceiptPayment_Qr.Data();
-                                dataReceiptID.refno = contract.RefNo;
-                                dataReceiptID.selectedDate = output.CreateDate;
-                                dataReceiptID.paymentType = output.PaymentType;
-                                SaleReceiptPayment_Qr fmReceipt = BHFragment.newInstance(SaleReceiptPayment_Qr.class, dataReceiptID);
-                                fmReceipt.forcePrint = true;
-                                showNextView(fmReceipt);
-                            } else {
+                            try {
+                                if (output.PaymentType.equals("Qrcode")) {
+                                    SaleReceiptPayment_Qr.Data dataReceiptID = new SaleReceiptPayment_Qr.Data();
+                                    dataReceiptID.refno = contract.RefNo;
+                                    dataReceiptID.selectedDate = output.CreateDate;
+                                    dataReceiptID.paymentType = output.PaymentType;
+                                    SaleReceiptPayment_Qr fmReceipt = BHFragment.newInstance(SaleReceiptPayment_Qr.class, dataReceiptID);
+                                    fmReceipt.forcePrint = true;
+                                    showNextView(fmReceipt);
+                                } else {
+                                    if (data != null && data.resTitle != 0 && Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract) {
+                                        Log.e("aaaa", "1111");
+                                        SaleReceiptPayment_old.Data input = new SaleReceiptPayment_old.Data();
+                                        input.resTitle = data.resTitle;
+                                        showNextView(BHFragment.newInstance(SaleReceiptPayment_old.class, input));
+                                    } else {
+                                        SaleReceiptPayment_new.Data input = new SaleReceiptPayment_new.Data();
+                                        input.contno = BHUtilities.trim(contract.CONTNO);
+                                        showNextView(BHFragment.newInstance(SaleReceiptPayment_new.class, input));
+                                    }
+                                }
+                            } catch (NullPointerException e) {
                                 if (data != null && data.resTitle != 0 && Enum.valueOf(ProcessType.class, BHPreference.ProcessType()) == ProcessType.ViewCompletedContract) {
                                     Log.e("aaaa", "1111");
                                     SaleReceiptPayment_old.Data input = new SaleReceiptPayment_old.Data();
