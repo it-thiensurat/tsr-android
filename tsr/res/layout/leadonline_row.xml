@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/th.co.thiensurat"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ViewTitle"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_normal"
+        android:weightSum="1">
+
+
+
+        <TextView
+            android:id="@+id/txtFortnightDate"
+            style="@style/TextView.Value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.45"
+            android:gravity="right"
+            android:text="ลูกค้า LEAD ONLINE"
+            android:textColor="@color/font_color_white" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/row1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1299,6 +1299,8 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
                 R.string.main_menu_preorder,
                 R.string.main_menu_preorder_setting,
+                R.string.main_menu_lead_online,
+
                 /*** [END] :: Fixed - [BHPROJ-0016-855] :: Revise Menu Report tobe SubMenu ***/
 
                 R.string.main_menu_checkstock,
@@ -1634,7 +1636,12 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
                     success = showView(BHFragment.newInstance(EmployeeTeamFragment.class));
 
-                   // success = showView(BHFragment.newInstance(LEAD_ONLINE.class));
+
+                    break;
+                case R.string.main_menu_lead_online: //พนักงานขาย // not require SaleCode
+
+
+                     success = showView(BHFragment.newInstance(LEAD_ONLINE.class));
 
                     break;
 
@@ -2800,6 +2807,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     put(r.getString(R.string.main_menu_credit_sort_order_default_audit), R.drawable.ic_menu_orderexp_saleaudit);    //-- Fixed - [BHPROJ-0026-3184] :: Change ic_tsr_logo to be new menu icon
                     put(r.getString(R.string.main_menu_credit_sort_order_default_credit), R.drawable.ic_menu_orderexp_credit);      //-- Fixed - [BHPROJ-0026-3184] :: Change ic_tsr_logo to be new menu icon
                     put(r.getString(R.string.main_menu_proorder_credit), R.drawable.ic_menu_sales);      //-- Fixed - [BHPROJ-0026-3184] :: Change ic_tsr_logo to be new menu icon
+                    put(r.getString(R.string.main_menu_lead_online), R.drawable.ic_menu_sales);      //-- Fixed - [BHPROJ-0026-3184] :: Change ic_tsr_logo to be new menu icon
 
                 }
             };

@@ -48,6 +48,7 @@ import th.co.thiensurat.data.info.ProductStockInfo;
 import th.co.thiensurat.data.info.SalePaymentPeriodInfo;
 import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment.ProcessType;
 import th.co.thiensurat.fragments.sales.SaleUnfinishedFragment;
+import th.co.thiensurat.fragments.sales.preorder.models.Get_data_api3;
 import th.co.thiensurat.retrofit.api.Service;
 
 import static th.co.thiensurat.retrofit.api.client.BASE_URL;
@@ -283,6 +284,7 @@ public class SaleMainUnfinishedFragment_preorder extends BHPagerFragment {
 
 				Log.e("RefNoRefNo",contractList.get(position).RefNo);
 				checkCompanyReceipt(contractList.get(position).RefNo);
+				checkHasSurvey(contractList.get(position).RefNo);
 				BHApplication.getInstance().getPrefManager().setPreferrence("getContractReferenceNo", contractList.get(position).CONTNO);
 
 
@@ -410,5 +412,119 @@ public class SaleMainUnfinishedFragment_preorder extends BHPagerFragment {
 		}
 	}
 
+
+
+
+
+
+	private void checkHasSurvey(String refno) {
+		try {
+			Retrofit retrofit = new Retrofit.Builder()
+					.baseUrl(BASE_URL)
+					.addConverterFactory(GsonConverterFactory.create())
+					.build();
+			Service request = retrofit.create(Service.class);
+			Call call = request.check_save_data(refno);
+			call.enqueue(new Callback() {
+				@Override
+				public void onResponse(Call call, retrofit2.Response response) {
+					//  Log.e("Survey contno", contract.RefNo);
+					Log.e("Survey contno",refno);
+
+					Gson gson=new Gson();
+					try {
+						JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
+
+						//JSONArray array = jsonObject.getJSONArray("data");
+						JSON_PARSE_DATA_AFTER_WEBCALL_load_data(jsonObject.getJSONArray("data"));
+
+
+						// layoutSurvey.setVisibility(View.VISIBLE);
+					} catch (JSONException e) {
+						e.printStackTrace();
+						Log.e("data","22");
+					}
+				}
+
+				@Override
+				public void onFailure(Call call, Throwable t) {
+					Log.e("onFailure question:",t.getLocalizedMessage());
+				}
+			});
+
+		} catch (Exception e) {
+			Log.e("Exception question",e.getLocalizedMessage());
+		}
+	}
+
+
+
+
+	public  void JSON_PARSE_DATA_AFTER_WEBCALL_load_data(JSONArray array) {
+
+
+
+		if(array.length()==0){
+
+
+
+
+
+		}
+		else {
+
+
+
+			for (int i = 0; i < array.length(); i++) {
+
+				final Get_data_api3 GetDataAdapter2 = new Get_data_api3();
+
+				JSONObject json = null;
+				try {
+					json = array.getJSONObject(i);
+
+					String FirstPeriodPayBy=json.getString("FirstPeriodPayBy");
+					String FirstPeriodPayAmount=json.getString("FirstPeriodPayAmount");
+					String ContractBy=json.getString("ContractBy");
+					String WaterInfo=json.getString("WaterInfo");
+					String WaterProblem=json.getString("WaterProblem");
+					String WaterProblemMore=json.getString("WaterProblemMore");
+					String ShippingBy=json.getString("ShippingBy");
+					String ShippingDate=json.getString("ShippingDate");
+					String ShippingTo=json.getString("ShippingTo");
+					String TelnoCus=json.getString("TelnoCus");
+					String InstallDetails=json.getString("InstallDetails");
+
+
+					BHApplication.getInstance().getPrefManager().setPreferrence("FirstPeriodPayBy", FirstPeriodPayBy);
+					BHApplication.getInstance().getPrefManager().setPreferrence("FirstPeriodPayAmount", FirstPeriodPayAmount);
+					BHApplication.getInstance().getPrefManager().setPreferrence("ContractBy", ContractBy);
+					BHApplication.getInstance().getPrefManager().setPreferrence("WaterInfo", WaterInfo);
+					BHApplication.getInstance().getPrefManager().setPreferrence("WaterProblem", WaterProblem);
+					BHApplication.getInstance().getPrefManager().setPreferrence("WaterProblemMore", WaterProblemMore);
+					BHApplication.getInstance().getPrefManager().setPreferrence("ShippingBy", ShippingBy);
+					BHApplication.getInstance().getPrefManager().setPreferrence("ShippingDate", ShippingDate);
+					BHApplication.getInstance().getPrefManager().setPreferrence("ShippingTo", ShippingTo);
+					BHApplication.getInstance().getPrefManager().setPreferrence("TelnoCus", TelnoCus);
+					BHApplication.getInstance().getPrefManager().setPreferrence("InstallDetails", InstallDetails);
+
+
+
+
+				} catch (JSONException e) {
+
+					e.printStackTrace();
+				}
+				// value=GetDataAdapter2.getProblemName();
+			}
+		}
+
+
+
+
+
+
+
+	}
 
 }
