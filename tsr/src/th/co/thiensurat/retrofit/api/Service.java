@@ -168,6 +168,20 @@ public interface Service {
         @GET("/api/api-LastPeriodUpdate_UAT.php")
         Call<Object> updateCustomerPhoneUAT(@Query("telphone") String phoneNumber, @Query("refno") String refno, @Query("CreateBy") String createby);
 
+        @POST("UAT/BH/ApproveContno")
+        @FormUrlEncoded
+        Call<Object> ApproveContnoUAT(@Field("refno") String refno, @Field("empid") String empid, @Field("salecode") String salecode, @Field("empid4") String empid4,
+                                  @Field("posid4") String posid4, @Field("empid5") String empid5, @Field("posid5") String posid5,
+                                  @Field("empid6") String empid6, @Field("posid6") String posid6, @Field("teamcode") String teamcode);
+
+        @POST("UAT/BH/GetImageCheck")
+        @FormUrlEncoded
+        Call<Object> getImageValidateUAT(@Field("empid") String empid);
+
+        @POST("UAT/BH/VoidContract")
+        @FormUrlEncoded
+        Call<Object> voidToApproveContnoUAT(@Field("refno") String refno, @Field("empid") String empid);
+
         /**
          * END
          */
@@ -181,6 +195,26 @@ public interface Service {
 
         @GET("/api/api-LastPeriodUpdate.php")
         Call<Object> updateCustomerPhone(@Query("telphone") String phoneNumber, @Query("refno") String refno, @Query("CreateBy") String createby);
+
+        @POST("Production/BH/ApproveContno")
+        @FormUrlEncoded
+        Call<Object> ApproveContno(@Field("refno") String refno, @Field("empid") String empid, @Field("salecode") String salecode, @Field("empid4") String empid4,
+                               @Field("posid4") String posid4, @Field("empid5") String empid5, @Field("posid5") String posid5,
+                               @Field("empid6") String empid6, @Field("posid6") String posid6, @Field("teamcode") String teamcode);
+
+        @POST("Production/BH/GetImageCheck")
+        @FormUrlEncoded
+        Call<Object> getImageValidate(@Field("empid") String empid);
+
+        @POST("Production/BH/VoidContract")
+        @FormUrlEncoded
+        Call<Object> voidToApproveContno(@Field("refno") String refno, @Field("empid") String empid);
+
+        @GET("/api/api-chkAreaSaleing.php")
+        Call<Object> getSaleArea(@Query("lat") String lat, @Query("long") String lon);
+
+        @GET("API/DrinkCoApi/api/DistrictItemsNew/{lat},{lon}/6256a94701b4b14b8400d5e7559d9ee7")
+        Call<Object> getProductRecomend(@Path(value = "lat", encoded = false) String lat, @Path(value = "lon", encoded = false) String lon);
 
         /**
          * END
@@ -197,25 +231,6 @@ public interface Service {
     @GET("/api/customerreceiptapi.php")
     Call<Object> getQrReceipt(@Query("contno") String contno);
 
-    @POST("UAT/BH/ApproveContno")
-    @FormUrlEncoded
-    Call<Object> ApproveContno(@Field("refno") String refno, @Field("empid") String empid, @Field("salecode") String salecode, @Field("empid4") String empid4,
-                               @Field("posid4") String posid4, @Field("empid5") String empid5, @Field("posid5") String posid5, 
-                               @Field("empid6") String empid6, @Field("posid6") String posid6, @Field("teamcode") String teamcode);
-
-    @GET("API/DrinkCoApi/api/DistrictItemsNew/{lat},{lon}/6256a94701b4b14b8400d5e7559d9ee7")
-    Call<Object> getProductRecomend(@Path(value = "lat", encoded = false) String lat, @Path(value = "lon", encoded = false) String lon);
-
-    @GET("/api/api-chkAreaSaleing.php")
-    Call<Object> getSaleArea(@Query("lat") String lat, @Query("long") String lon);
-
-    @POST("UAT/BH/GetImageCheck")
-    @FormUrlEncoded
-    Call<Object> getImageValidate(@Field("empid") String empid);
-
-    @POST("UAT/BH/VoidContract")
-    @FormUrlEncoded
-    Call<Object> voidToApproveContno(@Field("refno") String refno, @Field("empid") String empid);
 
 //    @GET("/maps/api/geocode/json?latlng={lat},{lon}&key=AIzaSyAAgfLCmkJoMLfS8ElkVVEizDGfJ0IxXUk&language=th")
     @GET("/maps/api/geocode/json")

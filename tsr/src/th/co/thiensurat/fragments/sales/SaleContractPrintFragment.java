@@ -1295,7 +1295,13 @@ public class SaleContractPrintFragment extends BHFragment {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             Service request = retrofit.create(Service.class);
-            Call call = request.voidToApproveContno(refno, BHPreference.employeeID());
+            Call call = null;
+            if (BHGeneral.SERVICE_MODE.toString() == "UAT") {
+                call = request.voidToApproveContnoUAT(refno, BHPreference.employeeID());
+            } else {
+                call = request.voidToApproveContno(refno, BHPreference.employeeID());
+            }
+
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, retrofit2.Response response) {

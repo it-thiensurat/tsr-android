@@ -1,9 +1,11 @@
 package th.co.thiensurat.fragments.sales.preorder_setting;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -30,6 +32,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.zxing.client.android.Intents;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,6 +56,7 @@ import th.co.bighead.utilities.BHArrayAdapter;
 import th.co.bighead.utilities.BHFragment;
 
 
+import th.co.bighead.utilities.BHPermissions;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHUtilities;
 import th.co.bighead.utilities.annotation.InjectView;
@@ -75,6 +80,7 @@ import th.co.thiensurat.fragments.sales.SaleMoreDetailAddress;
 import th.co.thiensurat.fragments.sales.SaleScanEmployeesFragment;
 import th.co.thiensurat.fragments.sales.preorder.SaleFirstPaymentChoiceFragment_preorder;
 import th.co.thiensurat.fragments.sales.preorder.models.Get_data_api3;
+import th.co.thiensurat.fragments.share.BarcodeScanFragment;
 import th.co.thiensurat.retrofit.api.Service;
 
 import static java.lang.String.valueOf;
@@ -110,6 +116,9 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
     private ContractInfo contract = null;
     private AddressInfo addressIDCard = null;
     private AddressInfo addressInstall = null;
+
+    private static final int REQUEST_QR_SCAN = 2468;
+    private static final int REQUEST_QR_SCAN2 = 2469;
 
     @Override
     protected int[] processButtons() {
@@ -160,15 +169,7 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                 GetContractStatusFinish();bindContractList();
             }
         });
-
-
-
     }
-
-
-
-
-
 
     @Override
     public void onProcessButtonClicked(int buttonID) {
@@ -181,8 +182,6 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                 break;
         }
     }
-
-
 
     private void GetContractStatusFinish() {
         // TODO Auto-generated method stub
@@ -270,8 +269,6 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
         }.start();
     }
 
-
-
     private void GetContractStatusFinish2(String S) {
         // TODO Auto-generated method stub
         new BackgroundProcess(activity) {
@@ -357,6 +354,9 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
         }.start();
     }
 
+    EditText input = null;
+    EditText input2 = null;
+    String serailCheckScan = "";
     public boolean isConnectingToInternet() {
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -471,8 +471,15 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
 
                         setupAlert.show();
                     } else {
-                        final EditText input = new EditText(activity);
-                        final EditText input2 = new EditText(activity);
+                        /**
+                         *
+                         * Edit by Teerayut Klinsanga
+                         *
+                         * Created date 27/04/2021
+                         *
+                         */
+                        input = new EditText(activity);
+                        input2 = new EditText(activity);
                         final TextView textView = new TextView(activity);
                         final ImageButton imgButton1 = new ImageButton(activity);
                         final ImageButton imgButton2 = new ImageButton(activity);
@@ -502,6 +509,31 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                         imgButton1.setLayoutParams(lp2);
                         imgButton1.setImageDrawable(activity.getResources().getDrawable(R.drawable.scan));
                         imgButton1.setBackgroundColor(activity.getResources().getColor(R.color.transparent));
+                        imgButton1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                serailCheckScan = info.ProductSerialNumber;
+                                new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
+
+                                    @Override
+                                    public void onSuccess(BHPermissions bhPermissions) {
+                                        Intent intent = new IntentIntegrator(activity).createScanIntent();
+                                        startActivityForResult(intent, REQUEST_QR_SCAN);
+                                    }
+
+                                    @Override
+                                    public void onNotSuccess(BHPermissions bhPermissions) {
+                                        bhPermissions.openAppSettings(getActivity());
+                                    }
+
+                                    @Override
+                                    public void onShouldShowRequest(BHPermissions bhPermissions, BHPermissions.PermissionType... permissionType) {
+                                        bhPermissions.showMessage(getActivity(), permissionType);
+                                    }
+
+                                }, BHPermissions.PermissionType.CAMERA);
+                            }
+                        });
                         subLayout.addView(imgButton1);
 
                         layout.addView(subLayout);
@@ -518,6 +550,30 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                         imgButton2.setLayoutParams(lp2);
                         imgButton2.setImageDrawable(activity.getResources().getDrawable(R.drawable.scan));
                         imgButton2.setBackgroundColor(activity.getResources().getColor(R.color.transparent));
+                        imgButton2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
+
+                                    @Override
+                                    public void onSuccess(BHPermissions bhPermissions) {
+                                        Intent intent = new IntentIntegrator(activity).createScanIntent();
+                                        startActivityForResult(intent, REQUEST_QR_SCAN2);
+                                    }
+
+                                    @Override
+                                    public void onNotSuccess(BHPermissions bhPermissions) {
+                                        bhPermissions.openAppSettings(getActivity());
+                                    }
+
+                                    @Override
+                                    public void onShouldShowRequest(BHPermissions bhPermissions, BHPermissions.PermissionType... permissionType) {
+                                        bhPermissions.showMessage(getActivity(), permissionType);
+                                    }
+
+                                }, BHPermissions.PermissionType.CAMERA);
+                            }
+                        });
                         subLayout2.addView(imgButton2);
 
                         layout.addView(subLayout2);
@@ -532,17 +588,26 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                         textView.setText("ต้องการยกเลิกใบจอง \nหมายเลข "  + info.CONTNO  +"\n"+info.CustomerFullName+ " ใช่หรือไม่");
                         layout.addView(textView);
 
+                        /**
+                         * END
+                         */
+
                         AlertDialog.Builder setupAlert;
+//                        setupAlert = new AlertDialog.Builder(activity)
+//                                .setView(layout)
+//                                .setTitle("ยกเลิกใบจอง")
+//                                .setMessage(null)
+//                                .setCancelable(false);
+
                         setupAlert = new AlertDialog.Builder(activity)
-                                .setView(layout)
                                 .setTitle("ยกเลิกใบจอง")
-                                .setMessage(null)
+                                .setMessage("ต้องการยกเลิกใบจอง \nหมายเลข "  + info.CONTNO  +"\n"+info.CustomerFullName+ " ใช่หรือไม่")
                                 .setCancelable(false);
 
                         setupAlert = setupAlert.setPositiveButton("ใช่ ฉันต้องการยกเลิกใบจองนี้", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dialog.cancel();
-                                doVoidContract(info.RefNo,info.CONTNO,info.ProductSerialNumber);
+                                doVoidContract(info.RefNo, info.CONTNO, info.ProductSerialNumber);
                                 update_contract_for_cancal_preorder(info.RefNo);
                                 updateAssignForPostpone(info.RefNo);
                                 checkHasSurvey(info.RefNo);
@@ -728,24 +793,14 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                       //  showLastView();
                     }
                 });
-
                 VoidNoti.show();
             }
         }).start();
     }
 
-
-
-
     public void update_contract_for_cancal_preorder(String Refno){
-
-
         Log.e("Refno",Refno);
-
-
         jsonArrayRequest = new JsonArrayRequest("https://tssm.thiensurat.co.th/assanee_UAT/assanee/bighead_api_new/update_contract_for_cancal_preorder.php"+"?Refno="+Refno,
-
-
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -759,9 +814,6 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                         catch (Exception EX){
 
                         }*/
-
-
-
                         // showDialog("บันทึกข้อมูล","เรียบร้อย");
                     }
                 },
@@ -769,9 +821,6 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //showDialog("บันทึกข้อมูล","เรียบร้อย");
-
-
-
     /*                    try {
                             new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.SUCCESS_TYPE)
                                     .setTitleText("บันทึกข้อมูล!")
@@ -783,7 +832,6 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                         }*/
                     }
                 });
-
         try {
             try {
                 requestQueue = Volley.newRequestQueue(getActivity());
@@ -825,11 +873,8 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                     Gson gson=new Gson();
                     try {
                         JSONObject jsonObject=new JSONObject(gson.toJson(response.body()));
-
                         //JSONArray array = jsonObject.getJSONArray("data");
                         JSON_PARSE_DATA_AFTER_WEBCALL_load_data(jsonObject.getJSONArray("data"));
-
-
                         // layoutSurvey.setVisibility(View.VISIBLE);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -842,34 +887,17 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                     Log.e("onFailure question:",t.getLocalizedMessage());
                 }
             });
-
         } catch (Exception e) {
             Log.e("Exception question",e.getLocalizedMessage());
         }
     }
 
-
-
-
     public  void JSON_PARSE_DATA_AFTER_WEBCALL_load_data(JSONArray array) {
-
-
-
         if(array.length()==0){
 
-
-
-
-
-        }
-        else {
-
-
-
+        } else {
             for (int i = 0; i < array.length(); i++) {
-
                 final Get_data_api3 GetDataAdapter2 = new Get_data_api3();
-
                 JSONObject json = null;
                 try {
                     json = array.getJSONObject(i);
@@ -886,7 +914,6 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                     String TelnoCus=json.getString("TelnoCus");
                     String InstallDetails=json.getString("InstallDetails");
 
-
                     BHApplication.getInstance().getPrefManager().setPreferrence("FirstPeriodPayBy", FirstPeriodPayBy);
                     BHApplication.getInstance().getPrefManager().setPreferrence("FirstPeriodPayAmount", FirstPeriodPayAmount);
                     BHApplication.getInstance().getPrefManager().setPreferrence("ContractBy", ContractBy);
@@ -898,26 +925,59 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                     BHApplication.getInstance().getPrefManager().setPreferrence("ShippingTo", ShippingTo);
                     BHApplication.getInstance().getPrefManager().setPreferrence("TelnoCus", TelnoCus);
                     BHApplication.getInstance().getPrefManager().setPreferrence("InstallDetails", InstallDetails);
-
-
-
-
                 } catch (JSONException e) {
-
                     e.printStackTrace();
                 }
-                // value=GetDataAdapter2.getProblemName();
             }
         }
-
-
-
-
-
-
-
     }
 
 
+    /**
+     *
+     * Edit by Teerayut Klinsanga
+     *
+     * Created date 27/04/2021
+     *
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == REQUEST_QR_SCAN) {
+            if (resultCode == Activity.RESULT_CANCELED) {
+                showMessage("ยังไม่ได้ทำการสแกน กรุณาทำการสแกนอีกครั้ง");
+            } else if (resultCode == Activity.RESULT_OK) {
+                String barcode = intent.getStringExtra(Intents.Scan.RESULT);
+                if (barcode.equals(serailCheckScan)) {
+                    AlertDialog.Builder VoidNoti = new AlertDialog.Builder(activity)
+                            .setTitle("คำเตือน")
+                            .setMessage("หมายเลขเครื่องไม่ตรงกับรายการที่ต้องการยกเลิก\nกรุณาสแกนใหม่อีกครั้ง")
+                            .setCancelable(false);
+                    VoidNoti = VoidNoti.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            input.setText("");
+                        }
+                    });
+                    VoidNoti.show();
+                } else {
+                    input.setText(barcode);
+                }
 
+                Log.e("Barcode 1", barcode);
+            }
+        } else if (requestCode == REQUEST_QR_SCAN2) {
+            if (resultCode == Activity.RESULT_CANCELED) {
+                showMessage("ยังไม่ได้ทำการสแกน กรุณาทำการสแกนอีกครั้ง");
+            } else if (resultCode == Activity.RESULT_OK) {
+                String barcode2 = intent.getStringExtra(Intents.Scan.RESULT);
+                input2.setText(barcode2);
+                Log.e("Barcode 2", barcode2);
+            }
+        }
+    }
+
+    /**
+     * END
+     */
 }

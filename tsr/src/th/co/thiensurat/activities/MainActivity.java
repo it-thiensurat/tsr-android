@@ -1593,7 +1593,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 //                    Toast.makeText(activity, "ซุปฯ ตรวจสอบ", Toast.LENGTH_LONG).show();
                     break;
                 case R.string.menu_credit_check_status:
-                    String url_link = "https://uat.thiensurat.co.th/ContractChecker/Account/Login";
+                    String url_link = BHGeneral.SERVICE_MODE.toString() == "UAT" ? "https://uat.thiensurat.co.th/ContractChecker/Account/Login" : "http://app.thiensurat.co.th/ContractChecker/Account/login";
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url_link));
                     startActivity(i);

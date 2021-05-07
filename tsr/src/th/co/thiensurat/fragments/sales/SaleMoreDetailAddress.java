@@ -28,6 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHFragment;
+import th.co.bighead.utilities.BHGeneral;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHSpinnerAdapter;
 import th.co.bighead.utilities.annotation.InjectView;
@@ -676,7 +677,13 @@ public class SaleMoreDetailAddress extends BHFragment {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             Service request = retrofit.create(Service.class);
-            Call call = request.ApproveContno(contract.RefNo, BHPreference.employeeID(), String.valueOf(contract.InstallerSaleCode), BHPreference.getEmpid4(), null, BHPreference.getEmpid5(), null, BHPreference.getEmpid6(), null, contract.SaleTeamCode);
+            Call call = null;
+            if (BHGeneral.SERVICE_MODE.toString() == "UAT") {
+                call = request.ApproveContnoUAT(contract.RefNo, BHPreference.employeeID(), String.valueOf(contract.InstallerSaleCode), BHPreference.getEmpid4(), null, BHPreference.getEmpid5(), null, BHPreference.getEmpid6(), null, contract.SaleTeamCode);
+            } else {
+                call = request.ApproveContno(contract.RefNo, BHPreference.employeeID(), String.valueOf(contract.InstallerSaleCode), BHPreference.getEmpid4(), null, BHPreference.getEmpid5(), null, BHPreference.getEmpid6(), null, contract.SaleTeamCode);
+            }
+
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, retrofit2.Response response) {

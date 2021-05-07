@@ -508,8 +508,8 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 //									longitude = location.getLongitude() + "";
 //									Log.e("Current Latitude1", location.getLatitude()+"");
 //									Log.e("Current Longitude1", location.getLongitude()+"");
-									getProductRecoment(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
-//									getSaleArea(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+//									getProductRecoment(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+									getSaleArea(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
 								}
 							}
 						}
@@ -543,8 +543,8 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 //			Log.e("Current Longitude2", mLastLocation.getLongitude()+"");
 //			latitude = mLastLocation.getLatitude() + "";
 //			longitude = mLastLocation.getLongitude() + "";
-			getProductRecoment(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
-//			getSaleArea(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
+//			getProductRecoment(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
+			getSaleArea(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
 		}
 	};
 
