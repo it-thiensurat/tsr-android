@@ -725,6 +725,8 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -736,6 +738,12 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -743,6 +751,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHArrayAdapter;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHPreference;
@@ -753,14 +766,23 @@ import th.co.thiensurat.business.controller.BackgroundProcess;
 import th.co.thiensurat.data.info.EmployeeDetailInfo;
 import th.co.thiensurat.data.info.EmployeeInfo;
 import th.co.thiensurat.data.info.FortnightInfo;
+import th.co.thiensurat.fragments.sales.lead_online.adapter.RecyclerViewDataAdapter;
+import th.co.thiensurat.fragments.sales.lead_online.models.Getdata;
+import th.co.thiensurat.retrofit.api.Service;
+
+import static th.co.thiensurat.retrofit.api.client.BASE_URL;
 
 public class LEAD_ONLINE extends BHFragment {
 
-
-
+    @InjectView
+    private RecyclerView row1;
 
     private List<EmployeeInfo> mEmployeeList;
     private List<EmployeeDetailInfo> mEmployeeDetailList;
+    RecyclerView.LayoutManager recyclerViewlayoutManager;
+
+    List<Getdata> getdata;
+    Getdata GetDataAdapter1;
 
     @Override
     protected int titleID() {
@@ -771,7 +793,7 @@ public class LEAD_ONLINE extends BHFragment {
     @Override
     protected int fragmentID() {
         // TODO Auto-generated method stub
-        return R.layout.leadonline;
+        return R.layout.leadonline_row;
     }
 
     @Override
@@ -784,6 +806,12 @@ public class LEAD_ONLINE extends BHFragment {
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         //loadFortnight();
+        getdata = new ArrayList<>();
+
+        row1.setHasFixedSize(true);
+        recyclerViewlayoutManager = new LinearLayoutManager(getActivity());
+        row1.setLayoutManager(recyclerViewlayoutManager);
+        load_data_lead();
     }
 
 
@@ -791,6 +819,73 @@ public class LEAD_ONLINE extends BHFragment {
 
 
 
+    public  void load_data_lead() {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call=null;
 
+                call = request.get_load_data_lead();
+
+
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson = new Gson();
+                    try {
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+
+                        JSON_PARSE_DATA_AFTER_WEBCALL_load_data_lead(jsonObject.getJSONArray("data"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("data", "2");
+                }
+            });
+
+        } catch (Exception e) {
+
+        }
+    }
+
+
+    public  void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_lead(JSONArray array) {
+
+         Log.e("length1", String.valueOf(array.length()));
+        for (int i = 0; i < array.length(); i++) {
+
+              final Getdata GetDataAdapter2 = new Getdata();
+
+            JSONObject json = null;
+            try {
+                json = array.getJSONObject(i);
+
+                GetDataAdapter2.setCusName(json.getString("CusName"));
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+
+            getdata.add(GetDataAdapter2);
+
+        }
+
+
+
+        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getdata,getActivity());
+        row1.setAdapter(adapter);
+
+    }
 
 }

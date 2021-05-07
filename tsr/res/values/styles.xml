@@ -111,7 +111,7 @@
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">0.6</item>
-        <item name="android:background">@drawable/button_style_blue</item>
+        <item name="android:background">@drawable/button_style_red</item>
     </style>
 
     <style name="ButtonTop_b">
@@ -121,7 +121,7 @@
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">0.6</item>
-        <item name="android:background">@drawable/button_style_blue2</item>
+        <item name="android:background">@drawable/button_style_green</item>
     </style>
 
 
