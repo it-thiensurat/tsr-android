@@ -4640,13 +4640,17 @@ public class DocumentController {
         receiptBuilder.addParagraph();
 
         if ((paymentInfo.PaymentPeriodNumber + 1) > 1) {
-            receiptBuilder.setAlign(Paint.Align.CENTER);
-            String qrcode = String.format("|010755600021301" + CR + "%s" + CR + "%s" + CR + "%s", debtorCustomerInfo.IDCard.replace("-", ""), paymentInfo.CONTNO, "0");
-            Bitmap bmpQR = createQRCodeForReceipt(qrcode);
-            receiptBuilder.addImage(bmpQR);
-            receiptBuilder.setAlign(Align.CENTER);
-            receiptBuilder.addImage(textBottomQRCode());
-            receiptBuilder.addParagraph();
+            try {
+                receiptBuilder.setAlign(Paint.Align.CENTER);
+                String qrcode = String.format("|010755600021301" + CR + "%s" + CR + "%s" + CR + "%s", paymentInfo.IDCard.replace("-", ""), paymentInfo.CONTNO, "0");
+                Bitmap bmpQR = createQRCodeForReceipt(qrcode);
+                receiptBuilder.addImage(bmpQR);
+                receiptBuilder.setAlign(Align.CENTER);
+                receiptBuilder.addImage(textBottomQRCode());
+                receiptBuilder.addParagraph();
+            } catch (NullPointerException e) {
+
+            }
         }
 
         return receiptBuilder.build();

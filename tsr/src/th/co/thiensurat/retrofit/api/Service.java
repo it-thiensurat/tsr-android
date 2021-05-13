@@ -39,8 +39,8 @@ public interface Service {
     Call<Object> data2(@Query("Empid") String data);
 
     //@GET("/api/api-creditpaymentstatus.php")
-    @GET("/api/api-receiptupdatedaily-uat.php")
-    Call<Object> payment(@Query("contno") String data);
+//    @GET("/api/api-receiptupdatedaily-uat.php")
+//    Call<Object> payment(@Query("contno") String data);
 
     @GET("/api/api-receiptupdatedaily1-uat.php")
     Call<Object> payment2(@Query("contno") String data);
@@ -187,6 +187,9 @@ public interface Service {
         @FormUrlEncoded
         Call<Object> voidToApproveContnoUAT(@Field("refno") String refno, @Field("empid") String empid);
 
+        @GET("/api/api-receiptupdatedaily-uat.php")
+        Call<Object> paymentUAT(@Query("contno") String data);
+
         /**
          * END
          */
@@ -218,8 +221,14 @@ public interface Service {
         @GET("/api/api-chkAreaSaleing.php")
         Call<Object> getSaleArea(@Query("lat") String lat, @Query("long") String lon);
 
-        @GET("API/DrinkCoApi/api/DistrictItemsNew/{lat},{lon}/6256a94701b4b14b8400d5e7559d9ee7")
+        @GET("getlocation/{lat}/{lon}/")
         Call<Object> getProductRecomend(@Path(value = "lat", encoded = false) String lat, @Path(value = "lon", encoded = false) String lon);
+
+        @GET("/api/api-receiptupdatedaily.php")
+        Call<Object> payment(@Query("contno") String data);
+
+        @GET("/api/customerreceiptapi.php")
+        Call<Object> getQrReceipt(@Query("contno") String contno);
 
         /**
          * END
@@ -233,11 +242,6 @@ public interface Service {
     @FormUrlEncoded
     Call<Object> getCustomerStatus(@Field("search") String search);
 
-    @GET("/api/customerreceiptapi.php")
-    Call<Object> getQrReceipt(@Query("contno") String contno);
-
-
-//    @GET("/maps/api/geocode/json?latlng={lat},{lon}&key=AIzaSyAAgfLCmkJoMLfS8ElkVVEizDGfJ0IxXUk&language=th")
     @GET("/maps/api/geocode/json")
     Call<Object> getAreaFromGoogle(@Query("latlng") String latlng, @Query("key") String key, @Query("language") String lang);
     /**

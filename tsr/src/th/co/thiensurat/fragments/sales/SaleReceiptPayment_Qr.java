@@ -207,13 +207,6 @@ public class SaleReceiptPayment_Qr extends BHFragment {
             case R.string.button_print:
                 saveStatusCode();
                 if (viewPager.getChildCount() > 1) {
-//                    final List<PaymentInfo> newPayments = new ArrayList<PaymentInfo>();
-
-//                    for (PaymentInfo info : payments) {
-////                        if (info.EmpID.equals(BHPreference.employeeID())) {
-//                            newPayments.add(info);
-////                        }
-//                    }
 
                     if (payments.size() > 1) {
                         AlertDialog.Builder setupAlert;
@@ -335,7 +328,7 @@ public class SaleReceiptPayment_Qr extends BHFragment {
                                 paymentInfo.MODE = jsonArray.getJSONObject(i).getInt("maxPeriod");
                                 paymentInfo.EmpID = data.contract.EmpID;
                                 paymentInfo.EFFDATE = data.contract.EFFDATE;
-                                paymentInfo.IDCard = data.contract.IDCard;
+                                paymentInfo.IDCard = jsonArray.getJSONObject(i).getString("IDCard");
                                 paymentInfo.MODE = data.contract.MODE;
                                 paymentInfo.RefNo = data.contract.RefNo;
                                 paymentInfo.SaleEmployeeName = jsonArray.getJSONObject(i).getString("Chanel");
@@ -717,7 +710,6 @@ public class SaleReceiptPayment_Qr extends BHFragment {
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER_VERTICAL;
-        //params.setMargins(2, 0, 1, 0);
 
         for (int i = 0; i < dotsCount; i++) {
             dots[i] = new TextView(activity);
