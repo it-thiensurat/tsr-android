@@ -508,7 +508,7 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 //									longitude = location.getLongitude() + "";
 //									Log.e("Current Latitude1", location.getLatitude()+"");
 //									Log.e("Current Longitude1", location.getLongitude()+"");
-//									getProductRecoment(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+									getProductRecoment(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
 									getSaleArea(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
 								}
 							}
@@ -543,7 +543,7 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 //			Log.e("Current Longitude2", mLastLocation.getLongitude()+"");
 //			latitude = mLastLocation.getLatitude() + "";
 //			longitude = mLastLocation.getLongitude() + "";
-//			getProductRecoment(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
+			getProductRecoment(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
 			getSaleArea(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
 		}
 	};
@@ -666,6 +666,7 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 						JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
 						JSONArray jsonArray = jsonObject.getJSONArray("data");
 						Log.e("Sale area", String.valueOf(jsonArray.length()));
+						BHLoading.close();
 						if (jsonArray.length() > 0) {
 							if (jsonArray.getJSONObject(0).getString("area").equals("ปิด")) {
 								showWarningDialog("แจ้งเตือนพื้นที่ขาย",
