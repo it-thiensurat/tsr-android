@@ -188,7 +188,7 @@ public class PreorderFragment extends BHFragment {
 		if (savedInstanceState != null) {
 			data = savedInstanceState.getParcelable(PreorderFragment.FRAGMENT_DATA);
 		}
-
+		vwTitle.setText("เลือกสินค้า");
 
 	//	productStockController=new ProductStockController();
 		getData_data_products=new ArrayList<>();

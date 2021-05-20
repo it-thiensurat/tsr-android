@@ -18,7 +18,13 @@ public class DrawText implements IDrawItem {
 
     @Override
     public void drawOnCanvas(Canvas canvas, float x, float y) {
-        canvas.drawText(text, getX(canvas, x), getY(y), paint);
+        try {
+            canvas.drawText(text, getX(canvas, x), getY(y), paint);
+
+        }
+        catch (Exception ex){
+
+        }
     }
 
     private float getY(float y) {
