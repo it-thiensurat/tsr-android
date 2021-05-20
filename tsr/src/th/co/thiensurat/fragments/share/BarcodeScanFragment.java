@@ -63,6 +63,7 @@ import th.co.thiensurat.retrofit.api.Service;
 import th.co.thiensurat.views.ViewTitle;
 
 import static th.co.thiensurat.retrofit.api.client.BASE_URL;
+import static th.co.thiensurat.retrofit.api.client.DRINKO_BASE_URL;
 
 public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdapter.ItemClickListener {
 
@@ -196,7 +197,6 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 		if (savedInstanceState != null) {
 			data = savedInstanceState.getParcelable(BarcodeScanFragment.FRAGMENT_DATA);
 		}
-		BHLoading.show(activity);
 		mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
 		getLastLocation();
 
@@ -508,7 +508,7 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 //									longitude = location.getLongitude() + "";
 //									Log.e("Current Latitude1", location.getLatitude()+"");
 //									Log.e("Current Longitude1", location.getLongitude()+"");
-//									getProductRecoment(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+									getProductRecoment(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
 									getSaleArea(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
 								}
 							}
@@ -543,7 +543,7 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 //			Log.e("Current Longitude2", mLastLocation.getLongitude()+"");
 //			latitude = mLastLocation.getLatitude() + "";
 //			longitude = mLastLocation.getLongitude() + "";
-//			getProductRecoment(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
+			getProductRecoment(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
 			getSaleArea(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
 		}
 	};
@@ -552,8 +552,9 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 //		latitude = "9.1047298";
 //		longitude = "99.3126167";
 		try {
+			BHLoading.show(activity);
 			Retrofit retrofit = new Retrofit.Builder()
-					.baseUrl("https://app.thiensurat.co.th/")
+					.baseUrl(DRINKO_BASE_URL)
 					.addConverterFactory(GsonConverterFactory.create())
 					.build();
 			Service request = retrofit.create(Service.class);
@@ -562,28 +563,26 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 				@Override
 				public void onResponse(Call call, retrofit2.Response response) {
 					Gson gson = new Gson();
-					Log.e("Json body", String.valueOf(response.body()));
+					Log.e("Json body recom", String.valueOf(response.body()));
 					try {
 						JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
 						JSONArray jsonArray = jsonObject.getJSONArray("data");
 						JSONArray jsonArrayEx = jsonObject.getJSONArray("dataEx");
 						productRecomendInfoList = new ArrayList<>();
-
 						if (jsonArrayEx.length() > 0) {
 							for (int i = 0; i < jsonArrayEx.length(); i++) {
 								JSONObject object = jsonArrayEx.getJSONObject(i);
 								productRecomendInfo = new ProductRecomendInfo();
-								productRecomendInfo.setBrandName(object.getString("brandName"));
-								productRecomendInfo.setProductCode(object.getString("productCode"));
-								productRecomendInfo.setProductName(object.getString("productName"));
-								productRecomendInfo.setImgPath(object.getString("imgPath"));
+								productRecomendInfo.setBrandName(object.getString("BrandName"));
+								productRecomendInfo.setProductCode(object.getString("ProductCode"));
+								productRecomendInfo.setProductName(object.getString("ProductName"));
+								productRecomendInfo.setImgPath(object.getString("ImgPath") == null ? "" : object.getString("ImgPath"));
 								try {
-									productRecomendInfo.setStickerPrice(object.getDouble("stickerPrice"));
-									productRecomendInfo.setRetailPrice(object.getDouble("retailPrice"));
-									productRecomendInfo.setWarranty(object.getString("warranty"));
+									productRecomendInfo.setStickerPrice(object.getString("StickerPrice"));
+									productRecomendInfo.setRetailPrice(object.getString("RetailPrice"));
+									productRecomendInfo.setWarranty(object.getString("Warranty") == null ? "" : object.getString("Warranty"));
 								} catch (Exception e) {
 								}
-
 								productRecomendInfo.setType("accessory");
 								productRecomendInfoList.add(productRecomendInfo);
 							}
@@ -592,14 +591,14 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 						for (int i = 0; i < jsonArray.length(); i++) {
 							JSONObject object = jsonArray.getJSONObject(i);
 							productRecomendInfo = new ProductRecomendInfo();
-							productRecomendInfo.setBrandName(object.getString("brandName"));
-							productRecomendInfo.setProductCode(object.getString("productCode"));
-							productRecomendInfo.setProductName(object.getString("productName"));
-							productRecomendInfo.setImgPath(object.getString("imgPath"));
+							productRecomendInfo.setBrandName(object.getString("BrandName"));
+							productRecomendInfo.setProductCode(object.getString("ProductCode"));
+							productRecomendInfo.setProductName(object.getString("ProductName"));
+							productRecomendInfo.setImgPath(object.getString("ImgPath") == null ? "" : object.getString("ImgPath"));
 							try {
-								productRecomendInfo.setStickerPrice(object.getDouble("stickerPrice"));
-								productRecomendInfo.setRetailPrice(object.getDouble("retailPrice"));
-								productRecomendInfo.setWarranty(object.getString("warranty"));
+								productRecomendInfo.setStickerPrice(object.getString("StickerPrice"));
+								productRecomendInfo.setRetailPrice(object.getString("RetailPrice"));
+								productRecomendInfo.setWarranty(object.getString("Warranty") == null ? "" : object.getString("Warranty"));
 							} catch (Exception e) {
 							}
 							productRecomendInfo.setType("recommend");
@@ -661,7 +660,7 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 				@Override
 				public void onResponse(Call call, retrofit2.Response response) {
 					Gson gson = new Gson();
-					Log.e("Json body", String.valueOf(response.body()));
+//					Log.e("Json body", String.valueOf(response.body()));
 					try {
 						JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
 						JSONArray jsonArray = jsonObject.getJSONArray("data");

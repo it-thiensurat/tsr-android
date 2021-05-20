@@ -234,7 +234,7 @@ public class SaleUnfinishedFragment extends BHFragment {
 //											Toast.makeText(activity, output.PaymentType, Toast.LENGTH_LONG).show();
 
 											try {
-												if (output.SaleEmployeeName.equals("Qrcode")) {
+												if (output.PaymentType.equals("Qrcode")) {
 													SaleReceiptPayment_Qr.Data dataReceiptID = new SaleReceiptPayment_Qr.Data();
 													dataReceiptID.refno = data.refno;
 													dataReceiptID.selectedDate = output.CreateDate;

@@ -58,7 +58,7 @@ public class ProductRecomdAdapter extends RecyclerView.Adapter<ProductRecomdAdap
         holder.brandProduct.setText(productRecomendInfo.getBrandName());
         holder.codeProduct.setText(productRecomendInfo.getProductCode());
         holder.nameProduct.setText(productRecomendInfo.getProductName());
-        holder.priceProduct.setText(BHUtilities.numericFormat(productRecomendInfo.getRetailPrice()));
+        holder.priceProduct.setText(productRecomendInfo.getRetailPrice());
         if (productRecomendInfo.getType().equals("accessory")) {
             holder.txtAccessory.setText("อุปกรณ์เสริมที่แนะนำ");
             holder.txtAccessory.setVisibility(View.VISIBLE);
