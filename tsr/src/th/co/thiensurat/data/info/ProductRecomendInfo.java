@@ -4,8 +4,8 @@ public class ProductRecomendInfo {
     public String brandName;
     public String productCode;
     public String productName;
-    public double stickerPrice;
-    public double retailPrice;
+    public String stickerPrice;
+    public String retailPrice;
     public String imgPath;
     public String warranty;
     public String type;
@@ -34,19 +34,19 @@ public class ProductRecomendInfo {
         this.productName = productName;
     }
 
-    public double getStickerPrice() {
+    public String getStickerPrice() {
         return stickerPrice;
     }
 
-    public void setStickerPrice(double stickerPrice) {
+    public void setStickerPrice(String stickerPrice) {
         this.stickerPrice = stickerPrice;
     }
 
-    public double getRetailPrice() {
+    public String getRetailPrice() {
         return retailPrice;
     }
 
-    public void setRetailPrice(double retailPrice) {
+    public void setRetailPrice(String retailPrice) {
         this.retailPrice = retailPrice;
     }
 

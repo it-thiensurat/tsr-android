@@ -2096,6 +2096,14 @@ public class DocumentController_preorder {
         receiptBuilder.setAlign(Align.RIGHT);
         receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("ContractBy"));
 
+
+        receiptBuilder.addParagraph();
+        receiptBuilder.setAlign(Align.LEFT);
+        receiptBuilder.addText("วันที่สะดวกนัดติดตั้ง", false);
+        receiptBuilder.setAlign(Align.RIGHT);
+        receiptBuilder.addText(BHApplication.getInstance().getPrefManager().getPreferrence("DateInstall")+" น.");
+
+
         receiptBuilder.addParagraph();
         receiptBuilder.setAlign(Align.LEFT);
         receiptBuilder.addText("ข้อมูลน้ำดิบ", false);

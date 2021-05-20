@@ -3,6 +3,7 @@ package th.co.thiensurat.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -80,13 +82,14 @@ public class SurveyActivity_preorder extends Activity  {
     RadioGroup radio_G1,radio_G2,radio_G3;
     Spinner sp1,sp2,sp3;
     EditText et1,et2,et3,et4,et5;
-    ImageView bb_datetime;
+    ImageView bb_datetime,bb_datetime2,image_time;
     ImageButton button_back;
     LinearLayout li11,li22;
+    TextView txt_s_time,et6;
 
 
     String radio_G1_S="",radio_G2_S="",radio_G3_S="";
-    String DD1="",DD2="",DD3="",ET1="",ET2="",ET3="",ET4="",ET5="",Amount="";
+    String DD1="",DD2="",DD3="",ET1="",ET2="",ET3="",ET4="",ET5="",ET6="",ET6_2="",TT="",Amount="";
     static String MODE="";
 
     DatePickerDialog datePicker ;
@@ -116,7 +119,7 @@ public class SurveyActivity_preorder extends Activity  {
         setContentView(R.layout.activity_survey_preorder);
 
 
-
+        txt_s_time= (TextView) findViewById(R.id.txt_s_time);
         bnt_save  = (Button) findViewById(R.id.bnt_save);
         radio_G1  = (RadioGroup) findViewById(R.id.radio_G1);
         radio_G2  = (RadioGroup) findViewById(R.id.radio_G2);
@@ -131,7 +134,10 @@ public class SurveyActivity_preorder extends Activity  {
         et3  = (EditText) findViewById(R.id.et3);
         et4  = (EditText) findViewById(R.id.et4);
         et5  = (EditText) findViewById(R.id.et5);
+        et6= (TextView) findViewById(R.id.et6);
         bb_datetime= (ImageView) findViewById(R.id.bb_datetime);
+        bb_datetime2= (ImageView) findViewById(R.id.bb_datetime2);
+        image_time= (ImageView) findViewById(R.id.image_time);
         button_back= (ImageButton) findViewById(R.id.button_back);
         li11= (LinearLayout) findViewById(R.id.li11);
         li22= (LinearLayout) findViewById(R.id.li22);
@@ -151,6 +157,7 @@ public class SurveyActivity_preorder extends Activity  {
         get_api_3();
         get_et();
         more_new();
+        get_et();
 
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,8 +196,8 @@ public class SurveyActivity_preorder extends Activity  {
                             month_s=String.valueOf(month+1);
                         }
                         date2_s= dayOfMonth_s+"-"+month_s+"-"+String.valueOf(year);
-                        date3_s=String.valueOf(year)+"-"+month_s+"-"+dayOfMonth_s;
-                        date3_s2=dayOfMonth_s+"-"+month_s+"-"+String.valueOf(year+543);
+                            date3_s=String.valueOf(year)+"-"+month_s+"-"+dayOfMonth_s;
+                          date3_s2=dayOfMonth_s+"-"+month_s+"-"+String.valueOf(year+543);
 
                         //et4.setText(date3_s);
 //Log.e("date3_s",date3_s);
@@ -249,6 +256,149 @@ public class SurveyActivity_preorder extends Activity  {
             }
         });
 
+
+
+        bb_datetime2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                final Calendar calendar = Calendar.getInstance();
+                int yy = calendar.get(Calendar.YEAR);
+                int mm = calendar.get(Calendar.MONTH);
+                int dd = calendar.get(Calendar.DAY_OF_MONTH);
+                datePicker = new DatePickerDialog(SurveyActivity_preorder.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        String date2_s = "";
+                        String month_s ="";
+                        String dayOfMonth_s ="";
+                        if(dayOfMonth<9){
+                            dayOfMonth_s="0"+String.valueOf(dayOfMonth);
+                        }
+                        else {
+                            dayOfMonth_s=String.valueOf(dayOfMonth);
+                        }
+                        if(month<9){
+                            month_s="0"+String.valueOf(month+1);
+                        }
+                        else {
+                            month_s=String.valueOf(month+1);
+                        }
+                        date2_s= dayOfMonth_s+"-"+month_s+"-"+String.valueOf(year);
+                        date3_X=String.valueOf(year)+"-"+month_s+"-"+dayOfMonth_s;
+                        date3_s2_X=dayOfMonth_s+"-"+month_s+"-"+String.valueOf(year+543);
+                    //    ET6_2  =String.valueOf(year)+"-"+dayOfMonth_s+"-"+month_s;
+                        ET6_2=dayOfMonth_s+"-"+month_s+"-"+String.valueOf(year+543);
+
+                        //et4.setText(date3_s);
+//Log.e("date3_s",date3_s);
+
+
+
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                        String   dateBeforeString= df.format(Calendar.getInstance().getTime());
+                        String dateAfterString =date3_X;
+
+
+
+
+                        //Parsing the date
+                        LocalDate dateBefore = null;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            try {
+                                dateBefore = LocalDate.parse(dateBeforeString);
+                            }
+                            catch (Exception ex){
+
+                            }
+
+                        }
+                        LocalDate dateAfter = null;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            try {
+                                dateAfter = LocalDate.parse(dateAfterString);
+                            }
+                            catch (Exception ex){
+
+                            }
+
+                        }
+
+                        //calculating number of days in between
+
+                        try {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                //  noOfDaysBetween = ChronoUnit.DAYS.between(dateBefore, dateAfter);
+                            }
+                            // Log.e("noOfDaysBetween", String.valueOf(noOfDaysBetween));
+                            getCountOfDays2(dateBeforeString,dateAfterString);
+                        }
+                        catch (Exception rr){
+
+                        }
+
+
+                    }
+
+
+                }, yy, mm, dd);
+                datePicker.show();
+
+            }
+        });
+
+
+
+
+
+        image_time.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(SurveyActivity_preorder.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+
+                        String S_selectedHour="";
+                        String S_selectedMinute="";
+
+                        if(selectedHour<9){
+                            S_selectedHour="0"+String.valueOf(selectedHour);
+                        }
+                        else {
+                            S_selectedHour=String.valueOf(selectedHour);
+                        }
+
+
+
+                        if(selectedMinute<9){
+                            S_selectedMinute="0"+String.valueOf(selectedMinute);
+                        }
+                        else {
+                            S_selectedMinute=String.valueOf(selectedMinute);
+                        }
+
+
+
+                        TT=S_selectedHour+":"+S_selectedMinute;
+                        Log.e("timetime", S_selectedHour+":"+S_selectedMinute+":00:000");
+                        txt_s_time.setText(S_selectedHour+":"+S_selectedMinute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+
+            }
+        });
+
+
         bnt_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -263,7 +413,19 @@ public class SurveyActivity_preorder extends Activity  {
                             .setTitleText("ข้อมูลยังไม่ครบ!")
                             .setContentText("ยังไม่ได้เลือก ผู้ทำสัญญา!")
                             .show();
-                } else if(DD1.equals("กรุณาเลือก")){
+                } else if(ET6.equals("null")|ET6.isEmpty()){
+                    new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("ข้อมูลยังไม่ครบ!")
+                            .setContentText("ยังไม่ได้ ระบุวันที่ลูกค้าสะดวกนัดติดตั้ง!")
+                            .show();
+                }
+                else if(TT.equals("null")|TT.isEmpty()){
+                    new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("ข้อมูลยังไม่ครบ!")
+                            .setContentText("ยังไม่ได้ ระบุเวลาลูกค้าสะดวกนัดติดตั้ง!")
+                            .show();
+                }
+                else if(DD1.equals("กรุณาเลือก")){
                     new SweetAlertDialog(SurveyActivity_preorder.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("ข้อมูลยังไม่ครบ!")
                             .setContentText("ยังไม่ได้ เลือกข้อมูลน้ำ!")
@@ -314,7 +476,7 @@ public class SurveyActivity_preorder extends Activity  {
                             .setContentText("ยังไม่ได้ กรอบข้อมูลที่ควรทราบอื่นๆ!")
                             .show();
                 } else {
-                    insert_api(BHPreference.RefNo(),BHPreference.employeeID(),radio_G1_S,ET1,radio_G2_S,DD1,DD2,radio_G3_S,ET4,DD3,ET2,ET3,ET5);
+                    insert_api(BHPreference.RefNo(),BHPreference.employeeID(),radio_G1_S,ET1,radio_G2_S,DD1,DD2,radio_G3_S,ET4,DD3,ET2,ET3,ET5,ET6_2);
                     BHApplication.getInstance().getPrefManager().setPreferrence("chaeck_save", "1");
                 }
             }
@@ -345,8 +507,8 @@ public class SurveyActivity_preorder extends Activity  {
     };
 
 
-    float dayCount;
-    String date3_s="",date3_s2="";
+    float dayCount,dayCount2;
+    String date3_s2="",date3_s="",date3_s2_X="",date3_X="";
     public String getCountOfDays(String createdDateString, String expireDateString) {
 
 
@@ -414,13 +576,88 @@ public class SurveyActivity_preorder extends Activity  {
         }
         return ("" + (int) dayCount + " Days");
     }
+    public String getCountOfDays2(String createdDateString, String expireDateString) {
 
+
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        Date createdConvertedDate = null, expireCovertedDate = null, todayWithZeroTime = null;
+        try {
+            createdConvertedDate = dateFormat.parse(createdDateString);
+            expireCovertedDate = dateFormat.parse(expireDateString);
+
+            Date today = new Date();
+
+            todayWithZeroTime = dateFormat.parse(dateFormat.format(today));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        int cYear = 0, cMonth = 0, cDay = 0;
+
+        if (createdConvertedDate.after(todayWithZeroTime)) {
+            Calendar cCal = Calendar.getInstance();
+            cCal.setTime(createdConvertedDate);
+            cYear = cCal.get(Calendar.YEAR);
+            cMonth = cCal.get(Calendar.MONTH);
+            cDay = cCal.get(Calendar.DAY_OF_MONTH);
+
+        } else {
+            Calendar cCal = Calendar.getInstance();
+            cCal.setTime(todayWithZeroTime);
+            cYear = cCal.get(Calendar.YEAR);
+            cMonth = cCal.get(Calendar.MONTH);
+            cDay = cCal.get(Calendar.DAY_OF_MONTH);
+        }
+
+
+
+        Calendar eCal = Calendar.getInstance();
+        eCal.setTime(expireCovertedDate);
+
+        int eYear = eCal.get(Calendar.YEAR);
+        int eMonth = eCal.get(Calendar.MONTH);
+        int eDay = eCal.get(Calendar.DAY_OF_MONTH);
+
+        Calendar date1 = Calendar.getInstance();
+        Calendar date2 = Calendar.getInstance();
+
+        date1.clear();
+        date1.set(cYear, cMonth, cDay);
+        date2.clear();
+        date2.set(eYear, eMonth, eDay);
+
+        long diff = date2.getTimeInMillis() - date1.getTimeInMillis();
+
+        dayCount2 = 0-((float) diff / (24 * 60 * 60 * 1000));
+        Log.e("dayCount", String.valueOf((int) dayCount2));
+
+        if((int) dayCount2>0){
+            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("ขออภัย!")
+                    .setContentText("ไม่สามารถเลือกย้อนหลังได้!")
+                    .show();
+        } else {
+            et6.setText(date3_s2_X);
+        }
+        return ("" + (int) dayCount2 + " Days");
+    }
     void get_et(){
-        ET1 = et1.getText().toString().isEmpty() ? "0" : et1.getText().toString();
+
+        String FF = et1.getText().toString();
+        if((FF.equals("0"))|(FF.isEmpty())){
+            ET1="0";
+        }
+        else {
+            ET1=et1.getText().toString();
+        }
         ET2 = et2.getText().toString();
         ET3 = et3.getText().toString();
         ET4 = et4.getText().toString();
         ET5 = et5.getText().toString();
+        ET6 = et6.getText().toString();
+
 
         length_phone = ET2.length();
         try {
@@ -884,24 +1121,24 @@ public class SurveyActivity_preorder extends Activity  {
 
 
 
-    private void insert_api(String Refno,String Empid,String FirstPeriodPayBy,String FirstPeriodPayAmount,String ContractBy,String WaterInfo,String WaterProblem,String ShippingBy,String ShippingDate,String ShippingTo,String TelnoCus,String InstallDetails,String WaterProblemMore){
+    private void insert_api(String Refno,String Empid,String FirstPeriodPayBy,String FirstPeriodPayAmount,String ContractBy,String WaterInfo,String WaterProblem,String ShippingBy,String ShippingDate,String ShippingTo,String TelnoCus,String InstallDetails,String WaterProblemMore,String DateInstall){
 
 
         Log.e("TelnoCus",TelnoCus);
 
 
-/*      try {
+      try {
             Log.e("URL_api","https://tssm.thiensurat.co.th/api/api-addBookingInfrom.php"+"?Refno="+Refno+"&Empid="+Empid+"&FirstPeriodPayBy="+URLEncoder.encode(FirstPeriodPayBy, "UTF-8")+"&FirstPeriodPayAmount="+URLEncoder.encode(FirstPeriodPayAmount, "UTF-8")+
-                    "&ContractBy="+URLEncoder.encode(ContractBy, "UTF-8")+"&WaterInfo="+URLEncoder.encode(WaterInfo, "UTF-8")+"&WaterProblem="+URLEncoder.encode(WaterProblem, "UTF-8")+"&ShippingBy="+URLEncoder.encode(ShippingBy, "UTF-8")+"&ShippingDate="+ShippingDate+"&ShippingTo="+URLEncoder.encode(ShippingTo, "UTF-8")+"&TelnoCus="+TelnoCus+"&InstallDetails="+URLEncoder.encode(InstallDetails, "UTF-8"));
+                    "&ContractBy="+URLEncoder.encode(ContractBy, "UTF-8")+"&WaterInfo="+URLEncoder.encode(WaterInfo, "UTF-8")+"&WaterProblem="+URLEncoder.encode(WaterProblem, "UTF-8")+"&ShippingBy="+URLEncoder.encode(ShippingBy, "UTF-8")+"&ShippingDate="+ShippingDate+"&ShippingTo="+URLEncoder.encode(ShippingTo, "UTF-8")+"&TelnoCus="+TelnoCus+"&InstallDetails="+URLEncoder.encode(InstallDetails, "UTF-8")+"&DateInstall="+URLEncoder.encode(DateInstall+" "+TT, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }*/
+        }
 
 
 
         try {
             jsonArrayRequest = new JsonArrayRequest("https://tssm.thiensurat.co.th/api/api-addBookingInfrom.php"+"?Refno="+Refno+"&Empid="+Empid+"&FirstPeriodPayBy="+ URLEncoder.encode(FirstPeriodPayBy, "UTF-8")+"&FirstPeriodPayAmount="+URLEncoder.encode(FirstPeriodPayAmount, "UTF-8")+
-                    "&ContractBy="+ URLEncoder.encode(ContractBy, "UTF-8")+"&WaterInfo="+URLEncoder.encode(WaterInfo, "UTF-8")+"&WaterProblem="+URLEncoder.encode(WaterProblem, "UTF-8")+"&ShippingBy="+URLEncoder.encode(ShippingBy, "UTF-8")+"&ShippingDate="+ShippingDate+"&ShippingTo="+URLEncoder.encode(ShippingTo, "UTF-8")+"&TelnoCus="+TelnoCus+"&InstallDetails="+URLEncoder.encode(InstallDetails, "UTF-8")+"&WaterProblemMore="+URLEncoder.encode(WaterProblemMore, "UTF-8"),
+                    "&ContractBy="+ URLEncoder.encode(ContractBy, "UTF-8")+"&WaterInfo="+URLEncoder.encode(WaterInfo, "UTF-8")+"&WaterProblem="+URLEncoder.encode(WaterProblem, "UTF-8")+"&ShippingBy="+URLEncoder.encode(ShippingBy, "UTF-8")+"&ShippingDate="+ShippingDate+"&ShippingTo="+URLEncoder.encode(ShippingTo, "UTF-8")+"&TelnoCus="+TelnoCus+"&InstallDetails="+URLEncoder.encode(InstallDetails, "UTF-8")+"&WaterProblemMore="+URLEncoder.encode(WaterProblemMore, "UTF-8")+"&DateInstall="+URLEncoder.encode(DateInstall+" "+TT, "UTF-8"),
 
 
                     new Response.Listener<JSONArray>() {

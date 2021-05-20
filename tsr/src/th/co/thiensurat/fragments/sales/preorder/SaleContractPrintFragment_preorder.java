@@ -1367,7 +1367,7 @@ Log.e("fffa", String.valueOf(array.length()));
                     String ShippingTo=json.getString("ShippingTo");
                     String TelnoCus=json.getString("TelnoCus");
                     String InstallDetails=json.getString("InstallDetails");
-
+                    String DateInstall=json.getString("DateInstall");
 
                     BHApplication.getInstance().getPrefManager().setPreferrence("FirstPeriodPayBy", FirstPeriodPayBy);
                     BHApplication.getInstance().getPrefManager().setPreferrence("FirstPeriodPayAmount", FirstPeriodPayAmount);
@@ -1380,7 +1380,7 @@ Log.e("fffa", String.valueOf(array.length()));
                     BHApplication.getInstance().getPrefManager().setPreferrence("ShippingTo", ShippingTo);
                     BHApplication.getInstance().getPrefManager().setPreferrence("TelnoCus", TelnoCus);
                     BHApplication.getInstance().getPrefManager().setPreferrence("InstallDetails", InstallDetails);
-
+                    BHApplication.getInstance().getPrefManager().setPreferrence("DateInstall", DateInstall);
 
 
 

@@ -830,29 +830,6 @@
                         android:ems="10"
                         android:inputType="phone" />
                 </LinearLayout>
-
-                <LinearLayout
-                    style="@style/ItemLine"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        style="@style/TextView.Label"
-                        android:layout_width="@dimen/impound_detail_width"
-                        android:layout_height="@dimen/impound_detail_height2"
-                        android:paddingRight="@dimen/padding_normal"
-                        android:text="เบอร์ที่ทำงาน" />
-
-                    <EditText
-                        android:id="@+id/editTextWorkPhone"
-                        style="@style/TextView.Value"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/padding_normal"
-                        android:ems="10"
-                        android:inputType="phone" />
-                </LinearLayout>
-
                 <LinearLayout
                     style="@style/ItemLine"
                     android:layout_width="match_parent"
@@ -863,7 +840,7 @@
                         android:layout_width="@dimen/impound_detail_width"
                         android:layout_height="@dimen/impound_detail_height"
                         android:paddingRight="@dimen/padding_normal"
-                        android:text="เบอร์มือถือ/เบอร์ที่ติดต่อได้" />
+                        android:text="เบอร์มือถือ" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -890,6 +867,31 @@
                             android:textColor="@android:color/holo_red_dark" />
                     </RelativeLayout>
                 </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="45dp"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="เบอร์โทรบุคคลอ้างอิง" />
+
+                    <EditText
+                        android:id="@+id/editTextWorkPhone"
+                        style="@style/TextView.Value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:layout_marginTop="10dp"
+
+                        android:ems="10"
+                        android:inputType="phone" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
