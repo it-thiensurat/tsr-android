@@ -98,6 +98,7 @@
     <string name="button_type_satellite">SATELLITE</string>
     <string name="button_type_terrain">TERRAIN</string>
     <string name="button_type_hybrid">HYBRID</string>
+    <string name="button_add_sales_quotation">เพิ่มใบเสนอราคา</string>
 
     <!-- Main Menu -->
     <string name="main_menu_profile">ข้อมูลผู้ใช้งาน</string>
@@ -132,7 +133,7 @@
     <string name="main_menu_preorder">6C18CAD5E7D345379E6E15720FFEE318</string>
     <string name="main_menu_preorder_setting">9C8A3CEB21C14AA38CABB655F472B0C1</string>
     <string name="main_menu_lead_online">0BF75CB7521F47B585FDDED33726575D</string>
-
+    <string name="main_menu_sales_quotation">0BF75CB7521F47B585FDDED33726575E</string>
     <!-- [START] :: Fixed - [BHPROJ-0016-855] :: Revise Menu Report tobe SubMenu -->
 
     <string name="main_menu_team">E9328B14D4CA4B18AB36E0FA8FA2A1F3</string>
@@ -187,6 +188,7 @@
 
     <!-- Title -->
     <!--<string name="title_main">ข้อมูลหลัก</string>-->
+    <string name="title_sales_quotation">ใบเสนอราคา</string>
     <string name="title_sales">ขายสินค้า</string>
     <string name="title_sales_preorder">จองสินค้า</string>
     <string name="title_check_stock">ตรวจสอบสินค้า</string>

@@ -201,6 +201,7 @@ import th.co.thiensurat.fragments.sales.lead_online.LEAD_ONLINE;
 import th.co.thiensurat.fragments.sales.preorder.SaleMainFragment_peoorder;
 import th.co.thiensurat.fragments.sales.preorder_setting.SaleMainFragment_preorder_setting;
 import th.co.thiensurat.fragments.sales.preorder_setting.SaleMainFragment_preorder_setting2;
+import th.co.thiensurat.fragments.sales.sales_quotation.SaleMainFragment_sales_quotation;
 import th.co.thiensurat.fragments.sendmoney.SendMoneySummaryMainFragment;
 import th.co.thiensurat.fragments.supvalidate.SupValidateFragment;
 import th.co.thiensurat.fragments.synchronize.SynchronizeMainFragment;
@@ -1314,6 +1315,8 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 R.string.main_menu_preorder,
                 R.string.main_menu_preorder_setting,
                 R.string.main_menu_lead_online,
+                R.string.main_menu_sales_quotation,
+
 
                 /*** [END] :: Fixed - [BHPROJ-0016-855] :: Revise Menu Report tobe SubMenu ***/
 
@@ -1600,6 +1603,11 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url_link));
                     startActivity(i);
+                    break;
+
+                case R.string.main_menu_sales_quotation: // sales_quotation
+
+                    success = showView(BHFragment.newInstance(SaleMainFragment_sales_quotation.class));
                     break;
                 case R.string.main_menu_preorder_setting: // preorder stting
 
@@ -2830,6 +2838,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     put(r.getString(R.string.main_menu_credit_sort_order_default_credit), R.drawable.ic_menu_orderexp_credit);      //-- Fixed - [BHPROJ-0026-3184] :: Change ic_tsr_logo to be new menu icon
                     put(r.getString(R.string.main_menu_proorder_credit), R.drawable.ic_menu_sales);      //-- Fixed - [BHPROJ-0026-3184] :: Change ic_tsr_logo to be new menu icon
                     put(r.getString(R.string.main_menu_lead_online), R.drawable.ic_menu_sales);      //-- Fixed - [BHPROJ-0026-3184] :: Change ic_tsr_logo to be new menu icon
+                    put(r.getString(R.string.main_menu_sales_quotation), R.drawable.ic_menu_sales);      //-- Fixed - [BHPROJ-0026-3184] :: Change ic_tsr_logo to be new menu icon
 
                 }
             };
