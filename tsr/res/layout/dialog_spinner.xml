@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/spinnercus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+<EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="ข้อมูลเพิ่มเติม"
+    android:textColorHint="@color/new_primary_color"
+    android:id="@+id/txtRemark"
+    android:textColor="@color/new_primary_color"
+    android:imeOptions="actionNext"
+    android:inputType="text|textNoSuggestions|textCapCharacters"
+    android:text=""/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+
+        <Button
+            android:id="@+id/btnCancelstc"
+            style="@style/ButtonTop_a"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10dp"
+            android:text="ยกเลิก"
+            android:textColor="@color/bg_body_white" />
+
+        <Button
+            android:id="@+id/btnOkstc"
+            style="@style/ButtonTop_b"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10dp"
+            android:text="ยืนยัน"
+            android:textColor="@color/bg_body_white" />
+
+    </LinearLayout>
+</LinearLayout>

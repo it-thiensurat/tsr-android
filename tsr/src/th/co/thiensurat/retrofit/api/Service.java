@@ -132,6 +132,18 @@ public interface Service {
     @GET("/assanee_UAT/assanee/bighead_api_new/load_data_lead.php")
     Call<Object> get_load_data_lead();
 
+/**test by tong**/
+//Get lead on line by EmpId
+    @GET("/api/api-leadonline.php")
+    Call<Object> get_api_leadonline(@Query("emp") String emp);
+//Get status lead on line
+   @GET("/api/api-leadonlineCoeStamp.php")
+    Call<Object> get_leadonlineCoeStamp();
+// Update status lead on line
+    @GET("/api/api-leadonlineUpdate.php")
+    Call<Object> updates_status_leadonline(@Query("id") String idl, @Query("StatusWork") String statuswork, @Query("StatusCus") String statuscus, @Query("Namecustomer") String namecustomer, @Query("EmpSale") String empsale, @Query("IdProvince") String idprovince);
+    /**test by tong**/
+
     /***** uat by moo*/
 
     /***** production  */

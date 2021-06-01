@@ -629,5 +629,9 @@
 
     <!--end for print version 2-->
 
-
+  <!--  <String-array name="leadonline_status">
+        <item>รอรับงาน</item>
+        <item>กำลังดำเนินการ</item>
+        <item>ดำเนินการเรียบร้อย</item>
+    </String-array>-->
 </resources>
