@@ -131,6 +131,10 @@ public class ContractInfo extends BHParcelable implements Serializable{
     public enum ContractStatusName {
         COMPLETED
     }
+    //LeadOnLine
+    public String leadonlineid;
+    public String statuswork;
+    public String statuscus;
 
 
 

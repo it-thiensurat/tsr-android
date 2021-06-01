@@ -720,23 +720,40 @@
 
 package th.co.thiensurat.fragments.sales.lead_online;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Base64;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -747,6 +764,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -759,18 +777,30 @@ import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHArrayAdapter;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHPreference;
+import th.co.bighead.utilities.BHSpinnerAdapter;
 import th.co.bighead.utilities.BHUtilities;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
+import th.co.thiensurat.activities.MainActivity;
 import th.co.thiensurat.business.controller.BackgroundProcess;
+import th.co.thiensurat.data.info.BankInfo;
+import th.co.thiensurat.data.info.ContractInfo;
+import th.co.thiensurat.data.info.DebtorCustomerInfo;
 import th.co.thiensurat.data.info.EmployeeDetailInfo;
 import th.co.thiensurat.data.info.EmployeeInfo;
 import th.co.thiensurat.data.info.FortnightInfo;
+import th.co.thiensurat.data.info.ProblemInfo;
+import th.co.thiensurat.fragments.sales.EditContractsMainFragment;
+import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment;
+import th.co.thiensurat.fragments.sales.lead_online.adapter.ReadJSON;
 import th.co.thiensurat.fragments.sales.lead_online.adapter.RecyclerViewDataAdapter;
 import th.co.thiensurat.fragments.sales.lead_online.models.Getdata;
+import th.co.thiensurat.fragments.sales.lead_online.models.GetdataStampCode;
 import th.co.thiensurat.retrofit.api.Service;
 
+import static th.co.thiensurat.activities.MainActivity.activity;
 import static th.co.thiensurat.retrofit.api.client.BASE_URL;
+import static th.co.thiensurat.retrofit.api.client.GIS_BASE_URL;
 
 public class LEAD_ONLINE extends BHFragment {
 
@@ -779,11 +809,19 @@ public class LEAD_ONLINE extends BHFragment {
 
     private List<EmployeeInfo> mEmployeeList;
     private List<EmployeeDetailInfo> mEmployeeDetailList;
+    private List<GetdataStampCode> getdataStampCodes;
+    //StampCodeAdapter stampCodeAdapter;
     RecyclerView.LayoutManager recyclerViewlayoutManager;
 
     List<Getdata> getdata;
+    List<GetdataStampCode> getdata1;
     Getdata GetDataAdapter1;
 
+
+
+    private ArrayList<HashMap<String, String>> MyArrListTotal = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> MyArrListRegions = new ArrayList<HashMap<String,String>>();
+    ReadJSON readJson;
     @Override
     protected int titleID() {
         // TODO Auto-generated method stub
@@ -807,29 +845,136 @@ public class LEAD_ONLINE extends BHFragment {
         // TODO Auto-generated method stub
         //loadFortnight();
         getdata = new ArrayList<>();
-
+        getdata1 = new ArrayList<>();
         row1.setHasFixedSize(true);
         recyclerViewlayoutManager = new LinearLayoutManager(getActivity());
         row1.setLayoutManager(recyclerViewlayoutManager);
+
         load_data_lead();
+
     }
+ public  void dialogspinner(String _id , String _StatusWork,String _Namecustomer,String _IdProvince){
 
+     Dialog dialog_image;
 
+     dialog_image = new Dialog(activity);
+     //dialog_image.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+     dialog_image.setTitle("Stamp Cord");
+     dialog_image.setContentView(R.layout.dialog_spinner);
+     Spinner spinner = (Spinner) dialog_image.findViewById(R.id.spinnercus);
+     Button buttonOk = (Button) dialog_image.findViewById(R.id.btnOkstc);
+     Button buttonCancel = (Button) dialog_image.findViewById(R.id.btnCancelstc);
+     TextView txtremark = (TextView) dialog_image.findViewById(R.id.txtRemark);
+             //ArrayAdapter<String> adapter =new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item,getResources().getStringArray(R.array.leadonline_status));
+    // adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+   // spinner.setAdapter(adapter);
+     ArrayList<String> statusc = new ArrayList<String>();
+     statusc.add("เลือกการติดต่อ");
+     statusc.add("I01-ปิดการขายติดตั้งเรียบร้อยแล้ว");
+     statusc.add("A01-ไม่รับสาย");
+     statusc.add("A02-เบอร์โทรผิด");
+     statusc.add("A03-โทรไม่ติด,ปิดเครื่อง");
+     statusc.add("A04-ลูกค้าไม่สะดวกคุยจะติดต่อกลับ");
+     statusc.add("B01-รอตัดสินใจ");
+     statusc.add("B02-รอปรึกษาครอบครัวก่อน");
+     statusc.add("B03-ลูกค้านัดวันติดตั้ง/ (สามารถเลือกระบุวันนัดในปฏิทินของระบบ เพื่อแจ้งเตือนได้เมื่อถึงวันนัด)");
+     statusc.add("B04-สอบถามข้อมูลให้เพื่อนหรือญาติ");
+     statusc.add("B05-ลูกค้าให้ส่งข้อมูลเพิ่มเติมทางไลน์");
+     statusc.add("B06-ลูกค้าจะส่งข้อมูลให้แอดมินเพิ่มเติม (เช่น Location,เบอร์โทรอื่นเพิ่มเติม) / แอดมินสามารถEditแก้ไขหรือเพิ่มข้อมูลในNoteได้");
+     statusc.add("F01-ไม่สนใจสินค้า");
+     statusc.add("F02-ซื้อยี่ห้ออื่นมาแล้ว");
+     statusc.add("F03-ลูกค้าใช้เซฟอยู่แล้วทักมาสอบถามเฉยๆ");
+     statusc.add("F04-ต้องการสินค้าอื่นๆ");
+     statusc.add("E01-ไม่ต้องการเทิร์น ต้องการเปลี่ยนสารกรอง / (ต้องระบุรุ่นที่จะเปลี่ยนสาร)");
+     statusc.add("E02-นอกเขตการขาย,พื้นที่ปิดการขาย / (ต้องระบุพื้นที่ของลูกค้าที่แจ้งว่านอกเขต)");
+     statusc.add("E03-ลูกค้ามีสถานะถอดT / (ต้องแนบรูปภาพการตรวจสถานะจากระบบ)");
+     statusc.add("E04-ลูกค้ามีสถานะหนี้สูญR / (ต้องแนบรูปภาพการตรวจสถานะจากระบบ)");
+     statusc.add("E05-ฝ่ายขายพิจารณาแล้วสภาพบ้านไม่ผ่าน / (ต้องแนบรูปภาพถ่ายบ้านลูกค้า)");
+     statusc.add("E06-มีฝ่ายขายอื่นของTSRติดตั้งไปแล้ว / (ต้องแนบรูปภาพถ่ายเครื่องกรองของลูกค้าที่พึ่งติดตั้งใหม่)");
+     BHSpinnerAdapter<String> arrayLead = new BHSpinnerAdapter<String>(activity, statusc);
+     spinner.setAdapter(arrayLead);
+     buttonOk.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View view) {
+             String cus="";
+             if(spinner.getSelectedItem()=="เลือกการติดต่อ"){
+                 String title = "แจ้งเตือน";
+                 String message = "กรุณาเลือกสานะการทำงาน";
+                 showWarningDialog(title, message);
+                 return ;
+             }else if(spinner.getSelectedItem()=="I01-ปิดการขายติดตั้งเรียบร้อยแล้ว"){
+                 cus="I01";
+             }else if(spinner.getSelectedItem()=="A01-ไม่รับสาย"){
+                 cus="A01";
+             }else if(spinner.getSelectedItem()=="A02-เบอร์โทรผิด"){
+                 cus="A02";
+             }else if(spinner.getSelectedItem()=="A03-โทรไม่ติด,ปิดเครื่อง"){
+                 cus="A03";
+             }else if(spinner.getSelectedItem()=="A4-ลูกค้าไม่สะดวกคุยจะติดต่อกลับ"){
+                 cus="A04";
+             }else if(spinner.getSelectedItem()=="B01-รอตัดสินใจ"){
+                 cus="B01";
+             }else if(spinner.getSelectedItem()=="B02-รอปรึกษาครอบครัวก่อน"){
+                 cus="B02";
+             }else if(spinner.getSelectedItem()=="B03-ลูกค้านัดวันติดตั้ง/ (สามารถเลือกระบุวันนัดในปฏิทินของระบบ เพื่อแจ้งเตือนได้เมื่อถึงวันนัด)"){
+                 cus="B03";
+             }else if(spinner.getSelectedItem()=="B04-สอบถามข้อมูลให้เพื่อนหรือญาติ"){
+                 cus="B04";
+             }else if(spinner.getSelectedItem()=="B05-ลูกค้าให้ส่งข้อมูลเพิ่มเติมทางไลน์"){
+                 cus="B05";
+             }else if(spinner.getSelectedItem()=="B06-ลูกค้าจะส่งข้อมูลให้แอดมินเพิ่มเติม (เช่น Location,เบอร์โทรอื่นเพิ่มเติม) / แอดมินสามารถEditแก้ไขหรือเพิ่มข้อมูลในNoteได้"){
+                 cus="B06";
+             }else if(spinner.getSelectedItem()=="F01-ไม่สนใจสินค้า"){
+                 cus="F01";
+             }else if(spinner.getSelectedItem()=="F02-ซื้อยี่ห้ออื่นมาแล้ว"){
+                 cus="F02";
+             }else if(spinner.getSelectedItem()=="F03-ลูกค้าใช้เซฟอยู่แล้วทักมาสอบถามเฉยๆ"){
+                 cus="F03";
+             }else if(spinner.getSelectedItem()=="F04-ต้องการสินค้าอื่นๆ"){
+                 cus="F04";
+             }else if(spinner.getSelectedItem()=="E01-ไม่ต้องการเทิร์น ต้องการเปลี่ยนสารกรอง / (ต้องระบุรุ่นที่จะเปลี่ยนสาร)"){
+                 cus="E01";
+             }else if(spinner.getSelectedItem()=="E02-นอกเขตการขาย,พื้นที่ปิดการขาย / (ต้องระบุพื้นที่ของลูกค้าที่แจ้งว่านอกเขต)"){
+                 cus="E02";
+             }else if(spinner.getSelectedItem()=="E03-ลูกค้ามีสถานะถอดT / (ต้องแนบรูปภาพการตรวจสถานะจากระบบ)"){
+                 cus="E03";
+             }else if(spinner.getSelectedItem()=="E04-ลูกค้ามีสถานะหนี้สูญR / (ต้องแนบรูปภาพการตรวจสถานะจากระบบ)"){
+                 cus="E04";
+             }else if(spinner.getSelectedItem()=="E05-ฝ่ายขายพิจารณาแล้วสภาพบ้านไม่ผ่าน / (ต้องแนบรูปภาพถ่ายบ้านลูกค้า)"){
+                 cus="E05";
+             }else if(spinner.getSelectedItem()=="E06-มีฝ่ายขายอื่นของTSRติดตั้งไปแล้ว / (ต้องแนบรูปภาพถ่ายเครื่องกรองของลูกค้าที่พึ่งติดตั้งใหม่)"){
+                 cus="E06";
+             }
+             String title = "แจ้งเตือน";
+             String message = "ยืนยันการอัพเดทสานะการทำงาน";
+             showWarningDialog(title, message);
+             update_data_lead(_id , _StatusWork, cus, _Namecustomer,_IdProvince);
+         }
+     });
+buttonCancel.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        txtremark.setText("555");
+    }
+});
+     dialog_image.setCancelable(true);
 
+     dialog_image.show();
 
-
-
-    public  void load_data_lead() {
+ }
+    public void load_data_lead() {
         try {
+
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             Service request = retrofit.create(Service.class);
-            Call call=null;
-
-                call = request.get_load_data_lead();
-
+            Call call = null;
+               String emp = BHPreference.employeeID();
+          //  String emp = "A61432";
+            call = request.get_api_leadonline(emp);
+            // call = request.get_load_data_lead();
 
 
             call.enqueue(new Callback() {
@@ -859,18 +1004,30 @@ public class LEAD_ONLINE extends BHFragment {
     }
 
 
-    public  void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_lead(JSONArray array) {
+    public void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_lead(JSONArray array) {
 
-         Log.e("length1", String.valueOf(array.length()));
+        Log.e("length1", String.valueOf(array.length()));
         for (int i = 0; i < array.length(); i++) {
 
-              final Getdata GetDataAdapter2 = new Getdata();
+            final Getdata GetDataAdapter2 = new Getdata();
 
             JSONObject json = null;
             try {
                 json = array.getJSONObject(i);
 
-                GetDataAdapter2.setCusName(json.getString("CusName"));
+                GetDataAdapter2.setId(json.getString("id"));
+                GetDataAdapter2.setCreateDate(json.getString("DateCrete"));
+                GetDataAdapter2.setCustomerName(json.getString("CustomerName"));
+                GetDataAdapter2.setTel(json.getString("Tel"));
+                GetDataAdapter2.setProvince(json.getString("Province"));
+                GetDataAdapter2.setProduct(json.getString("Product"));
+                GetDataAdapter2.setDetails(json.getString("Details"));
+                GetDataAdapter2.setChannel(json.getString("Channel"));
+                GetDataAdapter2.setStatusWork(json.getString("StatusWork"));
+                GetDataAdapter2.setCodeStamp(json.getString("StatusCus"));
+                GetDataAdapter2.setPicture(Uri.parse(json.getString("Link")));
+
+
 
             } catch (JSONException e) {
 
@@ -882,9 +1039,120 @@ public class LEAD_ONLINE extends BHFragment {
         }
 
 
-
-        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getdata,getActivity());
+        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getdata, getActivity());
         row1.setAdapter(adapter);
+
+    }
+
+    public String update_data_lead(String _idl, String _statuswork, String _statuscus,String _Namecustomer,String _IdProvince) {
+        final String[] rs = {""};
+        String empsale = BHPreference.employeeID();
+        log("empid",empsale);
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = null;
+            call = request.updates_status_leadonline(_idl, _statuswork, _statuscus,_Namecustomer,empsale,_IdProvince);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson = new Gson();
+                    try {
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+
+                        rs[0] = jsonObject.getString("data");
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("data", "2");
+                }
+            });
+
+        } catch (Exception e) {
+
+        }
+        return rs[0];
+    }
+
+    public void loadSpinnerData(String id,String sw,String sc) {
+        try {
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = null;
+            call = request.get_leadonlineCoeStamp();
+
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson = new Gson();
+                    try {
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+
+                        JSON_PARSE_DATA_AFTER_WEBCALL_load_data_CoeStamp1(jsonObject.getJSONArray("data"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("data", "2");
+                }
+            });
+
+        } catch (Exception e) {
+
+        }
+    }
+    public void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_CoeStamp1(JSONArray array) {
+//        final GetdataStampCode GetDataAdapter2 = new GetdataStampCode();
+        HashMap<String, String> map;
+        for (int i = 0; i < array.length(); i++) {
+            try {
+            JSONObject c = array.getJSONObject(i);
+            map = new HashMap<String, String>();
+            map.put("id", c.getString("id"));
+            map.put("CodeStampTxt", c.getString("CodeStampTxt")+"-"+c.getString("CodeStampTxt"));
+            MyArrListTotal.add(map);
+
+//            JSONObject json = null;
+//
+//                json = array.getJSONObject(i);
+//                GetDataAdapter2.setId(json.getString("id"));
+//                GetDataAdapter2.setCodeStamp(json.getString("CodeStamp"));
+//                GetDataAdapter2.setCodeStampTxt(json.getString("CodeStampTxt"));
+
+
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+//            getdata1.add(MyArrListTotal);
+            // value=GetDataAdapter2.getProblemName();
+        }
+        String[] array2 = new String[MyArrListTotal.size()];
+
+        //int i;
+        ArrayAdapter<String> adapter = null ;
+
+
 
     }
 
