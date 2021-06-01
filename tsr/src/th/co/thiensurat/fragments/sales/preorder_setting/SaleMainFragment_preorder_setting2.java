@@ -56,6 +56,7 @@ import th.co.bighead.utilities.BHArrayAdapter;
 import th.co.bighead.utilities.BHFragment;
 
 
+import th.co.bighead.utilities.BHGeneral;
 import th.co.bighead.utilities.BHPermissions;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHUtilities;
@@ -87,6 +88,9 @@ import static java.lang.String.valueOf;
 import static th.co.thiensurat.business.controller.TSRController.getAddress;
 import static th.co.thiensurat.business.controller.TSRController.getContractByRefNoForSendDocuments;
 import static th.co.thiensurat.retrofit.api.client.BASE_URL;
+import static th.co.thiensurat.retrofit.api.client.DRINKO_BASE_UAT_URL;
+import static th.co.thiensurat.retrofit.api.client.DRINKO_BASE_URL;
+import static th.co.thiensurat.retrofit.api.client.GIS_BASE_URL;
 
 public class SaleMainFragment_preorder_setting2 extends BHFragment {
     @InjectView
@@ -154,7 +158,10 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
        // load_data_contact_online_preoder();
 
         GetContractStatusFinish();
+//        getDivisionId(BHPreference.employeeID());
 
+        Log.e("Empid", BHPreference.employeeID());
+        Log.e("Departid", BHPreference.departmentCode());
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -438,6 +445,8 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
             vh.textcancle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.e("info", String.valueOf(info));
+                    getDivisionId(BHPreference.employeeID());
                     if(fs.equals("1")){
                         AlertDialog.Builder setupAlert;
                         setupAlert = new AlertDialog.Builder(activity)
@@ -593,24 +602,38 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                          */
 
                         AlertDialog.Builder setupAlert;
-//                        setupAlert = new AlertDialog.Builder(activity)
-//                                .setView(layout)
-//                                .setTitle("ยกเลิกใบจอง")
-//                                .setMessage(null)
-//                                .setCancelable(false);
-
                         setupAlert = new AlertDialog.Builder(activity)
+                                .setView(layout)
                                 .setTitle("ยกเลิกใบจอง")
-                                .setMessage("ต้องการยกเลิกใบจอง \nหมายเลข "  + info.CONTNO  +"\n"+info.CustomerFullName+ " ใช่หรือไม่")
+                                .setMessage(null)
                                 .setCancelable(false);
+
+//                        setupAlert = new AlertDialog.Builder(activity)
+//                                .setTitle("ยกเลิกใบจอง")
+//                                .setMessage("ต้องการยกเลิกใบจอง \nหมายเลข "  + info.CONTNO  +"\n"+info.CustomerFullName+ " ใช่หรือไม่")
+//                                .setCancelable(false);
 
                         setupAlert = setupAlert.setPositiveButton("ใช่ ฉันต้องการยกเลิกใบจองนี้", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dialog.cancel();
-                                doVoidContract(info.RefNo, info.CONTNO, info.ProductSerialNumber);
-                                update_contract_for_cancal_preorder(info.RefNo);
-                                updateAssignForPostpone(info.RefNo);
-                                checkHasSurvey(info.RefNo);
+                                if (input.getText().toString().equals("")) {
+                                    AlertDialog.Builder waringAlert = new AlertDialog.Builder(activity)
+                                        .setTitle("คำเตือน!")
+                                        .setMessage("กรุณาพิมพ์หรือสแกนหมายเลขผลิตภัณฑ์")
+                                        .setCancelable(false);
+                                    waringAlert.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    waringAlert.show();
+                                } else {
+                                    doVoidContract(info.RefNo, info.CONTNO, info.ProductSerialNumber);
+                                    update_contract_for_cancal_preorder(info.RefNo);
+                                    updateAssignForPostpone(info.RefNo);
+                                    checkHasSurvey(info.RefNo);
+                                }
                             }
                         }).setNeutralButton("ไม่ใช่", new DialogInterface.OnClickListener() {
                             @Override
@@ -780,20 +803,30 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
             protected void after() {
                 // TODO Auto-generated
                 // method stub
-                AlertDialog.Builder VoidNoti;
+//                AlertDialog.Builder VoidNoti;
+//
+//                VoidNoti = new AlertDialog.Builder(activity)
+//                        .setTitle("ยกเลิกใบจอง")
+//                        .setMessage("ระบบดำเนินการยกเลิกใบจอง "   + " เรียบร้อยแล้ว")
+//                        .setCancelable(false);
+//                VoidNoti = VoidNoti.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                      //  showLastView();
+//                    }
+//                });
+//                VoidNoti.show();
+                /**
+                 * Edit by Teerayut Klinsanga
+                 *
+                 * Create date 24/05/2021
+                 */
+                onVoid(ContractNo, BHPreference.employeeID(), divisionid, "4123", "ยกเลิกใบจอง", "06");
 
-                VoidNoti = new AlertDialog.Builder(activity)
-                        .setTitle("ยกเลิกใบจอง")
-                        .setMessage("ระบบดำเนินการยกเลิกใบจอง "   + " เรียบร้อยแล้ว")
-                        .setCancelable(false);
-                VoidNoti = VoidNoti.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                      //  showLastView();
-                    }
-                });
-                VoidNoti.show();
+                /**
+                 * End
+                 */
             }
         }).start();
     }
@@ -940,14 +973,15 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
      * Created date 27/04/2021
      *
      */
+    String barcode1, barcode2, divisionid;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == REQUEST_QR_SCAN) {
             if (resultCode == Activity.RESULT_CANCELED) {
                 showMessage("ยังไม่ได้ทำการสแกน กรุณาทำการสแกนอีกครั้ง");
             } else if (resultCode == Activity.RESULT_OK) {
-                String barcode = intent.getStringExtra(Intents.Scan.RESULT);
-                if (barcode.equals(serailCheckScan)) {
+                barcode1 = intent.getStringExtra(Intents.Scan.RESULT);
+                if (barcode1.equals(serailCheckScan)) {
                     AlertDialog.Builder VoidNoti = new AlertDialog.Builder(activity)
                             .setTitle("คำเตือน")
                             .setMessage("หมายเลขเครื่องไม่ตรงกับรายการที่ต้องการยกเลิก\nกรุณาสแกนใหม่อีกครั้ง")
@@ -961,19 +995,130 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                     });
                     VoidNoti.show();
                 } else {
-                    input.setText(barcode);
+                    input.setText(barcode1);
                 }
 
-                Log.e("Barcode 1", barcode);
+                Log.e("Barcode 1", barcode1);
             }
         } else if (requestCode == REQUEST_QR_SCAN2) {
             if (resultCode == Activity.RESULT_CANCELED) {
                 showMessage("ยังไม่ได้ทำการสแกน กรุณาทำการสแกนอีกครั้ง");
             } else if (resultCode == Activity.RESULT_OK) {
-                String barcode2 = intent.getStringExtra(Intents.Scan.RESULT);
+                barcode2 = intent.getStringExtra(Intents.Scan.RESULT);
                 input2.setText(barcode2);
                 Log.e("Barcode 2", barcode2);
             }
+        }
+    }
+
+    public void getDivisionId(String empid) {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(GIS_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call = null;
+            if (BHGeneral.SERVICE_MODE.toString() == "UAT") {
+                call = request.getDivisionIdUAT(empid);
+            } else {
+
+            }
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    //  Log.e("Survey contno", contract.RefNo);
+
+                    Gson gson=new Gson();
+                    try {
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+                        divisionid = jsonObject.getString("data");
+//                        divisionid = jsonArray.getJSONObject(0).getString("data");
+                        Log.e("DivisionId", divisionid);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("data",e.getLocalizedMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("onFailure DivisionId:",t.getLocalizedMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.e("Exception DivisionId",e.getLocalizedMessage());
+        }
+    }
+
+    public void onVoid(String contno, String empid, String departid, String problemid, String detail, String channel) {
+        try {
+            Call call = null;
+            Service request = null;
+            Retrofit retrofit = null;
+            if (BHGeneral.SERVICE_MODE.toString() == "UAT") {
+                retrofit = new Retrofit.Builder()
+                        .baseUrl(DRINKO_BASE_UAT_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                request = retrofit.create(Service.class);
+                call = request.openTicketUAT(contno, empid, departid, problemid, detail, channel);
+            } else {
+                retrofit = new Retrofit.Builder()
+                        .baseUrl(DRINKO_BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                request = retrofit.create(Service.class);
+            }
+
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson=new Gson();
+                    try {
+                        Log.e("JSON body", String.valueOf(response.body()));
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+                        Log.e("Void", String.valueOf(jsonObject));
+                        if (jsonObject.getString("status").equals("SUCCESS")) {
+                            AlertDialog.Builder waringAlert = new AlertDialog.Builder(activity)
+                                    .setTitle("ยกเลิกใบจอง!")
+                                    .setMessage("ดำเนินการยกเลิกใบจองเรียบร้อย\n" + "ใบงานเลขที่ " + jsonObject.getString("InformID"))
+                                    .setCancelable(false);
+                            waringAlert.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            waringAlert.show();
+                        } else {
+                            AlertDialog.Builder waringAlert = new AlertDialog.Builder(activity)
+                                    .setTitle("คำเตือน!")
+                                    .setMessage("พบข้อผิดพลาดในการเปิดใบงาน")
+                                    .setCancelable(false);
+                            waringAlert.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            waringAlert.show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("data",e.getLocalizedMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("onFailure onVoid:",t.getLocalizedMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.e("Exception onVoid",e.getLocalizedMessage());
         }
     }
 

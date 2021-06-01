@@ -340,6 +340,7 @@ public class LoginActivity extends BHActivity {
                             protected void after() {
                                             Log.e("qqq","2");
                                             // TODO Auto-generated method stub
+                                Log.e("Log in result", String.valueOf(result));
                                             if (result != null) {
                                                 switch (result.ResultCode) {
                                                     case 0:

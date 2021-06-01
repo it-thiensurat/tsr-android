@@ -190,6 +190,15 @@ public interface Service {
         @GET("/api/api-receiptupdatedaily-uat.php")
         Call<Object> paymentUAT(@Query("contno") String data);
 
+        @POST("UAT/BH/GetDivisionId")
+        @FormUrlEncoded
+        Call<Object> getDivisionIdUAT(@Field("empid") String empid);
+
+        @POST("openticket/openticket")
+        @FormUrlEncoded
+        Call<Object> openTicketUAT(@Field("Contno") String contno, @Field("InformEmpID") String InformEmpID, @Field("InformDepartID") String InformDepartID,
+                                   @Field("ProblemID") String ProblemID, @Field("ProblemDetail") String ProblemDetail, @Field("DatatChannel") String DatatChannel);
+
         /**
          * END
          */

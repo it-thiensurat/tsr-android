@@ -13,5 +13,6 @@ public class client  {
     public static final String BASE_URL = "https://tssm.thiensurat.co.th";
     public static final String GIS_BASE_URL = "http://toss.thiensurat.co.th/ServicesPHP/";
     public static final String DRINKO_BASE_URL = "http://app.thiensurat.co.th:4008/";
+    public static final String DRINKO_BASE_UAT_URL = "http://uat.thiensurat.co.th:4008/";
 
 }

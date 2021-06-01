@@ -909,6 +909,8 @@ public class EmployeeTeamFragment extends BHFragment {
                         } else {
                             mEmployeeList = getAllTeamMember(BHPreference.organizationCode(), BHPreference.teamCode(), BHPreference.SubTeamCode());
                         }
+
+                        Log.e("Emp list", String.valueOf(mEmployeeList));
                     }
 
                     @Override
