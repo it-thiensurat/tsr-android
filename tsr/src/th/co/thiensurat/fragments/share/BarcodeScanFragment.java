@@ -504,10 +504,6 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 								if (location == null) {
 									requestNewLocationData();
 								} else {
-//									latitude = location.getLatitude() + "";
-//									longitude = location.getLongitude() + "";
-//									Log.e("Current Latitude1", location.getLatitude()+"");
-//									Log.e("Current Longitude1", location.getLongitude()+"");
 									getProductRecoment(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
 									getSaleArea(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
 								}
@@ -539,18 +535,12 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 		@Override
 		public void onLocationResult(LocationResult locationResult) {
 			Location mLastLocation = locationResult.getLastLocation();
-//			Log.e("Current Latitude2", mLastLocation.getLatitude()+"");
-//			Log.e("Current Longitude2", mLastLocation.getLongitude()+"");
-//			latitude = mLastLocation.getLatitude() + "";
-//			longitude = mLastLocation.getLongitude() + "";
 			getProductRecoment(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
 			getSaleArea(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
 		}
 	};
 
 	private void getProductRecoment(String latitude, String longitude) {
-//		latitude = "9.1047298";
-//		longitude = "99.3126167";
 		try {
 			BHLoading.show(activity);
 			Retrofit retrofit = new Retrofit.Builder()
@@ -691,6 +681,17 @@ public class BarcodeScanFragment extends BHFragment implements ProductRecomdAdap
 			Log.e("Exception", e.getLocalizedMessage());
 		}
 	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (requestCode == PERMISSION_ID) {
+			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				getLastLocation();
+			}
+		}
+	}
+
 	/**
 	 * End
 	 */

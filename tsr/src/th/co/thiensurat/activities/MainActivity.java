@@ -1274,6 +1274,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         if (requestCode == PERMISSION_ID) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Granted. Start getting the location information
+                ActivityCompat.requestPermissions(this, permissions, requestCode);
             }
         } else {
             new BHPermissions().onRequestPermissionsResult(this, requestCode, permissions, grantResults);
