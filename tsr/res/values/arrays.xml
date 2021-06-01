@@ -199,7 +199,20 @@
         <item>@string/sale_unfinished_more</item>
     </array>
 
+    <array name="sale_unfinished_menu_sale_Q">
 
+        <item>@string/sale_unfinished_employee</item>
+        <item>@string/sale_unfinished_customer</item>
+        <item>@string/sale_unfinished_scan_product_preorder</item>
+        <item>@string/sale_unfinished_package</item>
+        <item>@string/sale_unfinished_discount</item>
+        <item>@string/sale_unfinished_detail_contract</item>
+        <item>@string/sale_unfinished_contract</item>
+        <item>@string/sale_unfinished_payment</item>
+        <item>@string/sale_unfinished_receipt</item>
+        <item>@string/sale_unfinished_photo</item>
+        <item>@string/sale_unfinished_more</item>
+    </array>
 
     <array name="sale_photo">
         <item>@string/sale_photo_id</item>

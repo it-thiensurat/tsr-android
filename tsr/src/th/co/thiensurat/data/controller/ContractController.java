@@ -985,7 +985,33 @@ public class ContractController extends BaseController {
         return executeQueryList(sql, new String[]{organizationCode, saleTeamCode, StatusName}, ContractInfo.class);
     }
 
+    public List<ContractInfo> getContractStatusUnFinish_ContractInfo_sale_Q() {
+        final String sql =
+                /*** [START] :: Fixed - [BHPROJ-0025-760] ***/
+                //"SELECT distinct Cont.*,"
+                "SELECT distinct Cont.[RefNo],Cont.[CONTNO],Cont.[CustomerID],Cont.[OrganizationCode],Cont.[STATUS],Cont.[StatusCode],Cont.[SALES],Cont.[TotalPrice],Cont.[EFFDATE],Cont.[HasTradeIn]\n" +
+                        "                            ,Cont.[TradeInProductCode],Cont.[TradeInBrandCode],Cont.[TradeInProductModel],Cont.[TradeInDiscount]\n" +
+                        "                          ,Cont.[PreSaleSaleCode],Cont.[PreSaleEmployeeCode],Cont.[PreSaleTeamCode],Cont.[SaleCode],Cont.[SaleEmployeeCode],Cont.[SaleTeamCode] \n" +
+                        "                             ,Cont.[InstallerSaleCode],Cont.[InstallerEmployeeCode],Cont.[InstallerTeamCode],Cont.[InstallDate],ifnull(Cont.[ProductSerialNumber],'') AS ProductSerialNumber,Cont.[ProductID]\n" +
+                        "                           ,Cont.[SaleEmployeeLevelPath],Cont.[MODE],Cont.[FortnightID],Cont.[ProblemID],Cont.[svcontno],Cont.[isActive],Cont.[MODEL]\n" +
+                        "                           ,Cont.[fromrefno],Cont.[fromcontno],Cont.[todate],Cont.[tocontno],Cont.[torefno],Cont.[CreateDate],Cont.[CreateBy],Cont.[LastUpdateDate],Cont.[LastUpdateBy],Cont.[SyncedDate]\n" +
+                        "                         ,Cont.[PreSaleEmployeeLevelPath],Cont.[InstallerEmployeeLevelPath],Cont.[PreSaleEmployeeName],Cont.[EmployeeHistoryID],Cont.[SaleSubTeamCode],Cont.[TradeInReturnFlag], Cont.[IsReadyForSaleAudit], Cont.[ContractReferenceNo], Cont.[IsMigrate]\n" +
+                        "                    \n" +
+                        "\n" +
+                        "                       \t\t\t,Cust.PrefixName || IFNULL(Cust.CustomerName, '') AS CustomerFullName, Cust.CompanyName, Cust.IDCard,\n" +
+                        "                        \t\t\t Prod.ProductName, Sale.FirstName || '  ' || Sale.LastName AS SaleEmployeeName,\n" +
+                        "                         \t\t\t ContST.StatusName\n" +
+                        "                         FROM            Contract AS Cont LEFT OUTER JOIN\n" +
+                        "                                                DebtorCustomer AS Cust ON Cont.OrganizationCode = Cust.OrganizationCode AND Cont.CustomerID = Cust.CustomerID LEFT JOIN\n" +
+                        "                                                 Product AS Prod ON Cont.OrganizationCode = Prod.OrganizationCode AND Cont.ProductID = Prod.ProductID INNER JOIN\n" +
+                        "                                              Employee AS Sale ON Cont.OrganizationCode = Sale.OrganizationCode AND Cont.SaleEmployeeCode = Sale.EmpID INNER JOIN\n" +
+                        "                                              ContractStatus AS ContST ON Cont.StatusCode = ContST.StatusCode\n" +
+                        "                 \n" +
+                        "       WHERE (Cont.CONTNO = '-') ";
 
+        //Log.e("xxxxx_moo_test",organizationCode+","+saleTeamCode+","+StatusName);
+        return executeQueryList(sql, new String[]{}, ContractInfo.class);
+    }
     public List<ContractInfo> getContractStatusUnFinishForCRD(String EMPID,String organizationCode, String saleTeamCode, String StatusName, String SaleEmployeeCode,String DD) {
 
         Log.e("ttttt",saleTeamCode+","+StatusName+","+SaleEmployeeCode);

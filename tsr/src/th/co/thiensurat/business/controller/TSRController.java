@@ -2426,6 +2426,9 @@ public class TSRController {
     public static List<ContractInfo> getContractStatusUnFinish_ContractInfo_preorder(String organizationCode, String saleTeamCode, String StatusName) {
         return new ContractController().getContractStatusUnFinish_ContractInfo_preorder(organizationCode, saleTeamCode, StatusName);
     }
+    public static List<ContractInfo> getContractStatusUnFinish_ContractInfo_sale_Q() {
+        return new ContractController().getContractStatusUnFinish_ContractInfo_sale_Q();
+    }
 
 
     public static List<ContractInfo> getContractStatusUnFinishForCRD(String EMPID,String organizationCode, String saleTeamCode, String StatusName, String SaleEmployeeCode,String DD) {
