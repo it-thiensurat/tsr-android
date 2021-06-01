@@ -494,6 +494,7 @@ public class SaleMainUnfinishedFragment_preorder extends BHPagerFragment {
 					String ShippingTo=json.getString("ShippingTo");
 					String TelnoCus=json.getString("TelnoCus");
 					String InstallDetails=json.getString("InstallDetails");
+					String DateInstall=json.getString("DateInstall");
 
 
 					BHApplication.getInstance().getPrefManager().setPreferrence("FirstPeriodPayBy", FirstPeriodPayBy);
@@ -507,7 +508,7 @@ public class SaleMainUnfinishedFragment_preorder extends BHPagerFragment {
 					BHApplication.getInstance().getPrefManager().setPreferrence("ShippingTo", ShippingTo);
 					BHApplication.getInstance().getPrefManager().setPreferrence("TelnoCus", TelnoCus);
 					BHApplication.getInstance().getPrefManager().setPreferrence("InstallDetails", InstallDetails);
-
+					BHApplication.getInstance().getPrefManager().setPreferrence("DateInstall", DateInstall);
 
 
 

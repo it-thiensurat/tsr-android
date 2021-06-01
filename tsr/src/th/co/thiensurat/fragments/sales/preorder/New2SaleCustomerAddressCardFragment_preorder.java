@@ -2024,7 +2024,7 @@ catch (Exception ex){
 
 
             String[] strMessage = {"ประเภทบัตร", textViewIdentificationCard.getText().toString(), "คำนำหน้าชื่อ", "ชื่อ-สกุล", "ปีเกิด", "เดือนเกิด", "วันเกิด", "เพศ", "อายุ",
-                    "บ้านเลขที่", "หมู่ที่", "ซอย/ตรอก", "ถนน", "จังหวัด", "อำเภอ/เขต", "ตำบล/แขวง", "รหัสไปรษณีย์", "เบอร์บ้าน", "เบอร์ที่ทำงาน", "เบอร์มือถือ/เบอร์ที่ติดต่อได้", "อีเมล์"};
+                    "บ้านเลขที่", "หมู่ที่", "ซอย/ตรอก", "ถนน", "จังหวัด", "อำเภอ/เขต", "ตำบล/แขวง", "รหัสไปรษณีย์", "เบอร์บ้าน", "เบอร์โทรบุคคลอ้างอิง", "เบอร์มือถือ", "อีเมล์"};
 
             for (int i = 0; i < strEditText.length; i++) {
                 if (strEditText[i].length() == 0) {
@@ -2389,7 +2389,7 @@ catch (Exception ex){
                 return null;
             }
         };
-        editTextWorkPhone.setFilters(new InputFilter[]{PhoneNumber});
+        editTextWorkPhone.setFilters(new InputFilter[]{MobilePhone});
         editTextPhonecorporation2.setFilters(new InputFilter[]{PhoneNumber});
         editTextFaxcorporation.setFilters(new InputFilter[]{PhoneNumber});
         //endregion

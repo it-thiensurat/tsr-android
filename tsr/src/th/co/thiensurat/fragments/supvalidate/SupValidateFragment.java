@@ -25,6 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHFragment;
+import th.co.bighead.utilities.BHGeneral;
 import th.co.bighead.utilities.BHLoading;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.annotation.InjectView;
@@ -90,7 +91,13 @@ public class SupValidateFragment extends BHFragment implements SupValidateAdapte
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             Service request = retrofit.create(Service.class);
-            Call call = request.getImageValidate(BHPreference.employeeID());
+            Call call = null;
+            if (BHGeneral.SERVICE_MODE.toString() == "UAT") {
+                call = request.getImageValidateUAT(BHPreference.employeeID());
+            } else {
+                call = request.getImageValidate(BHPreference.employeeID());
+            }
+
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, retrofit2.Response response) {
