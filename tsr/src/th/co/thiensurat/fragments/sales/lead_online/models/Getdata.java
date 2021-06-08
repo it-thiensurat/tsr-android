@@ -1,24 +1,23 @@
 package th.co.thiensurat.fragments.sales.lead_online.models;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.util.Base64;
-
 public class Getdata {
     String CusName;
     String id;
     String CreateDate;
     String CustomerName;
     String Tel;
+    String Email;
+    String IDLine;
+    String IDProvince;
+
     String Province;
     String Product;
     String Details;
-    Uri Picture;
+    String Picture;
     String Channel;
     String StatusWork;
     String CodeStamp;
-
+    long idl;
 
     public String getCusName() {
         return CusName;
@@ -31,6 +30,11 @@ public class Getdata {
     public String getId() {
     return id;
 }
+
+    public long getidl(long id) {
+        return idl;
+    }
+
     public String getCreateDate() {
         return CreateDate;
     }
@@ -40,16 +44,25 @@ public class Getdata {
     public String getTel() {
         return Tel;
     }
+    public String getEmail() {
+        return Email;
+    }
+    public String getIDLine() {
+        return IDLine;
+    }
     public String getProduct() {
         return Product;
     }
     public String getProvince() {
         return Province;
     }
+    public String getIDProvince() {
+        return IDProvince;
+    }
     public String getDetails() {
         return Details;
     }
-    public Uri getPicture() {
+    public String getPicture() {
         return Picture;
     }
     public String getChannel() {
@@ -65,6 +78,9 @@ public class Getdata {
     public void setId(String noid ) {
         id = noid;
     }
+    public void setidl(long idl ) {
+        idl = idl;
+    }
     public void setCreateDate(String createDate ) {
         CreateDate = createDate;
     }
@@ -74,8 +90,17 @@ public class Getdata {
     public void setTel(String tel ) {
         Tel = tel;
     }
+    public void setEmail(String email ) {
+        Email = email;
+    }
+    public void setIDLine(String idline ) {
+        IDLine = idline;
+    }
     public void setProvince(String province ) {
         Province = province;
+    }
+    public void setIDProvince(String idprovince ) {
+        IDProvince = idprovince;
     }
     public void setProduct(String product ) {
         Product = product;
@@ -83,7 +108,7 @@ public class Getdata {
     public void setDetails(String details ) {
         Details = details;
     }
-    public void setPicture(Uri picture ) {
+    public void setPicture(String picture ) {
         Picture = picture;
     }
     public void setChannel(String channel ) {
