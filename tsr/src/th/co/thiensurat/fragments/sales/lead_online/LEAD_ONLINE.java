@@ -720,41 +720,22 @@
 
 package th.co.thiensurat.fragments.sales.lead_online;
 
-import android.app.AlertDialog;
+
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.util.Base64;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -762,66 +743,46 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import th.co.bighead.utilities.BHApplication;
-import th.co.bighead.utilities.BHArrayAdapter;
 import th.co.bighead.utilities.BHFragment;
+import th.co.bighead.utilities.BHLoading;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHSpinnerAdapter;
-import th.co.bighead.utilities.BHUtilities;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
-import th.co.thiensurat.activities.MainActivity;
-import th.co.thiensurat.business.controller.BackgroundProcess;
-import th.co.thiensurat.data.info.BankInfo;
-import th.co.thiensurat.data.info.ContractInfo;
-import th.co.thiensurat.data.info.DebtorCustomerInfo;
 import th.co.thiensurat.data.info.EmployeeDetailInfo;
 import th.co.thiensurat.data.info.EmployeeInfo;
-import th.co.thiensurat.data.info.FortnightInfo;
-import th.co.thiensurat.data.info.ProblemInfo;
-import th.co.thiensurat.fragments.sales.EditContractsMainFragment;
-import th.co.thiensurat.fragments.sales.SaleFirstPaymentChoiceFragment;
 import th.co.thiensurat.fragments.sales.lead_online.adapter.ReadJSON;
 import th.co.thiensurat.fragments.sales.lead_online.adapter.RecyclerViewDataAdapter;
 import th.co.thiensurat.fragments.sales.lead_online.models.Getdata;
 import th.co.thiensurat.fragments.sales.lead_online.models.GetdataStampCode;
 import th.co.thiensurat.retrofit.api.Service;
 
-import static th.co.thiensurat.activities.MainActivity.activity;
 import static th.co.thiensurat.retrofit.api.client.BASE_URL;
-import static th.co.thiensurat.retrofit.api.client.GIS_BASE_URL;
 
-public class LEAD_ONLINE extends BHFragment {
+public class LEAD_ONLINE extends BHFragment implements RecyclerViewDataAdapter.ItemClickListener{
 
     @InjectView
     private RecyclerView row1;
-
+    private RecyclerViewDataAdapter recyclerViewDataAdapter;
     private List<EmployeeInfo> mEmployeeList;
     private List<EmployeeDetailInfo> mEmployeeDetailList;
     private List<GetdataStampCode> getdataStampCodes;
-    //StampCodeAdapter stampCodeAdapter;
     RecyclerView.LayoutManager recyclerViewlayoutManager;
 
     List<Getdata> getdata;
     List<GetdataStampCode> getdata1;
     Getdata GetDataAdapter1;
 
-
+SwipeRefreshLayout swipeRefreshLayout;
 
     private ArrayList<HashMap<String, String>> MyArrListTotal = new ArrayList<>();
-    private ArrayList<HashMap<String, String>> MyArrListRegions = new ArrayList<HashMap<String,String>>();
-    ReadJSON readJson;
     @Override
     protected int titleID() {
         // TODO Auto-generated method stub
@@ -850,13 +811,18 @@ public class LEAD_ONLINE extends BHFragment {
         recyclerViewlayoutManager = new LinearLayoutManager(getActivity());
         row1.setLayoutManager(recyclerViewlayoutManager);
 
+
+
+
         load_data_lead();
 
+
     }
+
  public  void dialogspinner(String _id , String _StatusWork,String _Namecustomer,String _IdProvince){
 
      Dialog dialog_image;
-
+     log("xx",_id+""+_StatusWork);
      dialog_image = new Dialog(activity);
      //dialog_image.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
      dialog_image.setTitle("Stamp Cord");
@@ -949,18 +915,35 @@ public class LEAD_ONLINE extends BHFragment {
              String message = "ยืนยันการอัพเดทสานะการทำงาน";
              showWarningDialog(title, message);
              update_data_lead(_id , _StatusWork, cus, _Namecustomer,_IdProvince);
+             BHLoading.close();
+             dialog_image.dismiss();
          }
      });
-buttonCancel.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        txtremark.setText("555");
-    }
-});
      dialog_image.setCancelable(true);
-
      dialog_image.show();
+            buttonCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
+                    dialog_image.dismiss();
+                }
+            });
+ }
+ public void openimage(String url){
+     Dialog dialog_image;
+     dialog_image = new Dialog(activity);
+     dialog_image.requestWindowFeature(Window.FEATURE_NO_TITLE);
+     dialog_image.setContentView(R.layout.image_dialog);
+     ImageView imageView = (ImageView) dialog_image.findViewById(R.id.user_fullimage);
+     Glide.with(activity)
+             .load(url)
+             //.load("https://www.safealkaline.com/media/catalog/product/cache/1/image/750x750/9df78eab33525d08d6e5fb8d27136e95/s/a/safe_uv_alkaline_front.png")
+             .placeholder(R.drawable.alkaline) //5
+             .error(R.drawable.bb_install) //6
+             .fallback(R.drawable.barcode) //7
+             .into(imageView);
+     dialog_image.setCancelable(true);
+     dialog_image.show();
  }
     public void load_data_lead() {
         try {
@@ -1020,18 +1003,22 @@ buttonCancel.setOnClickListener(new View.OnClickListener() {
                 GetDataAdapter2.setCustomerName(json.getString("CustomerName"));
                 GetDataAdapter2.setTel(json.getString("Tel"));
                 GetDataAdapter2.setProvince(json.getString("Province"));
-                GetDataAdapter2.setProduct(json.getString("Product"));
+                GetDataAdapter2.setEmail(json.getString("Email"));
+                GetDataAdapter2.setIDLine(json.getString("IDLine"));
                 GetDataAdapter2.setDetails(json.getString("Details"));
                 GetDataAdapter2.setChannel(json.getString("Channel"));
                 GetDataAdapter2.setStatusWork(json.getString("StatusWork"));
+                GetDataAdapter2.setPicture(json.getString("Link"));
+                GetDataAdapter2.setProduct(json.getString("Product"));
                 GetDataAdapter2.setCodeStamp(json.getString("StatusCus"));
-                GetDataAdapter2.setPicture(Uri.parse(json.getString("Link")));
-
-
+                GetDataAdapter2.setIDProvince(json.getString("IdProvince"));
 
             } catch (JSONException e) {
 
                 e.printStackTrace();
+            }
+            catch (NullPointerException x){
+                GetDataAdapter2.setProduct("-");
             }
 
             getdata.add(GetDataAdapter2);
@@ -1039,15 +1026,15 @@ buttonCancel.setOnClickListener(new View.OnClickListener() {
         }
 
 
-        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getdata, getActivity());
+        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getdata, activity);
         row1.setAdapter(adapter);
-
+        adapter.notifyDataSetChanged();
     }
 
     public String update_data_lead(String _idl, String _statuswork, String _statuscus,String _Namecustomer,String _IdProvince) {
         final String[] rs = {""};
         String empsale = BHPreference.employeeID();
-        log("empid",empsale);
+        log("empid",_idl);
         try {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
@@ -1080,6 +1067,7 @@ buttonCancel.setOnClickListener(new View.OnClickListener() {
         } catch (Exception e) {
 
         }
+
         return rs[0];
     }
 
@@ -1156,4 +1144,8 @@ buttonCancel.setOnClickListener(new View.OnClickListener() {
 
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+
+    }
 }
