@@ -292,7 +292,7 @@ SwipeRefreshLayout swipeRefreshLayout;
             this.StampLinearLayout = (LinearLayout) view.findViewById(R.id.StampLinearLayout);
             this.twobntLinerLayout = (LinearLayout) view.findViewById(R.id.twobntLinerLayout);
             this.btnSearchLinerLayout = (LinearLayout) view.findViewById(R.id.btnSerchLinerLayout);
-            this.swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+            //this.swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
             this.txtnameimage = (TextView) view.findViewById(R.id.txtnameimage);
             this.txtidprovince = (TextView) view.findViewById(R.id.txtidprovince);
             itemView.setOnClickListener(this);

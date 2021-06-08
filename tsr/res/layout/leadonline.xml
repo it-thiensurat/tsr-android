@@ -244,26 +244,32 @@
                 android:layout_height="wrap_content"
                 android:gravity="center">
 
-            </RelativeLayout>
-
-
-            <ImageButton
-                android:id="@+id/pictureURL"
-                android:layout_width="244dp"
-                android:layout_height="244dp"
-                android:layout_weight="1"
-                android:background="@color/transparent"
-                card_view:srcCompat="@drawable/alkaline" />
-            <TextView
+                <ImageButton
+                    android:id="@+id/pictureURL"
+                    android:src="@drawable/alkaline"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_weight="1"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:scaleType="fitCenter"
+                    android:background="@color/transparent" />
+                <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/txtnameimage"
                 android:visibility="gone"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/txtidprovince"
-                android:visibility="gone"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/txtidprovince"
+                    android:visibility="gone"/>
+            </RelativeLayout>
+
+
+
+
+
 
         </LinearLayout>>
         <LinearLayout
@@ -343,7 +349,7 @@
             android:id="@+id/StampLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dp">
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:id="@+id/txtManagerTitle"
@@ -365,7 +371,10 @@
 
         </LinearLayout>
 
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"></LinearLayout>
     </LinearLayout>
 
 
