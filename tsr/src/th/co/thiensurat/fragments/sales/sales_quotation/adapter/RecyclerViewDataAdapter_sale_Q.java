@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,14 +20,17 @@ import java.util.Date;
 import java.util.List;
 
 import th.co.thiensurat.R;
+import th.co.thiensurat.adapter.CustomerStatusAdapter;
 import th.co.thiensurat.fragments.sales.sales_quotation.models.get_product_sale_q;
 
 public class RecyclerViewDataAdapter_sale_Q extends RecyclerView.Adapter<RecyclerViewDataAdapter_sale_Q.ItemRowHolder>   {
 
 
-    List<get_product_sale_q> getDataAdapter;
+    List<get_product_sale_q> selectedProductList;
     get_product_sale_q getDataAdapter1;
     private Context context;
+
+    private ItemClickListener mClickListener;
 
 
     public  static LinearLayout linear_down;
@@ -43,102 +47,73 @@ public class RecyclerViewDataAdapter_sale_Q extends RecyclerView.Adapter<Recycle
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
 
-
-
-    public RecyclerViewDataAdapter_sale_Q(List<get_product_sale_q> getDataAdapter, Context context) {
-        super();
-      //  this.dataList = dataList;
-      //  this.dataList2 = dataList2;
-        this.context = context;
-        this.getDataAdapter = getDataAdapter;
-     //   userFilter = new UserFilter(com.tsr.tsrproblemreport_tossticket_checker.test.adapters.RecyclerViewDataAdapter.this,getDataAdapter);
+    public void setSelectedProductList(List<get_product_sale_q> selectedProductList) {
+        this.selectedProductList = selectedProductList;
     }
-
 
     @Override
     public ItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.lead_product_s_q, null);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.lead_product_s_q, viewGroup, false);
         ItemRowHolder mh = new ItemRowHolder(v);
         return mh;
     }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(ItemRowHolder Viewholder, int i) {
-
-
-
-
-
-
-                try {
-                    getDataAdapter1 =  getDataAdapter.get(i);
-                    Viewholder.txtproductName.setText(getDataAdapter1.getProduct_name());
-                }
-                catch (Exception ex){
-
-                }
-
-
-
-
-
-
+        get_product_sale_q product = selectedProductList.get(i);
+        Viewholder.txtNumber.setText(String.valueOf((i + 1)) + ". ");
+        Viewholder.txtproductName.setText(product.getProduct_name());
+        Viewholder.txtproductQty.setText(product.getProduct_qty());
     }
-
-
-
 
     @Override
     public int getItemCount() {
-       // return 0;
-        return (null != getDataAdapter ? getDataAdapter.size() : 0);
-
-
+        return (null != selectedProductList ? selectedProductList.size() : 0);
     }
-
-
-/*    @Override
-    public int getItemViewType(int position) {
-        return dataList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
-    }*/
-
-
-
-
 
     public class ItemRowHolder extends RecyclerView.ViewHolder implements  View.OnClickListener  {
 
-        protected TextView txtproductName;
-
-
+        protected ImageView btnRemove;
+        protected TextView txtNumber, txtproductName, txtproductQty;
+        protected Button btnDecrease, btnIncrease;
 
         public ItemRowHolder(View view) {
             super(view);
-
-            this.txtproductName = (TextView) view.findViewById(R.id.txtproductName);
-
-
-
+            txtNumber = (TextView) view.findViewById(R.id.txtNumber);
+            txtproductName = (TextView) view.findViewById(R.id.txtProductName);
+            txtproductQty = (TextView) view.findViewById(R.id.txtProductQty);
+            btnRemove = (ImageView) view.findViewById(R.id.button_remove_item);
+            btnDecrease = (Button) view.findViewById(R.id.btn_decrease);
+            btnIncrease = (Button) view.findViewById(R.id.btn_increase);
 
             itemView.setOnClickListener(this);
-
-
-
-
-
-
-
+            btnDecrease.setOnClickListener(this);
+            btnIncrease.setOnClickListener(this);
+            btnRemove.setOnClickListener(this);
         }
 
 
         @Override
         public void onClick(View v) {
-
+            if (v.getId() == R.id.btn_decrease) {
+                mClickListener.onDecrease(v, getAdapterPosition());
+            } else if (v.getId() == R.id.btn_increase) {
+                mClickListener.onIncrease(v, getAdapterPosition());
+            } else if (v.getId() == R.id.button_remove_item) {
+                mClickListener.onRemove(v, getAdapterPosition());
+            }
         }
     }
 
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
 
-
-
-
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
+        void onDecrease(View view, int position);
+        void onIncrease(View view, int position);
+        void onRemove(View view, int position);
+    }
 }

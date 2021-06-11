@@ -47,7 +47,7 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/button_style_seagull</item>
+        <item name="android:background">@drawable/button_round</item>
     </style>
 
     <style name="ViewTitle">
@@ -89,6 +89,16 @@
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">0.6</item>
         <item name="android:background">@drawable/button_style_blue</item>
+    </style>
+
+    <style name="ButtonMain">
+        <item name="android:textSize">@dimen/normal_font_size</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">0.6</item>
+        <item name="android:background">@color/new_primary_color</item>
     </style>
 
     <style name="ButtonTop2">

@@ -290,11 +290,10 @@
 
                     <ImageButton
                         android:id="@+id/ibScanBarcode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
                         android:layout_marginLeft="@dimen/padding_normal"
-
-                        android:background="@drawable/scan"/>
+                        android:background="@drawable/barcode"/>
 
 
                 </LinearLayout>

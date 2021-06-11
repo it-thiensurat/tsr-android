@@ -4413,7 +4413,8 @@ public class DocumentController {
         receiptBuilder.setAlign(Paint.Align.LEFT);
         receiptBuilder.addText("วันที่รับเงิน", false);
         receiptBuilder.setAlign(Paint.Align.RIGHT);
-        receiptBuilder.addText(BHUtilities.dateFormat(paymentInfo.PayDate, BHUtilities.DEFAULT_DATE_FORMAT) + " เวลา " + BHUtilities.dateFormat(paymentInfo.PayDate, "HH:mm") + " น.", true);
+        receiptBuilder.addText(paymentInfo.PayDate + "", true);
+//        receiptBuilder.addText(BHUtilities.dateFormat(paymentInfo.PayDate, BHUtilities.DEFAULT_DATE_FORMAT) + " เวลา " + BHUtilities.dateFormat(paymentInfo.PayDate, "HH:mm") + " น.", true);
 
         receiptBuilder.addParagraph();
         receiptBuilder.setAlign(Paint.Align.LEFT);

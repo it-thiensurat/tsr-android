@@ -14,10 +14,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         android:installLocation="preferExternal"
-        android:requestLegacyExternalStorage="true"
         tools:node="replace"
         android:windowSoftInputMode="stateAlwaysHidden"
-        tools:replace="android:allowBackup">
+        tools:replace="android:allowBackup"
+        tools:ignore="ResourceCycle">
         <activity android:name=".activities.CameraActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:configChanges="orientation|screenLayout"></activity>

@@ -2,9 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/padding_large"
+    android:layout_margin="@dimen/padding_normal"
     android:id="@+id/aaa"
-
     android:orientation="vertical" >
 
     <LinearLayout
@@ -31,7 +30,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2.3"
+            android:layout_weight="2.5"
             android:orientation="vertical" >
 
             <TextView
@@ -75,7 +74,6 @@
                 android:background="@color/dot_red"
                 android:gravity="center"
                 android:text="ยกเลิกใบจอง" />
-
 
         </LinearLayout>
 

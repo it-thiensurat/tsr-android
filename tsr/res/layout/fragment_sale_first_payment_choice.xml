@@ -736,6 +736,6 @@
             android:text="@string/button_print_receipt"
             android:textSize="14dp"
             android:textColor="@color/font_color_white"
-            android:background="@drawable/button_style_seagull"/>
+            android:background="@drawable/button_round"/>
     </RelativeLayout>
 </LinearLayout>

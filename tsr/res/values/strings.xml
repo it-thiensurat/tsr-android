@@ -57,6 +57,7 @@
     <string name="button_detail_payment">แสดงรายละเอียดการซื้อ</string>
     <string name="button_detail_contract">แสดงรายละเอียดสัญญา</string>
     <string name="button_detail_contract_preorder">แสดงรายละเอียดใบจอง</string>
+    <string name="button_detail_quotation">รายละเอียดราคาสินค้า</string>
     <string name="button_pay">ดำเนินการชำระเงิน</string>
     <string name="button_camera">ถ่ายรูป</string>
     <string name="button_more">ข้อมูลลูกค้าเพิ่มเติม</string>

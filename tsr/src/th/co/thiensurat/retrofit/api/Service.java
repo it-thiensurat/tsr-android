@@ -4,25 +4,18 @@ package th.co.thiensurat.retrofit.api;
 
 
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import th.co.bighead.utilities.BHGeneral;
-import th.co.bighead.utilities.BHUtilities;
-import th.co.thiensurat.activities.MainActivity;
 
 /**
  * Created by frank on 12/16/16.
@@ -107,10 +100,6 @@ public interface Service {
 
     @GET("/api/api-checkBookingFirstPeriodAmount.php")
     Call<Object> checkBookingFirstPeriodAmount(@Query("refno") String refno);
-
-
-
-
 
     @GET("/assanee_UAT/assanee/bighead_api_new/api_1.php")
     Call<Object> get_api_1();
@@ -207,10 +196,50 @@ public interface Service {
         Call<Object> getDivisionIdUAT(@Field("empid") String empid);
 
         @POST("openticket/openticket")
-        @FormUrlEncoded
-        Call<Object> openTicketUAT(@Field("Contno") String contno, @Field("InformEmpID") String InformEmpID, @Field("InformDepartID") String InformDepartID,
-                                   @Field("ProblemID") String ProblemID, @Field("ProblemDetail") String ProblemDetail, @Field("DatatChannel") String DatatChannel);
+        @Multipart
+        Call<Object> openTicketUAT(@Part("Contno") RequestBody contno, @Part("InformEmpID") RequestBody InformEmpID, @Part("InformDepartID") RequestBody InformDepartID,
+                                   @Part List<MultipartBody.Part> ProblemID, @Part("DatatChannel") RequestBody DatatChannel);
+//        Call<Object> openTicketUAT(@Field("Contno") String contno, @Field("InformEmpID") String InformEmpID, @Field("InformDepartID") String InformDepartID,
+//                                   @Field("ProblemID") String ProblemID, @Field("ProblemDetail") String ProblemDetail, @Field("DatatChannel") String DatatChannel);
 
+        @POST("UAT/BH/Alpines/AddCustomer")
+        @FormUrlEncoded
+        Call<Object> addAlpinesCustomerUAT(@Field("type") String type, @Field("name") String name, @Field("tax") String tax, @Field("addr") String addr, @Field("moo") String moo,
+                                        @Field("soi") String soi, @Field("road") String road, @Field("province") String province, @Field("district") String district, @Field("subdistrict") String subdistrict,
+                                        @Field("zipcode") String zipcode, @Field("phone") String phone, @Field("email") String email, @Field("contactname") String contactname, @Field("contactphone") String contactphone,
+                                        @Field("contactemail") String contactemail, @Field("empid") String empid, @Field("actionType") String actionType, @Field("customerId") String customerId);
+
+//        @POST("UAT/BH/Alpines/AddProductToQuotation")
+//        @FormUrlEncoded
+//        Call<Object> addProductToQuotationUAT(@Field("projectName") String projectName, @Field("product[]") List<get_product_sale_q> product, @Field("empid") String empid);
+        @Multipart
+        @POST("UAT/BH/Alpines/AddProductToQuotation")
+        Call<Object> addProductToQuotationUAT(@Part("customerId") RequestBody customerId, @Part("empId") RequestBody empId, @Part("projectName") RequestBody projectName,
+                                            @Part("promotionText") RequestBody promotionText, @Part("discount") RequestBody discount, @Part("total") RequestBody total,
+                                            @Part("grandTotal") RequestBody grandTotal, @Part List<MultipartBody.Part> product);
+
+        @POST("UAT/BH/Alpines/GetProduct")
+        @FormUrlEncoded
+        Call<Object> getProductSpecUAT(@Field("productId") String productId);
+
+        @GET("UAT/BH/Alpines/GetPromotionText")
+        Call<Object> getPromotionUAT();
+
+        @POST("UAT/BH/Alpines/GetCustomerList")
+        @FormUrlEncoded
+        Call<Object> getCustomerListUAT(@Field("empId") String empId);
+
+        @POST("UAT/BH/Alpines/GetQuotationWaitForApprove")
+        @FormUrlEncoded
+        Call<Object> getQuotationWaitUAT(@Field("empId") String empId);
+
+        @POST("UAT/BH/Alpines/GetQuotationApprove")
+        @FormUrlEncoded
+        Call<Object> getQuotationApproveUAT(@Field("empId") String empId);
+
+        @POST("UAT/BH/Alpines/RemoveCustomerList")
+        @FormUrlEncoded
+        Call<Object> removeCustomerUAT(@Field("empId") String empId, @Field("customerId") String customerId);
         /**
          * END
          */

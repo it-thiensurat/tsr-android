@@ -81,12 +81,7 @@ public class SaleMainFragment_sales_quotation extends BHFragment {
 
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
-
         BHPreference.setProcessType(ProcessType.Sale.toString());
-
-
-        Log.e("cccc","cccc");
-
         vpSaleMain.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
             private final String[] PAGE_TITLE = {"รายการ", "รออนุมัติ", "อนุมัติแล้ว", "สำเร็จ"};
 
@@ -108,18 +103,12 @@ public class SaleMainFragment_sales_quotation extends BHFragment {
                 switch (position) {
                     case 0:
                         return BHFragment.newInstance(SaleMainUnfinishedFragment_sale_Q.class);
-                    //return BHFragment.newInstance(SaleMainFragment_preorder_setting2.class);
-
-
                     case 1:
-                        return BHFragment.newInstance(SaleMainFinishedFragment_SETTING.class);
-
+                        return BHFragment.newInstance(QuotaionWaitFragment.class);
                     case 2:
-                        return BHFragment.newInstance(SaleMainFinishedFragment_SETTING.class);
-
+                        return BHFragment.newInstance(QuotationApproveFragment.class);
                     case 3:
                         return BHFragment.newInstance(SaleMainFinishedFragment_SETTING.class);
-
                     default:
                         break;
                 }
@@ -136,33 +125,10 @@ public class SaleMainFragment_sales_quotation extends BHFragment {
         // TODO Auto-generated method stub
         switch (buttonID) {
             case R.string.button_add_sales_quotation:
-                if (BHGeneral.DEVELOPER_MODE) {
-                    new BackgroundProcess(activity) {
-
-                        @Override
-                        protected void calling() {
-                            // TODO Auto-generated method stub
-                            if (BHGeneral.DEVELOPER_MODE)
-                                new ProductStockController().checkedProducts();
-                        }
-                    }.start();
-                }
-
-
-                select_page_s=1;
-
-/*
-                BHPreference.setRefNo("");
-                // ใช้งานจริงเปิด Method BarcodeScan แล้วปิด บรรทัดที่ 113-119
-                BarcodeScan();*/
-
-
-                /*SaleScanEmployeesFragment_sale_Q fm =
-                 BHFragment.newInstance(SaleScanEmployeesFragment_sale_Q.class);
-                 showNextView(fm);*/
-
-                addContractDB();
-
+                New2SaleCustomerAddressCardFragment_sale_Q.Data newData = new New2SaleCustomerAddressCardFragment_sale_Q.Data();
+                newData.actionType = "new";
+                New2SaleCustomerAddressCardFragment_sale_Q Newsale = BHFragment.newInstance(New2SaleCustomerAddressCardFragment_sale_Q.class, newData);
+                showNextView(Newsale);
                 break;
             default:
                 break;
@@ -338,24 +304,6 @@ public class SaleMainFragment_sales_quotation extends BHFragment {
             }
         }).start();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     private ContractInfo contract = null;
 

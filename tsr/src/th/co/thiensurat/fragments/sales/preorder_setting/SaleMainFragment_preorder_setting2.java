@@ -47,6 +47,9 @@ import java.util.Date;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -822,7 +825,7 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
                  *
                  * Create date 24/05/2021
                  */
-                onVoid(ContractNo, BHPreference.employeeID(), divisionid, "4123", "ยกเลิกใบจอง", "06");
+                onVoid(RefNo, BHPreference.employeeID(), divisionid, "4678", "ยกเลิกใบจอง", "06");
 
                 /**
                  * End
@@ -1058,12 +1061,23 @@ public class SaleMainFragment_preorder_setting2 extends BHFragment {
             Service request = null;
             Retrofit retrofit = null;
             if (BHGeneral.SERVICE_MODE.toString() == "UAT") {
+
+                List<MultipartBody.Part> parts = new ArrayList<>();
+                parts.add(MultipartBody.Part.createFormData("ProblemID[]", problemid));
+                parts.add(MultipartBody.Part.createFormData("ProblemDetail[]", detail));
+                RequestBody refnoBody = RequestBody.create(MediaType.parse("text/plain"), contno);
+                RequestBody empBody = RequestBody.create(MediaType.parse("text/plain"), empid);
+                RequestBody departBody = RequestBody.create(MediaType.parse("text/plain"), departid);
+                RequestBody channelBody = RequestBody.create(MediaType.parse("text/plain"), channel);
+
+
                 retrofit = new Retrofit.Builder()
                         .baseUrl(DRINKO_BASE_UAT_URL)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 request = retrofit.create(Service.class);
-                call = request.openTicketUAT(contno, empid, departid, problemid, detail, channel);
+                call = request.openTicketUAT(refnoBody, empBody, departBody, parts, channelBody);
+//                call = request.openTicketUAT(contno, empid, departid, problemid, detail, channel);
             } else {
                 retrofit = new Retrofit.Builder()
                         .baseUrl(DRINKO_BASE_URL)

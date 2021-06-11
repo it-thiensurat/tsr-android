@@ -245,7 +245,7 @@
                                 android:layout_width="30sp"
                                 android:layout_height="30sp"
                                 android:layout_marginLeft="5dp"
-                                android:background="@drawable/calendar_icon"
+                                android:background="@drawable/calendar"
                                 android:backgroundTint="@color/app_green"
                                 android:visibility="visible" />
 
@@ -482,7 +482,7 @@
                                     android:layout_width="30sp"
                                     android:layout_height="30sp"
                                     android:layout_marginLeft="5dp"
-                                    android:background="@drawable/calendar_icon"
+                                    android:background="@drawable/calendar"
                                     android:backgroundTint="@color/app_green"
                                     android:visibility="visible" />
 

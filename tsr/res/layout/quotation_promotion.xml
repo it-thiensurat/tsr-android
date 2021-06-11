@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/th.co.thiensurat"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <th.co.thiensurat.views.ViewTitle
+        android:id="@id/vwTitle"
+        style="@style/ViewTitle" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="5dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="4dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:gravity="center"
+                    android:text="ส่วนลด"/>
+
+                <EditText
+                    android:id="@+id/editTextDiscount"
+                    style="@style/TextView.Value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9"
+                    android:layout_marginLeft="@dimen/padding_normal"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:ems="10"
+                    android:text="0"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:gravity="center"
+                    android:text="บาท"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="เลือกโปรโมชั่น"
+                android:padding="3dp"
+                android:textStyle="bold"
+                android:textColor="@color/new_primary_color"
+                android:layout_marginTop="10sp"/>
+
+            <LinearLayout
+                android:id="@+id/linear_gory_c"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:weightSum="1"
+                android:layout_gravity="center_horizontal|center">
+
+                <Spinner
+                    android:id="@+id/spinnerPromotion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="รายละเอียด"
+                android:padding="3dp"
+                android:textStyle="bold"
+                android:textColor="@color/new_primary_color"
+                android:layout_marginTop="20sp"/>
+
+            <LinearLayout
+                android:id="@+id/layout_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/border"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="5dp">
+
+                <EditText
+                    android:id="@+id/editTextPromotion"
+                    style="@style/TextView.Value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

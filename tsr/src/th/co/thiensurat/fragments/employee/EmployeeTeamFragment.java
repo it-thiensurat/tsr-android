@@ -835,7 +835,7 @@ public class EmployeeTeamFragment extends BHFragment {
             protected void after() {
                 // TODO Auto-generated method stub
                 if (output != null) {
-
+                    Log.e("FortnightInfo", String.valueOf(output));
                     String teamCode = BHPreference.teamCode();
 //                    String aa = BHPreference.SubTeamCode();
                     txtTeamCode.setText(String.format("ทีม %s", teamCode));

@@ -15,23 +15,39 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Multipart;
 import th.co.bighead.utilities.BHApplication;
 import th.co.bighead.utilities.BHFragment;
 import th.co.bighead.utilities.BHGeneral;
+import th.co.bighead.utilities.BHLoading;
 import th.co.bighead.utilities.BHParcelable;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.annotation.InjectView;
@@ -46,45 +62,56 @@ import th.co.thiensurat.fragments.sales.SaleMainFragment;
 import th.co.thiensurat.fragments.sales.lead_online.adapter.RecyclerViewDataAdapter;
 import th.co.thiensurat.fragments.sales.lead_online.models.Getdata;
 import th.co.thiensurat.fragments.sales.sales_quotation.adapter.RecyclerViewDataAdapter_sale_Q;
+import th.co.thiensurat.fragments.sales.sales_quotation.models.ProductSpecModel;
+import th.co.thiensurat.fragments.sales.sales_quotation.models.QuotationWaitModel;
 import th.co.thiensurat.fragments.sales.sales_quotation.models.get_product_sale_q;
 import th.co.thiensurat.retrofit.api.Service;
 import th.co.thiensurat.views.ViewTitle;
 
 import static th.co.thiensurat.retrofit.api.client.BASE_URL;
+import static th.co.thiensurat.retrofit.api.client.GIS_BASE_URL;
 
 //import com.google.zxing.client.android.CaptureActivity;
 
-public class Product_sale_Q extends BHFragment {
-	public static abstract class ScanCallBack extends BHFragmentCallback {
-		public String onNextClick() {
-			return null;
-		}
-	}
+public class Product_sale_Q extends BHFragment implements RecyclerViewDataAdapter_sale_Q.ItemClickListener {
 
-	public static class Result extends BHParcelable {
-		public String getProductID,getProductName,getProductSerialNumber,getCONTNO,getRefNo,getContractReferenceNo,getReceiptCode,getReceiptID;
+//	public static abstract class ScanCallBack extends BHFragmentCallback {
+//		public String onNextClick() {
+//			return null;
+//		}
+//	}
 
-		private Result(String getProductID,String getProductName,
-					   String getProductSerialNumber,String getCONTNO,
-					   String getRefNo,String getContractReferenceNo,
-					   String getReceiptCode,String getReceiptID) {
-			this.getProductID = getProductID;
-			this.getProductName = getProductName;
-			this.getProductSerialNumber = getProductSerialNumber;
-			this.getCONTNO = getCONTNO;
-			this.getRefNo = getRefNo;
-			this.getContractReferenceNo = getContractReferenceNo;
-			this.getReceiptCode = getReceiptCode;
-			this.getReceiptID = getReceiptID;
-		}
-	}
+//	public static class Result extends BHParcelable {
+//		public String getProductID,getProductName,getProductSerialNumber,getCONTNO,getRefNo,getContractReferenceNo,getReceiptCode,getReceiptID;
+//
+//		private Result(String getProductID,String getProductName,
+//					   String getProductSerialNumber,String getCONTNO,
+//					   String getRefNo,String getContractReferenceNo,
+//					   String getReceiptCode,String getReceiptID) {
+//			this.getProductID = getProductID;
+//			this.getProductName = getProductName;
+//			this.getProductSerialNumber = getProductSerialNumber;
+//			this.getCONTNO = getCONTNO;
+//			this.getRefNo = getRefNo;
+//			this.getContractReferenceNo = getContractReferenceNo;
+//			this.getReceiptCode = getReceiptCode;
+//			this.getReceiptID = getReceiptID;
+//		}
+//	}
 
-	private static class Data extends BHParcelable {
-		public int titleResID = -1;
-		public int viewTitleResID = -1;
-		public String viewTitle = null;
-		public int descriptionResID = -1;
-		public String description = null;
+//	private static class Data extends BHParcelable {
+//		public int titleResID = -1;
+//		public int viewTitleResID = -1;
+//		public String viewTitle = null;
+//		public int descriptionResID = -1;
+//		public String description = null;
+//	}
+
+	public static class Data extends BHParcelable {
+		public String actionType = "";
+		public JSONObject objectCustomer;
+		public List<get_product_sale_q> objectProduct;
+		public List<QuotationWaitModel> quotationWaitModelList;
 	}
 
 	private static final String FRAGMENT_DATA = "th.co.thiensurat.barcode.data";
@@ -106,41 +133,20 @@ public class Product_sale_Q extends BHFragment {
 
 	private String STATUS_CODE = "03";
 
-	//region Fragment ID
-	@InjectView
-	private LinearLayout linearLayoutHeadNumber;
-	@InjectView
-	private TextView txtNumber1,txt_s_time;
-	@InjectView
-	private TextView txtNumber2;
-	@InjectView
-	private TextView txtNumber3;
-	@InjectView
-	private TextView txtNumber4;
-	@InjectView
-	private TextView txtNumber5;
-
 	@InjectView
 	private ViewTitle vwTitle;
-	@InjectView
-	private ImageButton ibScanBarcode,ibScanBarcode2,ibScanBarcode3;
-	@InjectView
-	private TextView tvDescription;
-	@InjectView
-	private EditText edtBarcode,edtBarcode2,edtBarcode3;
-
-    @InjectView
-    private LinearLayout li_scan2,li_scan3;
-
-
 	@InjectView
 	private Spinner spDemo,spDemo_c;
 	@InjectView
 	private RecyclerView row1;
 	@InjectView
 	private Button btn_add;
+	@InjectView
+	private TextView txtNumber3;
+	@InjectView
+	private EditText editTextProjectName;
 
-	private Data data = new Data();
+	private Data data;
 	private ProductStockInfo getProductInfo;
 	ProductStockController productStockController;
 
@@ -150,9 +156,8 @@ public class Product_sale_Q extends BHFragment {
 	List<GetData_data_product_c> getData_data_product_cs;
 	GetData_data_product_c getData_data_product_c;
 
-	List<get_product_sale_q> get_product_sale_qs;
-	get_product_sale_q get_product_sale_q;
-	RecyclerView.LayoutManager recyclerViewlayoutManager;
+	List<get_product_sale_q> selectedProductList = new ArrayList<>();
+	List<ProductSpecModel> productSpecModelList = new ArrayList<>();
 
 	String C_ID="",getProductID="",getProductName="",getProductSerialNumber="",
 			getCONTNO="",getRefNo="",getContractReferenceNo="",getReceiptCode="",getReceiptID="",getOrganizationCode="";
@@ -180,28 +185,11 @@ public class Product_sale_Q extends BHFragment {
 	public void onProcessButtonClicked(int buttonID) {
 		// TODO Auto-generated method stub
 		switch (buttonID) {
-
 			case R.string.button_back:
 				showLastView();
 				break;
-
 		case R.string.button_next:
-
-
-/*
-			String barcode = edtBarcode.getText().toString();
-            String barcode2 = edtBarcode2.getText().toString();
-			String barcode3 = edtBarcode3.getText().toString();
-
-
-			Result result = new Result(barcode,barcode2,barcode3);
-			setResult(result);
-
-*/
-
-            Result result = new Result(getProductID,getProductName,getProductSerialNumber,getCONTNO,getRefNo,getContractReferenceNo,getReceiptCode,getReceiptID);
-            setResult(result);
-
+			onNext();
 			break;
 
 		default:
@@ -211,61 +199,40 @@ public class Product_sale_Q extends BHFragment {
 
 	@Override
 	protected void onCreateViewSuccess(Bundle savedInstanceState) {
-
-		if (savedInstanceState != null) {
-			data = savedInstanceState.getParcelable(Product_sale_Q.FRAGMENT_DATA);
-		}
 		vwTitle.setText("เลือกสินค้า");
+		data = getData();
+		getData_data_products = new ArrayList<>();
+		getData_data_product_cs = new ArrayList<>();
 
-	//	productStockController=new ProductStockController();
-		getData_data_products=new ArrayList<>();
-		getData_data_product_cs=new ArrayList<>();
-		get_product_sale_qs=new ArrayList<>();
+		Log.e("Choose product", String.valueOf(data.objectCustomer));
 
-		switch (Enum.valueOf(SaleFirstPaymentChoiceFragment.ProcessType.class, BHPreference.ProcessType())) {
-			case Sale:
-				TSRController.updateStatusCode(BHPreference.RefNo(), STATUS_CODE);
-				txtNumber3.setBackgroundResource(R.drawable.circle_number_sale_color_red);
-				break;
-			case ChangeContract:
-			case EditContract:
-				linearLayoutHeadNumber.setVisibility(View.GONE);
-				break;
-			default:
-				break;
-		}
-
-
-	//String DF= String.valueOf(productStockController.getProductStockByProductSerialNumberzzzz(BHPreference.organizationCode()));
-		//load_data_product();
-		load_data_product_c();
-
-
+		row1.setLayoutManager(new LinearLayoutManager(activity));
 		row1.setHasFixedSize(true);
-		recyclerViewlayoutManager = new LinearLayoutManager(getActivity());
-		row1.setLayoutManager(recyclerViewlayoutManager);
+		adapter = new RecyclerViewDataAdapter_sale_Q();
+		row1.setAdapter(adapter);
 
+		load_data_product_c();
 		btn_add.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				data_p_q(getProductName,"1");
+				addProduct();
 			}
 		});
+
+		if (data.actionType.equals("edit")) {
+			if (data.objectProduct.size() > 0) {
+				selectedProductList = data.objectProduct;
+				adapter.setSelectedProductList(selectedProductList);
+				adapter.notifyDataSetChanged();
+			}
+		}
 
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		// TODO Auto-generated method stub
-		outState.putParcelable(Product_sale_Q.FRAGMENT_DATA, data);
-		super.onSaveInstanceState(outState);
 	}
-
-
-	public void setTitle(int titleResID) {
-		data.titleResID = titleResID;
-	}
-
 
 
 	private void load_data_product_c() {
@@ -276,12 +243,10 @@ public class Product_sale_Q extends BHFragment {
 					.addConverterFactory(GsonConverterFactory.create())
 					.build();
 			Service request = retrofit.create(Service.class);
-			// Call call = request.product(BHPreference.employeeID());
 			Call call=null;
 			if(MODE.equals("UAT")){
 				call = request.productListPreBooking_UAT(BHPreference.employeeID());
-			}
-			else {
+			} else {
 				call = request.productListPreBooking(BHPreference.employeeID());
 			}
 
@@ -291,12 +256,8 @@ public class Product_sale_Q extends BHFragment {
 					Gson gson = new Gson();
 					try {
 						JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
-//                        int item = jsonObject.getJSONArray("data").length();
-//                        Log.e("New item", "" + jsonObject.getJSONArray("data"));
-						// JSON_PARSE_DATA_AFTER_WEBCALL2(jsonObject.getJSONArray("data"));
+						Log.e("product group", String.valueOf(jsonObject.getJSONArray("data")));
 						JSON_PARSE_DATA_AFTER_WEBCALL_load_data_product_c(jsonObject.getJSONArray("data"));
-						//JSON_PARSE_DATA_AFTER_WEBCALL_TEST(jsonObject.getJSONArray("data"));
-
 					} catch (JSONException e) {
 						e.printStackTrace();
 						Log.e("data", "22");
@@ -315,63 +276,37 @@ public class Product_sale_Q extends BHFragment {
 	}
 
 	public void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_product_c(JSONArray array) {
-
+		String[] array2 = new String[array.length()];
 		for (int i = 0; i < array.length(); i++) {
-
 			final GetData_data_product_c GetDataAdapter2 = new GetData_data_product_c();
-
 			JSONObject json = null;
 			try {
 				json = array.getJSONObject(i);
 				GetDataAdapter2.setProductCat(json.getInt("ProductCat"));
 				GetDataAdapter2.setProductGroupName(json.getString("ProductGroupName"));
-
-
-
+				array2[i]= json.getString("ProductGroupName");
 			} catch (JSONException e) {
-
 				e.printStackTrace();
 			}
+
 			getData_data_product_cs.add(GetDataAdapter2);
-			// value=GetDataAdapter2.getProblemName();
 		}
 
-
-
-
-
-		String[] array2 = new String[getData_data_product_cs.size()];
-
-		//int i;
 		ArrayAdapter<String> adapter = null ;
-
-		for ( int i = 0; i < getData_data_product_cs.size(); i++) {
-			final GetData_data_product_c contact = getData_data_product_cs.get(i);
-			array2[i]= contact.getProductGroupName();
-
-			try {
-				adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, android.R.id.text1, array2){
+		try {
+			adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, android.R.id.text1, array2){
 				@Override
 				public View getView(int position, View convertView, ViewGroup parent){
-					// Cast the list view each item as text view
 					TextView item = (TextView) super.getView(position,convertView,parent);
-
-					// Change the item text size
 					item.setTextSize(TypedValue.COMPLEX_UNIT_DIP,16);
-
-					// return the view
 					return item;
 				}
 			};
-			}
-			catch (Exception ex){
-
-			}
+		} catch (Exception ex){
 
 		}
 
 		spDemo_c.setAdapter(adapter);
-
 		spDemo_c.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -381,25 +316,17 @@ public class Product_sale_Q extends BHFragment {
 					C_ID_int= contact.getProductCat();
 					Log.e("C_ID", String.valueOf(C_ID_int));
 					load_data_product(C_ID_int);
+				} catch (Exception ex){
 
 				}
-				catch (Exception ex){
-
-				}
-
 			}
+
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
 
 			}
 		});
-
 	}
-
-
-
-
-
 
     private void load_data_product(int C_ID_int) {
 		 String MODE=  BHGeneral.SERVICE_MODE.toString();
@@ -409,12 +336,10 @@ public class Product_sale_Q extends BHFragment {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             Service request = retrofit.create(Service.class);
-           // Call call = request.product(BHPreference.employeeID());
 			Call call=null;
 			if(MODE.equals("UAT")){
 				call = request.product_UAT(BHPreference.employeeID(), String.valueOf(C_ID_int));
-			}
-			else {
+			} else {
 				call = request.product(BHPreference.employeeID(), String.valueOf(C_ID_int));
 			}
 
@@ -424,12 +349,8 @@ public class Product_sale_Q extends BHFragment {
                     Gson gson = new Gson();
                     try {
                         JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
-//                        int item = jsonObject.getJSONArray("data").length();
-//                        Log.e("New item", "" + jsonObject.getJSONArray("data"));
-                        // JSON_PARSE_DATA_AFTER_WEBCALL2(jsonObject.getJSONArray("data"));
+						Log.e("product", String.valueOf(jsonObject.getJSONArray("data")));
                         JSON_PARSE_DATA_AFTER_WEBCALL_load_data_product(jsonObject.getJSONArray("data"));
-                        //JSON_PARSE_DATA_AFTER_WEBCALL_TEST(jsonObject.getJSONArray("data"));
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                         Log.e("data", "22");
@@ -447,15 +368,12 @@ public class Product_sale_Q extends BHFragment {
         }
     }
 
-
-
 	String ID_MAIN="";
 	public void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_product(JSONArray array) {
 		getData_data_products.clear();
+		String[] array2 = new String[array.length()];
 		for (int i = 0; i < array.length(); i++) {
-
 			final GetData_data_product GetDataAdapter2 = new GetData_data_product();
-
 			JSONObject json = null;
 			try {
 				json = array.getJSONObject(i);
@@ -464,63 +382,34 @@ public class Product_sale_Q extends BHFragment {
 				GetDataAdapter2.setProductID(json.getString("ProductID"));
 				GetDataAdapter2.setRefNo(json.getString("RefNo"));
 				GetDataAdapter2.setCONTNO(json.getString("CONTNO"));
-
 				GetDataAdapter2.setContractReferenceNo(json.getString("ContractReferenceNo"));
 				GetDataAdapter2.setReceiptCode(json.getString("ReceiptCode"));
 				GetDataAdapter2.setReceiptID(json.getString("ReceiptID"));
 				GetDataAdapter2.setOrganizationCode(json.getString("OrganizationCode"));
 
-
+				array2[i]= json.getString("ProductName");
 			} catch (JSONException e) {
-
 				e.printStackTrace();
 			}
 			getData_data_products.add(GetDataAdapter2);
-			// value=GetDataAdapter2.getProblemName();
 		}
 
-
-
-
-
-		String[] array2 = new String[getData_data_products.size()];
-
-		//int i;
 		ArrayAdapter<String> adapter = null ;
-
-		for ( int i = 0; i < getData_data_products.size(); i++) {
-			final GetData_data_product contact = getData_data_products.get(i);
-			array2[i]= contact.getProductName();
-
-			try {
-				//adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, android.R.id.text1, array2);
-
-		adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, android.R.id.text1, array2){
-					@Override
-					public View getView(int position, View convertView, ViewGroup parent){
-						// Cast the list view each item as text view
-						TextView item = (TextView) super.getView(position,convertView,parent);
-
-
-						TextView tv = (TextView) item.findViewById(android.R.id.text1);
-
-						tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
-
-						return item;
-					}
-				};
-
-			}
-			catch (Exception ex){
-
-			}
+		try {
+			adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, android.R.id.text1, array2){
+				@Override
+				public View getView(int position, View convertView, ViewGroup parent){
+					TextView item = (TextView) super.getView(position,convertView,parent);
+					TextView tv = (TextView) item.findViewById(android.R.id.text1);
+					tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
+					return item;
+				}
+			};
+		} catch (Exception ex){
 
 		}
-
-//		adapter.setDropDownViewResource(R.layout.simple_1111);
 
 		spDemo.setAdapter(adapter);
-
 		spDemo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -528,75 +417,189 @@ public class Product_sale_Q extends BHFragment {
 
 				try {
 					final GetData_data_product contact = getData_data_products.get(position);
-					 getProductID= contact.getProductID();
-					 getProductName= contact.getProductName();
-					 getProductSerialNumber= contact.getProductSerialNumber();
-					 getCONTNO= contact.getCONTNO();
-					 getRefNo= contact.getRefNo();
+					getProductID= contact.getProductID();
+					getProductName= contact.getProductName();
+					getProductSerialNumber= contact.getProductSerialNumber();
+					getCONTNO= contact.getCONTNO();
+					getRefNo= contact.getRefNo();
 
 					getContractReferenceNo= contact.getContractReferenceNo();
 					getReceiptCode= contact.getReceiptCode();
 					getReceiptID= contact.getReceiptID();
 					getOrganizationCode= contact.getOrganizationCode();
+//
+//					Log.e("getOrganizationCode",getOrganizationCode);
+//					BHApplication.getInstance().getPrefManager().setPreferrence("getRefNo", getRefNo);
+//					BHApplication.getInstance().getPrefManager().setPreferrence("getContractReferenceNo", getContractReferenceNo);
+//					BHApplication.getInstance().getPrefManager().setPreferrence("getReceiptCode", getReceiptCode);
+//					BHApplication.getInstance().getPrefManager().setPreferrence("getReceiptID", getReceiptID);
+//					BHApplication.getInstance().getPrefManager().setPreferrence("getOrganizationCode", getOrganizationCode);
+//
+//					Log.e("getReceiptCode",getReceiptCode);
+//					Log.e("getProductID",getProductID);
 
-Log.e("getOrganizationCode",getOrganizationCode);
-
-					BHApplication.getInstance().getPrefManager().setPreferrence("getRefNo", getRefNo);
-					BHApplication.getInstance().getPrefManager().setPreferrence("getContractReferenceNo", getContractReferenceNo);
-					BHApplication.getInstance().getPrefManager().setPreferrence("getReceiptCode", getReceiptCode);
-					BHApplication.getInstance().getPrefManager().setPreferrence("getReceiptID", getReceiptID);
-					BHApplication.getInstance().getPrefManager().setPreferrence("getOrganizationCode", getOrganizationCode);
-
-
-					Log.e("getReceiptCode",getReceiptCode);
-					Log.e("getProductID",getProductID);
-
-
-				}
-				catch (Exception ex){
+				} catch (Exception ex){
 
 				}
-
-
-
-
-				//getData_select_topic_problem_subs.clear();
-
-				// Log.e("idididmain",ID_MAIN);
-
-				//SELECT_DATA_PROBLEM_SUB();
-
 			}
+
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
 
 			}
 		});
+	}
+
+	RecyclerViewDataAdapter_sale_Q adapter;
+	private void addProduct() {
+		get_product_sale_q productList = new get_product_sale_q();
+		productList.setProduct_id(getProductID);
+		productList.setProduct_name(getProductName);
+		productList.setProduct_qty("1");
+		productList.setProduct_price("1500");
+			for (int i = 0; i < selectedProductList.size(); i++) {
+				get_product_sale_q productSaleQ = selectedProductList.get(i);
+				if (getProductID == productSaleQ.getProduct_id()) {
+					int qty = Integer.parseInt(productSaleQ.getProduct_qty()) + 1;
+					productSaleQ.setProduct_qty(String.valueOf(qty));
+					selectedProductList.set(i, productSaleQ);
+					adapter.notifyDataSetChanged();
+					return;
+				}
+			}
+
+		selectedProductList.add(productList);
+		adapter.setSelectedProductList(selectedProductList);
+
+		adapter.notifyDataSetChanged();
+		adapter.setClickListener(this);
+	}
+
+	@Override
+	public void onItemClick(View view, int position) {
 
 	}
 
+	@Override
+	public void onDecrease(View view, int position) {
+		get_product_sale_q productSaleQ = selectedProductList.get(position);
+		if (selectedProductList.size() > 0) {
+			int qty = Integer.parseInt(productSaleQ.getProduct_qty());
+			if (qty > 1) {
+				qty--;
+				productSaleQ.setProduct_qty(String.valueOf(qty));
+				selectedProductList.set(position, productSaleQ);
+			} else {
+				selectedProductList.remove(position);
+			}
+		}
 
-private void data_p_q(String Product_name,String Count_product){
+		adapter.setSelectedProductList(selectedProductList);
+		adapter.notifyDataSetChanged();
+	}
 
+	@Override
+	public void onIncrease(View view, int position) {
+		get_product_sale_q productSaleQ = selectedProductList.get(position);
+		int qty = Integer.parseInt(productSaleQ.getProduct_qty());
+		qty++;
+		productSaleQ.setProduct_qty(String.valueOf(qty));
+		selectedProductList.set(position, productSaleQ);
+		adapter.setSelectedProductList(selectedProductList);
+		adapter.notifyDataSetChanged();
 
+	}
 
+	@Override
+	public void onRemove(View view, int position) {
+		selectedProductList.remove(position);
+		adapter.setSelectedProductList(selectedProductList);
+		adapter.notifyDataSetChanged();
+	}
 
+	private void onNext() {
+		if (selectedProductList.size() > 0) {
+			Log.e("select product", String.valueOf(selectedProductList));
+			QuotationPromotion.Data qData = new QuotationPromotion.Data();
+			qData.actionType = data.actionType;
+			qData.projectName = editTextProjectName.getText().toString();
+			qData.objectCustomer = data.objectCustomer;
+			qData.objectProduct = selectedProductList;
+			qData.quotationWaitModelList = data.quotationWaitModelList;
+			QuotationPromotion quotationPromotion = BHFragment.newInstance(QuotationPromotion.class, qData);
+			showNextView(quotationPromotion);
+		} else {
+			String title = "คำเตือน";
+			String message = "กรุณาเลือกข้อมูลสินค้าก่อน";
+			showWarningDialog(title, message);
+		}
+	}
 
-		final get_product_sale_q GetDataAdapter2 = new get_product_sale_q();
-
-
-
-			GetDataAdapter2.setProduct_name(Product_name);
-			GetDataAdapter2.setCount_product(Count_product);
-
-
-		get_product_sale_qs.add(GetDataAdapter2);
-
-
-	RecyclerViewDataAdapter_sale_Q adapter = new RecyclerViewDataAdapter_sale_Q(get_product_sale_qs,getActivity());
-	row1.setAdapter(adapter);
-
-}
-
-
+//	private List<ProductSpecModel> getProductSpec(String productId) {
+//		try {
+//			Call call = null;
+//			Service request = null;
+//			Retrofit retrofit = null;
+//
+//			if (BHGeneral.SERVICE_MODE.toString() == "UAT") {
+//				retrofit = new Retrofit.Builder()
+//						.baseUrl(GIS_BASE_URL)
+//						.addConverterFactory(GsonConverterFactory.create())
+//						.build();
+//				request = retrofit.create(Service.class);
+//				call = request.getProductSpecUAT(productId);
+//			}
+//
+//			call.enqueue(new Callback() {
+//				@Override
+//				public void onResponse(Call call, retrofit2.Response response) {
+//					Gson gson=new Gson();
+//					try {
+//						Log.e("Response", String.valueOf(response));
+//						Log.e("JSON body", String.valueOf(response.body()));
+//						JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+//						if (jsonObject.getString("status").equals("SUCCESS")) {
+//							JSONArray jsonArray = jsonObject.getJSONArray("data");
+//							ProductSpecModel productSpecModel;
+//							for (int i = 0; i < jsonArray.length(); i++) {
+//								JSONObject object = jsonArray.getJSONObject(i);
+//								productSpecModel = new ProductSpecModel();
+//								productSpecModel.setSpecID(object.getInt("ID"));
+//								productSpecModel.setProductId(object.getString("ProductID"));
+//								productSpecModel.setProductSpec(object.getString("ProductSpec"));
+//								productSpecModel.setProductDetail1(object.getString("ProductDetail1"));
+//								productSpecModel.setProductDetail2(object.getString("ProductDetail2"));
+//								productSpecModel.setProductDetail3(object.getString("ProductDetail3"));
+//								productSpecModel.setProductDetail4(object.getString("ProductDetail4"));
+//								productSpecModel.setProductDetail5(object.getString("ProductDetail5"));
+//								productSpecModel.setProductDetail6(object.getString("ProductDetail6"));
+//								productSpecModel.setProductDetail7(object.getString("ProductDetail7"));
+//								productSpecModel.setProductDetail8(object.getString("ProductDetail8"));
+//								productSpecModelList.add(productSpecModel);
+//							}
+//						} else {
+//							productSpecModelList = null;
+//						}
+//						Log.e("Add product", String.valueOf(jsonObject));
+//						BHLoading.close();
+//					} catch (JSONException e) {
+//						e.printStackTrace();
+//						Log.e("data",e.getLocalizedMessage());
+//						BHLoading.close();
+//					}
+//				}
+//
+//				@Override
+//				public void onFailure(Call call, Throwable t) {
+//					Log.e("onFailure onSave:",t.getLocalizedMessage());
+//					BHLoading.close();
+//				}
+//			});
+//		} catch (Exception e) {
+//			Log.e("Exception onSave",e.getLocalizedMessage());
+//			BHLoading.close();
+//		}
+//
+//		return productSpecModelList;
+//	}
 }

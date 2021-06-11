@@ -124,42 +124,21 @@ public class SaleScanEmployeesFragment_sale_Q extends BHFragment {
 
     @Override
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
-
         Log.e("xxxxxx2","xxxxx");
-
-
         if (BHPreference.ProcessType().equals(ProcessType.Sale.toString())) {
-            saveStatusCode();
             txtNumber1.setBackgroundResource(R.drawable.circle_number_sale_color_red);
         }
 
         if (savedInstanceState != null) {
-            // employeeList = savedInstanceState
-            // .getParcelableArrayList(EMPLOYEE_LIST);
             employee = savedInstanceState.getParcelable(EMPLOYEE_SELECTED);
         }
 
         clearData();
         ContactDB();
-        // if (employeeList == null) {
-        // ContactDB();
-        // } else
-        // bindEmployeeList();
-
-        // if (selectedEmployee != null) {
-        // showSelectedEmployee();
-        // }
-
 
         ibScanBarcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(activity, CaptureActivity.class);
-
-                /*** [START] :: Permission ***/
-                /*Intent intent = new IntentIntegrator(activity).createScanIntent();
-                startActivityForResult(intent, REQUEST_QR_SCAN);*/
-
                 new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
 
                     @Override
@@ -189,33 +168,14 @@ public class SaleScanEmployeesFragment_sale_Q extends BHFragment {
                 // TODO Auto-generated method stub
                 selectedEmpID = (String) parent.getItemAtPosition(position);
                 if (!parent.getItemAtPosition(position).toString().trim().equals("")) {
-                    // selectedEmployee = employeeList.get(position - 1);
-                    //String empID = employeeList.get(position - 1).EmpID;
-
                     String empID = employeeListTemp.get(position - 1).EmpID;
-                    // showSelectedEmployee();
-                    // TeamEmp();
-
                     bindSelectedEmployee(empID, BHPreference.teamCode());
-
                     Log.e("sale_select",empID+","+BHPreference.teamCode());
-                }
-                else {
-                    //String empID = employeeListTemp.get(position).EmpID;
-
+                } else {
                    Log.e("sale_select2",BHPreference.teamCode());
                     bindSelectedEmployee(BHPreference.employeeID(), BHPreference.teamCode());
 
                 }
-           /*     else {
-
-                    bindSelectedEmployee(BHPreference.employeeID(), BHPreference.teamCode());
-
-
-                }
-*/
-
-
             }
 
             @Override
@@ -270,14 +230,9 @@ public class SaleScanEmployeesFragment_sale_Q extends BHFragment {
 
                 if (paramMotionEvent.getAction() == MotionEvent.ACTION_DOWN && !isAutoCompletePreSaleEmployeeCode) {
                     isAutoCompletePreSaleEmployeeCode = true;
-                    //autoCompletePreSaleEmployeeCode.showDropDown();
-                    //autoCompletePreSaleEmployeeCode.requestFocus();
-
                     autoCompletePreSaleEmployeeCode.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            //adapter.notifyDataSetChanged();
-                            //autoCompletePreSaleEmployeeCode.setSelection(autoCompletePreSaleEmployeeCode.getText().length());
                             autoCompletePreSaleEmployeeCode.showDropDown();
                         }
                     }, 500);
@@ -286,28 +241,6 @@ public class SaleScanEmployeesFragment_sale_Q extends BHFragment {
                 return false;
             }
         });
-
-//        autoCompletePreSaleEmployeeCode.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//                InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                in.hideSoftInputFromWindow(autoCompletePreSaleEmployeeCode.getWindowToken(), 0);
-////                String provinceCode = getProvinceCode();
-////                if (!provinceCode.equals("")) {
-////                    bindDistrict(provinceCode);
-////                }
-//            }
-//        });
 
         autoCompletePreSaleEmployeeCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -340,7 +273,6 @@ public class SaleScanEmployeesFragment_sale_Q extends BHFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == REQUEST_QR_SCAN && resultCode == Activity.RESULT_OK) {
             String Content = intent.getStringExtra(Intents.Scan.RESULT);
-            // ScanEmploy(Content);
             bindSelectedEmployee(Content, BHPreference.teamCode());
         } else if (requestCode == REQUEST_QR_SCAN && resultCode == Activity.RESULT_CANCELED) {
             textShowName.setText("ยังไม่ได้ทำการสแกนกรุณาทำการสแกนอีกครั้ง");
@@ -355,17 +287,11 @@ public class SaleScanEmployeesFragment_sale_Q extends BHFragment {
                 // TODO Auto-generated method stub
                 if(BHPreference.sourceSystem().equals("Credit")) {
                     Log.e("po","credit");
-                 employee = getEmpByempID_for_credit(empID,teamCode);
-                }
-             else {
+                    employee = getEmpByempID_for_credit(empID,teamCode);
+                } else {
                     Log.e("po","sale");
-
                     employee = getEmpByempID(empID, teamCode);
-
                 }
-
-               // employee = getEmpByempID(empID, teamCode);
-
             }
 
             @Override
@@ -373,62 +299,23 @@ public class SaleScanEmployeesFragment_sale_Q extends BHFragment {
                 // TODO Auto-generated method stub
                 if (employee != null) {
                     Log.e("aaa","ccc");
-
-
                     textShowName.setText(String.format("%s %s", employee.FirstName, BHUtilities.trim(employee.LastName)));
-
                     String empFullName = String.format(("%s    %s %s"), employee.SaleCode, employee.FirstName, BHUtilities.trim(employee.LastName));
-
                     ArrayAdapter<String> empAdapter = (ArrayAdapter) spinnerEmp.getAdapter();
                     if (empAdapter != null) {
                         int empPosition = empAdapter.getPosition(empFullName);
                         spinnerEmp.setSelection(empPosition);
                     }
-
-
                 }
-
-
-
             }
 
         }).start();
     }
 
-    // private void ScanEmploy(final String empID) {
-    // // TODO Auto-generated method stub
-    // (new BackgroundProcess(activity) {
-    // List<EmployeeInfo> empidoutput = new ArrayList<EmployeeInfo>();
-    //
-    // @Override
-    // protected void calling() {
-    // // TODO Auto-generated method stub
-    // empidoutput = getEmpID(empID);
-    // }
-    //
-    // @Override
-    // protected void after() {
-    // // TODO Auto-generated method stub
-    // if (empidoutput != null) {
-    // employeeList = empidoutput;
-    // for (EmployeeInfo item : employeeList) {
-    // textShowName.setText(item.FirstName + "  "
-    // + item.LastName);
-    // //empID = item.EmpID;
-    // }
-    // } else {
-    // showMessage("ไม่ผ่าน");
-    // }
-    // }
-    //
-    // }).start();
-    // }
-
     private void ContactDB() {
         // TODO Auto-generated method stub
 
         (new BackgroundProcess(activity) {
-            // List<EmployeeInfo> outputlistemp = new ArrayList<EmployeeInfo>();
 
             @Override
             protected void before() {
@@ -441,33 +328,18 @@ public class SaleScanEmployeesFragment_sale_Q extends BHFragment {
                     Log.e("po2","111");
                     if(BHPreference.sourceSystem().equals("Credit")) {
                         employeeList = getEmployeeInfoSaleLeader_for_credit(BHPreference.employeeID(),BHPreference.teamCode());
-                    }
-                    else {
+                    } else {
                         employeeList = getEmployeeInfoSaleLeader(BHPreference.teamCode());
                     }
-
                 } else {
                     Log.e("po2","222");
-
                     if(BHPreference.sourceSystem().equals("Credit")) {
                         employeeList = getEmployeeInfoSubTeamLeader_for_credit(BHPreference.employeeID(),BHPreference.teamCode(), BHPreference.SubTeamCode());
-
-                    }
-                    else {
+                    } else {
                         employeeList = getEmployeeInfoSubTeamLeader(BHPreference.teamCode(), BHPreference.SubTeamCode());
-
                     }
                 }
                 contract = getContract(BHPreference.RefNo());
-
-                try {
-                    productStock = getProductStock(contract.ProductSerialNumber);
-
-                }
-                catch (Exception ex){
-
-                }
-
             }
 
             @Override
@@ -478,40 +350,27 @@ public class SaleScanEmployeesFragment_sale_Q extends BHFragment {
 
                 	    if(BHPreference.sourceSystem().equals("Credit")) {
                             //if (!employeeList.get(i).PositionCode.equals("Credit")) {
-                                if (employeeList.get(i).PositionCode == null || !employeeList.get(i).PositionCode.equals("Credit") || employeeList.get(i).SaleCode == null) {
-
-
-                                    employeeList.remove(i);
-                            }
-                        }
-                	 else {
-                            if (employeeList.get(i).PositionCode == null || !employeeList.get(i).PositionCode.equals("Sale") || employeeList.get(i).SaleCode == null) {
-
+                            if (employeeList.get(i).PositionCode == null || !employeeList.get(i).PositionCode.equals("Credit") || employeeList.get(i).SaleCode == null) {
                                 employeeList.remove(i);
                             }
-                  }
-
-
-
+                        } else {
+                            if (employeeList.get(i).PositionCode == null || !employeeList.get(i).PositionCode.equals("Sale") || employeeList.get(i).SaleCode == null) {
+                                employeeList.remove(i);
+                            }
+                        }
         			}
-
-
                     bindEmployeeList();
                 }
 
-
-
                 if (contract != null) {
                     if (contract.InstallerEmployeeCode != null) {
-                        // ScanEmploy(contract.InstallerEmployeeCode);
                         bindSelectedEmployee(contract.InstallerEmployeeCode, contract.SaleTeamCode);
                     }
 
-
                     if(contract.PreSaleEmployeeCode != null){
-                        //PreSaleEmployeeCode.setText(contract.PreSaleEmployeeCode);
                         autoCompletePreSaleEmployeeCode.setText(contract.PreSaleEmployeeCode);
                     }
+
                     if(contract.PreSaleEmployeeName != null){
                         PreSaleEmployeeName.setText(contract.PreSaleEmployeeName);
                     }
@@ -531,54 +390,18 @@ public class SaleScanEmployeesFragment_sale_Q extends BHFragment {
         employeeListTemp.clear();
 
         for (EmployeeInfo item : employeeList) {
-            // emp.add(String.format(("%s    %s %s"), item.EmpID,
-            // item.FirstName, item.LastName));
-
             if (BHPreference.SubTeamCode() == null || BHPreference.SubTeamCode().equals("") || BHPreference.SubTeamCode().equals(item.SubTeamCode)) {
                 emp.add(String.format(("%s    %s %s"), item.SaleCode, item.FirstName, BHUtilities.trim(item.LastName)));
-
                 employeeListTemp.add(item);
             }
-
-
         }
+
         BHSpinnerAdapter<String> arrayemp = new BHSpinnerAdapter<String>(activity, emp);
         spinnerEmp.setAdapter(arrayemp);
-
     }
-
-    // private void showSelectedEmployee() {
-    // textShowName.setText(selectedEmployee.FirstName + "  "
-    // + selectedEmployee.LastName);
-    // }
-    //
-    // private void TeamEmp() {
-    // // TODO Auto-generated method stub
-    // (new BackgroundProcess(activity) {
-    // //TeamEmployeeInfo output = new TeamEmployeeInfo();
-    //
-    // @Override
-    // protected void calling() {
-    // // TODO Auto-generated method stub
-    // teamemp = getTeamEmp(productStock.TeamCode, "",
-    // contract.OrganizationCode);
-    // }
-    //
-    // //@Override
-    // //protected void after() {
-    // // // TODO Auto-generated method stub
-    // // if (output != null) {
-    // // teamemp = output;
-    // // tempCode = teamemp.SaleCode;
-    // // }
-    // //}
-    // }).start();
-    // }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        // savedInstanceState.putParcelableArrayList(EMPLOYEE_LIST,
-        // (ArrayList<EmployeeInfo>) employeeList);
         savedInstanceState.putParcelable(EMPLOYEE_SELECTED, employee);
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -588,30 +411,10 @@ public class SaleScanEmployeesFragment_sale_Q extends BHFragment {
         // TODO Auto-generated method stub
         switch (buttonID) {
             case R.string.button_save_employee:
-
                 if (employee == null || selectedEmpID == null || (selectedEmpID != null && selectedEmpID.trim().isEmpty())) {
-                    // if (empID == null || empID.equals("")) {
-
                     showWarningDialog("คำเตือน","กรุณาเลือกพนักงาน");
-//                    final String title = "คำเตือน";
-//                    String message = "กรุณาเลือกพนักงาน";
-//                    Builder setupAlert = new AlertDialog.Builder(activity).setTitle(title).setMessage(message)
-//                            .setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
-//
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int whichButton) {
-//                                    // TODO Auto-generated method stub
-//
-//                                }
-//                            });
-//                    setupAlert.show();
                 } else {
-                    // updateContractDB();
-
-
-                        updateContract();
-
-
+                    updateContract();
                 }
                 break;
             case R.string.button_back:
@@ -626,12 +429,7 @@ public class SaleScanEmployeesFragment_sale_Q extends BHFragment {
         (new BackgroundProcess(activity) {
             @Override
             protected void before() {
-
                 // TODO Auto-generated method stub
-
-
-
-
                 try {
                     contract.SaleCode = employee.SaleCode;
                     contract.SaleEmployeeCode = employee.EmpID;
@@ -643,28 +441,8 @@ public class SaleScanEmployeesFragment_sale_Q extends BHFragment {
                     contract.PreSaleEmployeeCode =  autoCompletePreSaleEmployeeCode.getText().toString(); // รหัสพนักงานผู้แนะนำ
                     contract.PreSaleEmployeeName =  PreSaleEmployeeName.getText().toString(); // ชื่อ-นามสกุลผู้แนะนำ
                     contract.SaleEmployeeLevelPath = BHPreference.currentTreeHistoryID();
-
+                } catch (Exception ex){
                 }
-                catch (Exception ex){
-      /*              contract.SaleCode = "BBAI0020000";
-                    contract.SaleEmployeeCode = "A16086";
-                    contract.SaleTeamCode = "BBAI-02";// productStock.TeamCode;
-                    contract.InstallerSaleCode = "BBAI-02";
-                    contract.InstallerEmployeeCode = "A16086";
-                    contract.InstallerTeamCode = "BBAI-02";// productStock.TeamCode;
-                    //contract.PreSaleEmployeeCode =  PreSaleEmployeeCode.getText().toString(); // รหัสพนักงานผู้แนะนำ
-                    contract.PreSaleEmployeeCode =  ""; // รหัสพนักงานผู้แนะนำ
-                    contract.PreSaleEmployeeName =  ""; // ชื่อ-นามสกุลผู้แนะนำ
-                    contract.SaleEmployeeLevelPath ="";*/
-                }
-
-
-
-
-
-
-
-                // contract.ser
             }
 
             @Override
@@ -676,8 +454,8 @@ public class SaleScanEmployeesFragment_sale_Q extends BHFragment {
             @Override
             protected void after() {
                 // TODO Auto-generated method stub
-//				showNextView(new SaleCustomerAddressMainFragment());	// PARADA [Tab-Address]
-                showNextView(new New2SaleCustomerAddressCardFragment_sale_Q());	// PARADA [Separate-Address]
+                saveStatusCode();
+                showNextView(new New2SaleCustomerAddressCardFragment_sale_Q());
             }
         }).start();
     }

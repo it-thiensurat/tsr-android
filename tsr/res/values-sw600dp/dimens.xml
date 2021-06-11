@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--
          Per the design guidelines, navigation drawers should be between 240dp and 320dp:
@@ -61,8 +61,8 @@
     <dimen name="sale_choice_height">55dp</dimen>
     <dimen name="sale_check_photo_width">400dp</dimen>
     <dimen name="sale_check_photo_height">90dp</dimen>
-    <dimen name="sale_address_width_label">130dp</dimen>
-    <dimen name="sale_address_width_edit">147dp</dimen>
+    <dimen name="sale_address_width_label" tools:ignore="MissingDefaultResource">130dp</dimen>
+    <dimen name="sale_address_width_edit" tools:ignore="MissingDefaultResource">147dp</dimen>
     <dimen name="sale_button_width">150dp</dimen>
 
     <!-- CheckStock -->

@@ -2091,7 +2091,7 @@ catch (Exception ex){
             } else if (phone.replaceAll("-", "").length() < 9 && !phone.equals("-")) {
                 showWarningDialog("คำเตือน", "กรุณาป้อนข้อมูลเบอร์บ้าน ให้ครบ");
             } else if (workPhone.replaceAll("-", "").length() < 9 && !workPhone.equals("-")) {
-                showWarningDialog("คำเตือน", "กรุณาป้อนข้อมูลเบอร์ที่ทำงาน ให้ครบ");
+                showWarningDialog("คำเตือน", "กรุณาป้อนข้อมูลเบอร์โทรบุคคลอ้างอิง ให้ครบ");
             } else if (mobilePhone.replaceAll("-", "").length() != 10) {
                 showWarningDialog("คำเตือน", "กรุณาป้อนข้อมูลเบอร์โทรมือถือให้ครบ 10 หลัก");
             } else {
@@ -2101,7 +2101,7 @@ catch (Exception ex){
                 if (!getEditTextPhone.equals("0") && !phone.equals("-")) {
                     showWarningDialog("คำเตือน", "เบอร์บ้านไม่ถูกต้อง");
                 } else if (!getEditTextWorkPhone.equals("0") && !workPhone.equals("-")) {
-                    showWarningDialog("คำเตือน", "เบอร์ที่ทำงานไม่ถูกต้อง");
+                    showWarningDialog("คำเตือน", "เบอร์ที่บุคคลอ้างอิงไม่ถูกต้อง");
                 } else {
                     String getphone = Character.toString(mobilePhone.charAt(0));
                     if (!getphone.equals("0")) {

@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linearLayoutHeadNumber"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/txtNumber1"-->
+<!--            android:layout_width="65dp"-->
+<!--            android:layout_height="65dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:background="@drawable/circle_number_sale_color_gray"-->
+<!--            android:gravity="center"-->
+<!--            android:shadowRadius="10.0"-->
+<!--            android:text="1"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:textSize="32sp"-->
+<!--            android:textStyle="bold" />-->
+
+<!--        <View-->
+<!--            android:id="@+id/layout_underline"-->
+<!--            android:layout_width="15dp"-->
+<!--            android:layout_height="5dip"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:background="@color/bg_line_status_number" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/txtNumber2"-->
+<!--            android:layout_width="65dp"-->
+<!--            android:layout_height="65dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:background="@drawable/circle_number_sale_color_gray"-->
+<!--            android:gravity="center"-->
+<!--            android:shadowRadius="10.0"-->
+<!--            android:text="2"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:textSize="32sp"-->
+<!--            android:textStyle="bold" />-->
+
+<!--        <View-->
+<!--            android:id="@+id/layout_underline"-->
+<!--            android:layout_width="15dp"-->
+<!--            android:layout_height="5dip"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:background="@color/bg_line_status_number" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/txtNumber3"-->
+<!--            android:layout_width="65dp"-->
+<!--            android:layout_height="65dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:background="@drawable/circle_number_sale_color_gray"-->
+<!--            android:gravity="center"-->
+<!--            android:shadowRadius="10.0"-->
+<!--            android:text="3"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:textSize="32sp"-->
+<!--            android:textStyle="bold" />-->
+
+<!--        <View-->
+<!--            android:id="@+id/layout_underline"-->
+<!--            android:layout_width="15dp"-->
+<!--            android:layout_height="5dip"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:background="@color/bg_line_status_number" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/txtNumber4"-->
+<!--            android:layout_width="65dp"-->
+<!--            android:layout_height="65dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:background="@drawable/circle_number_sale_color_gray"-->
+<!--            android:gravity="center"-->
+<!--            android:shadowRadius="10.0"-->
+<!--            android:text="4"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:textSize="32sp"-->
+<!--            android:textStyle="bold" />-->
+
+<!--        <View-->
+<!--            android:id="@+id/layout_underline"-->
+<!--            android:layout_width="15dp"-->
+<!--            android:layout_height="5dip"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:background="@color/bg_line_status_number" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/txtNumber5"-->
+<!--            android:layout_width="65dp"-->
+<!--            android:layout_height="65dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:background="@drawable/circle_number_sale_color_gray"-->
+<!--            android:gravity="center"-->
+<!--            android:shadowRadius="10.0"-->
+<!--            android:text="..."-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:textSize="32sp"-->
+<!--            android:textStyle="bold" />-->
+<!--    </LinearLayout>-->
+
+    <th.co.thiensurat.views.ViewTitle
+        android:id="@+id/view_title"
+        style="@style/ViewTitle"
+        android:padding="@dimen/padding_normal"
+        app:text="@string/caption_customer_detail" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:text="ค้นหาลูกค้า"/>
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCompleteCustomer"
+                        android:dropDownAnchor="@+id/dropdownAutoCompleteTextView"
+                        android:dropDownHeight="100dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="0.8"
+                        android:singleLine="true"
+                        android:text="" />
+
+                    <Button
+                        android:id="@+id/btnSearch"
+                        style="@style/ButtonTop"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:layout_marginLeft="@dimen/padding_small"
+                        android:layout_marginRight="@dimen/padding_small"
+                        android:text="@string/button_search" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/layout_no_result"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ไม่พบประวัติใบเสนอราคา"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_result"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/border"
+                        android:padding="10dp"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:weightSum="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="เลขที่ใบเสนอราคา : "
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/quotationNumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="QT2021050001"
+                                android:layout_marginLeft="5dp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:weightSum="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="เลขที่ประจำตัวผู้เสียภาษี : "
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/quotationTaxNumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0845549008443"
+                                android:layout_marginLeft="5dp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:weightSum="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ชื่อลูกค้า : "
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/quotationCustomer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="บริษัท เอียดเฟอร์นิเจอร์ จำกัด"
+                                android:layout_marginLeft="5dp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:weightSum="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ที่อยู่ : "
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/quotationAddress"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="12/30 ม.2 ต.หน้าเมือง อ.พระนครศรีอยุธยา จ.พระนครศรีอยุธยา 84140"
+                                android:layout_marginLeft="5dp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:weightSum="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="เบอร์โทรศัพท์ : "
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/quotationPhone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0987654321"
+                                android:layout_marginLeft="5dp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:weightSum="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="อีเมล : "
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/quotationEmail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="test@email.co.th"
+                                android:layout_marginLeft="5dp"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/buttonUseData"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="เรียกใช้ข้อมูล"
+                        android:textColor="@android:color/white"
+                        android:background="@color/new_primary_color"
+                        android:layout_marginTop="15dp"
+                        android:padding="4dp"
+                        android:elevation="4dp"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <th.co.thiensurat.views.ViewTitle
+                android:id="@+id/view_title"
+                style="@style/ViewTitle"
+                android:padding="@dimen/padding_normal"
+                app:text="ที่อยู่ลูกค้า" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="ประเภทลูกค้า" />
+
+                    <Spinner
+                        android:id="@+id/spinnerType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="ชื่อลูกค้า" />
+
+                    <EditText
+                        android:id="@+id/editTextName"
+                        style="@style/TextView.Value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/editTaxNumber"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:ems="10" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="เลขภาษี" />
+
+                    <EditText
+                        android:id="@+id/editTaxNumber"
+                        style="@style/TextView.Value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/editTextAddressnumber"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:ems="10" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="เลขที่" />
+
+                    <EditText
+                        android:id="@+id/editTextAddressnumber"
+                        style="@style/TextView.Value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/editTextMoo"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:ems="10" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="หมู่ที่" />
+
+                    <EditText
+                        android:id="@+id/editTextMoo"
+                        style="@style/TextView.Value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/editTextSoi"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:ems="10" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="ซอย/ตรอก" />
+
+                    <EditText
+                        android:id="@+id/editTextSoi"
+                        style="@style/TextView.Value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/editTextRoad"
+                        android:singleLine="true"
+                        android:ems="10" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="ถนน" />
+
+                    <EditText
+                        android:id="@+id/editTextRoad"
+                        style="@style/TextView.Value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/autoCompleteTextViewProvince"
+                        android:singleLine="true"
+                        android:ems="10" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="จังหวัด" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCompleteTextViewProvince"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:singleLine="true"
+                        android:text="" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="อำเภอ/เขต" />
+
+                    <Spinner
+                        android:id="@+id/spinnerDistrict"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="ตำบล/แขวง" />
+
+                    <Spinner
+                        android:id="@+id/spinnerSubdistrict"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="รหัสไปรษณีย์" />
+
+                    <EditText
+                        android:id="@+id/editTextZipcode"
+                        style="@style/TextView.Value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:ems="10"
+                        android:enabled="false"
+                        android:inputType="number"
+                        android:maxLength="5" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="เบอร์โทรศัพท์" />
+
+                    <EditText
+                        android:id="@+id/editTextPhone"
+                        style="@style/TextView.Value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/editTextEmail"
+                        android:singleLine="true"
+                        android:ems="10"
+                        android:inputType="phone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ItemLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextView.Label"
+                        android:layout_width="@dimen/impound_detail_width"
+                        android:layout_height="@dimen/impound_detail_height2"
+                        android:paddingRight="@dimen/padding_normal"
+                        android:text="อีเมล์" />
+
+                    <EditText
+                        android:id="@+id/editTextEmail"
+                        style="@style/TextView.Value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_normal"
+                        android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:ems="10" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        style="@style/ItemLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextView.Label"
+                            android:layout_width="@dimen/impound_detail_width"
+                            android:layout_height="@dimen/impound_detail_height2"
+                            android:paddingRight="@dimen/padding_normal"
+                            android:text="ชื่อผู้ติดต่อ" />
+
+                        <EditText
+                            android:id="@+id/editTextContactName"
+                            style="@style/TextView.Value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_normal"
+                            android:imeOptions="actionNext"
+                            android:singleLine="true"
+                            android:ems="10" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/ItemLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextView.Label"
+                            android:layout_width="@dimen/impound_detail_width"
+                            android:layout_height="@dimen/impound_detail_height2"
+                            android:paddingRight="@dimen/padding_normal"
+                            android:text="เบอร์ผู้ติดต่อ" />
+
+                        <EditText
+                            android:id="@+id/editTextContactPhone"
+                            style="@style/TextView.Value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_normal"
+                            android:imeOptions="actionNext"
+                            android:singleLine="true"
+                            android:ems="10" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/ItemLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextView.Label"
+                            android:layout_width="@dimen/impound_detail_width"
+                            android:layout_height="@dimen/impound_detail_height2"
+                            android:paddingRight="@dimen/padding_normal"
+                            android:text="อีเมลผู้ติดต่อ" />
+
+                        <EditText
+                            android:id="@+id/editTextContactEmail"
+                            style="@style/TextView.Value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_normal"
+                            android:imeOptions="actionNext"
+                            android:singleLine="true"
+                            android:ems="10" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

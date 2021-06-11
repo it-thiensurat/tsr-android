@@ -940,7 +940,7 @@ SwipeRefreshLayout swipeRefreshLayout;
              //.load("https://www.safealkaline.com/media/catalog/product/cache/1/image/750x750/9df78eab33525d08d6e5fb8d27136e95/s/a/safe_uv_alkaline_front.png")
              .placeholder(R.drawable.alkaline) //5
              .error(R.drawable.bb_install) //6
-             .fallback(R.drawable.barcode) //7
+//             .fallback(R.drawable.barcode) //7
              .into(imageView);
      dialog_image.setCancelable(true);
      dialog_image.show();
