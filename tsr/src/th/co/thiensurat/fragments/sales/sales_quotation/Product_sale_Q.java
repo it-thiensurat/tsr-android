@@ -160,7 +160,7 @@ public class Product_sale_Q extends BHFragment implements RecyclerViewDataAdapte
 	List<ProductSpecModel> productSpecModelList = new ArrayList<>();
 
 	String C_ID="",getProductID="",getProductName="",getProductSerialNumber="",
-			getCONTNO="",getRefNo="",getContractReferenceNo="",getReceiptCode="",getReceiptID="",getOrganizationCode="";
+			getCONTNO="",getRefNo="",getContractReferenceNo="",getReceiptCode="",getReceiptID="",getOrganizationCode="", productPrice="";
 
 	int C_ID_int;
 	@Override
@@ -220,10 +220,16 @@ public class Product_sale_Q extends BHFragment implements RecyclerViewDataAdapte
 		});
 
 		if (data.actionType.equals("edit")) {
-			if (data.objectProduct.size() > 0) {
-				selectedProductList = data.objectProduct;
-				adapter.setSelectedProductList(selectedProductList);
-				adapter.notifyDataSetChanged();
+			try {
+				if (data.objectProduct.isEmpty()) {
+					if (data.objectProduct.size() > 0) {
+						selectedProductList = data.objectProduct;
+						adapter.setSelectedProductList(selectedProductList);
+						adapter.notifyDataSetChanged();
+					}
+				}
+			} catch (Exception e) {
+				Log.e("Edit quotation", e.getLocalizedMessage());
 			}
 		}
 
@@ -386,6 +392,7 @@ public class Product_sale_Q extends BHFragment implements RecyclerViewDataAdapte
 				GetDataAdapter2.setReceiptCode(json.getString("ReceiptCode"));
 				GetDataAdapter2.setReceiptID(json.getString("ReceiptID"));
 				GetDataAdapter2.setOrganizationCode(json.getString("OrganizationCode"));
+				GetDataAdapter2.setProductPrice(String.valueOf(json.getInt("ProductPrice")));
 
 				array2[i]= json.getString("ProductName");
 			} catch (JSONException e) {
@@ -427,7 +434,7 @@ public class Product_sale_Q extends BHFragment implements RecyclerViewDataAdapte
 					getReceiptCode= contact.getReceiptCode();
 					getReceiptID= contact.getReceiptID();
 					getOrganizationCode= contact.getOrganizationCode();
-//
+					productPrice = contact.getProductPrice();
 //					Log.e("getOrganizationCode",getOrganizationCode);
 //					BHApplication.getInstance().getPrefManager().setPreferrence("getRefNo", getRefNo);
 //					BHApplication.getInstance().getPrefManager().setPreferrence("getContractReferenceNo", getContractReferenceNo);
@@ -456,7 +463,7 @@ public class Product_sale_Q extends BHFragment implements RecyclerViewDataAdapte
 		productList.setProduct_id(getProductID);
 		productList.setProduct_name(getProductName);
 		productList.setProduct_qty("1");
-		productList.setProduct_price("1500");
+		productList.setProduct_price(productPrice);
 			for (int i = 0; i < selectedProductList.size(); i++) {
 				get_product_sale_q productSaleQ = selectedProductList.get(i);
 				if (getProductID == productSaleQ.getProduct_id()) {

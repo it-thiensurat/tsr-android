@@ -195,12 +195,14 @@ public interface Service {
         @FormUrlEncoded
         Call<Object> getDivisionIdUAT(@Field("empid") String empid);
 
+        @POST("UAT/BH/Alpines/GetPositionId")
+        @FormUrlEncoded
+        Call<Object> getPositionIdUAT(@Field("empid") String empid);
+
         @POST("openticket/openticket")
         @Multipart
         Call<Object> openTicketUAT(@Part("Contno") RequestBody contno, @Part("InformEmpID") RequestBody InformEmpID, @Part("InformDepartID") RequestBody InformDepartID,
                                    @Part List<MultipartBody.Part> ProblemID, @Part("DatatChannel") RequestBody DatatChannel);
-//        Call<Object> openTicketUAT(@Field("Contno") String contno, @Field("InformEmpID") String InformEmpID, @Field("InformDepartID") String InformDepartID,
-//                                   @Field("ProblemID") String ProblemID, @Field("ProblemDetail") String ProblemDetail, @Field("DatatChannel") String DatatChannel);
 
         @POST("UAT/BH/Alpines/AddCustomer")
         @FormUrlEncoded
@@ -209,9 +211,6 @@ public interface Service {
                                         @Field("zipcode") String zipcode, @Field("phone") String phone, @Field("email") String email, @Field("contactname") String contactname, @Field("contactphone") String contactphone,
                                         @Field("contactemail") String contactemail, @Field("empid") String empid, @Field("actionType") String actionType, @Field("customerId") String customerId);
 
-//        @POST("UAT/BH/Alpines/AddProductToQuotation")
-//        @FormUrlEncoded
-//        Call<Object> addProductToQuotationUAT(@Field("projectName") String projectName, @Field("product[]") List<get_product_sale_q> product, @Field("empid") String empid);
         @Multipart
         @POST("UAT/BH/Alpines/AddProductToQuotation")
         Call<Object> addProductToQuotationUAT(@Part("customerId") RequestBody customerId, @Part("empId") RequestBody empId, @Part("projectName") RequestBody projectName,
@@ -240,6 +239,9 @@ public interface Service {
         @POST("UAT/BH/Alpines/RemoveCustomerList")
         @FormUrlEncoded
         Call<Object> removeCustomerUAT(@Field("empId") String empId, @Field("customerId") String customerId);
+
+        @GET("UAT/BH/Alpines/GetQuotationForApprove")
+        Call<Object> getQuotationForApproveUAT();
         /**
          * END
          */

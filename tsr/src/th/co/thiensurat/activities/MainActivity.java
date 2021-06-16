@@ -201,6 +201,7 @@ import th.co.thiensurat.fragments.sales.lead_online.LEAD_ONLINE;
 import th.co.thiensurat.fragments.sales.preorder.SaleMainFragment_peoorder;
 import th.co.thiensurat.fragments.sales.preorder_setting.SaleMainFragment_preorder_setting;
 import th.co.thiensurat.fragments.sales.preorder_setting.SaleMainFragment_preorder_setting2;
+import th.co.thiensurat.fragments.sales.sales_quotation.QuotationSupFragment;
 import th.co.thiensurat.fragments.sales.sales_quotation.SaleMainFragment_sales_quotation;
 import th.co.thiensurat.fragments.sendmoney.SendMoneySummaryMainFragment;
 import th.co.thiensurat.fragments.supvalidate.SupValidateFragment;
@@ -248,6 +249,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
     public static  int select_page_bs=0;
 
     public  static  String EMPID="";
+    public static String POSITIONID = "";
     //********************************************************************************//
     //*************************** BLUE TOOTH CONNECTION ******************************//
     //********************************************************************************//
@@ -1107,6 +1109,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
        MODE=  BHGeneral.SERVICE_MODE.toString();
         Log.e("MODE",MODE);
+        getEmpPosition();
        // load_data_contact_online_preoder();
 
 //        Date d = new Date("11/12/2020 17:44");
@@ -1604,139 +1607,100 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     i.setData(Uri.parse(url_link));
                     startActivity(i);
                     break;
-
                 case R.string.main_menu_sales_quotation: // sales_quotation
-
-                    success = showView(BHFragment.newInstance(SaleMainFragment_sales_quotation.class));
+                    if (POSITIONID.equals("0006")) {
+                        success = showView(BHFragment.newInstance(QuotationSupFragment.class));
+                    } else {
+                        success = showView(BHFragment.newInstance(SaleMainFragment_sales_quotation.class));
+                    }
                     break;
                 case R.string.main_menu_preorder_setting: // preorder stting
-
                     success = showView(BHFragment.newInstance(SaleMainFragment_preorder_setting.class));
                   // success = showView(BHFragment.newInstance(SaleMainFragment_preorder_setting2.class));
                     break;
-
                 case R.string.main_menu_first: // not require SaleCode
-
                     success = showView(BHFragment.newInstance(FirstPaymentMainMenuFragment.class));
                     break;
-
                 case R.string.main_menu_next_period: // not require SaleCode
                     success = showView(BHFragment.newInstance(NextPaymentListFragment.class));
                     break;
-
                 case R.string.main_menu_money: // not require SaleCode
                     success = showView(BHFragment.newInstance(SendMoneySummaryMainFragment.class));
                     break;
-
                 case R.string.main_menu_remove: // require SaleCode
                     success = showView(BHFragment.newInstance(ImpoundProductMainFragment.class));
                     break;
-
                 case R.string.main_menu_change: //ระบบเปลี่ยนเครื่อง // require SaleCode
                     success = showView(BHFragment.newInstance(ChangeProductCustomerListFragment.class));
                     break;
-
                 case R.string.main_menu_document: // require SaleCode
                     success = showView(BHFragment.newInstance(ChangeContractMainFragment.class));
                     break;
-
                 case R.string.main_menu_loss: // not require SaleCode
                     success = showView(BHFragment.newInstance(LossMainFragment.class));
                     break;
-
                 case R.string.main_menu_total: //สรุปยอดขาย // not require SaleCode
                     /*** [START] :: Fixed - [BHPROJ-0026-977] :: [Meeting@TSR@07/03/2559] [Report-รายการสรุปประจำวันของเก็บเงิน] เพิ่มเติม Report Dashboard ของระบบงานเก็บเงิน (หน้าตาจะคล้าย ๆ DailySummary) ***/
-
-//                    BHFragment reportDashBoard = BHFragment.newInstance(ReportDashboardSummaryMainFragment.class);
-//                    reportDashBoard.bOrentation = true;
-//                    success = showView(reportDashBoard);
-
                     success = showView(BHFragment.newInstance(ReportDailySummaryOnlineFragment.class));
                     /*** [END] :: Fixed - [BHPROJ-0026-977] :: [Meeting@TSR@07/03/2559] [Report-รายการสรุปประจำวันของเก็บเงิน] เพิ่มเติม Report Dashboard ของระบบงานเก็บเงิน (หน้าตาจะคล้าย ๆ DailySummary) ***/
                     break;
-
                 case R.string.main_menu_report_daily_summary_sale_by_product_online: //สรุปรายการประจำวัน(แยกตามสินค้า)
                     /*** [START] :: Fixed - [BHPROJ-0018-3098] :: [Report] จัดทำรายงานการขายสินค้า break ตามชื่อสินค้า โดยดูเป็นของพนักงานขายแต่ละคน ***/
                     success = showView(BHFragment.newInstance(ReportDailySummarySaleByProductOnlineFragment.class));
                     /*** [END] :: Fixed - [BHPROJ-0018-3098] :: [Report] จัดทำรายงานการขายสินค้า break ตามชื่อสินค้า โดยดูเป็นของพนักงานขายแต่ละคน ***/
                     break;
-
                 case R.string.main_menu_team: //พนักงานขาย // not require SaleCode
-
                     success = showView(BHFragment.newInstance(EmployeeTeamFragment.class));
-
-
                     break;
                 case R.string.main_menu_lead_online: //พนักงานขาย // not require SaleCode
-
-
                      success = showView(BHFragment.newInstance(LEAD_ONLINE.class));
-
                     break;
-
                 case R.string.main_menu_credit_employee_detail: //พนักงานเก็บเงิน credit // not require SaleCode
                     success = showView(BHFragment.newInstance(EmployeeDetailFragment.class));
                     break;
-
                 case R.string.main_menu_detail: // not require SaleCode
                     break;
-
                 case R.string.main_menu_brochure: // not require SaleCode
                     success = showView(BHFragment.newInstance(DocumentHistoryMainFragment.class));
                     break;
-
                 case R.string.main_menu_refresh: //ระบบปรับปรุงฐานข้อมูล // not require SaleCode
                     success = showView(BHFragment.newInstance(SynchronizeMainFragment.class));
                     break;
-
                 case R.string.main_menu_complain: // require SaleCode
                     success = showView(BHFragment.newInstance(ComplainMainFragment.class));
                     break;
-
                 case R.string.main_menu_return_product: // require SaleCode
                     success = showView(BHFragment.newInstance(ReturnProductListFragment.class));
                     break;
-
                 case R.string.main_menu_edit_contracts: //แก้ไขสัญญาซื้อขาย // not require SaleCode
                     success = showView(BHFragment.newInstance(EditContractsMainFragment.class));
                     break;
-
                 case R.string.main_menu_credit_import_credit_data: //พนักงานเก็บเงิน credit // not require SaleCode
                     success = showView(BHFragment.newInstance(ImportCreditSelectDateFragment.class));
                     break;
-
                 case R.string.main_menu_credit_import_audit_data: //พนักงานเก็บเงิน audit // not require SaleCode
                     success = showView(BHFragment.newInstance(ImportAuditListFragment.class));
                     break;
-
                case R.string.main_menu_credit_audit_check_customers: //ระบบตรวจสอบลูกค้า credit // not require SaleCode
                   success = showView(BHFragment.newInstance(CheckCustomersMainFragment.class));
                     break;
-
                 case R.string.main_menu_credit_salepaymentperiod_credit_customers: // not require SaleCode
                     ///success = showView(BHFragment.newInstance(CreditMainFragment.class));
-
                     select_page_bs=1;
-
                 // success = showView(BHFragment.newInstance(CreditMainFragment_intro.class));
                     CreditListFragment.Data input = new CreditListFragment.Data();
                     input.selectedDate =  Calendar.getInstance().getTime();
                     CreditListFragment fragment = BHFragment
                             .newInstance(CreditListFragment.class, input);
                     success = showNextView(fragment);
-
                     break;
                 case R.string.main_menu_credit_pc: // not require SaleCode
-
-
                     CreditListFragment_pc.Data input2 = new CreditListFragment_pc.Data();
                     input2.selectedDate =  Calendar.getInstance().getTime();
                     CreditListFragment_pc fragment2 = BHFragment
                             .newInstance(CreditListFragment_pc.class, input2);
                     success = showNextView(fragment2);
-
                     break;
-
                 case R.string.main_menu_credit_cut_off_contract://ระบบตัดสัญญาออกจากฟอร์ม // not require SaleCode
                     success = showView(BHFragment.newInstance(CutOffContractMainFragment.class));
                     break;
@@ -3888,6 +3852,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     BHPreference.setCurrentTreeHistoryID(currTreeHisID);
 //				Log.i("Test Synch Tree", currTreeHisID);
 
+                    Log.e("Emp info", String.valueOf(empDet));
                     if (currTreeHisID.equals("")) {
                         if (fileDB.exists()) {
                             //fileDB.delete();
@@ -4047,18 +4012,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                             logout(BHPreference.userID(), BHPreference.userDeviceId(), AddUserDeviceLogInputInfo.UserDeviceLogProcessType.ANDROID_LOGOUT.toString());
                         } else if (result.progress == SynchronizeService.SYNCHRONIZE_ALL_COMPLETED) {
                             checkLogin = true;
-
-
-
-
-
-
-
-
-
-
-
-
                             final DownloadTask downloadTask = new DownloadTask(activity);
                             String URL = String.format("%s/%s/%s/%s", BHPreference.TSR_DB_URL, BHPreference.teamCode(), BHPreference.employeeID() + (BHPreference.IsAdmin() ? BHGeneral.FOLDER_ADMIN : ""), "tsr.db.zip");
                             downloadTask.execute(URL);
@@ -4133,8 +4086,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                                 if (location == null) {
                                     requestNewLocationData();
                                 } else {
-//                                    latTextView.setText(location.getLatitude()+"");
-//                                    lonTextView.setText(location.getLongitude()+"");
                                     Log.e("Current Latitude1", location.getLatitude()+"");
                                     Log.e("Current Longitude1", location.getLongitude()+"");
                                     updateLocation(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
@@ -4142,10 +4093,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                             }
                         }
                 );
-            } else {
-//                Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();
-//                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//                startActivity(intent);
             }
         } else {
             requestPermissions();
@@ -4192,7 +4139,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 public void onResponse(Call call, retrofit2.Response response) {
                     Gson gson = new Gson();
                     try {
-                        getCurrentArea(lat, lon);
                         Log.e("Update curent gis", String.valueOf(response.body()));
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -4203,48 +4149,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 @Override
                 public void onFailure(Call call, Throwable t) {
                     Log.e("update curent gis(fail)", "onFailure");
-                }
-            });
-
-        } catch (Exception e) {
-            Log.e("Exception", e.getLocalizedMessage());
-        }
-    }
-
-    private static void getCurrentArea(String lat, String lon) {
-        String latlng = lat + "," + lon;
-        String key = "AIzaSyAAgfLCmkJoMLfS8ElkVVEizDGfJ0IxXUk";
-        String lang = "th";
-        try {
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://maps.googleapis.com")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-            Service request = retrofit.create(Service.class);
-            Call call = request.getAreaFromGoogle(latlng, key, lang);
-            call.enqueue(new Callback() {
-                @Override
-                public void onResponse(Call call, retrofit2.Response response) {
-                    Gson gson = new Gson();
-                    try {
-                        Log.e("getAreaFromGoogle", String.valueOf(response.body()));
-                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
-                        Log.e("plus code", String.valueOf(jsonObject.getJSONObject("plus_code")));
-                        String compond = jsonObject.getJSONObject("plus_code").getString("compound_code");
-//                        String global = jsonObject.getJSONObject("plus_code").getString("global_code");
-                        int index = compond.indexOf(" ");
-                        txtArea.setText(compond.substring(index, compond.length()).toString().replace(" ประเทศไทย", ""));
-                        Log.e("compound_code", String.valueOf(compond));
-//                        txtArea.setText(String.valueOf(compond));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.e("getAreaFromGoogle", e.getLocalizedMessage());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call call, Throwable t) {
-                    Log.e("getAreaFromGoogle(fail)", "onFailure");
                 }
             });
 
@@ -4267,11 +4171,8 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
             Call call=null;
             if(MODE.equals("UAT")){
                 call = request.get_teamcode_select_position_uat(BHPreference.employeeID(),BHPreference.sourceSystem());
-
-            }
-            else {
+            } else {
                 call = request.get_teamcode_select_position(BHPreference.employeeID(),BHPreference.sourceSystem());
-
             }
 
             call.enqueue(new Callback() {
@@ -4280,7 +4181,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     Gson gson = new Gson();
                     try {
                         JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
-                        Log.e("data", "331");
+                        Log.e("select position", String.valueOf(jsonObject));
                         JSON_PARSE_DATA_AFTER_WEBCALL_get_teamcode_select_position(jsonObject.getJSONArray("data"));
 
                     } catch (JSONException e) {
@@ -4303,12 +4204,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
 
     public static void JSON_PARSE_DATA_AFTER_WEBCALL_get_teamcode_select_position(JSONArray array) {
-
-        //Log.e("length1", String.valueOf(array.length()));
         for (int i = 0; i < array.length(); i++) {
-
-            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
-
             JSONObject json = null;
             try {
                 json = array.getJSONObject(i);
@@ -4339,11 +4235,8 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
             Call call=null;
             if(MODE.equals("UAT")){
                  call = request.load_data_contact_online_preoder_UAT(BHPreference.employeeID());
-
-            }
-            else {
+            } else {
                  call = request.load_data_contact_online_preoder(BHPreference.employeeID());
-
             }
 
             call.enqueue(new Callback() {
@@ -4354,7 +4247,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                         JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
                         Log.e("data", "331");
                         JSON_PARSE_DATA_AFTER_WEBCALL_load_data_product(jsonObject.getJSONArray("data"));
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                         Log.e("data", "22");
@@ -4372,21 +4264,12 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         }
     }
 
-
-
-
     String ID_MAIN="";
     public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_product(JSONArray array) {
-
         for (int i = 0; i < array.length(); i++) {
-
-            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
-
             JSONObject json = null;
             try {
                 json = array.getJSONObject(i);
-
-
 
                 String RefNo =json.getString("RefNo");
                 String CONTNO=json.getString("CONTNO");
@@ -4478,39 +4361,26 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 String D_SyncedDate=json.getJSONObject("D_SyncedDate").getString("date")+"";
                 String D_ReferencePersonName= json.getString("D_ReferencePersonName");
                 String D_ReferencePersonTelephone= json.getString("D_ReferencePersonTelephone");
-
                 String A_AddressIDCard= json.getString("A_AddressIDCard");
                 String A_AddressInstall= json.getString("A_AddressInstall");
                 String A_AddressPayment= json.getString("A_AddressPayment");
-
                 String ContractImage= json.getString("ContractImage");
-
                 JSONArray jsonArray  =  new JSONArray(A_AddressIDCard);
                 JSONArray jsonArray2  =  new JSONArray(A_AddressInstall);
                 JSONArray jsonArray3  =  new JSONArray(A_AddressPayment);
                 JSONArray jsonArray4  =  new JSONArray(ContractImage);
-
-
-
                 JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A1(jsonArray);
                 JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A2(jsonArray2);
                 JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A3(jsonArray3);
                 JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A4(jsonArray4);
-
-
                 String date = D_Brithday.substring(0, 19);
-
-
-
-
                 try {
                     addContract22(RefNo, CONTNO, CustomerID, OrganizationCode, STATUS, StatusCode, SALES, TotalPrice, EFFDATE, HasTradeIn,
                             TradeInProductCode, TradeInBrandCode, TradeInProductModel, TradeInDiscount, PreSaleSaleCode, PreSaleEmployeeCode, PreSaleEmployeeName, PreSaleTeamCode,
                             SaleCode, SaleEmployeeCode, SaleTeamCode, InstallerSaleCode, InstallerEmployeeCode, InstallerTeamCode, InstallDate, ProductSerialNumber,
                             ProductID, SaleEmployeeLevelPath, MODE, FortnightID, ProblemID, svcontno, isActive, MODEL, fromrefno, fromcontno, todate, tocontno,
                             torefno, CreateDate,  CreateBy, LastUpdateDate, LastUpdateBy, SyncedDate, SaleSubTeamCode, TradeInReturnFlag, IsReadyForSaleAudit, ContractReferenceNo, IsMigrate);
-                }
-                catch (Exception ex){
+                } catch (Exception ex){
 
                 }
 
@@ -4519,25 +4389,17 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                             D_CompanyName, D_AuthorizedName, D_AuthorizedIDCard, date, D_Sex, D_DebtStatus, D_HabitatTypeCode, D_HabitatDetail, D_OccupyType, D_CareerCode,
                             D_CareerDetail, D_HobbyCode, D_HobbyDetail, D_IsUsedProduct, D_UsedProductModelID, D_SuggestionCode, D_SuggestionDetail,
                             D_CreateBy, D_CreateDate, D_LastUpdateBy, D_LastUpdateDate, D_SyncedDate);
-                }
-                catch (Exception ex){
+                } catch (Exception ex){
 
                 }
-
 
                 Log.e("aaaadddd",RefNo+","+SPECCODE);
 
                 try {
-
                     updateAssignForPostpone(RefNo, SPECCODE);
-                }
-                catch (Exception ex){
+                } catch (Exception ex){
 
                 }
-
-
-
-
             } catch (JSONException e) {
 
                 e.printStackTrace();
@@ -4546,12 +4408,7 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
     }
 
     public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A1(JSONArray array) {
-
-        //Log.e("length1", String.valueOf(array.length()));
         for (int i = 0; i < array.length(); i++) {
-
-            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
-
             JSONObject json = null;
             try {
                 json = array.getJSONObject(i);
@@ -4584,14 +4441,9 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
                 try {
                     addAddress(AddressID, RefNo, AddressTypeCode, AddressDetail, AddressDetail2, AddressDetail3, AddressDetail4, ProvinceCode, DistrictCode, SubDistrictCode, Zipcode, Latitude, Longitude, AddressInputMethod, TelHome, TelMobile, TelOffice, EMail);
+                } catch (Exception ex){
 
                 }
-                catch (Exception ex){
-
-                }
-
-          //      Log.e("A1_AddressID",AddressID);
-
             } catch (JSONException e) {
 
                 e.printStackTrace();
@@ -4599,16 +4451,10 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         }
     }
     public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A2(JSONArray array) {
-
-        //Log.e("length1", String.valueOf(array.length()));
         for (int i = 0; i < array.length(); i++) {
-
-            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
-
             JSONObject json = null;
             try {
                 json = array.getJSONObject(i);
-
                 String AddressID=json.getString("AddressID");
                 String RefNo=json.getString("RefNo");
                 String AddressTypeCode=json.getString("AddressTypeCode");
@@ -4618,14 +4464,12 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 String AddressDetail4=json.getString("AddressDetail4");
                 String ProvinceCode=json.getString("ProvinceCode");
                 String DistrictCode=json.getString("DistrictCode");
-
                 String SubDistrictCode=json.getString("SubDistrictCode");
                 String Zipcode=json.getString("Zipcode");
                 String Latitude=json.getString("Latitude");
                 String Longitude=json.getString("Longitude");
                 String AddressInputMethod=json.getString("AddressInputMethod");
                 String TelHome=json.getString("TelHome");
-
                 String TelMobile=json.getString("TelMobile");
                 String TelOffice=json.getString("TelOffice");
                 String EMail=json.getString("EMail");
@@ -4634,18 +4478,12 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 String LastUpdateDate=json.getJSONObject("LastUpdateDate").getString("date")+"";
                 String LastUpdateBy=json.getString("LastUpdateBy");
                 String SyncedDate=json.getJSONObject("SyncedDate").getString("date")+"";
-
-
                 try {
                     addAddress(AddressID, RefNo, AddressTypeCode, AddressDetail, AddressDetail2, AddressDetail3, AddressDetail4, ProvinceCode, DistrictCode, SubDistrictCode, Zipcode, Latitude, Longitude, AddressInputMethod, TelHome, TelMobile, TelOffice, EMail);
 
-                }
-                catch (Exception ex){
+                } catch (Exception ex){
 
                 }
-
-         //       Log.e("A2_AddressID",AddressID);
-
             } catch (JSONException e) {
 
                 e.printStackTrace();
@@ -4654,16 +4492,10 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
     }
 
     public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A3(JSONArray array) {
-
-       // Log.e("length1", String.valueOf(array.length()));
         for (int i = 0; i < array.length(); i++) {
-
-            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
-
             JSONObject json = null;
             try {
                 json = array.getJSONObject(i);
-
                 String AddressID=json.getString("AddressID");
                 String RefNo=json.getString("RefNo");
                 String AddressTypeCode=json.getString("AddressTypeCode");
@@ -4673,14 +4505,12 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                 String AddressDetail4=json.getString("AddressDetail4");
                 String ProvinceCode=json.getString("ProvinceCode");
                 String DistrictCode=json.getString("DistrictCode");
-
                 String SubDistrictCode=json.getString("SubDistrictCode");
                 String Zipcode=json.getString("Zipcode");
                 String Latitude=json.getString("Latitude");
                 String Longitude=json.getString("Longitude");
                 String AddressInputMethod=json.getString("AddressInputMethod");
                 String TelHome=json.getString("TelHome");
-
                 String TelMobile=json.getString("TelMobile");
                 String TelOffice=json.getString("TelOffice");
                 String EMail=json.getString("EMail");
@@ -4692,14 +4522,9 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 
                 try {
                     addAddress(AddressID, RefNo, AddressTypeCode, AddressDetail, AddressDetail2, AddressDetail3, AddressDetail4, ProvinceCode, DistrictCode, SubDistrictCode, Zipcode, Latitude, Longitude, AddressInputMethod, TelHome, TelMobile, TelOffice, EMail);
+                } catch (Exception ex){
 
                 }
-                catch (Exception ex){
-
-                }
-
-               // Log.e("A3_AddressID",AddressID);
-
             } catch (JSONException e) {
 
                 e.printStackTrace();
@@ -4707,34 +4532,21 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         }
     }
 
-
     public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_A4(JSONArray array) {
-
-       // Log.e("length1", String.valueOf(array.length()));
         for (int i = 0; i < array.length(); i++) {
-
-            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
-
             JSONObject json = null;
             try {
                 json = array.getJSONObject(i);
-
                 String IM_ImageID= json.getString("IM_ImageID");
                 String IM_RefNo= json.getString("IM_RefNo");
                 String IM_ImageName= json.getString("IM_ImageName");
                 String IM_ImageTypeCode= json.getString("IM_ImageTypeCode");
                 String IM_SyncedDate= json.getJSONObject("IM_SyncedDate").getString("date")+"";
-
-              //  Log.e("IM_ImageName",IM_ImageName);
                 try {
                     addContractImage(IM_ImageID, IM_RefNo, IM_ImageName, IM_ImageTypeCode, IM_SyncedDate);
-                }
-                catch (Exception ex){
+                } catch (Exception ex){
 
                 }
-
-              //  Log.e("A3_AddressID",AddressID);
-
             } catch (JSONException e) {
 
                 e.printStackTrace();
@@ -4835,12 +4647,6 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         database = DatabaseManager.getInstance().openDatabase();
     }
     public static void closeDatabase4(boolean force) {
-
-
-        //  GetContractStatusFinish();
-
-        Log.e("555","6666");
-
         if(force)
             DatabaseManager.getInstance().forceCloseDatabase();
         else
@@ -4857,11 +4663,8 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
             Call call=null;
             if(MODE.equals("UAT")){
                 call = request.get_ProductSerialNumber_by_preorder_uat();
-
-            }
-            else {
+            } else {
                 call = request.get_ProductSerialNumber_by_preorder();
-
             }
 
             call.enqueue(new Callback() {
@@ -4870,12 +4673,9 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     Gson gson = new Gson();
                     try {
                         JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
-
                         JSON_PARSE_DATA_AFTER_WEBCALL_load_data_get_ProductSerialNumber_by_preorder(jsonObject.getJSONArray("data"));
-
                     } catch (JSONException e) {
                         e.printStackTrace();
-
                     }
                 }
 
@@ -4890,31 +4690,18 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         }
     }
 
-
     public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_get_ProductSerialNumber_by_preorder(JSONArray array) {
-
-        // Log.e("length1", String.valueOf(array.length()));
         for (int i = 0; i < array.length(); i++) {
-
-            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
-
             JSONObject json = null;
             try {
-                json = array.getJSONObject(i);
-
-                String ProductSerialNumber= json.getString("ProductSerialNumber");
-
-
-                  Log.e("ProductSerialNumber_M","("+ProductSerialNumber+")");
+                    json = array.getJSONObject(i);
+                    String ProductSerialNumber= json.getString("ProductSerialNumber");
+                    Log.e("ProductSerialNumber_M","("+ProductSerialNumber+")");
                 try {
                     BHApplication.getInstance().getPrefManager().setPreferrence("ProductSerialNumber_M","("+ProductSerialNumber+")");
-                }
-                catch (Exception ex){
+                } catch (Exception ex){
 
                 }
-
-                //  Log.e("A3_AddressID",AddressID);
-
             } catch (JSONException e) {
 
                 e.printStackTrace();
@@ -4934,11 +4721,8 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
             Call call=null;
             if(MODE.equals("UAT")){
                 call = request.get_ProductSerialNumber_by_preorder_setting_uat();
-
-            }
-            else {
+            } else {
                 call = request.get_ProductSerialNumber_by_preorder_setting();
-
             }
 
             call.enqueue(new Callback() {
@@ -4947,12 +4731,9 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
                     Gson gson = new Gson();
                     try {
                         JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
-
                         JSON_PARSE_DATA_AFTER_WEBCALL_load_data_get_ProductSerialNumber_by_preorder_setting(jsonObject.getJSONArray("data"));
-
                     } catch (JSONException e) {
                         e.printStackTrace();
-
                     }
                 }
 
@@ -4967,35 +4748,61 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
         }
     }
 
-
     public static void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_get_ProductSerialNumber_by_preorder_setting(JSONArray array) {
-
-        // Log.e("length1", String.valueOf(array.length()));
         for (int i = 0; i < array.length(); i++) {
-
-            //  final GetData_data_product GetDataAdapter2 = new GetData_data_product();
-
             JSONObject json = null;
             try {
                 json = array.getJSONObject(i);
-
                 String ProductSerialNumber= json.getString("ProductSerialNumber");
-
-
                 Log.e("ProductSerialNumber_MS","("+ProductSerialNumber+")");
                 try {
                     BHApplication.getInstance().getPrefManager().setPreferrence("ProductSerialNumber_MS","("+ProductSerialNumber+")");
-                }
-                catch (Exception ex){
+                } catch (Exception ex){
 
                 }
-
-                //  Log.e("A3_AddressID",AddressID);
-
             } catch (JSONException e) {
 
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void getEmpPosition() {
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(GIS_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Service request = retrofit.create(Service.class);
+            Call call=null;
+            if(MODE.equals("UAT")){
+                call = request.getPositionIdUAT(BHPreference.employeeID());
+            }
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson = new Gson();
+                    try {
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+                        Log.e("JSON Object", String.valueOf(jsonObject));
+                        if (jsonObject.getString("status").equals("SUCCESS")) {
+                            POSITIONID = jsonObject.getString("data");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("JSONException", e.getLocalizedMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("onFailure", t.getLocalizedMessage());
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("Exception", e.getLocalizedMessage());
         }
     }
 }

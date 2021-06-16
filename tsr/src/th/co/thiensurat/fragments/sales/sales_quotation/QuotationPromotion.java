@@ -117,7 +117,11 @@ public class QuotationPromotion extends BHFragment {
         });
 
         if (data.actionType.equals("edit")) {
-            editTextDiscount.setText(data.quotationWaitModelList.get(0).getQuotationDiscount());
+            try {
+                editTextDiscount.setText(data.quotationWaitModelList.get(0).getQuotationDiscount());
+            } catch (Exception e) {
+                Log.e("Exception", e.getLocalizedMessage());
+            }
         }
     }
 

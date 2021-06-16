@@ -10,6 +10,15 @@ public class GetData_data_product {
     String ReceiptCode;
     String ReceiptID;
     String OrganizationCode;
+    String ProductPrice;
+
+    public String getProductPrice() {
+        return ProductPrice;
+    }
+
+    public void setProductPrice(String productPrice) {
+        ProductPrice = productPrice;
+    }
 
     public String getProductName() {
         return ProductName;

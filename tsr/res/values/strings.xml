@@ -94,6 +94,9 @@
     <string name="button_payment_credit">เก็บเงิน</string>
     <string name="button_request_next_payment">ขออนุมัติเก็บเงิน</string>
     <string name="button_request_drawdown">ขอเบิก</string>
+    <string name="button_reject">ไม่อนุมัติ</string>
+    <string name="button_edit">แก้ไข</string>
+    <string name="button_approve">อนุมัติ</string>
 
     <string name="button_type_normal">NORMAL</string>
     <string name="button_type_satellite">SATELLITE</string>
@@ -201,7 +204,6 @@
     <string name="title_scan_new_product">สแกนเครื่องใหม่</string>
     <string name="title_scan_product_serial">สแกนบาร์โค้ตที่เครื่อง</string>
     <string name="title_payment_first">ระบบเก็บเงินงวดแรก</string>
-
 
 
     <string name="lead_online">ลูกค้า LEAD ONLINE</string>
@@ -630,7 +632,7 @@
 
     <!--end for print version 2-->
 
-  <!--  <String-array name="leadonline_status">
+    <!--  <String-array name="leadonline_status">
         <item>รอรับงาน</item>
         <item>กำลังดำเนินการ</item>
         <item>ดำเนินการเรียบร้อย</item>

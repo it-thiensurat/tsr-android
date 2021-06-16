@@ -1,5 +1,7 @@
 package th.co.thiensurat.fragments.sales.sales_quotation;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +33,7 @@ import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHUtilities;
 import th.co.bighead.utilities.annotation.InjectView;
 import th.co.thiensurat.R;
+import th.co.thiensurat.activities.MainActivity;
 import th.co.thiensurat.fragments.sales.sales_quotation.adapter.ProductSelectedAdapter;
 import th.co.thiensurat.fragments.sales.sales_quotation.models.get_product_sale_q;
 import th.co.thiensurat.retrofit.api.Service;
@@ -114,6 +117,7 @@ public class QuotationDetail extends BHFragment {
     private int qty = 0;
     private double vat = 0;
     private double netValue = 0;
+    private double noVatValue = 0;
     private double grandValue = 0;
     private void summary() {
         for (get_product_sale_q productSaleQ : data.objectProduct) {
@@ -180,7 +184,22 @@ public class QuotationDetail extends BHFragment {
 						if (jsonObject.getString("status").equals("SUCCESS")) {
                             String title = "ใบเสนอราคา";
                             String message = jsonObject.getString("message");
-                            showWarningDialog(title, message);
+                            String quotationId = jsonObject.getString("data");
+                            android.app.AlertDialog.Builder setupAlert = new AlertDialog.Builder(activity)
+                                    .setTitle("ใบเสนอราคา")
+                                    .setCancelable(false)
+                                    .setMessage(message)
+                                    .setNegativeButton(activity.getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int whichButton) {
+                                            dialog.dismiss();
+                                            QuotationViewFragment.Data vData = new QuotationViewFragment.Data();
+                                            vData.viewUser = "sale";
+                                            vData.quotationnId = quotationId;
+                                            QuotationViewFragment quotationViewFragment = BHFragment.newInstance(QuotationViewFragment.class, vData);
+                                            showNextView(quotationViewFragment);
+                                        }
+                                    });
+                            setupAlert.show();
                         }
 					} catch (JSONException e) {
 						e.printStackTrace();

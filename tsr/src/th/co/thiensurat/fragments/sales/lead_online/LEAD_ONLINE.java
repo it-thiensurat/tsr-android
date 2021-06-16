@@ -721,7 +721,9 @@
 package th.co.thiensurat.fragments.sales.lead_online;
 
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -734,6 +736,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -779,6 +782,7 @@ public class LEAD_ONLINE extends BHFragment implements RecyclerViewDataAdapter.I
     List<Getdata> getdata;
     List<GetdataStampCode> getdata1;
     Getdata GetDataAdapter1;
+    RecyclerViewDataAdapter adapter;
 
 SwipeRefreshLayout swipeRefreshLayout;
 
@@ -805,18 +809,12 @@ SwipeRefreshLayout swipeRefreshLayout;
     protected void onCreateViewSuccess(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         //loadFortnight();
-        getdata = new ArrayList<>();
         getdata1 = new ArrayList<>();
         row1.setHasFixedSize(true);
         recyclerViewlayoutManager = new LinearLayoutManager(getActivity());
         row1.setLayoutManager(recyclerViewlayoutManager);
 
-
-
-
         load_data_lead();
-
-
     }
 
  public  void dialogspinner(String _id , String _StatusWork,String _Namecustomer,String _IdProvince){
@@ -947,7 +945,7 @@ SwipeRefreshLayout swipeRefreshLayout;
  }
     public void load_data_lead() {
         try {
-
+            BHLoading.show(activity);
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -959,37 +957,38 @@ SwipeRefreshLayout swipeRefreshLayout;
             call = request.get_api_leadonline(emp);
             // call = request.get_load_data_lead();
 
-
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, retrofit2.Response response) {
                     Gson gson = new Gson();
                     try {
                         JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
-
                         JSON_PARSE_DATA_AFTER_WEBCALL_load_data_lead(jsonObject.getJSONArray("data"));
-
+                        BHLoading.close();
                     } catch (JSONException e) {
                         e.printStackTrace();
-
+                        BHLoading.close();
+                        Log.e("JSONException", e.getLocalizedMessage());
                     }
                 }
 
                 @Override
                 public void onFailure(Call call, Throwable t) {
                     Log.e("data", "2");
+                    BHLoading.close();
+                    Log.e("onFailure", t.getLocalizedMessage());
                 }
             });
 
         } catch (Exception e) {
-
+            BHLoading.close();
         }
     }
 
 
     public void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_lead(JSONArray array) {
-
         Log.e("length1", String.valueOf(array.length()));
+        getdata = new ArrayList<>();
         for (int i = 0; i < array.length(); i++) {
 
             final Getdata GetDataAdapter2 = new Getdata();
@@ -1014,27 +1013,22 @@ SwipeRefreshLayout swipeRefreshLayout;
                 GetDataAdapter2.setIDProvince(json.getString("IdProvince"));
 
             } catch (JSONException e) {
-
                 e.printStackTrace();
-            }
-            catch (NullPointerException x){
+            } catch (NullPointerException x){
                 GetDataAdapter2.setProduct("-");
             }
-
             getdata.add(GetDataAdapter2);
-
         }
 
-
-        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getdata, activity);
+        adapter = new RecyclerViewDataAdapter(getdata, activity);
         row1.setAdapter(adapter);
+        adapter.setClickListener(this);
         adapter.notifyDataSetChanged();
     }
 
     public String update_data_lead(String _idl, String _statuswork, String _statuscus,String _Namecustomer,String _IdProvince) {
         final String[] rs = {""};
         String empsale = BHPreference.employeeID();
-        log("empid",_idl);
         try {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
@@ -1049,21 +1043,19 @@ SwipeRefreshLayout swipeRefreshLayout;
                     Gson gson = new Gson();
                     try {
                         JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
-
+                        Log.e("update lead data", String.valueOf(jsonObject));
                         rs[0] = jsonObject.getString("data");
-
                     } catch (JSONException e) {
                         e.printStackTrace();
-
                     }
                 }
 
                 @Override
                 public void onFailure(Call call, Throwable t) {
                     Log.e("data", "2");
+                    Log.e("onFailure update", t.getLocalizedMessage());
                 }
             });
-
         } catch (Exception e) {
 
         }
@@ -1109,43 +1101,53 @@ SwipeRefreshLayout swipeRefreshLayout;
         }
     }
     public void JSON_PARSE_DATA_AFTER_WEBCALL_load_data_CoeStamp1(JSONArray array) {
-//        final GetdataStampCode GetDataAdapter2 = new GetdataStampCode();
         HashMap<String, String> map;
         for (int i = 0; i < array.length(); i++) {
             try {
-            JSONObject c = array.getJSONObject(i);
-            map = new HashMap<String, String>();
-            map.put("id", c.getString("id"));
-            map.put("CodeStampTxt", c.getString("CodeStampTxt")+"-"+c.getString("CodeStampTxt"));
-            MyArrListTotal.add(map);
-
-//            JSONObject json = null;
-//
-//                json = array.getJSONObject(i);
-//                GetDataAdapter2.setId(json.getString("id"));
-//                GetDataAdapter2.setCodeStamp(json.getString("CodeStamp"));
-//                GetDataAdapter2.setCodeStampTxt(json.getString("CodeStampTxt"));
-
-
-
+                JSONObject c = array.getJSONObject(i);
+                map = new HashMap<String, String>();
+                map.put("id", c.getString("id"));
+                map.put("CodeStampTxt", c.getString("CodeStampTxt")+"-"+c.getString("CodeStampTxt"));
+                MyArrListTotal.add(map);
             } catch (JSONException e) {
-
                 e.printStackTrace();
             }
-//            getdata1.add(MyArrListTotal);
-            // value=GetDataAdapter2.getProblemName();
         }
+
         String[] array2 = new String[MyArrListTotal.size()];
-
-        //int i;
         ArrayAdapter<String> adapter = null ;
-
-
-
     }
 
     @Override
     public void onItemClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onAccept(View v, int position) {
+        Getdata data = getdata.get(position);
+        Log.e("accept", String.valueOf(data.getId()));
+        AlertDialog.Builder setupAlert = new AlertDialog.Builder(activity);
+        setupAlert.setTitle("แจ้งเตือน");
+        setupAlert.setCancelable(false);
+        setupAlert.setMessage("ยืนยันการอัพเดทสานะการทำงาน");
+        setupAlert.setNegativeButton(activity.getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.dismiss();
+                String status = update_data_lead(data.getId(), "2", "", data.getCustomerName(), data.getIDProvince());
+                load_data_lead();
+            }
+        }).setPositiveButton(activity.getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        setupAlert.show();
+    }
+
+    @Override
+    public void onSearch(View v, int postion) {
 
     }
 }

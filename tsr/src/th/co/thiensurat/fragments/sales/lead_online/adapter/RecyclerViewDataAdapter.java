@@ -85,6 +85,9 @@ SwipeRefreshLayout swipeRefreshLayout;
     }
     public interface ItemClickListener {
         void onItemClick(View view, int position);
+        void onAccept(View v, int position);
+        void onSearch(View v, int postion);
+
     }
 
 
@@ -182,49 +185,51 @@ SwipeRefreshLayout swipeRefreshLayout;
                 }
                 Viewholder.statusStampcode.setText(cus);
            }
-            Viewholder.btnCancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String work="0";
-                    String cus="";
-                    String id = Viewholder.txtId.getText().toString();
-                    String cusname =Viewholder.txtcusName.getText().toString();
-                    String province= Viewholder.txtidprovince.getText().toString();
-                    String title = "แจ้งเตือน";
-                    String message = "คุณต้องการยกเลิกข้อมูลชุดนี้ใช่หรือไม่";
-                    showWarningDialog(title, message);
-                    lead_online2.update_data_lead(id,work,cus,cusname,province );
-                    lead_online2.load_data_lead();
-                }
-            });
-            Viewholder.btnAccept.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String work= "2";
-                    String cus="";
-                    String id = Viewholder.txtId.getText().toString();
-                    String cusname =Viewholder.txtcusName.getText().toString();
-                    String province= Viewholder.txtidprovince.getText().toString();
-                    String title = "แจ้งเตือน";
-                    String message = "ยืนยันการอัพเดทสานะการทำงาน";
-                    showWarningDialog(title, message);
-                    lead_online2.update_data_lead(id,work,cus,cusname,province );
-                }
-            });
-
-            Viewholder.btnSearch.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view ) {
-
-                  //  Toast.makeText(context,"Your Shared (ImageID = " + Viewholder.txtId.getText() + ")",Toast.LENGTH_LONG).show();
-                    String work="3";
-                    String id = Viewholder.txtId.getText().toString();
-                    String cusname =Viewholder.txtcusName.getText().toString();
-                    String province= Viewholder.txtidprovince.getText().toString();
-                    lead_online2.dialogspinner(id,work,cusname,province);
-                }
-
-            });
+//            Viewholder.btnCancel.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    String work="0";
+//                    String cus="";
+//                    String id = Viewholder.txtId.getText().toString();
+//                    String cusname =Viewholder.txtcusName.getText().toString();
+//                    String province= Viewholder.txtidprovince.getText().toString();
+//                    String title = "แจ้งเตือน";
+//                    String message = "คุณต้องการยกเลิกข้อมูลชุดนี้ใช่หรือไม่";
+//                    showWarningDialog(title, message);
+////                    lead_online2.update_data_lead(id,work,cus,cusname,province );
+////                    lead_online2.load_data_lead();
+//                }
+//            });
+//
+//            Viewholder.btnAccept.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    String work= "2";
+//                    String cus="";
+//                    String id = Viewholder.txtId.getText().toString();
+//                    String cusname =Viewholder.txtcusName.getText().toString();
+//                    String province= Viewholder.txtidprovince.getText().toString();
+//                    String title = "แจ้งเตือน";
+//                    String message = "ยืนยันการอัพเดทสานะการทำงาน";
+//                    showWarningDialog(title, message);
+//                    lead_online2.update_data_lead(id,work,cus,cusname,province );
+//                }
+//            });
+//
+//            Viewholder.btnSearch.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view ) {
+//
+//                  //  Toast.makeText(context,"Your Shared (ImageID = " + Viewholder.txtId.getText() + ")",Toast.LENGTH_LONG).show();
+//                    String work="3";
+//                    String id = Viewholder.txtId.getText().toString();
+//                    String cusname =Viewholder.txtcusName.getText().toString();
+//                    String province= Viewholder.txtidprovince.getText().toString();
+////                    lead_online2.dialogspinner(id,work,cusname,province);
+////                    ((LEAD_ONLINE) context).dialogspinner(id,work,cusname,province);
+//                }
+//
+//            });
             Viewholder.pictureURL.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -296,11 +301,18 @@ SwipeRefreshLayout swipeRefreshLayout;
             this.txtnameimage = (TextView) view.findViewById(R.id.txtnameimage);
             this.txtidprovince = (TextView) view.findViewById(R.id.txtidprovince);
             itemView.setOnClickListener(this);
+            btnAccept.setOnClickListener(this);
+            btnSearch.setOnClickListener(this);
+
         }
 
         @Override
         public void onClick(View v) {
-            if (mClickListener != null) mClickListener.onItemClick(v, getAdapterPosition());
+            if (v.getId() == R.id.btnAccept) {
+                mClickListener.onAccept(v, getAdapterPosition());
+            }  else if (v.getId() == R.id.btnSearch) {
+                mClickListener.onSearch(v, getAdapterPosition());
+            }
         }
     }
 }
