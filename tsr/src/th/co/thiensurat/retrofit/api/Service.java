@@ -242,6 +242,10 @@ public interface Service {
 
         @GET("UAT/BH/Alpines/GetQuotationForApprove")
         Call<Object> getQuotationForApproveUAT();
+
+        @POST("UAT/BH/Alpines/UpdateQuotationStatus")
+        @FormUrlEncoded
+        Call<Object> UpdateQuotationStatusUAT(@Field("empid") String empId, @Field("quotationId") String quotationId, @Field("comment") String comment, @Field("status") int status);
         /**
          * END
          */

@@ -172,7 +172,7 @@ public class QuotationApproveFragment extends BHPagerFragment {
             protected void onViewItem(int position, View view, Object holder, QuotationWaitModel info) {
                 ViewHolder vh = (ViewHolder) holder;
                 vh.textViewContractnumber.setText("เลขที่ใบเสนอราคา  :  " + BHUtilities.trim(info.getQuotationId()));
-                vh.textViewName.setText          ("ชื่อลูกค้า          :  "+ BHUtilities.trim(info.getCustomerAPModelList().get(0).getCustomerName()));
+                vh.textViewName.setText          ("ชื่อลูกค้า          :  "+ BHUtilities.trim(info.getCustomerAPModelList().get(position).getCustomerName()));
                 vh.textViewStatus.setText        ("สถานะ           :  " + BHUtilities.trim(info.getQuotationStatusText()));
                 vh.imageDelete.setVisibility(View.GONE);
             }
@@ -191,7 +191,13 @@ public class QuotationApproveFragment extends BHPagerFragment {
         listViewUnfinish.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // TODO Auto-generated method stub
+                QuotationWaitModel quotationWaitModel = quotationWaitModelList.get(position);
+                QuotationViewFragment.Data vData = new QuotationViewFragment.Data();
+                vData.viewUser = "salse";
+                vData.actionType = "approve";
+                vData.quotationnId = quotationWaitModel.getQuotationId();
+                QuotationViewFragment quotationViewFragment = BHFragment.newInstance(QuotationViewFragment.class, vData);
+                showNextView(quotationViewFragment);
 
             }
         });

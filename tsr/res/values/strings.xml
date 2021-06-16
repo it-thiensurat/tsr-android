@@ -97,6 +97,7 @@
     <string name="button_reject">ไม่อนุมัติ</string>
     <string name="button_edit">แก้ไข</string>
     <string name="button_approve">อนุมัติ</string>
+    <string name="button_send_to_customer">ส่งให้ลูกค้า</string>
 
     <string name="button_type_normal">NORMAL</string>
     <string name="button_type_satellite">SATELLITE</string>

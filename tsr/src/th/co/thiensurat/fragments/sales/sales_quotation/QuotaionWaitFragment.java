@@ -178,7 +178,7 @@ public class QuotaionWaitFragment extends BHPagerFragment {
             protected void onViewItem(int position, View view, Object holder, QuotationWaitModel info) {
                 ViewHolder vh = (ViewHolder) holder;
                 vh.textViewContractnumber.setText("เลขที่ใบเสนอราคา  :  " + BHUtilities.trim(info.getQuotationId()));
-                vh.textViewName.setText          ("ชื่อลูกค้า          :  "+ BHUtilities.trim(info.getCustomerAPModelList().get(0).getCustomerName()));
+                vh.textViewName.setText          ("ชื่อลูกค้า          :  "+ BHUtilities.trim(info.getCustomerAPModelList().get(position).getCustomerName()));
                 vh.textViewStatus.setText        ("สถานะ           :  " + BHUtilities.trim(info.getQuotationStatusText()));
                 vh.textViewStatus2.setVisibility(View.VISIBLE);
                 vh.textViewStatus2.setText       ("Comment         :  " + BHUtilities.trim(info.getQuotationComment()));
