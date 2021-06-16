@@ -915,6 +915,7 @@ SwipeRefreshLayout swipeRefreshLayout;
              update_data_lead(_id , _StatusWork, cus, _Namecustomer,_IdProvince);
              BHLoading.close();
              dialog_image.dismiss();
+             load_data_lead();
          }
      });
      dialog_image.setCancelable(true);
@@ -936,8 +937,8 @@ SwipeRefreshLayout swipeRefreshLayout;
      Glide.with(activity)
              .load(url)
              //.load("https://www.safealkaline.com/media/catalog/product/cache/1/image/750x750/9df78eab33525d08d6e5fb8d27136e95/s/a/safe_uv_alkaline_front.png")
-             .placeholder(R.drawable.alkaline) //5
-             .error(R.drawable.bb_install) //6
+             .placeholder(R.drawable.barcode) //5
+             .error(R.drawable.bg_splash) //6
 //             .fallback(R.drawable.barcode) //7
              .into(imageView);
      dialog_image.setCancelable(true);
@@ -1145,9 +1146,32 @@ SwipeRefreshLayout swipeRefreshLayout;
         });
         setupAlert.show();
     }
+    @Override
+    public void onSearch(View v, int position) {
+        Getdata data = getdata.get(position);
+        dialogspinner(data.getId(),"3", data.getCustomerName(), data.getIDProvince());
+    }
 
     @Override
-    public void onSearch(View v, int postion) {
-
+    public void onCancel(View v, int position) {
+        Getdata data = getdata.get(position);
+        Log.e("accept", String.valueOf(data.getId()));
+        AlertDialog.Builder setupAlert = new AlertDialog.Builder(activity);
+        setupAlert.setTitle("แจ้งเตือน");
+        setupAlert.setCancelable(false);
+        setupAlert.setMessage("ยืนยันการอัพเดทสานะการทำงาน");
+        setupAlert.setNegativeButton(activity.getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.dismiss();
+                String status = update_data_lead(data.getId(), "0", "", data.getCustomerName(), data.getIDProvince());
+                load_data_lead();
+            }
+        }).setPositiveButton(activity.getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        setupAlert.show();
     }
 }

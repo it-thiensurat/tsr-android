@@ -87,7 +87,7 @@ SwipeRefreshLayout swipeRefreshLayout;
         void onItemClick(View view, int position);
         void onAccept(View v, int position);
         void onSearch(View v, int postion);
-
+        void onCancel(View v, int postion);
     }
 
 
@@ -115,8 +115,8 @@ SwipeRefreshLayout swipeRefreshLayout;
             Glide.with(context)
                     .load(getDataAdapter1.getPicture())
                     //.load("https://www.safealkaline.com/media/catalog/product/cache/1/image/750x750/9df78eab33525d08d6e5fb8d27136e95/s/a/safe_uv_alkaline_front.png")
-                    .placeholder(R.drawable.alkaline) //5
-                    .error(R.drawable.bb_install) //6
+                    .placeholder(R.drawable.barcode) //5
+                    .error(R.drawable.bg_splash) //6
 //                    .fallback(R.drawable.barcode) //7
                     .into(Viewholder.pictureURL);
             if(getDataAdapter1.getStatusWork().equals("")) {
@@ -303,7 +303,7 @@ SwipeRefreshLayout swipeRefreshLayout;
             itemView.setOnClickListener(this);
             btnAccept.setOnClickListener(this);
             btnSearch.setOnClickListener(this);
-
+            btnCancel.setOnClickListener(this);
         }
 
         @Override
@@ -312,6 +312,8 @@ SwipeRefreshLayout swipeRefreshLayout;
                 mClickListener.onAccept(v, getAdapterPosition());
             }  else if (v.getId() == R.id.btnSearch) {
                 mClickListener.onSearch(v, getAdapterPosition());
+            } else if (v.getId() == R.id.btnCancel) {
+                mClickListener.onCancel(v, getAdapterPosition());
             }
         }
     }
