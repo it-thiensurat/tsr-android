@@ -53,7 +53,6 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
     LEAD_ONLINE lead_online2 = new LEAD_ONLINE();
     private Context context;
 
-SwipeRefreshLayout swipeRefreshLayout;
     public static LinearLayout linear_down;
     public static ImageView image_status;
     public RecyclerView my_recycler_view2, my_recycler_view;
@@ -136,7 +135,7 @@ SwipeRefreshLayout swipeRefreshLayout;
                 Viewholder.StampLinearLayout.setVisibility(View.GONE);
            }else if(getDataAdapter1.getStatusWork().equals("3")){
                 Viewholder.twobntLinerLayout.setVisibility(View.GONE);
-                Viewholder.btnSearchLinerLayout.setVisibility(View.GONE);
+                Viewholder.btnSearchLinerLayout.setVisibility(View.VISIBLE);
                 Viewholder.StampLinearLayout.setVisibility(View.VISIBLE);
                 Viewholder.statusLeadonline.setText("ดำเนินการเรียบร้อย");
                 String cus="";
@@ -185,51 +184,6 @@ SwipeRefreshLayout swipeRefreshLayout;
                 }
                 Viewholder.statusStampcode.setText(cus);
            }
-//            Viewholder.btnCancel.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    String work="0";
-//                    String cus="";
-//                    String id = Viewholder.txtId.getText().toString();
-//                    String cusname =Viewholder.txtcusName.getText().toString();
-//                    String province= Viewholder.txtidprovince.getText().toString();
-//                    String title = "แจ้งเตือน";
-//                    String message = "คุณต้องการยกเลิกข้อมูลชุดนี้ใช่หรือไม่";
-//                    showWarningDialog(title, message);
-////                    lead_online2.update_data_lead(id,work,cus,cusname,province );
-////                    lead_online2.load_data_lead();
-//                }
-//            });
-//
-//            Viewholder.btnAccept.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    String work= "2";
-//                    String cus="";
-//                    String id = Viewholder.txtId.getText().toString();
-//                    String cusname =Viewholder.txtcusName.getText().toString();
-//                    String province= Viewholder.txtidprovince.getText().toString();
-//                    String title = "แจ้งเตือน";
-//                    String message = "ยืนยันการอัพเดทสานะการทำงาน";
-//                    showWarningDialog(title, message);
-//                    lead_online2.update_data_lead(id,work,cus,cusname,province );
-//                }
-//            });
-//
-//            Viewholder.btnSearch.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view ) {
-//
-//                  //  Toast.makeText(context,"Your Shared (ImageID = " + Viewholder.txtId.getText() + ")",Toast.LENGTH_LONG).show();
-//                    String work="3";
-//                    String id = Viewholder.txtId.getText().toString();
-//                    String cusname =Viewholder.txtcusName.getText().toString();
-//                    String province= Viewholder.txtidprovince.getText().toString();
-////                    lead_online2.dialogspinner(id,work,cusname,province);
-////                    ((LEAD_ONLINE) context).dialogspinner(id,work,cusname,province);
-//                }
-//
-//            });
             Viewholder.pictureURL.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -273,7 +227,6 @@ SwipeRefreshLayout swipeRefreshLayout;
         protected TextView statusStampcode;
         protected TextView txtnameimage;
         protected TextView txtidprovince;
-        protected SwipeRefreshLayout swipeRefreshLayout;
         protected ImageButton pictureURL;
         public ItemRowHolder(View view) {
             super(view);

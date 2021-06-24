@@ -855,6 +855,7 @@ SwipeRefreshLayout swipeRefreshLayout;
      statusc.add("E04-ลูกค้ามีสถานะหนี้สูญR / (ต้องแนบรูปภาพการตรวจสถานะจากระบบ)");
      statusc.add("E05-ฝ่ายขายพิจารณาแล้วสภาพบ้านไม่ผ่าน / (ต้องแนบรูปภาพถ่ายบ้านลูกค้า)");
      statusc.add("E06-มีฝ่ายขายอื่นของTSRติดตั้งไปแล้ว / (ต้องแนบรูปภาพถ่ายเครื่องกรองของลูกค้าที่พึ่งติดตั้งใหม่)");
+     
      BHSpinnerAdapter<String> arrayLead = new BHSpinnerAdapter<String>(activity, statusc);
      spinner.setAdapter(arrayLead);
      buttonOk.setOnClickListener(new View.OnClickListener() {
