@@ -86,7 +86,6 @@
                 style="@style/TextView.Value"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/padding_normal"
                 android:text="TextView" />
         </LinearLayout>
 
@@ -110,7 +109,6 @@
                 style="@style/TextView.Value"
                 android:layout_width="281dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/padding_normal"
                 android:text="TextView" />
         </LinearLayout>
         <LinearLayout
@@ -132,7 +130,6 @@
                 style="@style/TextView.Value"
                 android:layout_width="295dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/padding_normal"
                 android:text="TextView" />
         </LinearLayout>
         <LinearLayout
@@ -154,7 +151,6 @@
                 style="@style/TextView.Value"
                 android:layout_width="290dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/padding_normal"
                 android:text="TextView" />
         </LinearLayout>
         <LinearLayout
@@ -176,7 +172,6 @@
                 style="@style/TextView.Value"
                 android:layout_width="290dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/padding_normal"
                 android:justificationMode="inter_word"
                 android:text="TextView" />
         </LinearLayout>
@@ -201,7 +196,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="10"
-                android:layout_margin="5dp"
                 android:justificationMode="inter_word"
                 android:text="TextView" />
         </LinearLayout>
@@ -228,7 +222,6 @@
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
                 android:maxLines="10"
-                android:layout_margin="5dp"
                 android:justificationMode="inter_word"
                 android:text="TextView" />
         </LinearLayout>
@@ -321,30 +314,11 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="30sp"
                 android:layout_marginRight="10dp"
-                android:text="ยืนยัน"
+                android:text="รับงาน"
                 android:textColor="@color/bg_body_white" />
 
 
         </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/btnSerchLinerLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp">
-
-            <Button
-                android:id="@+id/btnSearch"
-                style="@style/ButtonTop"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="250sp"
-                android:layout_marginRight="10dp"
-                android:text="ส่งค่า"
-                android:textColor="@color/bg_body_white" />
-        </LinearLayout>
-
         <LinearLayout
             android:id="@+id/StampLinearLayout"
             android:layout_width="match_parent"
@@ -370,6 +344,25 @@
                 android:text="TextView" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnSerchLinerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_marginTop="1dp">
+
+            <Button
+                android:id="@+id/btnSearch"
+                style="@style/ButtonTop"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="10dp"
+                android:text="ส่งดำเนินการ"
+                android:textColor="@color/bg_body_white" />
+        </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
