@@ -63,6 +63,12 @@ public class QuotationDetail extends BHFragment {
     private TextView discountPrice, netPrice, vatPrice, sumVatPrice, grandPrice;
 
     @Override
+    protected int titleID() {
+        // TODO Auto-generated method stub
+        return R.string.title_sales_quotation;
+    }
+
+    @Override
     protected int fragmentID() {
         return R.layout.quotation_detail;
     }
@@ -102,7 +108,7 @@ public class QuotationDetail extends BHFragment {
     }
 
     private void setupUI() {
-        discountPrice.setText(data.discount);
+        discountPrice.setText(BHUtilities.numericFormat(Double.parseDouble(data.discount)) + " บาท");
 
         recyclerview.setLayoutManager(new LinearLayoutManager(activity));
         recyclerview.setHasFixedSize(true);
@@ -126,12 +132,14 @@ public class QuotationDetail extends BHFragment {
         }
 
         netValue = netValue - Integer.parseInt(data.discount);
-        vat = (netValue * 7) / 100;
+        noVatValue = (netValue * 100) / 107;
+//        vat = (netValue * 7) / 100;
+        vat = (netValue * 7) / 107;
         grandValue = vat + netValue;
 
         netPrice.setText(BHUtilities.numericFormat(netValue) + " บาท");
         vatPrice.setText(BHUtilities.numericFormat(vat) + " บาท");
-        sumVatPrice.setText(BHUtilities.numericFormat(netValue) + " บาท");
+        sumVatPrice.setText(BHUtilities.numericFormat(noVatValue) + " บาท");
         grandPrice.setText(BHUtilities.numericFormat(grandValue) + " บาท");
     }
 

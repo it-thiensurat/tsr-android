@@ -57,6 +57,12 @@ public class QuotationViewFragment extends BHFragment {
     private WebView webView;
 
     @Override
+    protected int titleID() {
+        // TODO Auto-generated method stub
+        return R.string.title_sales_quotation;
+    }
+
+    @Override
     protected int fragmentID() {
         return R.layout.fragment_quotation_view;
     }

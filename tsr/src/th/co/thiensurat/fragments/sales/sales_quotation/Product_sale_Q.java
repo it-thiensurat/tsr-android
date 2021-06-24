@@ -178,7 +178,7 @@ public class Product_sale_Q extends BHFragment implements RecyclerViewDataAdapte
 	@Override
 	protected int titleID() {
 		// TODO Auto-generated method stub
-		return R.string.title_sales_preorder;
+		return R.string.title_sales_quotation;
 	}
 
 	@Override

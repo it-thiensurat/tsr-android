@@ -61,6 +61,12 @@ public class QuotationPromotion extends BHFragment {
     private Spinner spinnerPromotion;
 
     @Override
+    protected int titleID() {
+        // TODO Auto-generated method stub
+        return R.string.title_sales_quotation;
+    }
+
+    @Override
     protected int fragmentID() {
         return R.layout.quotation_promotion;
     }

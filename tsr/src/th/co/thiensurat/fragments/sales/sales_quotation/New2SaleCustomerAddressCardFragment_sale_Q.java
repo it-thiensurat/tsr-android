@@ -162,7 +162,7 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
         public String actionType = "";
         public List<get_product_sale_q> objectProduct;
         public List<CustomerAPModel> customerAPModelList = null;
-        public List<QuotationWaitModel> quotationWaitModelList;
+        public List<QuotationWaitModel> quotationWaitModelList = new ArrayList<>();
     }
 
     // For ChangeContract
@@ -177,6 +177,7 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
     private List<GenderInfo> mGenderList; //เพศ
     private List<PersonTypeCardInfo> mPersonTypeCardList; //ประเภทบัตร
     private List<MonthInfo> mMonthList;
+    private List<CustomerAPModel> allCustomerList;
 
 
     //region Fragment ID
@@ -192,6 +193,8 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
     private TextView txtNumber4;
     @InjectView
     private TextView txtNumber5;
+    @InjectView
+    private TextView taxLabel, nameLabel, lastnameLabel;
 
     @InjectView
     LinearLayout layout_result, layout_no_result, layout_contact;
@@ -209,7 +212,7 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
     Spinner spinnerType, spinnerDistrict, spinnerSubdistrict;
 
     @InjectView
-    EditText editTextName, editTaxNumber, editTextAddressnumber, editTextMoo, editTextSoi, editTextRoad, editTextZipcode, editTextPhone, editTextEmail, editTextContactName, editTextContactPhone, editTextContactEmail;
+    EditText editTextName, editTextLastName, editTaxNumber, editTextAddressnumber, editTextMoo, editTextSoi, editTextRoad, editTextZipcode, editTextPhone, editTextEmail, editTextContactName, editTextContactPhone, editTextContactEmail;
 
     private static ContractInfo mainContractInfo;
     private static ContractImageInfo mainContractImageInfo;
@@ -222,12 +225,13 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
     private boolean stringStatusCheckID; // สถานะการตรวจสอบบัตร
     private boolean checkSaveData;
     private boolean isAutoCompleteTextViewProvince; //ตรวจสอบการคลิกที่จังหวัด
+    private boolean isAutoCompleteTextViewCustomer;
 
     private static AddressInfo.AddressType addressType = AddressInfo.AddressType.AddressIDCard;
 
     @Override
     protected int titleID() {
-        return R.string.title_sales_preorder;
+        return R.string.title_sales_quotation;
     }
 
     @Override
@@ -278,6 +282,8 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
         BHPreference bhPreference =new BHPreference();
         bhPreference.employeeID();
 
+        getAllCustomerList();
+
         /**DebtorCustomer**/
         SetUpDataForDebtorCustomer();
         SetUpSpinnerForDebtorCustomer();
@@ -313,391 +319,8 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
         if (data.actionType.equals("edit")) {
             bindEdit();
         }
-
-//        switch (Enum.valueOf(SaleFirstPaymentChoiceFragment.ProcessType.class, BHPreference.ProcessType())) {
-//            case Sale:
-//                TSRController.updateStatusCode(BHPreference.RefNo(), STATUS_CODE);
-//                txtNumber2.setBackgroundResource(R.drawable.circle_number_sale_color_red);
-//                break;
-//            case ChangeContract:
-//            case EditContract:
-//                linearLayoutHeadNumber.setVisibility(View.GONE);
-//                break;
-//            default:
-//                break;
-//        }
-
-//        (new BackgroundProcess(activity) {
-//            @Override
-//            protected void before() {
-//                SetUpSpinnerForAddress();
-//
-//                SetUpInputFilter();
-//                mainContractInfo = null;
-//                mainContractImageInfo = null;
-//                mainAddressInfo = null;
-//                mainDebtorCustomerInfo = null;
-//            }
-//
-//            @Override
-//            protected void calling() {
-//                switch (Enum.valueOf(SaleFirstPaymentChoiceFragment.ProcessType.class, BHPreference.ProcessType())) {
-//                    case Sale:
-//                    case EditContract:
-//                        mainContractInfo = TSRController.getContract(BHPreference.RefNo());
-//                        mainContractImageInfo = TSRController.getContractImage(BHPreference.RefNo(), imageTypeCode);
-//
-//                        if (data != null) {
-//                            if (data.useDebtorCustomer != null) {
-//                                tmpDebtorCustomerInfo = data.useDebtorCustomer;
-//                                data.useDebtorCustomer = null;
-//                            }
-//
-//                            switch (Enum.valueOf(AddressInfo.AddressType.class, addressType.toString())) {
-//                                case AddressIDCard:
-//                                    if (data.useAddressIDCard != null) {
-//                                        stringStatusCheckID = true;
-//                                        tmpAddressInfo = data.useAddressIDCard;
-//                                        data.useAddressIDCard = null;
-//                                    }
-//                                    break;
-//                                case AddressPayment:
-//                                    if (data.useAddressPayment != null) {
-//                                        stringStatusCheckID = true;
-//                                        tmpAddressInfo = data.useAddressPayment;
-//                                        data.useAddressPayment = null;
-//                                    }
-//                                    break;
-//                                case AddressInstall:
-//                                    if (data.useAddressInstall != null) {
-//                                        stringStatusCheckID = true;
-//                                        tmpAddressInfo = data.useAddressInstall;
-//                                        data.useAddressInstall = null;
-//                                    }
-//                                    break;
-//                            }
-//                        }
-//
-//                        if (tmpDebtorCustomerInfo == null) {
-//                            if (mainContractInfo != null) {
-//                                if (mainContractInfo.CustomerID != null && !mainContractInfo.CustomerID.equals("")) {
-//                                    mainDebtorCustomerInfo = TSRController.getDebCustometByID(mainContractInfo.CustomerID);
-//                                }
-//                            }
-//                        } else {
-//                            mainDebtorCustomerInfo = tmpDebtorCustomerInfo;
-//                            tmpDebtorCustomerInfo = null;
-//                        }
-//
-//                        if (tmpAddressInfo == null) {
-//                            mainAddressInfo = TSRController.getAddress(BHPreference.RefNo(), addressType);
-//                            if (mainAddressInfo != null) {
-//                                stringStatusCheckID = true;
-//                                checkSaveData = true;
-//                            }
-//                        } else {
-//                            mainAddressInfo = tmpAddressInfo;
-//                            tmpAddressInfo = null;
-//                        }
-//                        break;
-//                    case ChangeContract:
-//                        mainContractInfo = TSRController.getContract(BHPreference.RefNo());
-//                        //mainContractImageInfo = TSRController.getContractImage(BHPreference.RefNo(), imageTypeCode);
-//                        if (data.newContractImageInfo != null) {
-//                            mainContractImageInfo = data.newContractImageInfo;
-//                        } else {
-//                            mainContractImageInfo = null;
-//                        }
-//
-//                        if (data != null) {
-//                            if (data.newDebtorCustomer != null) {
-//                                tmpDebtorCustomerInfo = data.newDebtorCustomer;
-//                            } else if (data.useDebtorCustomer != null) {
-//                                tmpDebtorCustomerInfo = data.useDebtorCustomer;
-//                                data.useDebtorCustomer = null;
-//                            }
-//
-//                            switch (Enum.valueOf(AddressInfo.AddressType.class, addressType.toString())) {
-//                                case AddressIDCard:
-//                                    if (data.newAddressIDCard != null) {
-//                                        stringStatusCheckID = true;
-//                                        tmpAddressInfo = data.newAddressIDCard;
-//                                    } else if (data.useAddressIDCard != null) {
-//                                        stringStatusCheckID = true;
-//                                        tmpAddressInfo = data.useAddressIDCard;
-//                                        data.useAddressIDCard = null;
-//                                    }
-//                                    break;
-//                                case AddressPayment:
-//                                    if (data.newAddressPayment != null) {
-//                                        stringStatusCheckID = true;
-//                                        tmpAddressInfo = data.newAddressPayment;
-//                                    } else if (data.useAddressPayment != null) {
-//                                        stringStatusCheckID = true;
-//                                        tmpAddressInfo = data.useAddressPayment;
-//                                        data.useAddressPayment = null;
-//                                    }
-//                                    break;
-//                                case AddressInstall:
-//                                    if (data.newAddressInstall != null) {
-//                                        stringStatusCheckID = true;
-//                                        tmpAddressInfo = data.newAddressInstall;
-//                                    } else if (data.useAddressInstall != null) {
-//                                        stringStatusCheckID = true;
-//                                        tmpAddressInfo = data.useAddressInstall;
-//                                        data.useAddressInstall = null;
-//                                    }
-//                                    break;
-//                            }
-//                        }
-//
-//                        if (tmpDebtorCustomerInfo == null) {
-//                            if (mainContractInfo != null) {
-//                                if (!mainContractInfo.CustomerID.equals("") && mainContractInfo.CustomerID != null) {
-//                                    mainDebtorCustomerInfo = TSRController.getDebCustometByID(mainContractInfo.CustomerID);
-//                                }
-//                            }
-//                        } else {
-//                            mainDebtorCustomerInfo = tmpDebtorCustomerInfo;
-//                            tmpDebtorCustomerInfo = null;
-//                        }
-//
-//                        if (tmpAddressInfo == null) {
-//                            mainAddressInfo = TSRController.getAddress(BHPreference.RefNo(), addressType);
-//                            if (mainAddressInfo != null) {
-//                                stringStatusCheckID = true;
-//                            }
-//                        } else {
-//                            mainAddressInfo = tmpAddressInfo;
-//                            tmpAddressInfo = null;
-//                        }
-//
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//
-//            @Override
-//            protected void after() {
-//                if (mainDebtorCustomerInfo != null) {
-////                    bindDebtorCustomer();
-//                }
-//
-//                if (mainAddressInfo != null) {
-//                    bindAddress();
-//                }
-//
-//                if (mainContractImageInfo != null) {
-////                    bindContractImage();
-//                }
-//            }
-//        }).start();
     }
 
-//    private void bindDebtorCustomer() {
-//        if (isImportThaiIDCard) {
-//            setEnabledUIDebtorCustomerForImportThaiIDCard(false);
-//        }
-//        //ประเภทบุคคล
-//        spinnerType.setSelection(getSpinnerType(mainDebtorCustomerInfo.CustomerType), true);
-//
-//        try {
-//            switch (getType(mainDebtorCustomerInfo.CustomerType)) {
-//                case PERSON://บุคคลธรรมดา
-//                case FOREIGNER://บุคคลต่างชาติ
-//                    //ประเภทบัตร
-//                    spinnerType.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            spinnerTypeCard.setSelection(getSpinnerTypeCard(mainDebtorCustomerInfo.IDCardType));
-//
-//                            spinnerTypeCard.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    switch (getType(mainDebtorCustomerInfo.CustomerType)) {
-//                                        case PERSON://บุคคลธรรมดา
-//                                            //editTextIdentificationCard.setText(mainDebtorCustomerInfo.IDCard); //เลขที่บัตร
-//
-//                                            if (mPersonTypeCardList.get(spinnerTypeCard.getSelectedItemPosition()).PersonTypeCard == PersonTypeCardInfo.PersonTypeCardEnum.IDCARD) {
-//                                                if (mainDebtorCustomerInfo.IDCard != null) {
-//                                                    String strIdCard = mainDebtorCustomerInfo.IDCard.replace("-", "");
-//                                                    String newStrIdCard = "";
-//                                                    for (int i = 0; i < strIdCard.length(); i++) {
-//                                                        if (String.valueOf(strIdCard.charAt(i)).matches("([0-9])")) {
-//                                                            if (i == 1 || i == 5 || i == 10 || i == 12) {
-//                                                                newStrIdCard += "-" + strIdCard.charAt(i);
-//                                                            } else if (i < 13) {
-//                                                                newStrIdCard += strIdCard.charAt(i);
-//                                                            }
-//                                                        } else {
-//                                                            break;
-//                                                        }
-//                                                    }
-//                                                    editTextIdentificationCard.setText(newStrIdCard);
-//                                                } else {
-//                                                    editTextIdentificationCard.setText(mainDebtorCustomerInfo.IDCard); //เลขที่บัตร
-//                                                }
-//                                            } else {
-//                                                editTextIdentificationCard.setText(mainDebtorCustomerInfo.IDCard); //เลขที่บัตร
-//                                            }
-//                                            break;
-//                                        case FOREIGNER://บุคคลต่างชาติ
-//                                            editTextCardNo.setText(mainDebtorCustomerInfo.IDCard); //เลขที่บัตร
-//                                            break;
-//                                    }
-//                                }
-//                            });
-//                        }
-//                    });
-//
-//                    // คำนำหน้าชื่อ
-//                    ArrayAdapter perfixAdapter = (ArrayAdapter) spinnerPerfix.getAdapter();
-//                    int positionPrefixName = perfixAdapter.getPosition(mainDebtorCustomerInfo.PrefixName);
-//                    spinnerPerfix.setSelection(positionPrefixName != -1 ? positionPrefixName : 0);
-//                    editTextName.setText(mainDebtorCustomerInfo.CustomerName); //ชื่อ-สกุล
-//
-//                    if (mainDebtorCustomerInfo.Brithday != null) {
-//                        final Calendar c = Calendar.getInstance();
-//                        c.setTime(mainDebtorCustomerInfo.Brithday);
-//                        // ปีเกิด
-//                        ArrayAdapter yearAdapter = (ArrayAdapter) spinnerYear.getAdapter();
-//                        spinnerYear.setSelection(yearAdapter.getPosition(String.valueOf(c.get(Calendar.YEAR) + 543)), true);
-//                        // เดือนเกิด
-//                        ArrayAdapter monthAdapter = (ArrayAdapter) spinnerMonth.getAdapter();
-//                        spinnerMonth.setSelection(monthAdapter.getPosition(mMonthList.get((c.get(Calendar.MONTH) + 1)).monthName), true);
-//                        spinnerYear.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                spinnerMonth.post(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        // วันเกิด
-//                                        ArrayAdapter dayAdapter = (ArrayAdapter) spinnerDate.getAdapter();
-//                                        if(dayAdapter != null){
-//                                            spinnerDate.setSelection(dayAdapter.getPosition(String.format("%02d", c.get(Calendar.DAY_OF_MONTH))));
-//                                        }
-//                                    }
-//                                });
-//                            }
-//                        });
-//                    } else {
-//                        spinnerYear.setSelection(mainDebtorCustomerInfo.logYear, true);
-//                        spinnerMonth.setSelection(mainDebtorCustomerInfo.logMonth, true);
-//                        spinnerYear.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                spinnerMonth.post(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        // วันเกิด
-//                                        spinnerDate.setSelection(mainDebtorCustomerInfo.logDay);
-//                                    }
-//                                });
-//                            }
-//                        });
-//                    }
-//
-//                    // เพศ
-//                    ArrayAdapter sexAdapter = (ArrayAdapter) spinnerSex.getAdapter();
-//                    spinnerSex.setSelection(sexAdapter.getPosition(mainDebtorCustomerInfo.Sex));
-//                    break;
-//                case CORPORATION://นิติบุคคล
-//                    editTextIdentificationNumber.setText(mainDebtorCustomerInfo.IDCard); //เลขประจำตัวผู้เสียภาษี
-//                    // คำนำหน้าบริษัท
-//                    ArrayAdapter perfixCorporationAdapter = (ArrayAdapter) spinnerPerfixCorporation.getAdapter();
-//                    spinnerPerfixCorporation.setSelection(perfixCorporationAdapter.getPosition(mainDebtorCustomerInfo.PrefixName));
-//
-//                    editTextNameCorporation.setText(mainDebtorCustomerInfo.CompanyName); // ชื่อบริษัท
-//                    editTextNameCommission.setText(mainDebtorCustomerInfo.AuthorizedName); // ชื่อกรรมการผู้มีอำนาจ
-//                    editTextNameCardNoCommission.setText(mainDebtorCustomerInfo.AuthorizedIDCard); // เลขบัตรกรรมการผู้มีอำนาจ
-//                    break;
-//            }
-//        }catch (Exception ex){}
-//    }
-
-//    private void bindAddress() {
-//        if (isImportThaiIDCard) {
-//            setEnabledUIAddressForImportThaiIDCard(false);
-//        }
-//        editTextAddressnumber.setText(mainAddressInfo.AddressDetail); // บ้านเลขที่
-//        editTextMoo.setText(mainAddressInfo.AddressDetail2); // หมู่ที่
-//        editTextSoi.setText(mainAddressInfo.AddressDetail3);// ซอย/ตรอก
-//        editTextRoad.setText(mainAddressInfo.AddressDetail4); // ถนน
-//
-//        autoCompleteTextViewProvince.setText(getProvinceName(mainAddressInfo.ProvinceCode), true); // จังหวัด
-//        autoCompleteTextViewProvince.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                // อำเภอ
-//                spinnerDistrict.setSelection(getSpinnerDistrict(mainAddressInfo.DistrictCode), true);
-//                spinnerDistrict.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        // ตำบล
-//
-//                        spinnerParish.setSelection(getSpinnerParish(mainAddressInfo.SubDistrictCode));
-//                    }
-//                });
-//            }
-//        });
-
-//        try {
-//            switch (getType(mainDebtorCustomerInfo.CustomerType)) {
-//                case PERSON://บุคคลธรรมดา
-//                case FOREIGNER://บุคคลต่างชาติ
-//                    editTextPhone.setText(mainAddressInfo.TelHome);// เบอร์บ้าน
-//                    editTextWorkPhone.setText(mainAddressInfo.TelOffice);// เบอร์ทีทำงาน
-//                    editTextMobilePhone.setText(mainAddressInfo.TelMobile);// เบอร์มือถือ
-//                    break;
-//                case CORPORATION://นิติบุคคล
-//                    editTextPhonecorporation1.setText(mainAddressInfo.TelHome);// เบอร์โทรศัพท์ 1
-//                    editTextPhonecorporation2.setText(mainAddressInfo.TelOffice);// เบอร์โทรศัพท์ 2
-//                    editTextFaxcorporation.setText(mainAddressInfo.TelMobile);// เบอร์แฟกซ์
-//                    break;
-//            }
-//        } catch (Exception ex){
-//
-//        }
-//        editTextEmail.setText(mainAddressInfo.EMail);// อีเมล์
-//    }
-
-    //region getData
-//    private PersonTypeInfo.PersonTypeEnum getType(String CustomerType) {
-//        for (PersonTypeInfo info : mPersonTypeList) {
-//            if (info.PersonTypeCode.equals(CustomerType)) {
-//                return info.PersonType;
-//            }
-//        }
-//        return null;
-//    }
-//
-//    private int getSpinnerType(String CustomerType) {
-//        int position = -1;
-//        if (mPersonTypeList != null) {
-//            for (int i = 0; i < mPersonTypeList.size(); i++) {
-//                if (mPersonTypeList.get(i).PersonTypeCode.equals(CustomerType)) {
-//                    position = i;
-//                    break;
-//                }
-//            }
-//        }
-//        return position;
-//    }
-//
-//    private int getSpinnerTypeCard(String IDCardType) {
-//        int position = -1;
-//        if (mPersonTypeCardList != null) {
-//            for (int i = 0; i < mPersonTypeCardList.size(); i++) {
-//                if (mPersonTypeCardList.get(i).PersonTypeCard.toString().equals(IDCardType)) {
-//                    position = i;
-//                    break;
-//                }
-//            }
-//        }
-//        return position;
-//    }
-//
     private String getProvinceName(String ProvinceCode) {
         String str = "";
         if (mProvinceList != null) {
@@ -736,17 +359,7 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
         }
         return position;
     }
-//
-//    private ProvinceInfo getProvinceInfo(String ProvinceName) {
-//        for (ProvinceInfo info : mProvinceList) {
-//            if (info.ProvinceName.equals(ProvinceName)) {
-//                return info;
-//            }
-//        }
-//        return null;
-//    }
-//    //endregion
-//
+
     private void check() {
         try {
             if (validateDataForPerson()) {
@@ -761,14 +374,23 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
 
     //region bindView
     private void bindViewPerson() {
+        taxLabel.setText("เลขบัตรฯ");
+        nameLabel.setText("ชื่อ");
+        lastnameLabel.setText("นามสกุล");
         layout_contact.setVisibility(View.GONE);
     }
 
     private void bindViewCorporation() {
+        nameLabel.setText("ชื่อบริษัท");
+        taxLabel.setText("เลขที่ผู้เสียภาษี");
+        lastnameLabel.setText("สาขา");
         layout_contact.setVisibility(View.VISIBLE);
     }
 
     private void bindViewForeigners() {
+        nameLabel.setText("ชื่อ");
+        taxLabel.setText("เลขพาสปอร์ต");
+        lastnameLabel.setText("นามสกุล");
         layout_contact.setVisibility(View.GONE);
     }
     //endregion
@@ -846,6 +468,8 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
             subDistrictList.add(item.SubDistrictName);
         }
 
+        Log.e("Sub district", data.actionType + ": " +String.valueOf(mSubDistrictList));
+
         BHSpinnerAdapter<String> arrayprovince = new BHSpinnerAdapter<String>(activity, subDistrictList);
         spinnerSubdistrict.setAdapter(arrayprovince);
     }
@@ -895,12 +519,6 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
                     if (!provinceCode.equals("")) {
                         bindDistrict(provinceCode);
                     }
-//                    else {
-//                        autoCompleteTextViewProvince.setText("");
-//                        spinnerDistrict.setAdapter(null);
-//                        spinnerSubdistrict.setAdapter(null);
-//                        editTextZipcode.setText("");
-//                    }
                 }
             }
         });
@@ -914,10 +532,6 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
                     districtCode = mDistrictList.get(position).DistrictCode;
                     bindSubDistrict(mDistrictList.get(position).DistrictCode);
                 }
-//                else {
-//                    spinnerSubdistrict.setAdapter(null);
-//                    editTextZipcode.setText("");
-//                }
             }
 
             @Override
@@ -934,9 +548,6 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
                     subdistrictCode = mSubDistrictList.get(position).SubDistrictCode;
                     editTextZipcode.setText(mSubDistrictList.get(position).Postcode);
                 }
-//                else {
-//                    editTextZipcode.setText("");
-//                }
             }
 
             @Override
@@ -966,7 +577,6 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
                         bindViewPerson();
                         break;
                     case CORPORATION:/** 1-นิติบุคคล **/
-                        select_read_card=0;
                         typeCode = mPersonTypeList.get(position).PersonTypeCode;
                         bindViewCorporation();
                         break;
@@ -998,19 +608,17 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
         BHSpinnerAdapter<String> arraycustomertype = new BHSpinnerAdapter<String>(activity, personTypeList);
         spinnerType.setAdapter(arraycustomertype);
     }
-
     //endregion
 
     //region ValidateData
     private boolean validateDataForPerson() {
-
         boolean ret = false;
         String title = "กรุณาป้อนข้อมูลให้ครบถ้วน";
         String message = "";
-
         //DebtorCustomer
         String idCard           = editTaxNumber.getText().toString(); //เลขที่บัตร
         String name             = editTextName.getText().toString(); //ชื่อ-สกุล
+        String lastname         = editTextLastName.getText().toString(); //นามสกุล หรือสาขา
         //Address
         String addressNumber    = editTextAddressnumber.getText().toString(); // บ้านเลขที่
         String category         = editTextMoo.getText().toString(); // หมู่ที่
@@ -1032,178 +640,167 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
         String cPhone           = editTextContactPhone.getText().toString();
         String cEmail           = editTextContactEmail.getText().toString();
 
-        if (idCard.equals("") || name.equals("") || addressNumber.equals("") ||// บ้านเลขที่
-                category.equals("") || alley.equals("") || road.equals("") ||  province.equals("") ||// จังหวัด
-                district.equals("") || subDistrict.equals("") ||  zipCode.equals("") || phone.equals("") || eMail.equals("") ) {
+        if (typeCode.equals("1")) {
+            //นิติบุคคล
+            if (idCard.equals("") || name.equals("") || lastname.equals("") || addressNumber.equals("") ||// บ้านเลขที่
+                    category.equals("") || alley.equals("") || road.equals("") ||  province.equals("") ||// จังหวัด
+                    district.equals("") || subDistrict.equals("") ||  zipCode.equals("") || phone.equals("") || eMail.equals("") ||
+                    cName.equals("") || cPhone.equals("") || cEmail.equals("")) {
 
-            String[] strEditText = {
-                    idCard, //เลขที่บัตร
-                    name, //ชื่อ-สกุล
-                    addressNumber, // บ้านเลขที่
-                    category, // หมู่ที่
-                    alley, // ซอย/ตรอก
-                    road,  // ถนน
-                    province, // จังหวัด
-                    district, // อำเภอ
-                    subDistrict,  // ตำบล
-                    zipCode, // รหัสไปรษณีย์
-                    phone, // เบอร์บ้าน
-                    eMail};// อีเมล์
+                String[] strEditText = {
+                        idCard, //เลขที่บัตร
+                        name, //ชื่อ
+                        lastname, //สาขา
+                        addressNumber, // บ้านเลขที่
+                        category, // หมู่ที่
+                        alley, // ซอย/ตรอก
+                        road,  // ถนน
+                        province, // จังหวัด
+                        district, // อำเภอ
+                        subDistrict,  // ตำบล
+                        zipCode, // รหัสไปรษณีย์
+                        phone, // เบอร์บ้าน
+                        eMail,
+                        cName,
+                        cPhone,
+                        cEmail
+                };// อีเมล์
 
-            String[] strMessage = {"ชื่อ-สกุล", "บ้านเลขที่", "หมู่ที่", "ซอย/ตรอก", "ถนน", "จังหวัด", "อำเภอ/เขต", "ตำบล/แขวง",
-                    "รหัสไปรษณีย์", "เบอร์โทร", "อีเมล์"};
+                String[] strMessage = {"เลขที่ผู้เสียภาษี", "ชื่อบริษัท", "สาขา", "บ้านเลขที่", "หมู่ที่", "ซอย/ตรอก", "ถนน", "จังหวัด", "อำเภอ/เขต", "ตำบล/แขวง",
+                        "รหัสไปรษณีย์", "เบอร์โทร", "อีเมล์", "ชื่อผู้ติดต่อ", "เบอร์ผู้ติดต่อ", "อีเมลผู้ติดต่อ"};
 
-            for (int i = 0; i < strEditText.length; i++) {
-                if (strEditText[i].length() == 0) {
-                    message += "กรุณาป้อนข้อมูล : " + strMessage[i];
-                    if (i < (strEditText.length - 1)) {
-                        message += "\n";
+                for (int i = 0; i < strEditText.length; i++) {
+                    if (strEditText[i].length() == 0) {
+                        message += "กรุณาป้อนข้อมูล : " + strMessage[i];
+                        if (i < (strEditText.length - 1)) {
+                            message += "\n";
+                        }
+                    }
+                }
+            } else {
+                if (!Character.toString(phone.charAt(0)).equals("0") || !Character.toString(cPhone.charAt(0)).equals("0")) {
+                    showWarningDialog("คำเตือน", "เบอร์มือถือไม่ถูกต้อง");
+                } else {
+                    if (BHValidator.isEmailValid(eMail) || BHValidator.isEmailValid(cEmail)) {
+                        ret = true;
+                    } else {
+                        showWarningDialog("คำเตือน", "Email ไม่ถูกต้อง");
                     }
                 }
             }
         } else {
-            if (!name.contains(" ")) {
-                showWarningDialog("คำเตือน", "กรุณาป้อนข้อมูลนามสกุล ในช่องชื่อ-สกุล");
-            } else if (phone.replaceAll("-", "").length() < 9 && !phone.equals("-")) {
-                showWarningDialog("คำเตือน", "กรุณาป้อนข้อมูลเบอร์โทร ให้ครบ");
+            if (idCard.equals("") || name.equals("") || lastname.equals("") || addressNumber.equals("") ||// บ้านเลขที่
+                    category.equals("") || alley.equals("") || road.equals("") ||  province.equals("") ||// จังหวัด
+                    district.equals("") || subDistrict.equals("") ||  zipCode.equals("") || phone.equals("") || eMail.equals("") ) {
+
+                String[] strEditText = {
+                        idCard, //เลขที่บัตร
+                        name, //ชื่อ
+                        lastname, //นามสกุล
+                        addressNumber, // บ้านเลขที่
+                        category, // หมู่ที่
+                        alley, // ซอย/ตรอก
+                        road,  // ถนน
+                        province, // จังหวัด
+                        district, // อำเภอ
+                        subDistrict,  // ตำบล
+                        zipCode, // รหัสไปรษณีย์
+                        phone, // เบอร์บ้าน
+                        eMail};// อีเมล์
+
+                String[] strMessage = {"เลขที่บัตรฯ", "ชื่อ", "นามสกุล", "บ้านเลขที่", "หมู่ที่", "ซอย/ตรอก", "ถนน", "จังหวัด", "อำเภอ/เขต", "ตำบล/แขวง",
+                        "รหัสไปรษณีย์", "เบอร์โทร", "อีเมล์"};
+
+                for (int i = 0; i < strEditText.length; i++) {
+                    if (strEditText[i].length() == 0) {
+                        message += "กรุณาป้อนข้อมูล : " + strMessage[i];
+                        if (i < (strEditText.length - 1)) {
+                            message += "\n";
+                        }
+                    }
+                }
+            } else {
+                if (!Character.toString(phone.charAt(0)).equals("0")) {
+                    showWarningDialog("คำเตือน", "เบอร์มือถือไม่ถูกต้อง");
+                } else {
+                    if (BHValidator.isEmailValid(eMail)) {
+                        ret = true;
+                    } else {
+                        showWarningDialog("คำเตือน", "Email ไม่ถูกต้อง");
+                    }
+                }
             }
         }
 
         if (message != "") {
             showWarningDialog(title, message);
-        } else {
-            ret = true;
         }
         return ret;
     }
     //endregion
 
-//    private void SetUpInputFilter() {
+    private void SetUpInputFilter() {
 //        //region เลขที่บัตร นิติบุคคล
-//        InputFilter CardNoCommission = new InputFilter() {
-//            @Override
-//            public CharSequence filter(CharSequence source, int i1, int i2, Spanned spanned, int cardnocommission, int i4) {
-//                if (source.length() > 0) {
-//                    if (!Character.isDigit(source.charAt(0)))
-//                        return "";
-//                    else {
-//                        if (cardnocommission == 1 || cardnocommission == 6 || cardnocommission == 12 || cardnocommission == 15) {
-//                            return "-" + source;
-//                        } else if (cardnocommission == 16) {
-//                            CheckIDcardCommission(source.toString());
-//                            return source;
-//                        } else if (cardnocommission >= 17) {
-//                            CheckIDcardCommission("");
-//                            return "";
-//                        }
-//                    }
-//                }
-//                return null;
-//            }
-//        };
-//        editTextNameCardNoCommission.setFilters(new InputFilter[]{CardNoCommission});
+        InputFilter CardNoCommission = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int i1, int i2, Spanned spanned, int cardnocommission, int i4) {
+                if (source.length() > 0) {
+                    if (!Character.isDigit(source.charAt(0)))
+                        return "";
+                    else {
+                        if (cardnocommission == 1 || cardnocommission == 6 || cardnocommission == 12 || cardnocommission == 15) {
+                            return "-" + source;
+                        } else if (cardnocommission == 16) {
+                            CheckIDcardCommission(source.toString());
+                            return source;
+                        } else if (cardnocommission >= 17) {
+                            CheckIDcardCommission("");
+                            return "";
+                        }
+                    }
+                }
+                return null;
+            }
+        };
+        editTaxNumber.setFilters(new InputFilter[]{CardNoCommission});
 //        //endregion
 //
 //        //region เบอร์มือถือ/เบอร์ที่ติดต่อได้
-//        InputFilter MobilePhone = new InputFilter() {
-//            @Override
-//            public CharSequence filter(CharSequence source, int i1, int i2, Spanned spanned, int mobilephone, int i4) {
-//                String strMobilePhone = spanned.toString().replace("-", "");
-//
-//                if (strMobilePhone.length() < 10 && source.length() > 0) {
-//                    if (!Character.isDigit(source.charAt(0)))
-//                        return "";
-//                    else {
-//                        if (mobilephone == 2 || mobilephone == 7) {
-//                            return "-" + source;
-//                        } else if (mobilephone >= 12)
-//                            return "";
-//                    }
-//
-//                } else {
-//                    return "";
-//                }
-//                return null;
-//            }
-//        };
-////        editTextMobilePhone.setFilters(new InputFilter[]{MobilePhone});
-//        //endregion
-//
-//        //region เบอร์ที่ทำงาน, เบอร์โทรศัพท์ 2, เบอร์แฟกซ์
-//        InputFilter PhoneNumber = new InputFilter() {
-//            public CharSequence filter(CharSequence source, int i1, int i2, Spanned spanned, int phoneNumber, int i4) {
-//                if (source.length() > 0) {
-//                    if (i4 == 0 && source.equals(" ")) {//ตัดค่าว่างตัวแรก
-//                        return "";
-//                    } else {
-//                        if (phoneNumber == 1 || phoneNumber == 6) {
-//                            return "-" + source;
-//                        }
-//                    }
-//                }
-//                return null;
-//            }
-//        };
-////        editTextWorkPhone.setFilters(new InputFilter[]{MobilePhone});
-////        editTextPhonecorporation2.setFilters(new InputFilter[]{PhoneNumber});
-////        editTextFaxcorporation.setFilters(new InputFilter[]{PhoneNumber});
-//        //endregion
-//
-//        //region เบอร์โทรศัพท์ 1
-//        InputFilter PhoneNumber1 = new InputFilter() {
-//            public CharSequence filter(CharSequence source, int i1, int i2, Spanned spanned, int phoneNumber, int i4) {
-//                if (source.length() > 0) {
-//                    if (!Character.isDigit(source.charAt(0)))
-//                        return "";
-//                    else {
-//                        if (phoneNumber == 1 || phoneNumber == 6) {
-//                            return "-" + source;
-//                        }
-//                    }
-//                }
-//                return null;
-//            }
-//        };
-////        editTextPhonecorporation1.setFilters(new InputFilter[]{PhoneNumber1});
-//        //endregion
-//
-//        //region เบอร์บ้าน
-//        InputFilter PhoneNumberHome = new InputFilter() {
-//            public CharSequence filter(CharSequence source, int i1, int i2, Spanned spanned, int phoneNumber, int i4) {
-//                if (source.length() > 0) {
-//                    if (i4 == 0 && source.equals(" ")) {//ตัดค่าว่างตัวแรก
-//                        return "";
-//                    } else {
-//                        if (String.valueOf(source.charAt(0)).matches("([0-9])") || (i4 == 0 && source.equals("-"))) {
-//                            if (phoneNumber == 1 || phoneNumber == 6) {
-//                                return "-" + source;
-//                            }
-//                        } else {
-//                            return "";
-//                        }
-//                    }
-//                }
-//                return null;
-//            }
-//        };
-////        editTextPhone.setFilters(new InputFilter[]{PhoneNumberHome});
-//        //endregion
-//
-//        //region ชื่อ-สกุล, เลขที่บัตรบุคคลต่างชาติ, ชื่อบริษัท, ชื่อกรรมการผู้มีอำนาจ, บ้านเลขท, หมู่ที่, ซอย/ตรอก, ถนน
-//        InputFilter TextValue = new InputFilter() {
-//            @Override
-//            public CharSequence filter(CharSequence source, int i, int i1, Spanned spanned, int i2, int i3) {
-//                if (source.length() > 0) {
-//                    if (i3 == 0 && source.equals(" ")) {//ตัดค่าว่างตัวแรก
-//                        return "";
-//                    }
-//                    return source;
-//                }
-//                return null;
-//            }
-//        };
-//        //endregion
-//    }
+        InputFilter MobilePhone = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int i1, int i2, Spanned spanned, int mobilephone, int i4) {
+                String strMobilePhone = spanned.toString().replace("-", "");
+
+                if (strMobilePhone.length() < 10 && source.length() > 0) {
+                    if (!Character.isDigit(source.charAt(0)))
+                        return "";
+                    else {
+                        if (mobilephone == 2 || mobilephone == 7) {
+                            return "-" + source;
+                        } else if (mobilephone >= 12)
+                            return "";
+                    }
+
+                } else {
+                    return "";
+                }
+                return null;
+            }
+        };
+        editTextPhone.setFilters(new InputFilter[]{MobilePhone});
+        editTextContactPhone.setFilters(new InputFilter[]{MobilePhone});
+    }
+
+    private void CheckIDcardCommission(String id) {
+        String idcard = editTaxNumber.getText().toString().replaceAll("-", "");
+        idcard = idcard + id;
+        boolean checkidcard = BHValidator.isValidCitizenID(idcard);
+
+        if (checkidcard)
+            stringStatusCheckID = true;
+        else
+            showMessage("รหัสบัตรนิติบุคคลไม่ถูกต้อง");
+    }
 
     private boolean checkIDcard() {
         boolean ret = false;
@@ -1249,12 +846,12 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
                         .build();
                 request = retrofit.create(Service.class);
                 if (data.actionType == "new") {
-                    call = request.addAlpinesCustomerUAT(typeCode, editTextName.getText().toString(), editTaxNumber.getText().toString(), editTextAddressnumber.getText().toString(),
+                    call = request.addAlpinesCustomerUAT(typeCode, editTextName.getText().toString(), editTextLastName.getText().toString(), editTaxNumber.getText().toString(), editTextAddressnumber.getText().toString(),
                             editTextMoo.getText().toString(), editTextSoi.getText().toString(), editTextRoad.getText().toString(), getProvinceCode(), districtCode, subdistrictCode,
                             editTextZipcode.getText().toString(), editTextPhone.getText().toString(), editTextEmail.getText().toString(), editTextContactName.getText().toString(),
                             editTextContactPhone.getText().toString(), editTextContactEmail.getText().toString(), BHPreference.employeeID(), data.actionType, "");
                 } else if (data.actionType == "edit") {
-                    call = request.addAlpinesCustomerUAT(typeCode, editTextName.getText().toString(), editTaxNumber.getText().toString(), editTextAddressnumber.getText().toString(),
+                    call = request.addAlpinesCustomerUAT(typeCode, editTextName.getText().toString(), editTextLastName.getText().toString(), editTaxNumber.getText().toString(), editTextAddressnumber.getText().toString(),
                             editTextMoo.getText().toString(), editTextSoi.getText().toString(), editTextRoad.getText().toString(), getProvinceCode(), districtCode, subdistrictCode,
                             editTextZipcode.getText().toString(), editTextPhone.getText().toString(), editTextEmail.getText().toString(), editTextContactName.getText().toString(),
                             editTextContactPhone.getText().toString(), editTextContactEmail.getText().toString(), BHPreference.employeeID(), data.actionType, String.valueOf(data.customerAPModelList.get(0).getCustomerId()));
@@ -1325,8 +922,11 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
 
     private void bindEdit() {
         for (CustomerAPModel customerAPModel : data.customerAPModelList) {
+            bindSubDistrict(String.valueOf(customerAPModel.getCustomerDistrict()));
+            spinnerType.setSelection(customerAPModel.getCustomerType());
             editTaxNumber.setText(customerAPModel.getCustomerTax());
             editTextName.setText(customerAPModel.getCustomerName());
+            editTextLastName.setText(customerAPModel.getCustomerLastname());
             editTextAddressnumber.setText(customerAPModel.getCustomerAddr());
             editTextMoo.setText(String.valueOf(customerAPModel.getCustmerMoo()));
             editTextSoi.setText(customerAPModel.getCustomerSoi());
@@ -1338,8 +938,201 @@ public class New2SaleCustomerAddressCardFragment_sale_Q extends BHFragment  {
             editTextPhone.setText(customerAPModel.getCustomerPhone());
             editTextEmail.setText(customerAPModel.getCustomerEmail());
             editTextContactName.setText(customerAPModel.getCustomerContactName());
-            editTextContactPhone.setText(customerAPModel.getCustomerContactEmail());
+            editTextContactPhone.setText(customerAPModel.getCustomerContactPhone());
             editTextContactEmail.setText(customerAPModel.getCustomerContactEmail());
+        }
+    }
+
+    private void getAllCustomerList() {
+        try {
+            Call call = null;
+            Service request = null;
+            Retrofit retrofit = null;
+            BHLoading.show(activity);
+            if (BHGeneral.SERVICE_MODE.toString() == "UAT") {
+                retrofit = new Retrofit.Builder()
+                        .baseUrl(GIS_BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                request = retrofit.create(Service.class);
+                call = request.getCustomerListUAT("");
+            }
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, retrofit2.Response response) {
+                    Gson gson=new Gson();
+                    try {
+                        Log.e("Response", String.valueOf(response));
+                        Log.e("JSON body", String.valueOf(response.body()));
+                        JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
+                        if (jsonObject.getString("status").equals("SUCCESS")) {
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            CustomerAPModel customerAPModel;
+                            allCustomerList = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                customerAPModel = new CustomerAPModel();
+                                customerAPModel.setCustomerId(object.getInt("APCUS_ID"));
+                                customerAPModel.setCustomerName(object.getString("APCUS_NAME"));
+                                try {
+                                    if (object.getInt("APCUS_TYPE") == 1) {
+                                        customerAPModel.setCustomerLastname(object.getString("APCUS_BRANCH"));
+                                    } else {
+                                        customerAPModel.setCustomerLastname(object.getString("APCUS_LASTNAME"));
+                                    }
+                                } catch (Exception e) {
+                                    customerAPModel.setCustomerLastname("");
+                                }
+
+                                try {
+                                    customerAPModel.setLastQuotation(object.getString("APQ_ID"));
+                                } catch (Exception e) {
+                                    customerAPModel.setLastQuotation("");
+                                }
+
+                                customerAPModel.setCustomerTax(object.getString("APCUS_IDCARD"));
+                                customerAPModel.setCustomerType(object.getInt("APCUS_TYPE"));
+                                customerAPModel.setCustomerAddr(object.getString("APCUS_ADDR"));
+                                customerAPModel.setCustmerMoo(object.getInt("APCUS_MOO"));
+                                customerAPModel.setCustomerSoi(object.getString("APCUS_SOI"));
+                                customerAPModel.setCustomerRoad(object.getString("APCUS_ROAD"));
+                                customerAPModel.setCustomerProvince(object.getInt("APCUS_PROVINCE_ID"));
+                                customerAPModel.setCustomerDistrict(object.getInt("APCUS_DISTRICT_ID"));
+                                customerAPModel.setCustomerSubdistrict(object.getInt("APCUS_SUBDISTRICT_ID"));
+                                customerAPModel.setCustomerZipcode(object.getString("APCUS_ZIPCODE"));
+                                customerAPModel.setCustomerPhone(object.getString("APCUS_PHONE"));
+                                customerAPModel.setCustomerEmail(object.getString("APCUS_EMAIL"));
+                                customerAPModel.setCustomerContactName(object.getString("APCUS_CONTACT_NAME"));
+                                customerAPModel.setCustomerContactPhone(object.getString("APCUS_CONTACT_PHONE"));
+                                customerAPModel.setCustomerContactEmail(object.getString("APCUS_CONTACT_EMAIL"));
+
+                                allCustomerList.add(customerAPModel);
+                            }
+
+                            bindCustomer();
+                        }
+                        Log.e("Get customer", String.valueOf(jsonObject));
+                        BHLoading.close();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("data",e.getLocalizedMessage());
+                        BHLoading.close();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("onFailure Get customer:",t.getLocalizedMessage());
+                    BHLoading.close();
+                }
+            });
+        } catch (Exception e) {
+            Log.e("Exception Get customer",e.getLocalizedMessage());
+            BHLoading.close();
+        }
+    }
+
+    List<String> customerList;
+    private void bindCustomer() {
+        customerList = new ArrayList<String>();
+        for (CustomerAPModel item : allCustomerList) {
+            customerList.add(item.getCustomerName());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_dropdown_item_1line, customerList);
+        autoCompleteCustomer.setThreshold(0);
+        autoCompleteCustomer.setAdapter(adapter);
+
+        autoCompleteCustomer.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View paramView, MotionEvent paramMotionEvent) {
+                // TODO Auto-generated method stub
+                isAutoCompleteTextViewCustomer = true;
+                autoCompleteCustomer.showDropDown();
+                autoCompleteCustomer.requestFocus();
+                return false;
+            }
+        });
+
+        autoCompleteCustomer.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (autoCompleteCustomer.getText().toString().equals("")) {
+                    layout_no_result.setVisibility(View.VISIBLE);
+                    layout_result.setVisibility(View.GONE);
+                    buttonUseData.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        autoCompleteCustomer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (!b && isAutoCompleteTextViewCustomer) {
+                    isAutoCompleteTextViewCustomer = false;
+                }
+            }
+        });
+
+        autoCompleteCustomer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String name = allCustomerList.get(position).getCustomerName();
+//                Toast.makeText(activity, "Customer " + name, Toast.LENGTH_LONG).show();
+                bindLastQuotation(allCustomerList.get(position));
+            }
+        });
+    }
+
+    private void bindLastQuotation(CustomerAPModel customerAPModel) {
+        if (!customerAPModel.getLastQuotation().equals("")) {
+            layout_no_result.setVisibility(View.GONE);
+            layout_result.setVisibility(View.VISIBLE);
+            quotationNumber.setText(customerAPModel.getLastQuotation());
+            quotationTaxNumber.setText(customerAPModel.getCustomerTax());
+            if (customerAPModel.getCustomerType() == 1) {
+                quotationCustomer.setText(customerAPModel.getCustomerName() + " (" + customerAPModel.getCustomerLastname() + ")");
+            } else {
+                quotationCustomer.setText(customerAPModel.getCustomerName() + " " + customerAPModel.getCustomerLastname());
+            }
+            quotationAddress.setText(customerAPModel.getCustomerAddr() + " " + customerAPModel.getCustmerMoo()  + " " +  customerAPModel.getCustomerSoi() + " " + customerAPModel.getCustomerRoad() +
+                    "\n" + customerAPModel.getCustomerSubdistrict() + " " + customerAPModel.getCustomerDistrict() + "\n" + getProvinceName(String.valueOf(customerAPModel.getCustomerProvince())) + " " + customerAPModel.getCustomerZipcode());
+            quotationPhone.setText(customerAPModel.getCustomerPhone());
+            quotationEmail.setText(customerAPModel.getCustomerEmail());
+
+            buttonUseData.setVisibility(View.VISIBLE);
+            buttonUseData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    data.customerAPModelList = new ArrayList<>();
+                    data.customerAPModelList.add(customerAPModel);
+                    bindEdit();
+                }
+            });
+        } else {
+            layout_no_result.setVisibility(View.VISIBLE);
+            layout_result.setVisibility(View.GONE);
+            buttonUseData.setVisibility(View.VISIBLE);
+            buttonUseData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    data.customerAPModelList = new ArrayList<>();
+                    data.customerAPModelList.add(customerAPModel);
+                    bindEdit();
+                }
+            });
         }
     }
 }

@@ -54,7 +54,7 @@ public class SaleUnfinishedFragment_sale_Q extends BHFragment {
 	@Override
 	protected int titleID() {
 		// TODO Auto-generated method stub
-		return R.string.title_sales_preorder;
+		return R.string.title_sales_quotation;
 	}
 
 	@Override

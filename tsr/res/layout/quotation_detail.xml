@@ -4,8 +4,10 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/layoutTop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layoutBottom"
         android:orientation="vertical">
 
         <th.co.thiensurat.views.ViewTitle
@@ -23,8 +25,10 @@
     </LinearLayout>
 
         <RelativeLayout
+            android:id="@+id/layoutBottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/bg_body_white"
             android:layout_alignParentBottom="true">
 
             <LinearLayout
@@ -34,8 +38,8 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:background="@color/bg_sub_header"
+                    android:layout_height="5dp"
+                    android:background="@color/gray_btn_bg_color"
                     android:layout_marginTop="10sp"/>
 
                 <LinearLayout
