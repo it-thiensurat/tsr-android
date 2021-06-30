@@ -204,8 +204,6 @@ public class Product_sale_Q extends BHFragment implements RecyclerViewDataAdapte
 		getData_data_products = new ArrayList<>();
 		getData_data_product_cs = new ArrayList<>();
 
-		Log.e("Choose product", String.valueOf(data.objectCustomer));
-
 		row1.setLayoutManager(new LinearLayoutManager(activity));
 		row1.setHasFixedSize(true);
 		adapter = new RecyclerViewDataAdapter_sale_Q();
@@ -221,18 +219,15 @@ public class Product_sale_Q extends BHFragment implements RecyclerViewDataAdapte
 
 		if (data.actionType.equals("edit")) {
 			try {
-				if (data.objectProduct.isEmpty()) {
-					if (data.objectProduct.size() > 0) {
-						selectedProductList = data.objectProduct;
-						adapter.setSelectedProductList(selectedProductList);
-						adapter.notifyDataSetChanged();
-					}
+				if (data.objectProduct.size() > 0) {
+					selectedProductList = data.objectProduct;
+					adapter.setSelectedProductList(selectedProductList);
+					adapter.notifyDataSetChanged();
 				}
 			} catch (Exception e) {
 				Log.e("Edit quotation", e.getLocalizedMessage());
 			}
 		}
-
 	}
 
 	@Override
@@ -435,16 +430,6 @@ public class Product_sale_Q extends BHFragment implements RecyclerViewDataAdapte
 					getReceiptID= contact.getReceiptID();
 					getOrganizationCode= contact.getOrganizationCode();
 					productPrice = contact.getProductPrice();
-//					Log.e("getOrganizationCode",getOrganizationCode);
-//					BHApplication.getInstance().getPrefManager().setPreferrence("getRefNo", getRefNo);
-//					BHApplication.getInstance().getPrefManager().setPreferrence("getContractReferenceNo", getContractReferenceNo);
-//					BHApplication.getInstance().getPrefManager().setPreferrence("getReceiptCode", getReceiptCode);
-//					BHApplication.getInstance().getPrefManager().setPreferrence("getReceiptID", getReceiptID);
-//					BHApplication.getInstance().getPrefManager().setPreferrence("getOrganizationCode", getOrganizationCode);
-//
-//					Log.e("getReceiptCode",getReceiptCode);
-//					Log.e("getProductID",getProductID);
-
 				} catch (Exception ex){
 
 				}
@@ -541,72 +526,4 @@ public class Product_sale_Q extends BHFragment implements RecyclerViewDataAdapte
 			showWarningDialog(title, message);
 		}
 	}
-
-//	private List<ProductSpecModel> getProductSpec(String productId) {
-//		try {
-//			Call call = null;
-//			Service request = null;
-//			Retrofit retrofit = null;
-//
-//			if (BHGeneral.SERVICE_MODE.toString() == "UAT") {
-//				retrofit = new Retrofit.Builder()
-//						.baseUrl(GIS_BASE_URL)
-//						.addConverterFactory(GsonConverterFactory.create())
-//						.build();
-//				request = retrofit.create(Service.class);
-//				call = request.getProductSpecUAT(productId);
-//			}
-//
-//			call.enqueue(new Callback() {
-//				@Override
-//				public void onResponse(Call call, retrofit2.Response response) {
-//					Gson gson=new Gson();
-//					try {
-//						Log.e("Response", String.valueOf(response));
-//						Log.e("JSON body", String.valueOf(response.body()));
-//						JSONObject jsonObject = new JSONObject(gson.toJson(response.body()));
-//						if (jsonObject.getString("status").equals("SUCCESS")) {
-//							JSONArray jsonArray = jsonObject.getJSONArray("data");
-//							ProductSpecModel productSpecModel;
-//							for (int i = 0; i < jsonArray.length(); i++) {
-//								JSONObject object = jsonArray.getJSONObject(i);
-//								productSpecModel = new ProductSpecModel();
-//								productSpecModel.setSpecID(object.getInt("ID"));
-//								productSpecModel.setProductId(object.getString("ProductID"));
-//								productSpecModel.setProductSpec(object.getString("ProductSpec"));
-//								productSpecModel.setProductDetail1(object.getString("ProductDetail1"));
-//								productSpecModel.setProductDetail2(object.getString("ProductDetail2"));
-//								productSpecModel.setProductDetail3(object.getString("ProductDetail3"));
-//								productSpecModel.setProductDetail4(object.getString("ProductDetail4"));
-//								productSpecModel.setProductDetail5(object.getString("ProductDetail5"));
-//								productSpecModel.setProductDetail6(object.getString("ProductDetail6"));
-//								productSpecModel.setProductDetail7(object.getString("ProductDetail7"));
-//								productSpecModel.setProductDetail8(object.getString("ProductDetail8"));
-//								productSpecModelList.add(productSpecModel);
-//							}
-//						} else {
-//							productSpecModelList = null;
-//						}
-//						Log.e("Add product", String.valueOf(jsonObject));
-//						BHLoading.close();
-//					} catch (JSONException e) {
-//						e.printStackTrace();
-//						Log.e("data",e.getLocalizedMessage());
-//						BHLoading.close();
-//					}
-//				}
-//
-//				@Override
-//				public void onFailure(Call call, Throwable t) {
-//					Log.e("onFailure onSave:",t.getLocalizedMessage());
-//					BHLoading.close();
-//				}
-//			});
-//		} catch (Exception e) {
-//			Log.e("Exception onSave",e.getLocalizedMessage());
-//			BHLoading.close();
-//		}
-//
-//		return productSpecModelList;
-//	}
 }

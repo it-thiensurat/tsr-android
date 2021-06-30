@@ -166,7 +166,7 @@ public class QuotationDetail extends BHFragment {
             RequestBody projectBody = RequestBody.create(MediaType.parse("text/plain"), data.projectName);
             RequestBody promotionBody = RequestBody.create(MediaType.parse("text/plain"), data.promotionText);
             RequestBody discountBody = RequestBody.create(MediaType.parse("text/plain"), data.discount);
-            RequestBody totalBody = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(netValue));
+            RequestBody totalBody = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(noVatValue));
             RequestBody grandtotalBody = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(grandValue));
 
 
@@ -190,7 +190,6 @@ public class QuotationDetail extends BHFragment {
 						Log.e("Add quotation", String.valueOf(jsonObject));
 						BHLoading.close();
 						if (jsonObject.getString("status").equals("SUCCESS")) {
-                            String title = "ใบเสนอราคา";
                             String message = jsonObject.getString("message");
                             String quotationId = jsonObject.getString("data");
                             android.app.AlertDialog.Builder setupAlert = new AlertDialog.Builder(activity)

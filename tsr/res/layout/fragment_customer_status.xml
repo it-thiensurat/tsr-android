@@ -29,7 +29,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
                 android:textSize="15dp"
-                android:hint="ชื่อนามสกุล, บัตรประชาชน, เบอร์โทร"/>
+                android:singleLine="true"
+                android:maxLines="1"
+                android:hint="ชื่อนามสกุล, บัตรประชาชน, เบอร์โทร"
+                android:imeOptions="actionDone"/>
 
             <Button
                 android:id="@+id/buttonSearch"
