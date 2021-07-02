@@ -9,7 +9,7 @@ public class Getdata {
     String Email;
     String IDLine;
     String IDProvince;
-
+    String DateSale;
     String Province;
     String Product;
     String Details;
@@ -37,6 +37,9 @@ public class Getdata {
 
     public String getCreateDate() {
         return CreateDate;
+    }
+    public String getDateSale() {
+        return DateSale;
     }
     public String getCustomerName() {
         return CustomerName;
@@ -83,6 +86,9 @@ public class Getdata {
     }
     public void setCreateDate(String createDate ) {
         CreateDate = createDate;
+    }
+    public void setDateSale(String  datesale) {
+        DateSale = datesale;
     }
     public void setCustomerName(String customerName ) {
         CustomerName = customerName;

@@ -220,14 +220,13 @@
 
             <TextView
                 android:id="@+id/txtDetail"
-                android:layout_width="match_parent"
+                android:layout_width="210dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:inputType="textMultiLine"
-                android:maxLines="10"
-                android:layout_margin="4dp"
                 android:justificationMode="inter_word"
-                android:text="TextView"
-                />
+                android:maxLines="10"
+                android:text="TextView" />
         </LinearLayout>
 
         <LinearLayout
@@ -348,7 +347,31 @@
                 android:text="TextView" />
 
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/StampLinearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
 
+            <TextView
+                android:id="@+id/txtManagerTitle1"
+                style="@style/TextView.Label.bold"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:gravity="left|center_vertical"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="วันที่ :"
+                android:textColor="#2c2c2c" />
+
+            <TextView
+                android:id="@+id/txtDateStampcode"
+                style="@style/TextView.Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:text="TextView" />
+
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/btnSerchLinerLayout"
             android:layout_width="match_parent"

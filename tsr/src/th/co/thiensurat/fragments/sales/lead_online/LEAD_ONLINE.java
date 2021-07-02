@@ -913,7 +913,7 @@ SwipeRefreshLayout swipeRefreshLayout;
              String title = "แจ้งเตือน";
              String message = "ยืนยันการอัพเดทสานะการทำงาน";
              showWarningDialog(title, message);
-             update_data_lead(_id , _StatusWork, cus, _Namecustomer,_IdProvince,txtremark.toString());
+             update_data_lead(_id , _StatusWork, cus, _Namecustomer,_IdProvince,txtremark.getText().toString());
              BHLoading.close();
              dialog_image.dismiss();
              load_data_lead();
@@ -1013,6 +1013,7 @@ SwipeRefreshLayout swipeRefreshLayout;
                 GetDataAdapter2.setProduct(json.getString("Product"));
                 GetDataAdapter2.setCodeStamp(json.getString("StatusCus"));
                 GetDataAdapter2.setIDProvince(json.getString("IdProvince"));
+                GetDataAdapter2.setDateSale((json.getString("DateSale")));
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (NullPointerException x){
