@@ -113,7 +113,8 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             Viewholder.txtnameimage.setText(getDataAdapter1.getPicture());
             Glide.with(context)
                     .load(getDataAdapter1.getPicture())
-                    //.load("https://www.safealkaline.com/media/catalog/product/cache/1/image/750x750/9df78eab33525d08d6e5fb8d27136e95/s/a/safe_uv_alkaline_front.png")
+                    //.load("http://tsr-k2-uat:81/LeadOnline/202107/20210702_092629.jpg")
+                    //.load("https://bpm.thiensurat.co.th:8443/LeadOnline/202105/20210531_134938.jpg")
                     .placeholder(R.drawable.barcode) //5
                     .error(R.drawable.bg_splash) //6
 //                    .fallback(R.drawable.barcode) //7

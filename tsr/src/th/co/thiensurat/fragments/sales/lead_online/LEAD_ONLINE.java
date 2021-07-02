@@ -1013,7 +1013,6 @@ SwipeRefreshLayout swipeRefreshLayout;
                 GetDataAdapter2.setProduct(json.getString("Product"));
                 GetDataAdapter2.setCodeStamp(json.getString("StatusCus"));
                 GetDataAdapter2.setIDProvince(json.getString("IdProvince"));
-
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (NullPointerException x){
