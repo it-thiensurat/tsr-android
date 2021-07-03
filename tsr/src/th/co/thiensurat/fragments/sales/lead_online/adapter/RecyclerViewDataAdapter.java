@@ -110,10 +110,12 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             Viewholder.txtEmail.setText(getDataAdapter1.getEmail());
             Viewholder.txtIDLine.setText(getDataAdapter1.getIDLine());
             Viewholder.txtidprovince.setText(getDataAdapter1.getIDProvince());
+            Viewholder.txtDateStampcode.setText(getDataAdapter1.getDateSale());
             Viewholder.txtnameimage.setText(getDataAdapter1.getPicture());
             Glide.with(context)
                     .load(getDataAdapter1.getPicture())
-                    //.load("https://www.safealkaline.com/media/catalog/product/cache/1/image/750x750/9df78eab33525d08d6e5fb8d27136e95/s/a/safe_uv_alkaline_front.png")
+                    //.load("http://tsr-k2-uat:81/LeadOnline/202107/20210702_092629.jpg")
+                    //.load("https://bpm.thiensurat.co.th:8443/LeadOnline/202105/20210531_134938.jpg")
                     .placeholder(R.drawable.barcode) //5
                     .error(R.drawable.bg_splash) //6
 //                    .fallback(R.drawable.barcode) //7
@@ -127,16 +129,19 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                 Viewholder.twobntLinerLayout.setVisibility(View.VISIBLE);
                 Viewholder.btnSearchLinerLayout.setVisibility(View.GONE);
                 Viewholder.StampLinearLayout.setVisibility(View.GONE);
+                Viewholder.StampLinearLayout1.setVisibility(View.GONE);
                 Viewholder.statusLeadonline.setText("รอรับงาน");
            }else if(getDataAdapter1.getStatusWork().equals("2")){
                 Viewholder.twobntLinerLayout.setVisibility(View.GONE);
                 Viewholder.btnSearchLinerLayout.setVisibility(View.VISIBLE);
                 Viewholder.statusLeadonline.setText("กำลังดำเนินการ");
                 Viewholder.StampLinearLayout.setVisibility(View.GONE);
+                Viewholder.StampLinearLayout1.setVisibility(View.GONE);
            }else if(getDataAdapter1.getStatusWork().equals("3")){
                 Viewholder.twobntLinerLayout.setVisibility(View.GONE);
                 Viewholder.btnSearchLinerLayout.setVisibility(View.VISIBLE);
                 Viewholder.StampLinearLayout.setVisibility(View.VISIBLE);
+                Viewholder.StampLinearLayout1.setVisibility(View.VISIBLE);
                 Viewholder.statusLeadonline.setText("ดำเนินการเรียบร้อย");
                 String cus="";
                 if(getDataAdapter1.getCodeStamp().equals("I01")){
@@ -208,6 +213,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         protected TextView txtId;
         protected TextView txtHeadId;
         protected TextView txtCreateDate;
+        protected TextView txtDateStampcode;
         protected TextView txtcusName;
         protected TextView txtTel;
        // protected ImageView pictureURL;
@@ -219,6 +225,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         protected Button btnCancel;
         protected Spinner statuscus;
         protected LinearLayout StampLinearLayout;
+        protected LinearLayout StampLinearLayout1;
         protected LinearLayout twobntLinerLayout;
         protected LinearLayout btnSearchLinerLayout;
         protected TextView statusLeadonline;
@@ -233,6 +240,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             this.txtId = (TextView) view.findViewById(R.id.txtId);
             this.txtHeadId = (TextView) view.findViewById(R.id.txtHeadId);
             this.txtCreateDate = (TextView) view.findViewById(R.id.txtCreateDate);
+            this.txtDateStampcode = (TextView) view.findViewById(R.id.txtDateStampcode);
             this.txtcusName = (TextView) view.findViewById(R.id.txtcusName);
             this.txtTel = (TextView) view.findViewById(R.id.txtTel);
             this.txtProvinceName = (TextView) view.findViewById(R.id.txtProvinceName);
@@ -248,6 +256,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             this.btnSearch = (Button) view.findViewById(R.id.btnSearch);
             this.statusStampcode = (TextView) view.findViewById(R.id.statusStampcode);
             this.StampLinearLayout = (LinearLayout) view.findViewById(R.id.StampLinearLayout);
+            this.StampLinearLayout1 = (LinearLayout) view.findViewById(R.id.StampLinearLayout1);
             this.twobntLinerLayout = (LinearLayout) view.findViewById(R.id.twobntLinerLayout);
             this.btnSearchLinerLayout = (LinearLayout) view.findViewById(R.id.btnSerchLinerLayout);
             //this.swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);

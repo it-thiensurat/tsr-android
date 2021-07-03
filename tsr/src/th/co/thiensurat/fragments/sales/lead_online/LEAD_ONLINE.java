@@ -913,7 +913,7 @@ SwipeRefreshLayout swipeRefreshLayout;
              String title = "แจ้งเตือน";
              String message = "ยืนยันการอัพเดทสานะการทำงาน";
              showWarningDialog(title, message);
-             update_data_lead(_id , _StatusWork, cus, _Namecustomer,_IdProvince);
+             update_data_lead(_id , _StatusWork, cus, _Namecustomer,_IdProvince,txtremark.getText().toString());
              BHLoading.close();
              dialog_image.dismiss();
              load_data_lead();
@@ -1013,7 +1013,7 @@ SwipeRefreshLayout swipeRefreshLayout;
                 GetDataAdapter2.setProduct(json.getString("Product"));
                 GetDataAdapter2.setCodeStamp(json.getString("StatusCus"));
                 GetDataAdapter2.setIDProvince(json.getString("IdProvince"));
-
+                GetDataAdapter2.setDateSale((json.getString("DateSale")));
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (NullPointerException x){
@@ -1028,7 +1028,7 @@ SwipeRefreshLayout swipeRefreshLayout;
         adapter.notifyDataSetChanged();
     }
 
-    public String update_data_lead(String _idl, String _statuswork, String _statuscus,String _Namecustomer,String _IdProvince) {
+    public String update_data_lead(String _idl, String _statuswork, String _statuscus,String _Namecustomer,String _IdProvince,String remark) {
         final String[] rs = {""};
         String empsale = BHPreference.employeeID();
         try {
@@ -1038,7 +1038,7 @@ SwipeRefreshLayout swipeRefreshLayout;
                     .build();
             Service request = retrofit.create(Service.class);
             Call call = null;
-            call = request.updates_status_leadonline(_idl, _statuswork, _statuscus,_Namecustomer,empsale,_IdProvince);
+            call = request.updates_status_leadonline(_idl, _statuswork, _statuscus,_Namecustomer,empsale,_IdProvince,remark);
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, retrofit2.Response response) {
@@ -1136,7 +1136,7 @@ SwipeRefreshLayout swipeRefreshLayout;
         setupAlert.setNegativeButton(activity.getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 dialog.dismiss();
-                String status = update_data_lead(data.getId(), "2", "", data.getCustomerName(), data.getIDProvince());
+                String status = update_data_lead(data.getId(), "2", "", data.getCustomerName(), data.getIDProvince(),"");
                 load_data_lead();
             }
         }).setPositiveButton(activity.getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
@@ -1164,7 +1164,7 @@ SwipeRefreshLayout swipeRefreshLayout;
         setupAlert.setNegativeButton(activity.getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 dialog.dismiss();
-                String status = update_data_lead(data.getId(), "0", "", data.getCustomerName(), data.getIDProvince());
+                String status = update_data_lead(data.getId(), "0", "", data.getCustomerName(), data.getIDProvince(),"");
                 load_data_lead();
             }
         }).setPositiveButton(activity.getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {

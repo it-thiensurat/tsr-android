@@ -130,7 +130,7 @@ public interface Service {
     Call<Object> get_leadonlineCoeStamp();
 // Update status lead on line
     @GET("/api/api-leadonlineUpdate.php")
-    Call<Object> updates_status_leadonline(@Query("id") String idl, @Query("StatusWork") String statuswork, @Query("StatusCus") String statuscus, @Query("Namecustomer") String namecustomer, @Query("EmpSale") String empsale, @Query("IdProvince") String idprovince);
+    Call<Object> updates_status_leadonline(@Query("id") String idl, @Query("StatusWork") String statuswork, @Query("StatusCus") String statuscus, @Query("Namecustomer") String namecustomer, @Query("EmpSale") String empsale, @Query("IdProvince") String idprovince, @Query("Remark") String remark);
     /**test by tong**/
 
     /***** uat by moo*/
