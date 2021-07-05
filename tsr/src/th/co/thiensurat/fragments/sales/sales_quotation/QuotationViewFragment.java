@@ -74,11 +74,12 @@ public class QuotationViewFragment extends BHFragment {
             if (data.viewUser.equals("sup")) {
                 return new int[]{R.string.button_reject, R.string.button_edit, R.string.button_approve};
             } else {
-                if (data.actionType.equals("approve")) {
-                    return new int[]{R.string.button_send_to_customer};
-                } else {
-                    return new int[]{R.string.button_end};
-                }
+//                if (data.actionType.equals("approve")) {
+//                    return new int[]{R.string.button_send_to_customer};
+//                } else {
+//                    return new int[]{R.string.button_end};
+//                }
+                return new int[]{R.string.button_end};
             }
         } catch (Exception e) {
             return new int[]{R.string.button_end};
@@ -95,7 +96,7 @@ public class QuotationViewFragment extends BHFragment {
         webView.getSettings().setAllowContentAccess(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
-        webView.loadUrl("https://toss.thiensurat.co.th/ALPINES/ReportPonsabai.aspx?QuotationId=" + data.quotationnId);
+        webView.loadUrl("https://toss.thiensurat.co.th/ALPINES/ReportPonsabai.aspx?QuotationId=" + data.quotationnId + "&EMP_Id=" + BHPreference.employeeID());
 
         webView.setWebViewClient(new WebViewClient() {
 
