@@ -833,7 +833,7 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
                     Call call = null;
                     if (BHGeneral.SERVICE_MODE.toString() == "UAT") {
                         call = request.updateCustomerPhoneUAT(phone, data.contract.RefNo, BHPreference.employeeID());
-                    } else if (BHGeneral.SERVICE_MODE.toString() == "PRODUCTION") {
+                    } else {
                         call = request.updateCustomerPhone(phone, data.contract.RefNo, BHPreference.employeeID());
                     }
 
@@ -882,6 +882,10 @@ public class SaleConfirmBeforeReceiptFragment extends BHFragment {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 BHLoading.close();
+                                hideKeyboard(getActivity());
+                                List<Integer> listId = new ArrayList<Integer>();
+                                listId.add(R.string.button_confirm_print);
+                                activity.setViewProcessButtons(listId, View.VISIBLE);
                             }
                         }
                         @Override

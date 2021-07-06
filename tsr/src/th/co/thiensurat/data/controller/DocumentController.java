@@ -4413,8 +4413,8 @@ public class DocumentController {
         receiptBuilder.setAlign(Paint.Align.LEFT);
         receiptBuilder.addText("วันที่รับเงิน", false);
         receiptBuilder.setAlign(Paint.Align.RIGHT);
-        receiptBuilder.addText(paymentInfo.PayDate + "", true);
-//        receiptBuilder.addText(BHUtilities.dateFormat(paymentInfo.PayDate, BHUtilities.DEFAULT_DATE_FORMAT) + " เวลา " + BHUtilities.dateFormat(paymentInfo.PayDate, "HH:mm") + " น.", true);
+//        receiptBuilder.addText(paymentInfo.paymentDate + "", true);
+        receiptBuilder.addText(BHUtilities.dateFormat(paymentInfo.PayDate, BHUtilities.DEFAULT_DATE_TIME_FORMAT), true);
 
         receiptBuilder.addParagraph();
         receiptBuilder.setAlign(Paint.Align.LEFT);
@@ -4640,10 +4640,11 @@ public class DocumentController {
         receiptBuilder.addImage(bmpMerge);
         receiptBuilder.addParagraph();
 
-        if ((paymentInfo.PaymentPeriodNumber + 1) > 1) {
+//        if ((paymentInfo.PaymentPeriodNumber + 1) > 1) {
+        if (paymentInfo.PaymentPeriodNumber > 1) {
             try {
                 receiptBuilder.setAlign(Paint.Align.CENTER);
-                String qrcode = String.format("|010755600021301" + CR + "%s" + CR + "%s" + CR + "%s", paymentInfo.IDCard.replace("-", ""), paymentInfo.CONTNO, "0");
+                String qrcode = String.format("|010755600021301" + CR + "%s" + CR + "%s" + CR + "%s", paymentInfo.IDCard, paymentInfo.CONTNO, "0");
                 Bitmap bmpQR = createQRCodeForReceipt(qrcode);
                 receiptBuilder.addImage(bmpQR);
                 receiptBuilder.setAlign(Align.CENTER);
