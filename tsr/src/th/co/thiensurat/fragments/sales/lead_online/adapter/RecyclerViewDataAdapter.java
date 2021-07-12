@@ -110,14 +110,14 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             Viewholder.txtEmail.setText(getDataAdapter1.getEmail());
             Viewholder.txtIDLine.setText(getDataAdapter1.getIDLine());
             Viewholder.txtidprovince.setText(getDataAdapter1.getIDProvince());
-            Viewholder.txtDateStampcode.setText(getDataAdapter1.getDateSale());
+            //Viewholder.txtDateStampcode.setText(getDataAdapter1.getDateSale());
             Viewholder.txtnameimage.setText(getDataAdapter1.getPicture());
             Glide.with(context)
                     .load(getDataAdapter1.getPicture())
-                    //.load("http://tsr-k2-uat:81/LeadOnline/202107/20210702_092629.jpg")
+                    .load("http://tsr-k2-uat:81/LeadOnline/202107/20210705_090631.jpg")
                     //.load("https://bpm.thiensurat.co.th:8443/LeadOnline/202105/20210531_134938.jpg")
-                    .placeholder(R.drawable.barcode) //5
-                    .error(R.drawable.bg_splash) //6
+                    .placeholder(R.drawable.alpine) //5
+                    .error(R.drawable.alpine) //6
 //                    .fallback(R.drawable.barcode) //7
                     .into(Viewholder.pictureURL);
             if(getDataAdapter1.getStatusWork().equals("")) {
@@ -148,32 +148,60 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                     cus="I01-ปิดการขายติดตั้งเรียบร้อยแล้ว";
                 }else if(getDataAdapter1.getCodeStamp().equals("A01")){
                     cus="A01-ไม่รับสาย";
+                    Viewholder.StampLinearLayout.setVisibility(View.VISIBLE);
+                    Viewholder.StampLinearLayout1.setVisibility(View.VISIBLE);
                 }else if(getDataAdapter1.getCodeStamp().equals("A02")){
                     cus="A02-เบอร์โทรผิด";
+                    Viewholder.StampLinearLayout.setVisibility(View.VISIBLE);
+                    Viewholder.StampLinearLayout1.setVisibility(View.VISIBLE);
                 }else if(getDataAdapter1.getCodeStamp().equals("A03")){
                     cus="A03-โทรไม่ติด,ปิดเครื่อง";
+                    Viewholder.StampLinearLayout.setVisibility(View.VISIBLE);
+                    Viewholder.StampLinearLayout1.setVisibility(View.VISIBLE);
                 }else if(getDataAdapter1.getCodeStamp().equals("A4")){
                     cus="A04-ลูกค้าไม่สะดวกคุยจะติดต่อกลับ";
+                    Viewholder.StampLinearLayout.setVisibility(View.VISIBLE);
+                    Viewholder.StampLinearLayout1.setVisibility(View.VISIBLE);
                 }else if(getDataAdapter1.getCodeStamp().equals("B01")){
                     cus="B01-รอตัดสินใจ";
+                    Viewholder.StampLinearLayout.setVisibility(View.VISIBLE);
+                    Viewholder.StampLinearLayout1.setVisibility(View.VISIBLE);
                 }else if(getDataAdapter1.getCodeStamp().equals("B02")){
                     cus="B02-รอปรึกษาครอบครัวก่อน";
+                    Viewholder.StampLinearLayout.setVisibility(View.VISIBLE);
+                    Viewholder.StampLinearLayout1.setVisibility(View.VISIBLE);
                 }else if(getDataAdapter1.getCodeStamp().equals("B03")){
                     cus="B03-ลูกค้านัดวันติดตั้ง/ (สามารถเลือกระบุวันนัดในปฏิทินของระบบ เพื่อแจ้งเตือนได้เมื่อถึงวันนัด)";
+                    Viewholder.StampLinearLayout.setVisibility(View.VISIBLE);
+                    Viewholder.StampLinearLayout1.setVisibility(View.VISIBLE);
                 }else if(getDataAdapter1.getCodeStamp().equals("B04")){
                     cus="B04-สอบถามข้อมูลให้เพื่อนหรือญาติ";
+                    Viewholder.StampLinearLayout.setVisibility(View.VISIBLE);
+                    Viewholder.StampLinearLayout1.setVisibility(View.VISIBLE);
                 }else if(getDataAdapter1.getCodeStamp().equals("B05")){
                     cus="B05-ลูกค้าให้ส่งข้อมูลเพิ่มเติมทางไลน์";
+                    Viewholder.StampLinearLayout.setVisibility(View.VISIBLE);
+                    Viewholder.StampLinearLayout1.setVisibility(View.VISIBLE);
                 }else if(getDataAdapter1.getCodeStamp().equals("B06")){
                     cus="B06-ลูกค้าจะส่งข้อมูลให้แอดมินเพิ่มเติม (เช่น Location,เบอร์โทรอื่นเพิ่มเติม) / แอดมินสามารถEditแก้ไขหรือเพิ่มข้อมูลในNoteได้";
+                    Viewholder.StampLinearLayout.setVisibility(View.VISIBLE);
+                    Viewholder.StampLinearLayout1.setVisibility(View.VISIBLE);
                 }else if(getDataAdapter1.getCodeStamp().equals("F01")){
                     cus="F01-ไม่สนใจสินค้า";
+                    Viewholder.StampLinearLayout.setVisibility(View.VISIBLE);
+                    Viewholder.StampLinearLayout1.setVisibility(View.VISIBLE);
                 }else if(getDataAdapter1.getCodeStamp().equals("F02")){
                     cus="F02-ซื้อยี่ห้ออื่นมาแล้ว";
+                    Viewholder.StampLinearLayout.setVisibility(View.VISIBLE);
+                    Viewholder.StampLinearLayout1.setVisibility(View.VISIBLE);
                 }else if(getDataAdapter1.getCodeStamp().equals("F03")){
                     cus="F03-ลูกค้าใช้เซฟอยู่แล้วทักมาสอบถามเฉยๆ";
+                    Viewholder.StampLinearLayout.setVisibility(View.VISIBLE);
+                    Viewholder.StampLinearLayout1.setVisibility(View.VISIBLE);
                 }else if(getDataAdapter1.getCodeStamp().equals("F04")){
                     cus="F04-ต้องการสินค้าอื่นๆ";
+                    Viewholder.StampLinearLayout.setVisibility(View.VISIBLE);
+                    Viewholder.StampLinearLayout1.setVisibility(View.VISIBLE);
                 }else if(getDataAdapter1.getCodeStamp().equals("E01")){
                     cus="E01-ไม่ต้องการเทิร์น ต้องการเปลี่ยนสารกรอง / (ต้องระบุรุ่นที่จะเปลี่ยนสาร)";
                 }else if(getDataAdapter1.getCodeStamp().equals("E02")){

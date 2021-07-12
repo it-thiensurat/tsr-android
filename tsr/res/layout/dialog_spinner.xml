@@ -32,6 +32,50 @@
     android:text=""/>
 
     </LinearLayout>
+    <TableRow
+        android:id="@+id/tableRow3"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/check_stock_barcode"
+        android:background="@color/bg_body_white"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageButton
+                android:id="@+id/imgbuttonSacnBarcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/barcode" />
+        </RelativeLayout>
+    </TableRow>
+    <LinearLayout
+        android:id="@+id/LinearLayoutProductId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/check_stock_top"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/TextView05"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="ระบุรหัสสินค้า" />
+
+        <EditText
+            android:id="@+id/showTextScan"
+            style="@style/TextView.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10" >
+        </EditText>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

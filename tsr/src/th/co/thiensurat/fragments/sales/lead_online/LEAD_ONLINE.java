@@ -721,25 +721,35 @@
 package th.co.thiensurat.fragments.sales.lead_online;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.google.zxing.client.android.Intents;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -754,7 +764,10 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import th.co.bighead.utilities.BHFragment;
+import th.co.bighead.utilities.BHGeneral;
 import th.co.bighead.utilities.BHLoading;
+import th.co.bighead.utilities.BHParcelable;
+import th.co.bighead.utilities.BHPermissions;
 import th.co.bighead.utilities.BHPreference;
 import th.co.bighead.utilities.BHSpinnerAdapter;
 import th.co.bighead.utilities.annotation.InjectView;
@@ -765,6 +778,7 @@ import th.co.thiensurat.fragments.sales.lead_online.adapter.ReadJSON;
 import th.co.thiensurat.fragments.sales.lead_online.adapter.RecyclerViewDataAdapter;
 import th.co.thiensurat.fragments.sales.lead_online.models.Getdata;
 import th.co.thiensurat.fragments.sales.lead_online.models.GetdataStampCode;
+import th.co.thiensurat.fragments.share.BarcodeScanFragment;
 import th.co.thiensurat.retrofit.api.Service;
 
 import static th.co.thiensurat.retrofit.api.client.BASE_URL;
@@ -785,6 +799,25 @@ public class LEAD_ONLINE extends BHFragment implements RecyclerViewDataAdapter.I
     RecyclerViewDataAdapter adapter;
 
 SwipeRefreshLayout swipeRefreshLayout;
+    public static abstract class ScanCallBack extends BHFragmentCallback {
+        public String onNextClick() {
+            return null;
+        }
+    }
+    EditText showtextscan;
+    public static class Result extends BHParcelable {
+        public String barcode;
+
+        private Result(String barcode) {
+            this.barcode = barcode;
+
+        }
+    }
+    private static final int REQUEST_QR_SCAN = 2468;
+
+    public  static String barcode = "";
+
+    public  static int select_baecode = 0,oncick=0;
 
     private ArrayList<HashMap<String, String>> MyArrListTotal = new ArrayList<>();
     @Override
@@ -828,7 +861,11 @@ SwipeRefreshLayout swipeRefreshLayout;
      Spinner spinner = (Spinner) dialog_image.findViewById(R.id.spinnercus);
      Button buttonOk = (Button) dialog_image.findViewById(R.id.btnOkstc);
      Button buttonCancel = (Button) dialog_image.findViewById(R.id.btnCancelstc);
-     TextView txtremark = (TextView) dialog_image.findViewById(R.id.txtRemark);
+     EditText txtremark = (EditText) dialog_image.findViewById(R.id.txtRemark);
+     showtextscan = (EditText) dialog_image.findViewById(R.id.showTextScan);
+     LinearLayout showproductid = (LinearLayout)dialog_image.findViewById(R.id.LinearLayoutProductId);
+     TableRow tableRow3 = (TableRow)dialog_image.findViewById(R.id.tableRow3);
+     ImageButton imageButton = (ImageButton)dialog_image.findViewById(R.id.imgbuttonSacnBarcode);
              //ArrayAdapter<String> adapter =new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item,getResources().getStringArray(R.array.leadonline_status));
     // adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
    // spinner.setAdapter(adapter);
@@ -858,6 +895,56 @@ SwipeRefreshLayout swipeRefreshLayout;
      
      BHSpinnerAdapter<String> arrayLead = new BHSpinnerAdapter<String>(activity, statusc);
      spinner.setAdapter(arrayLead);
+     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+         @Override
+         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+             if( spinner.getSelectedItem()=="I01-ปิดการขายติดตั้งเรียบร้อยแล้ว"){
+               tableRow3.setVisibility(View.VISIBLE);
+                 showproductid.setVisibility(View.VISIBLE);
+             }else {
+                 tableRow3.setVisibility(View.GONE);
+                 showproductid.setVisibility(View.GONE);
+                 showtextscan.setText("");
+             }
+
+         }
+
+         @Override
+         public void onNothingSelected(AdapterView<?> adapterView) {
+             tableRow3.setVisibility(View.GONE);
+             showproductid.setVisibility(View.GONE);
+         }
+     });
+     imageButton.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View view) {
+             new BHPermissions().requestPermissions(getActivity(), new BHPermissions.IBHPermissions() {
+
+                 @Override
+                 public void onSuccess(BHPermissions bhPermissions) {
+                     Intent intent = new IntentIntegrator(activity).createScanIntent();
+                     startActivityForResult(intent, REQUEST_QR_SCAN);
+                 }
+
+                 @Override
+                 public void onNotSuccess(BHPermissions bhPermissions) {
+                     bhPermissions.openAppSettings(getActivity());
+                 }
+
+                 @Override
+                 public void onShouldShowRequest(BHPermissions bhPermissions, BHPermissions.PermissionType... permissionType) {
+                     bhPermissions.showMessage(getActivity(), permissionType);
+                 }
+
+             }, BHPermissions.PermissionType.CAMERA);
+
+         }
+     });
+     if(BHGeneral.BARCODE_KEY_IN_MODE){
+         showtextscan.setEnabled(true);
+     } else {
+         showtextscan.setEnabled(false);
+     }
      buttonOk.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View view) {
@@ -869,6 +956,7 @@ SwipeRefreshLayout swipeRefreshLayout;
                  return ;
              }else if(spinner.getSelectedItem()=="I01-ปิดการขายติดตั้งเรียบร้อยแล้ว"){
                  cus="I01";
+
              }else if(spinner.getSelectedItem()=="A01-ไม่รับสาย"){
                  cus="A01";
              }else if(spinner.getSelectedItem()=="A02-เบอร์โทรผิด"){
@@ -910,10 +998,11 @@ SwipeRefreshLayout swipeRefreshLayout;
              }else if(spinner.getSelectedItem()=="E06-มีฝ่ายขายอื่นของTSRติดตั้งไปแล้ว / (ต้องแนบรูปภาพถ่ายเครื่องกรองของลูกค้าที่พึ่งติดตั้งใหม่)"){
                  cus="E06";
              }
+
              String title = "แจ้งเตือน";
              String message = "ยืนยันการอัพเดทสานะการทำงาน";
              showWarningDialog(title, message);
-             update_data_lead(_id , _StatusWork, cus, _Namecustomer,_IdProvince,txtremark.getText().toString());
+             update_data_lead(_id , _StatusWork, cus, _Namecustomer,_IdProvince,txtremark.getText().toString(),showtextscan.getText().toString());
              BHLoading.close();
              dialog_image.dismiss();
              load_data_lead();
@@ -929,6 +1018,36 @@ SwipeRefreshLayout swipeRefreshLayout;
                 }
             });
  }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == REQUEST_QR_SCAN) {
+            if (resultCode == Activity.RESULT_CANCELED) {
+                showMessage("ยังไม่ได้ทำการสแกน กรุณาทำการสแกนอีกครั้ง");
+            } else if (resultCode == Activity.RESULT_OK) {
+                String barcode = intent.getStringExtra(Intents.Scan.RESULT);
+
+                Log.e("barcode",barcode);
+               showtextscan.setText(barcode);
+
+                select_baecode=0;
+
+                String substring_ProductSerialNumber = barcode.substring(0, 1);
+                if(substring_ProductSerialNumber.equals("F")){  //F
+                   // li_scan2.setVisibility(View.VISIBLE);
+
+
+                    oncick=0;
+                } else {
+                    oncick=1;
+                }
+
+               String barcode1 = showtextscan.getText().toString();
+              //  String barcode1 = "123445551231231323";
+                        BarcodeScanFragment.Result result = new BarcodeScanFragment.Result(barcode1,"","");
+                setResult(result);
+            }
+        }
+    }
  public void openimage(String url){
      Dialog dialog_image;
      dialog_image = new Dialog(activity);
@@ -938,8 +1057,8 @@ SwipeRefreshLayout swipeRefreshLayout;
      Glide.with(activity)
              .load(url)
              //.load("https://www.safealkaline.com/media/catalog/product/cache/1/image/750x750/9df78eab33525d08d6e5fb8d27136e95/s/a/safe_uv_alkaline_front.png")
-             .placeholder(R.drawable.barcode) //5
-             .error(R.drawable.bg_splash) //6
+             .placeholder(R.drawable.alpine) //5
+             .error(R.drawable.alpine) //6
 //             .fallback(R.drawable.barcode) //7
              .into(imageView);
      dialog_image.setCancelable(true);
@@ -1013,7 +1132,7 @@ SwipeRefreshLayout swipeRefreshLayout;
                 GetDataAdapter2.setProduct(json.getString("Product"));
                 GetDataAdapter2.setCodeStamp(json.getString("StatusCus"));
                 GetDataAdapter2.setIDProvince(json.getString("IdProvince"));
-                GetDataAdapter2.setDateSale((json.getString("DateSale")));
+                //GetDataAdapter2.setDateSale((json.getString("DateSale")));
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (NullPointerException x){
@@ -1028,7 +1147,7 @@ SwipeRefreshLayout swipeRefreshLayout;
         adapter.notifyDataSetChanged();
     }
 
-    public String update_data_lead(String _idl, String _statuswork, String _statuscus,String _Namecustomer,String _IdProvince,String remark) {
+    public String update_data_lead(String _idl, String _statuswork, String _statuscus,String _Namecustomer,String _IdProvince,String remark,String srialproduct) {
         final String[] rs = {""};
         String empsale = BHPreference.employeeID();
         try {
@@ -1038,7 +1157,7 @@ SwipeRefreshLayout swipeRefreshLayout;
                     .build();
             Service request = retrofit.create(Service.class);
             Call call = null;
-            call = request.updates_status_leadonline(_idl, _statuswork, _statuscus,_Namecustomer,empsale,_IdProvince,remark);
+            call = request.updates_status_leadonline(_idl, _statuswork, _statuscus,_Namecustomer,empsale,_IdProvince,remark,srialproduct);
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, retrofit2.Response response) {
@@ -1136,7 +1255,7 @@ SwipeRefreshLayout swipeRefreshLayout;
         setupAlert.setNegativeButton(activity.getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 dialog.dismiss();
-                String status = update_data_lead(data.getId(), "2", "", data.getCustomerName(), data.getIDProvince(),"");
+                String status = update_data_lead(data.getId(), "2", "", data.getCustomerName(), data.getIDProvince(),"","-");
                 load_data_lead();
             }
         }).setPositiveButton(activity.getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
@@ -1164,7 +1283,7 @@ SwipeRefreshLayout swipeRefreshLayout;
         setupAlert.setNegativeButton(activity.getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 dialog.dismiss();
-                String status = update_data_lead(data.getId(), "0", "", data.getCustomerName(), data.getIDProvince(),"");
+                String status = update_data_lead(data.getId(), "0", "", data.getCustomerName(), data.getIDProvince(),"","-");
                 load_data_lead();
             }
         }).setPositiveButton(activity.getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
