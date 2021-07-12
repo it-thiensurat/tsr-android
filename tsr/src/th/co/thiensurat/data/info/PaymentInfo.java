@@ -36,6 +36,7 @@ public class PaymentInfo extends BHParcelable {
     public Date LastUpdateDate;
     public String LastUpdateBy;
     public Date SyncedDate;
+    public String paymentDate;
 
 
 	// -- for send money

@@ -4,6 +4,7 @@ public class CustomerAPModel {
 
     private int customerId;
     private String customerName;
+    private String customerLastname;
     private String customerTax;
     private int customerType;
     private String customerAddr;
@@ -19,6 +20,7 @@ public class CustomerAPModel {
     private String customerContactName;
     private String customerContactPhone;
     private String customerContactEmail;
+    private String lastQuotation;
 
     public int getCustomerId() {
         return customerId;
@@ -34,6 +36,14 @@ public class CustomerAPModel {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public String getCustomerLastname() {
+        return customerLastname;
+    }
+
+    public void setCustomerLastname(String customerLastname) {
+        this.customerLastname = customerLastname;
     }
 
     public String getCustomerTax() {
@@ -154,5 +164,13 @@ public class CustomerAPModel {
 
     public void setCustomerContactEmail(String customerContactEmail) {
         this.customerContactEmail = customerContactEmail;
+    }
+
+    public String getLastQuotation() {
+        return lastQuotation;
+    }
+
+    public void setLastQuotation(String lastQuotation) {
+        this.lastQuotation = lastQuotation;
     }
 }

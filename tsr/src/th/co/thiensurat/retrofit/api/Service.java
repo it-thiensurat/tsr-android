@@ -206,7 +206,7 @@ public interface Service {
 
         @POST("UAT/BH/Alpines/AddCustomer")
         @FormUrlEncoded
-        Call<Object> addAlpinesCustomerUAT(@Field("type") String type, @Field("name") String name, @Field("tax") String tax, @Field("addr") String addr, @Field("moo") String moo,
+        Call<Object> addAlpinesCustomerUAT(@Field("type") String type, @Field("name") String name, @Field("lastname") String lastname, @Field("tax") String tax, @Field("addr") String addr, @Field("moo") String moo,
                                         @Field("soi") String soi, @Field("road") String road, @Field("province") String province, @Field("district") String district, @Field("subdistrict") String subdistrict,
                                         @Field("zipcode") String zipcode, @Field("phone") String phone, @Field("email") String email, @Field("contactname") String contactname, @Field("contactphone") String contactphone,
                                         @Field("contactemail") String contactemail, @Field("empid") String empid, @Field("actionType") String actionType, @Field("customerId") String customerId);

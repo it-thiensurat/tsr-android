@@ -68,7 +68,7 @@ public class SaleMainUnfinishedFragment_sale_Q extends BHPagerFragment {
 	@Override
 	protected int titleID() {
 		// TODO Auto-generated method stub
-		return R.string.title_sales_preorder;
+		return R.string.title_sales_quotation;
 	}
 
 	@Override
@@ -120,6 +120,12 @@ public class SaleMainUnfinishedFragment_sale_Q extends BHPagerFragment {
 								customerAPModel = new CustomerAPModel();
 								customerAPModel.setCustomerId(object.getInt("APCUS_ID"));
 								customerAPModel.setCustomerName(object.getString("APCUS_NAME"));
+								if (object.getInt("APCUS_TYPE") == 1) {
+									customerAPModel.setCustomerLastname(object.getString("APCUS_BRANCH"));
+								} else {
+									customerAPModel.setCustomerLastname(object.getString("APCUS_LASTNAME"));
+								}
+
 								customerAPModel.setCustomerTax(object.getString("APCUS_IDCARD"));
 								customerAPModel.setCustomerType(object.getInt("APCUS_TYPE"));
 								customerAPModel.setCustomerAddr(object.getString("APCUS_ADDR"));

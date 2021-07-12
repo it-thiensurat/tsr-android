@@ -1116,6 +1116,21 @@ public class MainActivity extends BHActivity implements ActivityCompat.OnRequest
 //        Date t = new Date("11/12/2020 17:44");
 //
 //        Log.e("test date format", BHUtilities.dateFormat(d, BHUtilities.DEFAULT_DATE_FORMAT) + " เวลา " + BHUtilities.dateFormat(t, "HH:mm") + " น.");
+//        Date dTest = null;
+//        Date tTest = null;
+//        try {
+//            String testDate = "06/07/2021 07:30";
+////            String t = testDate.substring(testDate.indexOf(" "), testDate.length());
+////            dTest = new Date();
+//            dTest = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(testDate);
+////            tTest = new SimpleDateFormat("HH:mm").parse(t);
+//            Log.e("Convert date", String.valueOf(dTest));
+////            Log.e("Convert time", String.valueOf(tTest));
+//            Log.e("Date", BHUtilities.dateFormat(dTest, BHUtilities.DEFAULT_DATE_TIME_FORMAT));
+////            Log.e("Date", BHUtilities.dateFormat(tTest, BHUtilities.DEFAULT_DATE_TIME_FORMAT));
+//        } catch (Exception e) {
+//            Log.e("Convert date", e.getLocalizedMessage());
+//        }
 
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION

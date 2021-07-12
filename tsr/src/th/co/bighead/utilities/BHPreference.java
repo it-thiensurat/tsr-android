@@ -18,6 +18,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,8 +34,10 @@ import th.co.thiensurat.activities.MainActivity;
 import th.co.thiensurat.data.controller.UserController;
 import th.co.thiensurat.data.info.DeviceMenuInfo;
 import th.co.thiensurat.data.info.UserInfo;
+import th.co.thiensurat.fragments.sales.sales_quotation.models.get_product_sale_q;
 import th.co.thiensurat.retrofit.api.Service;
 import th.co.thiensurat.service.data.GetCurrentFortnightOutputInfo;
+import th.co.thiensurat.utilities.ObjectSerializer;
 
 import static th.co.thiensurat.activities.MainActivity.get_teamcode_select_position;
 import static th.co.thiensurat.retrofit.api.client.BASE_URL;
@@ -215,6 +219,8 @@ public class BHPreference {
     private static final String POSID5_KEY = "POSID5_KEY";
     private static final String EMPID6_KEY = "EMPID6_KEY";
     private static final String POSID6_KEY = "POSID6_KEY";
+
+    private static final String QUOTATION_PRODUCT_KEY = "QUOTATION_PRODUCT_KEY";
 
     private static SharedPreferences pref = BHApplication.getContext().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
     private static Editor editor = pref.edit();
@@ -908,6 +914,25 @@ public class BHPreference {
 
     public static String getEmpid6() {
         return pref.getString(EMPID6_KEY, null);
+    }
+
+    public static void setSelectedProduct(List<get_product_sale_q> productList) {
+        try {
+            editor.putString(QUOTATION_PRODUCT_KEY, ObjectSerializer.serialize((Serializable) productList));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        editor.commit();
+    }
+
+    public static List<get_product_sale_q> getSelectedProduct() {
+        List<get_product_sale_q> productSaleQs = new ArrayList<>();
+        try {
+            productSaleQs = (ArrayList<get_product_sale_q>) ObjectSerializer.deserialize(pref.getString(QUOTATION_PRODUCT_KEY, ObjectSerializer.serialize(new ArrayList<get_product_sale_q>())));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return productSaleQs;
     }
 
     /**

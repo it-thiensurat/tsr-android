@@ -52,7 +52,7 @@ public class QuotaionWaitFragment extends BHPagerFragment {
     @Override
     protected int titleID() {
         // TODO Auto-generated method stub
-        return R.string.title_sales_preorder;
+        return R.string.title_sales_quotation;
     }
 
     @Override
@@ -214,6 +214,7 @@ public class QuotaionWaitFragment extends BHPagerFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // TODO Auto-generated method stub
                 QuotationWaitModel quotationWaitModel = quotationWaitModelList.get(position);
+                Log.e("edit model", String.valueOf(quotationWaitModel));
                 if (quotationWaitModel.getQuotationStatus() == 3) {
                     List<CustomerAPModel> customerAPModelList = new ArrayList<>();
                     customerAPModelList = quotationWaitModel.getCustomerAPModelList();

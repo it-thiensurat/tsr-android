@@ -322,7 +322,9 @@ public class SaleReceiptPayment_Qr extends BHFragment {
                                 paymentInfo.ProductName = jsonArray.getJSONObject(i).getString("ProductName");
                                 paymentInfo.MODEL = data.contract.MODEL;
                                 paymentInfo.ProductSerialNumber = data.contract.ProductSerialNumber;
-                                paymentInfo.PayDate = BHUtilities.StringToDate(jsonArray.getJSONObject(i).getString("DayPay"), "dd/mm/yyyy HH:mm", BHUtilities.LOCALE_THAI);
+                                paymentInfo.PayDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(jsonArray.getJSONObject(i).getString("DayPay"));
+//                                paymentInfo.paymentDate = jsonArray.getJSONObject(i).getString("DayPay");
+//                                paymentInfo.PayDate = BHUtilities.StringToDate(jsonArray.getJSONObject(i).getString("DayPay"), "dd/mm/yyyy HH:mm", BHUtilities.LOCALE_THAI);
                                 paymentInfo.Amount = Float.parseFloat(jsonArray.getJSONObject(i).getString("Amount").replace(",", ""));
                                 paymentInfo.PaymentPeriodNumber = jsonArray.getJSONObject(i).getInt("PaymentPeriodNumber");
                                 paymentInfo.MODE = jsonArray.getJSONObject(i).getInt("maxPeriod");
@@ -353,6 +355,8 @@ public class SaleReceiptPayment_Qr extends BHFragment {
                     } catch (JSONException e) {
                         Log.e("JSONException", e.getLocalizedMessage());
                         BHLoading.close();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
                 }
                 @Override

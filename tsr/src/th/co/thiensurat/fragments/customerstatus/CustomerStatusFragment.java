@@ -2,6 +2,7 @@ package th.co.thiensurat.fragments.customerstatus;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,10 +12,14 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -107,9 +112,37 @@ public class CustomerStatusFragment extends BHFragment implements CustomerStatus
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                dialog = ProgressDialog.show(getActivity(), "Please wait...", "กำลังโหลดข้อมูลลูกค้า", true, false);
-                BHLoading.show(activity);
-                onSearch(editSearch.getText().toString());
+                if (!editSearch.getText().toString().equals("")) {
+                    onSearch(editSearch.getText().toString());
+                } else {
+                    AlertDialog.Builder setupAlert = new AlertDialog.Builder(activity);
+                    setupAlert.setTitle("คำเตือน");
+                    setupAlert.setCancelable(false);
+                    setupAlert.setMessage("กรุณากรอกข้อมูลเพื่อค้นหา");
+                    setupAlert.setNegativeButton(activity.getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.dismiss();
+                        }
+                    });
+                    setupAlert.show();
+                }
+            }
+        });
+
+        editSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(TextView v, int actionId,
+                                          KeyEvent event) {
+                // TODO Auto-generated method stub
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
+                    buttonSearch.performClick();
+                    return true;
+                }
+
+                return false;
             }
         });
     }
@@ -122,6 +155,7 @@ public class CustomerStatusFragment extends BHFragment implements CustomerStatus
     private String message = "";
     private JSONArray address;
     public void onSearch(String search) {
+        BHLoading.show(activity);
         try {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(GIS_BASE_URL)
